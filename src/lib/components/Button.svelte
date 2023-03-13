@@ -1,34 +1,49 @@
 <script lang="ts">
-  import "./button.css";
+  import classNames from "$lib/classNames";
+  import type { Variant, Size, Type } from "./buttonOptions";
 
-  /**
-   * Is this the principal call to action on the page?
-   */
-  export let primary = false;
+  export let disabled = false;
 
-  /**
-   * What background color to use
-   */
-  export let backgroundColor: string | undefined = undefined;
-  /**
-   * How large should the button be?
-   */
-  export let size: "small" | "medium" | "large" = "medium";
-  /**
-   * Button contents
-   */
-  export let label: string = "";
+  export let unstyled = false;
 
-  $: mode = primary ? "storybook-button--primary" : "storybook-button--secondary";
+  export let variant: Variant = "primary";
 
-  $: style = backgroundColor ? `background-color: ${backgroundColor}` : "";
+  const variantClassesDict: Record<Variant, string[]> = {
+    primary: [],
+    secondary: ["usa-button--secondary"],
+    base: ["usa-button--base"],
+    "accent-cool": ["usa-button--accent-cool"],
+    "accent-warm": ["usa-button--accent-warm"],
+    outline: ["usa-button--outline"],
+    "outline-inverse": ["usa-button--outline", "usa-button--inverse"],
+  };
+
+  $: variantClasses = variantClassesDict[variant];
+
+  export let size: Size = "normal";
+
+  export let type: Type = "button";
 </script>
 
 <button
-  type="button"
-  class={["storybook-button", `storybook-button--${size}`, mode].join(" ")}
-  {style}
-  on:click
+  {type}
+  {disabled}
+  aria-disabled={disabled}
+  class={classNames(
+    "usa-button",
+    unstyled && "usa-button--unstyled",
+    size === "big" && "usa-button--big",
+    ...variantClasses
+  )}
 >
-  {label}
+  <slot>Button</slot>
 </button>
+
+<style lang="scss">
+  @use "uswds-core" with (
+    $theme-font-path: $theme-font-path,
+    $theme-image-path: $theme-image-path,
+    $theme-show-notifications: false
+  );
+  @use "usa-button";
+</style>
