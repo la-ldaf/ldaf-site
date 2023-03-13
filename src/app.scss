@@ -8,4 +8,6 @@
 	$theme-show-compile-warnings: false
 );
 
+@use 'uswds-utilities';
+@use 'uswds-typography';
 @use 'uswds-global';
