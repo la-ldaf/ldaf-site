@@ -1,9 +1,9 @@
 <script>
-	import '../app.scss';
+  import "../app.scss";
 </script>
 
 <slot />
 
 <style lang="scss">
-	@use 'src/app.scss';
+  @use "src/app.scss";
 </style>
