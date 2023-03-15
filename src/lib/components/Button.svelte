@@ -35,6 +35,7 @@
     size === "big" && "usa-button--big",
     ...variantClasses
   )}
+  on:click
 >
   <slot>Button</slot>
 </button>
