@@ -23,6 +23,9 @@
   export let size: Size = "normal";
 
   export let type: Type = "button";
+
+  let className = "";
+  export { className as class };
 </script>
 
 <button
@@ -33,7 +36,8 @@
     "usa-button",
     unstyled && "usa-button--unstyled",
     size === "big" && "usa-button--big",
-    ...variantClasses
+    ...variantClasses,
+    className
   )}
   on:click
 >
