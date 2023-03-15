@@ -1,5 +1,6 @@
 <script>
-  import { ASSET_PATH } from "$lib/constants";
+  import closeIcon from "@uswds/uswds/img/usa-icons/close.svg";
+  import Search from "../Search.svelte";
 </script>
 
 <header class="usa-header usa-header--basic">
@@ -12,7 +13,7 @@
     </div>
     <nav aria-label="Primary navigation" class="usa-nav">
       <button type="button" class="usa-nav__close">
-        <img src={`${ASSET_PATH}/usa-icons/close.svg`} alt="Close" />
+        <img src={closeIcon} alt="Close" />
       </button>
       <ul class="usa-nav__primary usa-accordion">
         <li class="usa-nav__primary-item">
@@ -26,17 +27,7 @@
         </li>
       </ul>
       <section aria-label="Search component">
-        <form class="usa-search usa-search--small" role="search">
-          <label class="usa-sr-only" for="search-field">Search</label>
-          <input class="usa-input" id="search-field" type="search" name="search" />
-          <button class="usa-button" type="submit">
-            <img
-              src={`${ASSET_PATH}/usa-icons-bg/search--white.svg`}
-              class="usa-search__submit-icon"
-              alt="Search"
-            />
-          </button>
-        </form>
+        <Search size="small" />
       </section>
     </nav>
   </div>
