@@ -44,7 +44,7 @@
   <slot>Button</slot>
 </button>
 
-<style lang="scss">
+<style lang="scss" global>
   @use "uswds-core" with (
     $theme-font-path: $theme-font-path,
     $theme-image-path: $theme-image-path,

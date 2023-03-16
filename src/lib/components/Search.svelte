@@ -1,5 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  import Button from "./Button.svelte";
+
   import classNames from "$lib/classNames";
   import getID from "$lib/getID";
   import searchIcon from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
@@ -50,16 +52,16 @@
     aria-disabled={disabled}
     {name}
   />
-  <button type="submit" class="usa-button usa-search__submit" {disabled}>
+  <Button type="submit" class="usa-search__submit" {disabled}>
     {#if size !== "small"}<span class="usa-search__submit-text">{label}</span>{/if}<img
       src={searchIcon}
       class="usa-search__submit-icon"
       alt={label}
     />
-  </button>
+  </Button>
 </form>
 
-<style lang="scss">
+<style lang="scss" global>
   @use "uswds-core" with (
     $theme-font-path: $theme-font-path,
     $theme-image-path: $theme-image-path,
