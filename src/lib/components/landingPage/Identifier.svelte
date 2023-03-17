@@ -1,5 +1,5 @@
 <script>
-  import { ASSET_PATH } from "$lib/constants";
+  import circleGray20 from "@uswds/uswds/img/circle-gray-20.svg";
 </script>
 
 <div class="usa-identifier">
@@ -12,7 +12,7 @@
         <a href="/" class="usa-identifier__logo"
           ><img
             class="usa-identifier__logo-img"
-            src={`${ASSET_PATH}/circle-gray-20.svg`}
+            src={circleGray20}
             alt="&lt;Parent agency&gt; logo"
           />
         </a>

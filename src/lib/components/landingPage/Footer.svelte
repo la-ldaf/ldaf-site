@@ -1,5 +1,10 @@
 <script>
-  import { ASSET_PATH } from "$lib/constants";
+  import logoImg from "@uswds/uswds/img/logo-img.png";
+  import iconFacebook from "@uswds/uswds/img/usa-icons/facebook.svg";
+  import iconTwitter from "@uswds/uswds/img/usa-icons/twitter.svg";
+  import iconYouTube from "@uswds/uswds/img/usa-icons/youtube.svg";
+  import iconInstagram from "@uswds/uswds/img/usa-icons/instagram.svg";
+  import iconRSS from "@uswds/uswds/img/usa-icons/rss_feed.svg";
 </script>
 
 <footer class="usa-footer">
@@ -59,7 +64,7 @@
           "
         >
           <div class="mobile-lg:grid-col-auto">
-            <img class="usa-footer__logo-img" src={`${ASSET_PATH}/logo-img.png`} alt="" />
+            <img class="usa-footer__logo-img" src={logoImg} alt="" />
           </div>
           <div class="mobile-lg:grid-col-auto">
             <p class="usa-footer__logo-heading">&lt;Name of Agency&gt;</p>
@@ -69,47 +74,27 @@
           <div class="usa-footer__social-links grid-row grid-gap-1">
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={`${ASSET_PATH}/usa-icons/facebook.svg`}
-                  alt="Facebook"
-                /></a
+                ><img class="usa-social-link__icon" src={iconFacebook} alt="Facebook" /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={`${ASSET_PATH}/usa-icons/twitter.svg`}
-                  alt="Twitter"
-                /></a
+                ><img class="usa-social-link__icon" src={iconTwitter} alt="Twitter" /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={`${ASSET_PATH}/usa-icons/youtube.svg`}
-                  alt="YouTube"
-                /></a
+                ><img class="usa-social-link__icon" src={iconYouTube} alt="YouTube" /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={`${ASSET_PATH}/usa-icons/instagram.svg`}
-                  alt="Instagram"
-                /></a
+                ><img class="usa-social-link__icon" src={iconInstagram} alt="Instagram" /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={`${ASSET_PATH}/usa-icons/rss_feed.svg`}
-                  alt="RSS"
-                /></a
+                ><img class="usa-social-link__icon" src={iconRSS} alt="RSS" /></a
               >
             </div>
           </div>

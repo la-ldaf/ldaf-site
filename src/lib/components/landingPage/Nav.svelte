@@ -1,5 +1,6 @@
 <script>
-  import { ASSET_PATH } from "$lib/constants";
+  import iconClose from "@uswds/uswds/img/usa-icons/close.svg";
+  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
 </script>
 
 <header class="usa-header usa-header--basic">
@@ -12,7 +13,7 @@
     </div>
     <nav aria-label="Primary navigation" class="usa-nav">
       <button type="button" class="usa-nav__close">
-        <img src={`${ASSET_PATH}/usa-icons/close.svg`} alt="Close" />
+        <img src={iconClose} alt="Close" />
       </button>
       <ul class="usa-nav__primary usa-accordion">
         <li class="usa-nav__primary-item">
@@ -30,11 +31,7 @@
           <label class="usa-sr-only" for="search-field">Search</label>
           <input class="usa-input" id="search-field" type="search" name="search" />
           <button class="usa-button" type="submit">
-            <img
-              src={`${ASSET_PATH}/usa-icons-bg/search--white.svg`}
-              class="usa-search__submit-icon"
-              alt="Search"
-            />
+            <img src={iconBgSearchWhite} class="usa-search__submit-icon" alt="Search" />
           </button>
         </form>
       </section>

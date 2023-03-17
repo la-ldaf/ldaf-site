@@ -1,12 +1,12 @@
 <script>
-  import { ASSET_PATH } from "$lib/constants";
+  import circle124 from "@uswds/uswds/img/circle-124.png";
 </script>
 
 <section class="usa-graphic-list usa-section usa-section--dark">
   <div class="grid-container">
     <div class="usa-graphic-list__row grid-row grid-gap">
       <div class="usa-media-block tablet:grid-col">
-        <img class="usa-media-block__img" src={`${ASSET_PATH}/circle-124.png`} alt="Alt text" />
+        <img class="usa-media-block__img" src={circle124} alt="Alt text" />
         <div class="usa-media-block__body">
           <h2 class="usa-graphic-list__heading">Graphic headings can vary.</h2>
           <p>
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="usa-media-block tablet:grid-col">
-        <img class="usa-media-block__img" src={`${ASSET_PATH}/circle-124.png`} alt="Alt text" />
+        <img class="usa-media-block__img" src={circle124} alt="Alt text" />
         <div class="usa-media-block__body">
           <h2 class="usa-graphic-list__heading">Stick to 6 or fewer words.</h2>
           <p>
@@ -28,7 +28,7 @@
     </div>
     <div class="usa-graphic-list__row grid-row grid-gap">
       <div class="usa-media-block tablet:grid-col">
-        <img class="usa-media-block__img" src={`${ASSET_PATH}/circle-124.png`} alt="Alt text" />
+        <img class="usa-media-block__img" src={circle124} alt="Alt text" />
         <div class="usa-media-block__body">
           <h2 class="usa-graphic-list__heading">Never highlight anything without a goal.</h2>
           <p>
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="usa-media-block tablet:grid-col">
-        <img class="usa-media-block__img" src={`${ASSET_PATH}/circle-124.png`} alt="Alt text" />
+        <img class="usa-media-block__img" src={circle124} alt="Alt text" />
         <div class="usa-media-block__body">
           <h2 class="usa-graphic-list__heading">Could also have 2 or 6.</h2>
           <p>

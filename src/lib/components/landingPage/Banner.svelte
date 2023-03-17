@@ -1,5 +1,7 @@
 <script>
-  import { ASSET_PATH } from "$lib/constants";
+  import usFlagSmall from "@uswds/uswds/img/us_flag_small.png";
+  import iconDotGov from "@uswds/uswds/img/icon-dot-gov.svg";
+  import iconHTTPS from "@uswds/uswds/img/icon-https.svg";
   // TODO: figure out how to/if we want to import component JS or
   // write any interactivity ourselves
   // Related Ticket: https://ldaf.atlassian.net/browse/LDAF-173
@@ -15,7 +17,7 @@
           <img
             aria-hidden={!bannerExpanded}
             class="usa-banner__header-flag"
-            src={`${ASSET_PATH}/us_flag_small.png`}
+            src={usFlagSmall}
             alt=""
           />
         </div>
@@ -46,7 +48,7 @@
         <div class="usa-banner__guidance tablet:grid-col-6">
           <img
             class="usa-banner__icon usa-media-block__img"
-            src={`${ASSET_PATH}/icon-dot-gov.svg`}
+            src={iconDotGov}
             alt=""
             aria-hidden={!bannerExpanded}
           />
@@ -61,7 +63,7 @@
         <div class="usa-banner__guidance tablet:grid-col-6">
           <img
             class="usa-banner__icon usa-media-block__img"
-            src={`${ASSET_PATH}/icon-https.svg`}
+            src={iconHTTPS}
             alt=""
             aria-hidden={!bannerExpanded}
           />
