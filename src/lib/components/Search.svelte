@@ -27,7 +27,7 @@
   }>();
 
   const onInput = () => dispatch("input", { searchTerm });
-  const onSearch = (e: Event) => {
+  const onSubmit = (e: Event) => {
     e.preventDefault();
     dispatch("submit", { searchTerm });
   };
@@ -39,7 +39,7 @@
     { default: "", small: "usa-search--small", big: "usa-search--big" }[size]
   )}
   role="search"
-  on:submit={onSearch}
+  on:submit={onSubmit}
 >
   <label class="usa-sr-only" for={inputID}>{label}</label>
   <input
