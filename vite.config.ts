@@ -9,7 +9,16 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@use "src/variables.scss" as *;',
+        additionalData: (content: string) =>
+          `
+            @use "src/variables.scss" as *;
+            @use "uswds-core" with (
+              $theme-font-path: $theme-font-path,
+              $theme-image-path: $theme-image-path,
+              $theme-show-notifications: false,
+            );
+            ${content}
+        `,
         includePaths: ["./node_modules/@uswds/uswds/packages"],
       },
     },

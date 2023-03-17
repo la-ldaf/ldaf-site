@@ -73,10 +73,5 @@
 </div>
 
 <style lang="scss">
-  @use "uswds-core" with (
-    $theme-font-path: $theme-font-path,
-    $theme-image-path: $theme-image-path,
-    $theme-show-notifications: false
-  );
   @use "usa-identifier";
 </style>

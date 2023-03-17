@@ -10,9 +10,5 @@
 <h2><a href="/">Go back home</a></h2>
 
 <style lang="scss">
-  @use "usa-alert" with (
-    $theme-font-path: $theme-font-path,
-    $theme-image-path: $theme-image-path,
-    $theme-show-notifications: false
-  );
+  @use "usa-alert";
 </style>
