@@ -1,8 +1,15 @@
 import { sveltekit } from "@sveltejs/kit/vite";
+import { purgeCss } from "vite-plugin-svelte-purgecss";
 import { defineConfig } from "vitest/config";
 
+const plugins = [sveltekit()];
+
+if (process.env.NODE_ENV === "production") {
+  plugins.push(purgeCss());
+}
+
 export default defineConfig({
-  plugins: [sveltekit()],
+  plugins,
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
   },

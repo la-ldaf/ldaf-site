@@ -41,7 +41,4 @@
 
 <style lang="scss">
   @use "usa-header";
-  @use "usa-search";
-  @use "usa-accordion";
-  @use "usa-nav";
 </style>

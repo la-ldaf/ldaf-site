@@ -53,7 +53,6 @@
 
 <style lang="scss">
   @use "usa-graphic-list";
-  @use "usa-layout-grid";
   @use "usa-media-block";
   @use "usa-section";
 </style>
