@@ -13,6 +13,8 @@
           ><img
             class="usa-identifier__logo-img"
             src={circleGray20}
+            width={120}
+            height={120}
             alt="&lt;Parent agency&gt; logo"
           />
         </a>

@@ -64,7 +64,7 @@
           "
         >
           <div class="mobile-lg:grid-col-auto">
-            <img class="usa-footer__logo-img" src={logoImg} alt="" />
+            <img class="usa-footer__logo-img" src={logoImg} width={80} height={80} alt="" />
           </div>
           <div class="mobile-lg:grid-col-auto">
             <p class="usa-footer__logo-heading">&lt;Name of Agency&gt;</p>
@@ -74,27 +74,57 @@
           <div class="usa-footer__social-links grid-row grid-gap-1">
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img class="usa-social-link__icon" src={iconFacebook} alt="Facebook" /></a
+                ><img
+                  class="usa-social-link__icon"
+                  src={iconFacebook}
+                  width={40}
+                  height={40}
+                  alt="Facebook"
+                /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img class="usa-social-link__icon" src={iconTwitter} alt="Twitter" /></a
+                ><img
+                  class="usa-social-link__icon"
+                  src={iconTwitter}
+                  width={40}
+                  height={40}
+                  alt="Twitter"
+                /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img class="usa-social-link__icon" src={iconYouTube} alt="YouTube" /></a
+                ><img
+                  class="usa-social-link__icon"
+                  src={iconYouTube}
+                  height={40}
+                  width={40}
+                  alt="YouTube"
+                /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img class="usa-social-link__icon" src={iconInstagram} alt="Instagram" /></a
+                ><img
+                  class="usa-social-link__icon"
+                  src={iconInstagram}
+                  height={40}
+                  width={40}
+                  alt="Instagram"
+                /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img class="usa-social-link__icon" src={iconRSS} alt="RSS" /></a
+                ><img
+                  class="usa-social-link__icon"
+                  src={iconRSS}
+                  height={40}
+                  width={40}
+                  alt="RSS"
+                /></a
               >
             </div>
           </div>

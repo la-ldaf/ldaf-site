@@ -19,6 +19,8 @@
             class="usa-banner__header-flag"
             src={usFlagSmall}
             alt=""
+            width={16}
+            height={11}
           />
         </div>
         <div class="grid-col-fill tablet:grid-col-auto" aria-hidden={!bannerExpanded}>
@@ -49,6 +51,8 @@
           <img
             class="usa-banner__icon usa-media-block__img"
             src={iconDotGov}
+            width={64}
+            height={64}
             alt=""
             aria-hidden={!bannerExpanded}
           />
@@ -64,6 +68,8 @@
           <img
             class="usa-banner__icon usa-media-block__img"
             src={iconHTTPS}
+            width={64}
+            height={64}
             alt=""
             aria-hidden={!bannerExpanded}
           />
