@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "@uswds/uswds/scss/usa-button";
   import classNames from "$lib/classNames";
   import type { Variant, Size, Type } from "./buttonOptions";
 
@@ -43,12 +44,3 @@
 >
   <slot>Button</slot>
 </button>
-
-<style lang="scss">
-  @use "uswds-core" with (
-    $theme-font-path: $theme-font-path,
-    $theme-image-path: $theme-image-path,
-    $theme-show-notifications: false
-  );
-  @use "usa-button";
-</style>
