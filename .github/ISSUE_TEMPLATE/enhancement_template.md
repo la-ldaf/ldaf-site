@@ -31,7 +31,7 @@ Related issues:
 
 <!-- Describe the desired outcome of this ticket. Write detailed criteria below that can be checked off the list as work is completed. -->
 
-- []
+- [ ]
 
 ## Technical implementation details
 
