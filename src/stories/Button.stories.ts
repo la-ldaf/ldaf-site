@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
-import Button from "$lib/components/Button.svelte";
-import { variants, sizes, types } from "$lib/components/buttonOptions";
+import Button, { variants, sizes, types } from "$lib/components/Button";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/svelte/writing-stories/introduction
 const meta = {
