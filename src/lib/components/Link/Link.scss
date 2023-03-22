@@ -1,0 +1,14 @@
+@use "usa-link";
+// For some reason the USWDS rules for alternate color links depends on the link being a child of an element with the 'usa-dark-background' class.
+// This seems overly restrictive, so we'll set up the alternate style to be independent of its parent element.
+// Following styles were taken from: https://github.com/uswds/uswds/blob/30c61f34288bc706961b12b536fdc57537026385/packages/usa-dark-background/src/styles/_usa-dark-background.scss
+// TODO: Figure out how to get modified variables; if we change $theme-link-reverse-color it doesn't apply here.
+.usa-link.usa-link--alt {
+  color: uswds.color(uswds.$theme-link-reverse-color);
+  &:visited {
+    color: uswds.color(uswds.$theme-link-reverse-color);
+  }
+  &:hover {
+    color: uswds.color(uswds.$theme-link-reverse-hover-color);
+  }
+}

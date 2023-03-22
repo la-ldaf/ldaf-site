@@ -12,6 +12,8 @@ export default defineConfig({
   plugins,
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
+    globals: true,
+    environment: "jsdom",
   },
   css: {
     preprocessorOptions: {
@@ -19,7 +21,7 @@ export default defineConfig({
         additionalData: (content: string) =>
           `
             @use "src/variables.scss" as *;
-            @use "uswds-core" with (
+            @use "uswds-core" as uswds with (
               $theme-font-path: $theme-font-path,
               $theme-image-path: $theme-image-path,
               $theme-show-notifications: false,
