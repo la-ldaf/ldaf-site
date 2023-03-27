@@ -15,7 +15,8 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
@@ -34,6 +35,7 @@
     "@typescript-eslint/parser": "^5.45.0",
     "@vitest/coverage-c8": "^0.29.7",
     "autoprefixer": "^10.4.7",
+    "chromatic": "^6.17.2",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-storybook": "^0.6.11",
