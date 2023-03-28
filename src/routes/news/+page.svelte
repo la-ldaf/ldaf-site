@@ -1,3 +1,7 @@
+<script lang="ts">
+  import "@uswds/uswds/scss/usa-alert";
+</script>
+
 <h1>News</h1>
 
 <div class="usa-alert usa-alert--warning">
@@ -8,7 +12,3 @@
 </div>
 
 <h2><a href="/">Go back home</a></h2>
-
-<style lang="scss">
-  @use "usa-alert";
-</style>

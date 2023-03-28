@@ -1,4 +1,5 @@
 <script>
+  import "./Banner.scss";
   import usFlagSmall from "@uswds/uswds/img/us_flag_small.png";
   import iconDotGov from "@uswds/uswds/img/icon-dot-gov.svg";
   import iconHTTPS from "@uswds/uswds/img/icon-https.svg";
@@ -105,10 +106,3 @@
     </div>
   </div>
 </section>
-
-<style lang="scss">
-  @use "usa-accordion";
-  @use "usa-banner";
-  @use "usa-icon";
-  @use "usa-media-block";
-</style>

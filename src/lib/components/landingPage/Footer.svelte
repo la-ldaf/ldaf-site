@@ -1,4 +1,5 @@
 <script>
+  import "@uswds/uswds/scss/usa-footer";
   import logoImg from "@uswds/uswds/img/logo-img.png";
   import iconFacebook from "@uswds/uswds/img/usa-icons/facebook.svg";
   import iconTwitter from "@uswds/uswds/img/usa-icons/twitter.svg";
@@ -144,7 +145,3 @@
     </div>
   </div>
 </footer>
-
-<style lang="scss">
-  @use "usa-footer";
-</style>
