@@ -31,7 +31,10 @@
   //   doesn't resolve the issue since the container element isn't the one with the focus.
   // This workaround will ignore the event if the new focused element is a child of the container.
   // Based on this REPL: https://svelte.dev/repl/4c5dfd34cc634774bd242725f0fc2dab?version=3.46.4
-  const handleDropdownFocusLoss = ({ relatedTarget, currentTarget }: Event) => {
+  const handleDropdownFocusLoss = ({
+    relatedTarget,
+    currentTarget,
+  }: FocusEvent & { currentTarget: EventTarget & HTMLDivElement }) => {
     if (relatedTarget instanceof HTMLElement && currentTarget?.contains(relatedTarget)) return;
     toggleSubMenu(false);
   };
@@ -46,16 +49,19 @@
       aria-controls="basic-mega-nav-section-{id}"
       on:click={() => toggleSubMenu()}
     >
-      <slot />
+      <!-- Extra <span/> elements in the this template are necessary for expand icons to load. -->
+      <span><slot /></span>
     </button>
     <ul id="basic-mega-nav-section-{id}" class="usa-nav__submenu" hidden={!isExpanded}>
       {#each children as { id, link, name } (id)}
         <li class="usa-nav__submenu-item">
-          <Link href={link}>{name}</Link>
+          <Link href={link}><span>{name}</span></Link>
         </li>
       {/each}
     </ul>
   </div>
 {:else}
-  <Link href={link} class={classNames("usa-nav-link", isCurrent && "usa-current")}><slot /></Link>
+  <Link href={link} class={classNames("usa-nav-link", isCurrent && "usa-current")}
+    ><span><slot /></span></Link
+  >
 {/if}
