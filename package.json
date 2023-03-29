@@ -76,6 +76,9 @@
   "type": "module",
   "dependencies": {
     "@uswds/uswds": "^3.4.1",
-    "fast-blurhash": "^1.1.2"
+    "@contentful/rich-text-html-renderer": "^16.0.3",
+    "@contentful/rich-text-types": "^16.0.3",
+    "fast-blurhash": "^1.1.2",
+    "lodash": "^4.17.21"
   }
 }
