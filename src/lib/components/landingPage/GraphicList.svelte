@@ -1,4 +1,5 @@
 <script>
+  import "./GraphicList.scss";
   import circle124 from "@uswds/uswds/img/circle-124.png";
 </script>
 
@@ -50,9 +51,3 @@
     </div>
   </div>
 </section>
-
-<style lang="scss">
-  @use "usa-graphic-list";
-  @use "usa-media-block";
-  @use "usa-section";
-</style>

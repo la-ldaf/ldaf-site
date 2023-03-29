@@ -1,0 +1,17 @@
+@use "usa-accordion";
+@use "usa-banner";
+@use "usa-icon";
+@use "usa-media-block";
+
+// See https://github.com/uswds/uswds/issues/5194
+.usa-accordion__button.usa-banner__button {
+  @extend .usa-banner__button;
+
+  &[aria-expanded="false"] {
+    background-image: none;
+  }
+}
+
+.usa-accordion__content.usa-banner__content {
+  @extend .usa-banner__content;
+}

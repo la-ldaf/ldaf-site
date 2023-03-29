@@ -1,4 +1,5 @@
 <script>
+  import "./Nav.scss";
   import iconClose from "@uswds/uswds/img/usa-icons/close.svg";
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
 </script>
@@ -38,7 +39,3 @@
     </nav>
   </div>
 </header>
-
-<style lang="scss">
-  @use "usa-header";
-</style>

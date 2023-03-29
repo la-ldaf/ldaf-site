@@ -1,4 +1,5 @@
 <script>
+  import "./page.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Footer from "$lib/components/landingPage/Footer.svelte";
   import GraphicList from "$lib/components/landingPage/GraphicList.svelte";
@@ -51,10 +52,3 @@
 </main>
 <Footer />
 <Identifier />
-
-<style lang="scss">
-  @use "usa-button";
-  @use "usa-layout-grid";
-  @use "usa-section";
-  @use "usa-skipnav";
-</style>
