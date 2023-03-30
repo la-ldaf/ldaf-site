@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Document, Node as NodeType } from "@contentful/rich-text-types";
-  import Node from "../Node.svelte";
+  import Node from "./Node.svelte";
   import { isDocument } from "../predicates";
 
   export let node: NodeType;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Node as NodeType, Paragraph } from "@contentful/rich-text-types";
-  import Node from "../Node.svelte";
+  import Node from "./Node.svelte";
   import { isParagraph } from "../predicates";
 
   export let node: NodeType;

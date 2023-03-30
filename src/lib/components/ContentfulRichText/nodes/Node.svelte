@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Node } from "@contentful/rich-text-types";
-  import nodes from "./nodes";
+  import nodes from ".";
 
   export let node: Node;
 
