@@ -24,21 +24,21 @@ const getAsHTMLElement =
     if (typeof stringOrElement === "string") {
       const parsedString = parseString(stringOrElement);
       if (!parsedString) {
-        throw new Error("${label} HTML string was not parsed successfully!");
+        throw new Error(`${label} HTML string was not parsed successfully!`);
       }
       const meaningfulNodes = parsedString.filter(isMeaningfulNode);
       if (meaningfulNodes.length !== 1) {
-        throw new Error("${label} HTML string was parsed into too few or too many nodes!");
+        throw new Error(`${label} HTML string was parsed into too few or too many nodes!`);
       }
 
       const [node] = meaningfulNodes;
       if (!isElementNode(node)) {
-        throw new Error("${label} HTML string was not parsed into an HTML element!");
+        throw new Error(`${label} HTML string was not parsed into an HTML element!`);
       }
 
       return node;
     }
-    throw new Error("${label} was not an HTML element or a parseable HTML string");
+    throw new Error(`${label} was not an HTML element or a parseable HTML string`);
   };
 
 const receivedAsHTMLElement = getAsHTMLElement("received");
@@ -102,8 +102,6 @@ function* getChildNodePairs(
       yield [nextChildA, nextChildB];
     }
   }
-
-  return true;
 }
 
 const isTextNode = (node: Node): node is Text => node.nodeType === Node.TEXT_NODE;
@@ -154,13 +152,6 @@ const nodesMatch = (rootNodeA: Node, rootNodeB: Node): boolean => {
 
   return true;
 };
-
-// Warning - this function _mutates_ stack
-const addChildNodePairsToStack = (
-  nodeA: HTMLElement | Document,
-  nodeB: HTMLElement | Document,
-  stack: [Node, Node][]
-): boolean => {};
 
 // This _cannot_ be an arrow function
 export default function <R>(
