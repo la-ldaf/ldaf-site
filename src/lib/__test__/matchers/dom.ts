@@ -53,6 +53,8 @@ const attributesMatch = (nodeA: HTMLElement, nodeB: HTMLElement): boolean => {
   return true;
 };
 
+// Calling this generator function returns an iterator of matched pairs of child nodes from nodeA
+// and nodeB
 function* getChildNodePairs(
   nodeA: HTMLElement | Document,
   nodeB: HTMLElement | Document
