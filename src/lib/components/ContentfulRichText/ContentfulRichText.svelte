@@ -1,8 +1,16 @@
 <script lang="ts">
-  import type { Document as DocumentType } from "@contentful/rich-text-types";
-  import Document from "./nodes/Document.svelte";
+  import Node from "./nodes/Node.svelte";
+  import type { Document } from "@contentful/rich-text-types";
+  import { markdownDocument } from "./__test__/documents";
+  import { isDocument } from "./predicates";
 
-  export let document: DocumentType;
+  export let document: Document = markdownDocument.document;
+
+  if (!isDocument(document)) {
+    throw new Error("document prop is not a document");
+  }
 </script>
 
-<Document node={document} />
+{#each document.content as subNode}
+  <Node node={subNode} />
+{/each}

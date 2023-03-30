@@ -22,6 +22,7 @@
     "bundle-visualizer": "node scripts/pre-build.js && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html"
   },
   "devDependencies": {
+    "@contentful/rich-text-html-renderer": "^16.0.3",
     "@playwright/test": "^1.33.0",
     "@poppanator/sveltekit-svg": "^3.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
@@ -77,7 +78,6 @@
   "type": "module",
   "dependencies": {
     "@uswds/uswds": "^3.4.1",
-    "@contentful/rich-text-html-renderer": "^16.0.3",
     "@contentful/rich-text-types": "^16.0.3",
     "fast-blurhash": "^1.1.2",
     "lodash": "^4.17.21"

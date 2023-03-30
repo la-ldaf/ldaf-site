@@ -1,0 +1,1127 @@
+{
+  "nodeType": "document",
+  "data": {},
+  "content": [
+    {
+      "nodeType": "heading-1",
+      "content": [{ "nodeType": "text", "value": "h1 Heading", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "h2 Heading", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-3",
+      "content": [{ "nodeType": "text", "value": "h3 Heading", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-4",
+      "content": [{ "nodeType": "text", "value": "h4 Heading", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-5",
+      "content": [{ "nodeType": "text", "value": "h5 Heading", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-6",
+      "content": [{ "nodeType": "text", "value": "h6 Heading", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Paragraphs", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "text",
+          "value": "This is a paragraph\nwith a new line.",
+          "marks": [],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        { "nodeType": "text", "value": "This is a new paragraph.", "marks": [], "data": {} }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        { "nodeType": "text", "value": "This is a paragraph", "marks": [], "data": {} },
+        { "nodeType": "text", "value": "using br.", "marks": [], "data": {} }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Horizontal Rules", "marks": [], "data": {} }],
+      "data": {}
+    },
+    { "nodeType": "hr", "content": [], "data": {} },
+    { "nodeType": "hr", "content": [], "data": {} },
+    { "nodeType": "hr", "content": [], "data": {} },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Emphasis", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "text",
+          "value": "This is bold text",
+          "marks": [{ "type": "bold" }],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "text",
+          "value": "This is bold text",
+          "marks": [{ "type": "bold" }],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "text",
+          "value": "This is italic text",
+          "marks": [{ "type": "italic" }],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "text",
+          "value": "This is italic text",
+          "marks": [{ "type": "italic" }],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        { "nodeType": "text", "value": "Strikethrough is not supported", "marks": [], "data": {} }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Blockquotes", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "blockquote",
+      "content": [
+        {
+          "nodeType": "paragraph",
+          "content": [{ "nodeType": "text", "value": "Blockquotes", "marks": [], "data": {} }],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Lists", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [{ "nodeType": "text", "value": "Unordered", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "unordered-list",
+      "content": [
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Create a list by starting a line with ",
+                  "marks": [],
+                  "data": {}
+                },
+                { "nodeType": "text", "value": "+", "marks": [{ "type": "code" }], "data": {} },
+                { "nodeType": "text", "value": ", ", "marks": [], "data": {} },
+                { "nodeType": "text", "value": "-", "marks": [{ "type": "code" }], "data": {} },
+                { "nodeType": "text", "value": ", or ", "marks": [], "data": {} },
+                { "nodeType": "text", "value": "*", "marks": [{ "type": "code" }], "data": {} }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Sub-lists are made by indenting 2 spaces:",
+                  "marks": [],
+                  "data": {}
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "unordered-list",
+              "content": [
+                {
+                  "nodeType": "list-item",
+                  "content": [
+                    {
+                      "nodeType": "paragraph",
+                      "content": [
+                        {
+                          "nodeType": "text",
+                          "value": "Marker character change forces new list start:",
+                          "marks": [],
+                          "data": {}
+                        }
+                      ],
+                      "data": {}
+                    },
+                    {
+                      "nodeType": "unordered-list",
+                      "content": [
+                        {
+                          "nodeType": "list-item",
+                          "content": [
+                            {
+                              "nodeType": "paragraph",
+                              "content": [
+                                {
+                                  "nodeType": "text",
+                                  "value": "Ac tristique libero volutpat at",
+                                  "marks": [],
+                                  "data": {}
+                                }
+                              ],
+                              "data": {}
+                            }
+                          ],
+                          "data": {}
+                        }
+                      ],
+                      "data": {}
+                    },
+                    {
+                      "nodeType": "unordered-list",
+                      "content": [
+                        {
+                          "nodeType": "list-item",
+                          "content": [
+                            {
+                              "nodeType": "paragraph",
+                              "content": [
+                                {
+                                  "nodeType": "text",
+                                  "value": "Facilisis in pretium nisl aliquet",
+                                  "marks": [],
+                                  "data": {}
+                                }
+                              ],
+                              "data": {}
+                            }
+                          ],
+                          "data": {}
+                        }
+                      ],
+                      "data": {}
+                    },
+                    {
+                      "nodeType": "unordered-list",
+                      "content": [
+                        {
+                          "nodeType": "list-item",
+                          "content": [
+                            {
+                              "nodeType": "paragraph",
+                              "content": [
+                                {
+                                  "nodeType": "text",
+                                  "value": "Nulla volutpat aliquam velit",
+                                  "marks": [],
+                                  "data": {}
+                                }
+                              ],
+                              "data": {}
+                            }
+                          ],
+                          "data": {}
+                        }
+                      ],
+                      "data": {}
+                    }
+                  ],
+                  "data": {}
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [{ "nodeType": "text", "value": "Very easy!", "marks": [], "data": {} }],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [{ "nodeType": "text", "value": "Ordered", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "ordered-list",
+      "content": [
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Lorem ipsum dolor sit amet",
+                  "marks": [],
+                  "data": {}
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Consectetur adipiscing elit",
+                  "marks": [],
+                  "data": {}
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Integer molestie lorem at massa",
+                  "marks": [],
+                  "data": {}
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "You can use sequential numbers...",
+                  "marks": [],
+                  "data": {}
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "...or keep all the numbers as ",
+                  "marks": [],
+                  "data": {}
+                },
+                { "nodeType": "text", "value": "1.", "marks": [{ "type": "code" }], "data": {} }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        { "nodeType": "text", "value": "Start numbering with offset:", "marks": [], "data": {} }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "ordered-list",
+      "content": [
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [{ "nodeType": "text", "value": "foo", "marks": [], "data": {} }],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "list-item",
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "content": [{ "nodeType": "text", "value": "bar", "marks": [], "data": {} }],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Code", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        { "nodeType": "text", "value": "Inline ", "marks": [], "data": {} },
+        { "nodeType": "text", "value": "code", "marks": [{ "type": "code" }], "data": {} }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Links", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "hyperlink",
+          "data": { "uri": "https://www.contentful.com" },
+          "content": [{ "nodeType": "text", "value": "link text", "marks": [], "data": {} }]
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "paragraph",
+      "content": [
+        {
+          "nodeType": "hyperlink",
+          "data": { "uri": "https://www.contentful.com/blog/" },
+          "content": [{ "nodeType": "text", "value": "link with title", "marks": [], "data": {} }]
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Tables", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "table",
+      "content": [
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Name", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Country", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 1", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Germany", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 2", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "USA", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "> Test 3", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "USA", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "* Test 4", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Germany", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "# Test 5", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Germany", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 6", "marks": [], "data": {} }]
+                },
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 7", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "USA", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 8", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "USA", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 9", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Germany", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 10", "marks": [], "data": {} }]
+                },
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": " and ", "marks": [], "data": {} }]
+                },
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Test 11", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Germany", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "data": {}, "marks": [], "value": "" }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Germany", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "data": {}, "marks": [], "value": "" }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Brazil", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "hyperlink",
+                      "data": { "uri": "https://example.com" },
+                      "content": [
+                        {
+                          "nodeType": "text",
+                          "value": "Test 12",
+                          "marks": [{ "type": "bold" }],
+                          "data": {}
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "USA", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Tables with marks", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "table",
+      "content": [
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Bold Header 1",
+                      "marks": [{ "type": "bold" }],
+                      "data": {}
+                    }
+                  ]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Bold Header 2",
+                      "marks": [{ "type": "bold" }],
+                      "data": {}
+                    }
+                  ]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Italic",
+                      "marks": [{ "type": "italic" }],
+                      "data": {}
+                    }
+                  ]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Code",
+                      "marks": [{ "type": "code" }],
+                      "data": {}
+                    }
+                  ]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [{ "nodeType": "text", "value": "Tables without body", "marks": [], "data": {} }],
+      "data": {}
+    },
+    {
+      "nodeType": "table",
+      "content": [
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "abc", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "def", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "heading-2",
+      "content": [
+        { "nodeType": "text", "value": "Table with empty cells", "marks": [], "data": {} }
+      ],
+      "data": {}
+    },
+    {
+      "nodeType": "table",
+      "content": [
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "data": {}, "marks": [], "value": "" }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "data": {}, "marks": [], "value": "" }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Cell 1", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "data": {}, "marks": [], "value": "" }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        },
+        {
+          "nodeType": "table-row",
+          "content": [
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "data": {}, "marks": [], "value": "" }]
+                }
+              ],
+              "data": {}
+            },
+            {
+              "nodeType": "table-cell",
+              "content": [
+                {
+                  "nodeType": "paragraph",
+                  "data": {},
+                  "content": [{ "nodeType": "text", "value": "Cell 2", "marks": [], "data": {} }]
+                }
+              ],
+              "data": {}
+            }
+          ],
+          "data": {}
+        }
+      ],
+      "data": {}
+    }
+  ]
+}
