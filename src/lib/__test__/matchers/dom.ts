@@ -22,12 +22,16 @@ const isDocumentNode = getIsNodeOfType<Document>(Node.DOCUMENT_NODE);
 // be in different order while still matching
 const significantNodeTypes = [Node.DOCUMENT_NODE, Node.ELEMENT_NODE, Node.TEXT_NODE];
 
+const isWhitespaceOrEmptyRegex = /\s*/;
+
 // This function isn't perfect because what we _actually_ want to do is ignore whitespace nodes
 // when they are in a block formatting context and _not_ do so otherwise, but this is good enough
 // for now
+const isInsignificantTextNode = (node: Node) =>
+  isTextNode(node) && isWhitespaceOrEmptyRegex.test(node.textContent ?? "");
+
 const isSignificantNode = (node: Node) =>
-  significantNodeTypes.includes(node.nodeType) &&
-  !(isTextNode(node) && /\s*/.test(node.textContent ?? ""));
+  significantNodeTypes.includes(node.nodeType) && !isInsignificantTextNode(node);
 
 // Svelte uses attributes starting with __ internally, so our tests will always fail unless we ignore them
 const isHiddenAttribute = ({ name }: Attr) => name.startsWith("__");
