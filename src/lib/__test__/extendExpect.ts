@@ -1,8 +1,8 @@
-import toMatchDOM from "./matchers/toMatchDOM";
+import { toMatchDOMNodes } from "./matchers";
 import { expect } from "vitest";
 
 interface CustomMatchers<R = unknown> {
-  toMatchDOM(expected: HTMLElement | string): R;
+  toMatchDOMNodes(expected: HTMLElement | Node[] | string): R;
 }
 
 declare global {
@@ -17,4 +17,4 @@ declare global {
   // Note: augmenting jest.Matchers interface will also work.
 }
 
-expect.extend({ toMatchDOM });
+expect.extend({ toMatchDOMNodes });

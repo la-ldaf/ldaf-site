@@ -13,7 +13,9 @@
 </script>
 
 <table>
-  {#each table.content as subNode}
-    <Node node={subNode} />
-  {/each}
+  <tbody>
+    {#each table.content as subNode}
+      <Node node={subNode} />
+    {/each}
+  </tbody>
 </table>

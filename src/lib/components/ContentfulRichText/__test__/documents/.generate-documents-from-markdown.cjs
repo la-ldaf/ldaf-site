@@ -1,8 +1,18 @@
 // Run this file to generate JSON rich text files from every markdown file in this directory
 const path = require("path");
 const fs = require("fs/promises");
+const { MARKS } = require("@contentful/rich-text-types");
 const { richTextFromMarkdown } = require("@contentful/rich-text-from-markdown");
 const { documentToHtmlString } = require("@contentful/rich-text-html-renderer");
+const prettier = require("prettier");
+
+const printDocument = (document) =>
+  documentToHtmlString(document, {
+    renderMark: {
+      [MARKS.BOLD]: (text) => `<strong>${text}</strong>`,
+      [MARKS.ITALIC]: (text) => `<em>${text}</em>`,
+    },
+  });
 
 (async () => {
   const markdownDocumentFilenames = (await fs.readdir(__dirname)).filter((filename) =>
@@ -25,14 +35,16 @@ const { documentToHtmlString } = require("@contentful/rich-text-html-renderer");
       richText = await richTextFromMarkdown(contents);
 
       console.log(`${filename}: processing rich text to JSON`);
-      json = JSON.stringify(richText);
+      const rawJSON = JSON.stringify(richText);
+      console.log(`${filename}: pretty printing JSON`);
+      json = prettier.format(rawJSON, { parser: "json", printWidth: 100 });
     } catch (err) {
       throw new Error(`failed to process ${filename}`, { cause: err });
     }
 
     try {
       console.log(`${filename}: writing JSON file`);
-      await fs.writeFile(path.join(__dirname, newFilename), json + "\n");
+      await fs.writeFile(path.join(__dirname, newFilename), json);
     } catch (err) {
       throw new Error(`failed to write ${newFilename}`, { cause: err });
     }
@@ -40,7 +52,9 @@ const { documentToHtmlString } = require("@contentful/rich-text-html-renderer");
     let html;
     try {
       console.log(`${filename}: compiling document to HTML`);
-      html = documentToHtmlString(richText);
+      const rawHTML = printDocument(richText);
+      console.log(`${filename}: pretty printing HTML`);
+      html = prettier.format(rawHTML, { parser: "html", printWidth: 100 });
     } catch (err) {
       throw new Error(`failed to generate HTML document from ${filename}`);
     }
