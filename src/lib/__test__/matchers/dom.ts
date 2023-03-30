@@ -9,9 +9,14 @@ const parseString = (s: string): Node[] | undefined => {
   }
 };
 
-const isTextNode = (node: Node): node is Text => node.nodeType === Node.TEXT_NODE;
-const isElementNode = (node: Node): node is HTMLElement => node.nodeType === Node.ELEMENT_NODE;
-const isDocumentNode = (node: Node): node is Document => node.nodeType == Node.DOCUMENT_NODE;
+const getIsNodeOfType =
+  <T extends Node>(tag: number) =>
+  (node: Node): node is T =>
+    node.nodeType === tag;
+
+const isTextNode = getIsNodeOfType<Text>(Node.TEXT_NODE);
+const isElementNode = getIsNodeOfType<HTMLElement>(Node.ELEMENT_NODE);
+const isDocumentNode = getIsNodeOfType<Document>(Node.DOCUMENT_NODE);
 
 // Node.ATTRIBUTE_NODE not included here because attributes are handled specially to allow them to
 // be in different order while still matching
