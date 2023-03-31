@@ -7,7 +7,7 @@
   type $$Props = {
     id: string;
     link?: string;
-    name: string;
+    name?: string;
     isCurrent?: boolean;
     megaMenuColumns?: number;
     children?: $$Props[];
@@ -41,7 +41,6 @@
   // This workaround will ignore the event if the new focused element is a child of the container.
   // Based on this REPL: https://svelte.dev/repl/4c5dfd34cc634774bd242725f0fc2dab?version=3.46.4
   const handleDropdownFocusLoss = ({
-    target,
     relatedTarget,
     currentTarget,
   }: FocusEvent & { currentTarget: EventTarget & HTMLDivElement }) => {
