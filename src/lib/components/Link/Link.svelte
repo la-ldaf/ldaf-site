@@ -1,5 +1,5 @@
 <script lang="ts">
-  import classNames from "$lib/classNames";
+  import classNames from "$lib/util/classNames";
   import "./Link.scss";
 
   // Note: All props not mentioned below will be passed directly to the <a/> element via $$props, e.g. href and target.
