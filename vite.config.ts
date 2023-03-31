@@ -2,8 +2,9 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import svg from "@poppanator/sveltekit-svg";
 import { purgeCss } from "vite-plugin-svelte-purgecss";
 import { defineConfig } from "vitest/config";
+import blurhash from "./vite-plugin-blurhash";
 
-const plugins = [sveltekit(), svg()];
+const plugins = [sveltekit(), svg(), blurhash()];
 
 if (process.env.NODE_ENV === "production") {
   plugins.push(purgeCss());

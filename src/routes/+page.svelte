@@ -1,4 +1,9 @@
 <script>
+  import heroImage from "@uswds/uswds/img/hero.webp";
+  import heroImageBlurhash, {
+    width as heroImageWidth,
+    height as heroImageHeight,
+  } from "@uswds/uswds/img/hero.webp?blurhash";
   import "./page.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Footer from "$lib/components/landingPage/Footer.svelte";
@@ -6,6 +11,7 @@
   import Nav from "$lib/components/landingPage/Nav.svelte";
   import Hero from "$lib/components/landingPage/Hero.svelte";
   import Identifier from "$lib/components/landingPage/Identifier.svelte";
+  import Image from "$lib/components/Image";
 </script>
 
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
@@ -23,6 +29,13 @@
         </h2>
       </div>
       <div class="tablet:grid-col-8 usa-prose">
+        <Image
+          alt=""
+          src={heroImage}
+          blurHash={heroImageBlurhash}
+          width={heroImageWidth}
+          height={heroImageHeight}
+        />
         <p>
           The tagline should inspire confidence and interest, focusing on the value that your
           overall approach offers to your audience. Use a heading typeface and keep your tagline to

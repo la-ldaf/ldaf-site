@@ -1,0 +1,16 @@
+.ldaf-lazy-img__container {
+  position: relative;
+}
+
+.ldaf-lazy-img__img {
+  width: 100%;
+  height: 100%;
+}
+
+.ldaf-lazy-img__bg {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
