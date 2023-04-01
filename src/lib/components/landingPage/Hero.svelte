@@ -18,6 +18,7 @@
     width={heroImgWidth}
     height={heroImgHeight}
     mean={heroImgMean}
+    preload
   />
   <div class="grid-container">
     <div class="usa-hero__callout">

@@ -12,6 +12,10 @@
   $: imageStyleString = imageLoaded ? "" : "opacity: 0;";
 
   export let src: string;
+  export let preload = false;
+
+  const preloadProps = preload ? { src } : {};
+
   export let alt: string;
 
   export let height: undefined | number = undefined;
@@ -57,6 +61,7 @@
       style={imageStyleString}
       bind:this={thisImg}
       on:load={() => (imageLoaded = true)}
+      {...preloadProps}
     />
     <canvas
       class="ldaf-lazy-img__blur-bg"
