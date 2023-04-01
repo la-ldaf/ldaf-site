@@ -1,2 +1,14 @@
 @use "usa-hero";
 @use "usa-button";
+
+.usa-hero {
+  background: none;
+  position: relative;
+}
+
+.usa-hero__bg-img,
+.usa-hero__bg-img.ldaf-lazy-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}

@@ -16,12 +16,12 @@
 
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
-  export let blurHash: undefined | string = undefined;
+  export let blurhash: undefined | string = undefined;
   type Color = { r: number; g: number; b: number };
   export let mean: undefined | Color = undefined;
 
-  if ((!width || !height) && blurHash) {
-    console.warn("blurHash was set but width or height was missing");
+  if ((!width || !height) && blurhash) {
+    console.warn("blurhash was set but width or height was missing");
   }
 
   // const aspectRatio = width && height && width / height;
@@ -30,7 +30,7 @@
   let intersecting = false;
   $: if (intersecting) thisImg.src = src;
 
-  $: width && height && blurHash && thisBg && drawBlurHash(thisBg, blurHash);
+  $: width && height && blurhash && thisBg && drawBlurHash(thisBg, blurhash);
 
   let className: string | undefined = undefined;
   export { className as class };
@@ -44,7 +44,7 @@
   <div
     role="img"
     aria-label={alt}
-    class={classNames("ldaf-lazy-img__container", className)}
+    class={classNames("ldaf-lazy-img", "ldaf-lazy-img__container", className)}
     bind:this={thisContainer}
   >
     <noscript>

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import heroImage from "../sample.jpg";
-  import heroImageBlurhash, {
-    width as heroImageWidth,
-    height as heroImageHeight,
-    mean as heroImageMean,
+  import sampleImage from "../sample.jpg";
+  import sampleImageBlurhash, {
+    width as sampleImageWidth,
+    height as sampleImageHeight,
+    mean as sampleImageMean,
   } from "../sample.jpg?blurhash";
   import "./page.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
@@ -32,11 +32,11 @@
       <div class="tablet:grid-col-8 usa-prose">
         <Image
           alt=""
-          src={heroImage}
-          blurHash={heroImageBlurhash}
-          width={heroImageWidth}
-          height={heroImageHeight}
-          mean={heroImageMean}
+          src={sampleImage}
+          blurhash={sampleImageBlurhash}
+          width={sampleImageWidth}
+          height={sampleImageHeight}
+          mean={sampleImageMean}
         />
         <p>
           The tagline should inspire confidence and interest, focusing on the value that your
