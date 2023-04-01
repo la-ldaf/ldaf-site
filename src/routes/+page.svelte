@@ -1,9 +1,10 @@
-<script>
-  import heroImage from "@uswds/uswds/img/hero.webp";
+<script lang="ts">
+  import heroImage from "../sample.jpg";
   import heroImageBlurhash, {
     width as heroImageWidth,
     height as heroImageHeight,
-  } from "@uswds/uswds/img/hero.webp?blurhash";
+    mean as heroImageMean,
+  } from "../sample.jpg?blurhash";
   import "./page.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Footer from "$lib/components/landingPage/Footer.svelte";
@@ -35,6 +36,7 @@
           blurHash={heroImageBlurhash}
           width={heroImageWidth}
           height={heroImageHeight}
+          mean={heroImageMean}
         />
         <p>
           The tagline should inspire confidence and interest, focusing on the value that your

@@ -1,16 +1,35 @@
 .ldaf-lazy-img__container {
   position: relative;
+  overflow: hidden;
 }
 
 .ldaf-lazy-img__img {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
-.ldaf-lazy-img__bg {
+.ldaf-lazy-img__blur-bg {
   position: absolute;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
+}
+
+.ldaf-lazy-img__color-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.ldaf-lazy-img__backup-img {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  display: block;
 }

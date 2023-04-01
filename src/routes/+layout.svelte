@@ -1,5 +1,8 @@
 <script lang="ts">
   import "../app.scss";
+  import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
 </script>
 
-<slot />
+<RootIntersectionObserver>
+  <slot />
+</RootIntersectionObserver>
