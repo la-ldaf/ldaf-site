@@ -4,6 +4,7 @@
   import type { ComponentType, SvelteComponentTyped } from "svelte";
 
   export let Component: ComponentType<SvelteComponentTyped>;
+  export let slotContent: string | Node;
 </script>
 
-<svelte:component this={Component} {...$$restProps}>link text</svelte:component>
+<svelte:component this={Component} {...$$restProps}>{slotContent}</svelte:component>

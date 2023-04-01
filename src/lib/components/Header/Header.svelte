@@ -3,18 +3,17 @@
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
   import "./Header.scss";
 
-  import type { ComponentProps } from "svelte";
-  import type NavItem from "./Nav/NavItem.svelte";
+  import type NavItemType from "./Nav/NavItemType";
 
+  import classNames from "$lib/util/classNames";
   import Nav from "./Nav";
 
-  export let navItems: ComponentProps<NavItem>[] = [];
+  export let navItems: NavItemType[] = [];
 
   let navMenuExpanded = false;
-  function toggleNavMenu(show?: boolean) {
-    if (typeof show !== "undefined") navMenuExpanded = show;
-    else navMenuExpanded = !navMenuExpanded;
-  }
+  const toggleNavMenu = (show: boolean) => (navMenuExpanded = show);
+
+  $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
 </script>
 
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
@@ -32,7 +31,7 @@
     <button type="button" class="usa-menu-btn" on:click={() => toggleNavMenu(true)}> Menu </button>
   </div>
   <!-- TODO: Replace aria-label with content from CMS. -->
-  <nav aria-label="Primary navigation" class="usa-nav {navMenuExpanded && 'is-visible'}">
+  <nav aria-label="Primary navigation" class={navClassNames}>
     <div class="usa-nav__inner">
       <button type="button" class="usa-nav__close" on:click={() => toggleNavMenu(false)}>
         <!-- TODO: Replace alt text with content from CMS. -->

@@ -18,18 +18,15 @@
   export let external = false;
   // render with the alternate variation, for use on darker backgrounds
   export let alternate = false;
-</script>
 
-<a
-  {...$$restProps}
-  {href}
-  class={classNames(
+  $: linkClassNames = classNames(
     `usa-link`,
     external && "usa-link--external",
     alternate && "usa-link--alt",
     className
-  )}
-  rel={external ? "external" : null}
->
+  );
+</script>
+
+<a {...$$restProps} {href} class={linkClassNames} rel={external ? "external" : null}>
   <slot />
 </a>

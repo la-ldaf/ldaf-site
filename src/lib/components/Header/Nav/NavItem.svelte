@@ -1,31 +1,30 @@
 <script lang="ts">
+  import type { NavItemProps, NavItemType } from "./NavItemType";
+
   import classNames from "$lib/util/classNames";
   import chunk from "$lib/util/chunk";
   import Link from "$lib/components/Link";
 
-  // We're supplying `name` once in props and once as <slot/>, but we're only using it as <slot/>.
-  type $$Props = {
-    id: string;
-    link?: string;
-    name?: string;
-    isCurrent?: boolean;
-    megaMenuColumns?: number;
-    children?: $$Props[];
-  };
+  type $$Props = NavItemProps;
 
   export let id = "";
   export let link = "";
-  export const name = "";
   export let isCurrent = false;
   export let megaMenuColumns = 0;
-  export let children: $$Props[] = [];
+  export let children: NavItemType[] = [];
 
-  let isParent = (children?.length ?? 0) > 0;
+  let isParent = children.length > 0;
   let isExpanded = false;
+
+  $: buttonClassNames = classNames(
+    "usa-accordion__button usa-nav__link",
+    isCurrent && "usa-current"
+  );
+  $: navLinkClassNames = classNames("usa-nav-link", isCurrent && "usa-current");
 
   // Divide nav items into columns.
   // TODO: We may want to let the CMS determine the position of each item in the future.
-  let megaMenu: $$Props[][] = [];
+  let megaMenu: NavItemType[][] = [];
   if (megaMenuColumns > 0) {
     const columnLength = Math.ceil(children.length / megaMenuColumns);
     megaMenu = chunk(children, columnLength);
@@ -62,7 +61,7 @@
   <div on:focusout={handleDropdownFocusLoss}>
     <button
       type="button"
-      class={classNames("usa-accordion__button usa-nav__link", isCurrent && "usa-current")}
+      class={buttonClassNames}
       aria-expanded={isExpanded}
       aria-controls="extended-mega-nav-section-{id}"
       on:keydown={handleDropdownKeyDown}
@@ -105,7 +104,5 @@
   </div>
 {:else}
   <!-- Basic Nav Link -->
-  <Link href={link} class={classNames("usa-nav-link", isCurrent && "usa-current")}
-    ><span><slot /></span></Link
-  >
+  <Link href={link} class={navLinkClassNames}><span><slot /></span></Link>
 {/if}
