@@ -51,9 +51,11 @@
     class={classNames("ldaf-lazy-img", "ldaf-lazy-img__container", className)}
     bind:this={thisContainer}
   >
-    <noscript>
-      <img {...imgProps} class="ldaf-lazy-img__backup-img" {src} alt="" />
-    </noscript>
+    {#if !preload}
+      <noscript>
+        <img {...imgProps} class="ldaf-lazy-img__backup-img" {src} alt="" />
+      </noscript>
+    {/if}
     <img
       {...imgProps}
       alt=""
