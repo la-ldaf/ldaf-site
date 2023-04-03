@@ -31,6 +31,7 @@
 .ldaf-lazy-img__backup-img {
   position: absolute;
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: cover;
 }
