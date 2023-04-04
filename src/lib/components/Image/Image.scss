@@ -8,6 +8,31 @@
   height: 100%;
   display: block;
   object-fit: cover;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.ldaf-lazy-img__loaded {
+  animation-name: fadeIn;
+  animation-duration: 0.25s;
+  opacity: 1;
+}
+
+.ldaf-lazy-img__preload {
+  .ldaf-lazy-img__loaded {
+    animation: none;
+  }
+  .ldaf-lazy-img__img {
+    opacity: 1;
+  }
 }
 
 .ldaf-lazy-img__blur-bg {

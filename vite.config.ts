@@ -4,8 +4,9 @@ import type { Plugin } from "vite";
 import { purgeCss } from "vite-plugin-svelte-purgecss";
 import { defineConfig } from "vitest/config";
 import blurhash from "./vite-plugin-blurhash";
+import bundlestring from "./vite-plugin-import-as-bundle-string";
 
-const plugins: Plugin[] = [...(await sveltekit()), svg(), blurhash()];
+const plugins: Plugin[] = [...(await sveltekit()), svg(), blurhash(), bundlestring()];
 
 if (process.env.NODE_ENV === "production") {
   plugins.push(purgeCss());
