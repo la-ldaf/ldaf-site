@@ -10,7 +10,8 @@
 
   export let navItems: NavItemType[] = [];
 
-  let navMenuExpanded = false;
+  // Need to export this as a prop so we can reset it on route change.
+  export let navMenuExpanded = false;
   const toggleNavMenu = (show: boolean) => (navMenuExpanded = show);
 
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
