@@ -45,10 +45,10 @@
       <div class="usa-nav__secondary">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
-            <a href="/"> Secondary link </a>
+            <a href="/news">Grants and funding</a>
           </li>
           <li class="usa-nav__secondary-item">
-            <a href="/" class="usa-current"> Another secondary link </a>
+            <a href="/news" class="usa-current">Licensing and permits</a>
           </li>
         </ul>
 
