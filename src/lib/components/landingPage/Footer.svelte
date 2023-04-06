@@ -1,11 +1,11 @@
 <script>
   import "@uswds/uswds/scss/usa-footer";
   import logoImg from "@uswds/uswds/img/logo-img.png";
-  import iconFacebook from "@uswds/uswds/img/usa-icons/facebook.svg";
-  import iconTwitter from "@uswds/uswds/img/usa-icons/twitter.svg";
-  import iconYouTube from "@uswds/uswds/img/usa-icons/youtube.svg";
-  import iconInstagram from "@uswds/uswds/img/usa-icons/instagram.svg";
-  import iconRSS from "@uswds/uswds/img/usa-icons/rss_feed.svg";
+  import iconFacebook from "@uswds/uswds/img/usa-icons/facebook.svg?url";
+  import iconTwitter from "@uswds/uswds/img/usa-icons/twitter.svg?url";
+  import iconYouTube from "@uswds/uswds/img/usa-icons/youtube.svg?url";
+  import iconInstagram from "@uswds/uswds/img/usa-icons/instagram.svg?url";
+  import iconRSS from "@uswds/uswds/img/usa-icons/rss_feed.svg?url";
 </script>
 
 <footer class="usa-footer">

@@ -1,8 +1,9 @@
 import { sveltekit } from "@sveltejs/kit/vite";
+import svg from "@poppanator/sveltekit-svg";
 import { purgeCss } from "vite-plugin-svelte-purgecss";
 import { defineConfig } from "vitest/config";
 
-const plugins = [sveltekit()];
+const plugins = [sveltekit(), svg()];
 
 if (process.env.NODE_ENV === "production") {
   plugins.push(purgeCss());
