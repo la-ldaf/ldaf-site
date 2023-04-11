@@ -1,7 +1,3 @@
-<script lang="ts">
-  import "./Hero.scss";
-</script>
-
 <section class="usa-hero" aria-label="Introduction">
   <div class="grid-container">
     <div class="usa-hero__callout">

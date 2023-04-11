@@ -19,16 +19,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: (content: string) =>
-          `
-            @use "src/variables.scss" as *;
-            @use "uswds-core" as uswds with (
-              $theme-font-path: $theme-font-path,
-              $theme-image-path: $theme-image-path,
-              $theme-show-notifications: false,
-            );
-            ${content}
-        `,
+        additionalData: '@use "src/variables.scss" as *;',
         includePaths: ["./node_modules/@uswds/uswds/packages"],
       },
     },
