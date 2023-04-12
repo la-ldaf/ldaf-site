@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type NavItemType from "./NavItemType";
+  import type { NavItemType } from "./types";
 
   import NavItem from "./NavItem.svelte";
 

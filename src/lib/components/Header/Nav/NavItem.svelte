@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { NavItemProps, NavItemType } from "./NavItemType";
+  import type { NavItemProps, NavLinkType } from "./types";
 
   import classNames from "$lib/util/classNames";
   import chunk from "$lib/util/chunk";
@@ -11,7 +11,7 @@
   export let link = "";
   export let isCurrent = false;
   export let megaMenuColumns = 0;
-  export let children: NavItemType[] = [];
+  export let children: NavLinkType[] = [];
 
   let isParent = children.length > 0;
   let isExpanded = false;
@@ -24,7 +24,7 @@
 
   // Divide nav items into columns.
   // TODO: We may want to let the CMS determine the position of each item in the future.
-  let megaMenu: NavItemType[][] = [];
+  let megaMenu: NavLinkType[][] = [];
   if (megaMenuColumns > 0) {
     const columnLength = Math.ceil(children.length / megaMenuColumns);
     megaMenu = chunk(children, columnLength);
