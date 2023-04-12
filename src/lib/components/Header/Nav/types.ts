@@ -11,8 +11,9 @@ export type NavLinkProps = CommonNavItemProps & {
 };
 
 export type NavMenuProps = CommonNavItemProps & {
-  megaMenuColumns?: number;
+  columns?: number;
   children?: NavLinkType[];
+  expanded?: boolean;
 };
 
 export type NavItemProps = NavLinkProps | NavMenuProps;
