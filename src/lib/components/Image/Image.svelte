@@ -18,7 +18,7 @@
   export let src: string;
   export let preload = false;
 
-  const preloadProps = preload ? { src } : {};
+  $: preloadProps = preload ? { src } : {};
 
   export let alt: string;
 
