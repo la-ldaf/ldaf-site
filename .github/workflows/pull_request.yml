@@ -21,7 +21,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Link check
+      - name: Prettier & ESLint
         run: npm run lint
 
       - name: Unit tests
