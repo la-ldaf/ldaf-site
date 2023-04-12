@@ -36,7 +36,7 @@
     "@typescript-eslint/parser": "^5.45.0",
     "@vitest/coverage-c8": "^0.29.7",
     "autoprefixer": "^10.4.7",
-    "chromatic": "^6.17.2",
+    "chromatic": "^6.17.3",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-storybook": "^0.6.11",
