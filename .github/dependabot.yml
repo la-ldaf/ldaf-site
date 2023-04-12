@@ -17,8 +17,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      reviewers:
-        - "la-ldaf/ad-hoc-engineers"
+    reviewers:
+      - "la-ldaf/ad-hoc-engineers"
     commit-message:
       prefix: "github-actions"
     labels:
