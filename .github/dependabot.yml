@@ -10,6 +10,17 @@ updates:
       - "la-ldaf/ad-hoc-engineers"
     commit-message:
       prefix: "npm"
-    labels: 
-      - 'dependencies'
-      - 'dependabot'
+    labels:
+      - "dependencies"
+      - "dependabot"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      reviewers:
+        - "la-ldaf/ad-hoc-engineers"
+    commit-message:
+      prefix: "github-actions"
+    labels:
+      - "dependencies"
+      - "dependabot"
