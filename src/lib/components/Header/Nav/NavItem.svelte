@@ -4,6 +4,7 @@
   import classNames from "$lib/util/classNames";
   import chunk from "$lib/util/chunk";
   import Link from "$lib/components/Link";
+  import NavLink from "./NavLink.svelte";
 
   type $$Props = NavItemProps;
 
@@ -20,7 +21,6 @@
     "usa-accordion__button usa-nav__link",
     isCurrent && "usa-current"
   );
-  $: navLinkClassNames = classNames("usa-nav-link", isCurrent && "usa-current");
 
   // Divide nav items into columns.
   // TODO: We may want to let the CMS determine the position of each item in the future.
@@ -104,5 +104,5 @@
   </div>
 {:else}
   <!-- Basic Nav Link -->
-  <Link href={link} class={navLinkClassNames}><span><slot /></span></Link>
+  <NavLink href={link} current={isCurrent} />
 {/if}
