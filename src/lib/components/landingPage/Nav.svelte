@@ -1,7 +1,7 @@
 <script>
   import "./Nav.scss";
-  import iconClose from "@uswds/uswds/img/usa-icons/close.svg";
-  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
+  import iconClose from "@uswds/uswds/img/usa-icons/close.svg?url";
+  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
 </script>
 
 <header class="usa-header usa-header--basic">
