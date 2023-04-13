@@ -53,7 +53,12 @@
   const imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
 </script>
 
-<IntersectionObserver target={thisContainer} once={true} onIntersect={() => (intersecting = true)}>
+<IntersectionObserver
+  target={thisContainer}
+  once={true}
+  onIntersect={() => (intersecting = true)}
+  enabled={!preload}
+>
   <div
     role="img"
     aria-label={alt}
