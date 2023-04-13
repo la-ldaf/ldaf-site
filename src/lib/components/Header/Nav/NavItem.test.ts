@@ -43,7 +43,7 @@ describe("Header.NavItem", () => {
         Component: NavItem,
         slotContent: "mega menu",
         id: "0",
-        megaMenuColumns: 3,
+        columns: 3,
         children: generateMenuItems(3),
       },
     });
@@ -60,7 +60,7 @@ describe("Header.NavItem", () => {
         Component: NavItem,
         slotContent: "mega menu",
         id: "0",
-        megaMenuColumns: 5,
+        columns: 5,
         children: generateMenuItems(9),
       },
     });

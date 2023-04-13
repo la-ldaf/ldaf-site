@@ -3,7 +3,7 @@
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
   import "./Header.scss";
 
-  import type NavItemType from "./Nav/NavItemType";
+  import type { NavItemType } from "./Nav";
 
   import classNames from "$lib/util/classNames";
   import Nav from "./Nav";
