@@ -3,6 +3,7 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
   import classNames from "$lib/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
+  import { browser } from "$app/environment";
   import type { Color } from "./types";
 
   export let src: string;
@@ -35,8 +36,9 @@
   const getSrcProps = (
     ...[preload, load, lazyImageLoadingSupport, intersectionObserverSupport]: boolean[]
   ) => {
+    if (!browser) return {};
     if (preload) return { src };
-    if (lazyImageLoadingSupport) return { src, loading: "lazy" } as const;
+    if (lazyImageLoadingSupport) return { src };
     if (!intersectionObserverSupport) return { src };
     if (load) return { src };
     return {};
@@ -91,6 +93,7 @@
       alt=""
       class={classNames("ldaf-lazy-img__img", imageLoadClass, imageClass)}
       on:load={() => (imageLoaded = true)}
+      loading="lazy"
       {...srcProps}
     />
     {#if blurhash}

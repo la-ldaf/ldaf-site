@@ -30,14 +30,6 @@
         </h2>
       </div>
       <div class="tablet:grid-col-8 usa-prose">
-        <Image
-          alt=""
-          src={sampleImage}
-          blurhash={sampleImageBlurhash}
-          width={sampleImageWidth}
-          height={sampleImageHeight}
-          mean={sampleImageMean}
-        />
         <p>
           The tagline should inspire confidence and interest, focusing on the value that your
           overall approach offers to your audience. Use a heading typeface and keep your tagline to
@@ -61,6 +53,14 @@
         act. Describe why they should get in touch here, and use an active verb on the button below.
         “Get in touch,” “Learn more,” and so on.
       </p>
+      <Image
+        alt=""
+        src={sampleImage}
+        blurhash={sampleImageBlurhash}
+        width={sampleImageWidth}
+        height={sampleImageHeight}
+        mean={sampleImageMean}
+      />
       <a class="usa-button usa-button--big" href="/">Call to action</a>
     </div>
   </section>
