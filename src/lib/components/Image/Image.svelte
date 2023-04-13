@@ -34,14 +34,21 @@
   $: if (!load) imageLoaded = false;
 
   const getSrcProps = (
+    src: string,
     ...[preload, load, lazyImageLoadingSupport, intersectionObserverSupport]: boolean[]
   ) => {
-    if (!browser) return {};
+    if (!browser || !src) return {};
     if (preload || lazyImageLoadingSupport || !intersectionObserverSupport || load) return { src };
     return {};
   };
 
-  $: srcProps = getSrcProps(preload, load, lazyImageLoadingSupport, intersectionObserverSupport);
+  $: srcProps = getSrcProps(
+    src,
+    preload,
+    load,
+    lazyImageLoadingSupport,
+    intersectionObserverSupport
+  );
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-img__loaded"
