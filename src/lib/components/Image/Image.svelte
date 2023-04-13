@@ -11,29 +11,33 @@
   export let width: undefined | number = undefined;
   export let blurhash: undefined | string = undefined;
   export let mean: undefined | Color = undefined;
-
-  let thisImg: HTMLImageElement;
-  let thisBg: HTMLCanvasElement;
-  let thisContainer: HTMLDivElement;
-
-  let load = false;
-  let imageLoaded = false;
-  let intersecting = false;
-  $: load = !!(intersecting && src);
-  $: if (!load) imageLoaded = false;
-
-  $: srcProps = preload || load ? { src } : {};
-  $: imageLoadClass = imageLoaded
-    ? "ldaf-lazy-img__loaded"
-    : thisImg && thisImg.src
-    ? "ldaf-lazy-img__loading"
-    : "ldaf-lazy-img__unloaded";
+  let className: string | undefined = undefined;
+  export { className as class };
+  export let imageClass: string | undefined = undefined;
 
   if ((!width || !height) && blurhash) {
     console.warn("blurhash was set but width or height was missing");
   }
 
   const canvasSize = 32;
+
+  let thisBg: HTMLCanvasElement;
+  let thisContainer: HTMLDivElement;
+
+  let load = false;
+  let imageLoaded = false;
+  let intersecting = false;
+
+  $: load = !!(intersecting && src) || preload;
+  $: if (!load) imageLoaded = false;
+
+  $: srcProp = load ? { src } : {};
+
+  $: imageLoadClass = imageLoaded
+    ? "ldaf-lazy-img__loaded"
+    : src
+    ? "ldaf-lazy-img__loading"
+    : "ldaf-lazy-img__unloaded";
 
   // This theoretically shouldn't be needed since the BlurhashRenderer script will have already run and
   // drawn the blurhash before Svelte has mounted and this runs. Unfortunately, when Svelte first
@@ -45,11 +49,6 @@
   $: if (width && height && blurhash && thisBg && window.drawBlurhash) {
     window.drawBlurhash(thisBg, blurhash);
   }
-
-  let className: string | undefined = undefined;
-  export { className as class };
-
-  let imageClass: string | undefined = undefined;
 
   const imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
 </script>
@@ -75,9 +74,8 @@
       {...imgProps}
       alt=""
       class={classNames("ldaf-lazy-img__img", imageLoadClass, imageClass)}
-      bind:this={thisImg}
       on:load={() => (imageLoaded = true)}
-      {...srcProps}
+      {...srcProp}
     />
     {#if blurhash}
       <canvas
