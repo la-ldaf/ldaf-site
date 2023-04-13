@@ -88,7 +88,7 @@
       alt=""
       class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
       on:load={() => (imageLoaded = true)}
-      loading="lazy"
+      loading={preload ? "eager" : "lazy"}
       {...srcProps}
     />
     {#if blurhash}
