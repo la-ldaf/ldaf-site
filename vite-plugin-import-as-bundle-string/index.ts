@@ -5,10 +5,11 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 
 const escapeJSString = (unescaped: string) =>
-  unescaped.replaceAll("\\", "\\\\").replaceAll('"', '\\"');
+  unescaped.replaceAll("\\", "\\\\").replaceAll('"', '\\"').replaceAll("\n", "\\n");
 
 export default () => {
   const bundleStringRegex = /\?bundlestring$/;
+  const plugins = [typescript(), nodeResolve(), terser()];
   return {
     name: "import-as-bundle-string-loader",
     load: async function (id: string) {
@@ -16,12 +17,13 @@ export default () => {
       const [path] = id.split("?", 2);
       const bundle = await rollup({
         input: path,
-        plugins: [typescript(), nodeResolve(), terser()],
+        plugins,
       });
       const { output } = await bundle.generate({});
       if (output.length < 0) throw new Error(`rollup could not generate a code file for ${path}`);
-      if (output.length > 1)
+      if (output.length > 1) {
         throw new Error(`rollup generated more than one code file for ${path}`);
+      }
       const [{ code }] = output;
       return `export default "${escapeJSString(code).trim()}";`;
     },
