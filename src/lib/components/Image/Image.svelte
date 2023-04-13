@@ -31,7 +31,7 @@
   let intersecting = false;
 
   $: load = !!(intersecting && src) || preload;
-  $: if (!load) imageLoaded = false;
+  $: if (!load || !src) imageLoaded = false;
 
   const getSrcProps = (
     src: string,
