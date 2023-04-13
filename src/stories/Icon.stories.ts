@@ -18,6 +18,12 @@ const meta = {
       options: [undefined, 3, 4, 5, 6, 7, 8, 9],
     },
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?node-id=2196-11369&t=w7ksKxV0kX4Da0k0-4",
+    },
+  },
 } satisfies Meta<Icon>;
 
 export default meta;
