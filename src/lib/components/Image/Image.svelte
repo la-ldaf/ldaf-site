@@ -3,6 +3,7 @@
   import classNames from "$lib/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import type { Color } from "./types";
+  import { browser } from "$app/environment";
 
   export let src: string;
   export let alt: string;
@@ -19,6 +20,11 @@
     console.warn("blurhash was set but width or height was missing");
   }
 
+  let nativeLazyLoading = false;
+  if (browser) {
+    nativeLazyLoading = "loading" in HTMLImageElement.prototype;
+  }
+
   const canvasSize = 32;
 
   let thisBg: HTMLCanvasElement;
@@ -31,7 +37,13 @@
   $: load = !!(intersecting && src) || preload;
   $: if (!load) imageLoaded = false;
 
-  $: srcProp = load ? { src } : {};
+  $: srcProp = preload
+    ? { src }
+    : nativeLazyLoading
+    ? ({ src, loading: "lazy" } as const)
+    : load
+    ? { src }
+    : {};
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-lazy-img__loaded"
@@ -57,7 +69,7 @@
   target={thisContainer}
   once={true}
   onIntersect={() => (intersecting = true)}
-  enabled={!preload}
+  enabled={!preload && !nativeLazyLoading}
 >
   <div
     role="img"

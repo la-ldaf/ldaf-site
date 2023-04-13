@@ -4,8 +4,9 @@
   import key from "./key";
 
   export let rootMargin: string | undefined = undefined;
+  export let enabled = true;
 
-  setContext<RootObserver | undefined>(key, getRootObserver({ rootMargin }));
+  setContext<RootObserver | undefined>(key, enabled ? getRootObserver({ rootMargin }) : undefined);
 </script>
 
 <slot />
