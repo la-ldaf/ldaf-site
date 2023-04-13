@@ -7,10 +7,14 @@ import sampleImageBlurhash, {
 import type { Meta, StoryObj } from "@storybook/svelte";
 
 import Image from "$lib/components/Image";
+import BlurhashRendererDecorator from "./decorators/BlurhashRendererDecorator.svelte";
+import RootIntersectionObserverDecorator from "./decorators/RootIntersectionObserverDecorator.svelte";
 
 const meta = {
   title: "Image",
   component: Image,
+  // @ts-expect-error Unclear how to resolve SvelteComponent <=> SvelteStoryResult type mismatch.
+  decorators: [() => BlurhashRendererDecorator, () => RootIntersectionObserverDecorator],
   tags: ["autodocs"],
   argTypes: {
     class: { control: "text" },

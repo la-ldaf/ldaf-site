@@ -2,7 +2,6 @@
   import "./Image.scss";
   import classNames from "$lib/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
-  import drawBlurhash from "./drawBlurhash";
 
   let thisImg: HTMLImageElement;
   let thisBg: HTMLCanvasElement;
@@ -37,7 +36,16 @@
   let intersecting = false;
   $: if (intersecting) thisImg.src = src;
 
-  $: if (width && height && blurhash && thisBg) drawBlurhash(thisBg, blurhash);
+  // This theoretically shouldn't be needed since the BlurhashRenderer script will have already run and
+  // drawn the blurhash before Svelte has mounted and this runs. Unfortunately, when Svelte first
+  // runs the component code it does something (not sure what) that clears the canvas, which
+  // flashes the average-color background until the image loads. This line fixes
+  // that. Unfortunately this does not solve the problem of drawing the blurhashes when the
+  // BlurhashRenderer has been omitted, since this relies on the window global that is set by that
+  // script.
+  $: if (width && height && blurhash && thisBg && window.drawBlurhash) {
+    window.drawBlurhash(thisBg, blurhash);
+  }
 
   let className: string | undefined = undefined;
   export { className as class };
