@@ -47,10 +47,10 @@
   $: srcProps = getSrcProps(preload, load, lazyImageLoadingSupport, intersectionObserverSupport);
 
   $: imageLoadClass = imageLoaded
-    ? "ldaf-lazy-img__loaded"
+    ? "ldaf-img__loaded"
     : src
-    ? "ldaf-lazy-img__loading"
-    : "ldaf-lazy-img__unloaded";
+    ? "ldaf-img__loading"
+    : "ldaf-img__unloaded";
 
   // This theoretically shouldn't be needed since the BlurhashRenderer script will have already run and
   // drawn the blurhash before Svelte has mounted and this runs. Unfortunately, when Svelte first
@@ -75,30 +75,25 @@
   <div
     role="img"
     aria-label={alt}
-    class={classNames(
-      "ldaf-lazy-img",
-      "ldaf-lazy-img__container",
-      preload && "ldaf-lazy-img__preload",
-      className
-    )}
+    class={classNames("ldaf-img", "ldaf-img__container", preload && "ldaf-img__preload", className)}
     bind:this={thisContainer}
   >
     {#if !preload}
       <noscript>
-        <img {...imgProps} class="ldaf-lazy-img__backup-img" {src} alt="" />
+        <img {...imgProps} class="ldaf-img__backup-img" {src} alt="" />
       </noscript>
     {/if}
     <img
       {...imgProps}
       alt=""
-      class={classNames("ldaf-lazy-img__img", imageLoadClass, imageClass)}
+      class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
       on:load={() => (imageLoaded = true)}
       loading="lazy"
       {...srcProps}
     />
     {#if blurhash}
       <canvas
-        class="ldaf-lazy-img__blur-bg"
+        class="ldaf-img__blur-bg"
         width={canvasSize}
         height={canvasSize}
         data-blurhash={blurhash}
@@ -106,7 +101,7 @@
       />
     {/if}
     <div
-      class="ldaf-lazy-img__color-bg"
+      class="ldaf-img__color-bg"
       style={mean && `background-color: rgb(${mean.r}, ${mean.g}, ${mean.b});`}
     />
   </div>
