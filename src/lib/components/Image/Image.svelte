@@ -37,10 +37,7 @@
     ...[preload, load, lazyImageLoadingSupport, intersectionObserverSupport]: boolean[]
   ) => {
     if (!browser) return {};
-    if (preload) return { src };
-    if (lazyImageLoadingSupport) return { src };
-    if (!intersectionObserverSupport) return { src };
-    if (load) return { src };
+    if (preload || lazyImageLoadingSupport || !intersectionObserverSupport || load) return { src };
     return {};
   };
 
