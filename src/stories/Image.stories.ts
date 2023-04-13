@@ -10,6 +10,10 @@ import Image from "$lib/components/Image";
 import BlurhashRendererDecorator from "./decorators/BlurhashRendererDecorator.svelte";
 import RootIntersectionObserverDecorator from "./decorators/RootIntersectionObserverDecorator.svelte";
 
+const srcOptions = { "sample image": sampleImage, "no image": "" };
+const blurhashOptions = { "sample image blurhash": sampleImageBlurhash, "no blurhash": undefined };
+const meanOptions = { "sample image mean color": sampleImageMean, "no mean color": undefined };
+
 const meta = {
   title: "Image",
   component: Image,
@@ -17,7 +21,25 @@ const meta = {
   decorators: [() => BlurhashRendererDecorator, () => RootIntersectionObserverDecorator],
   tags: ["autodocs"],
   argTypes: {
+    src: {
+      control: "select",
+      default: "sample image",
+      options: Object.keys(srcOptions),
+      mapping: srcOptions,
+    },
+    blurhash: {
+      control: "select",
+      options: Object.keys(blurhashOptions),
+      mapping: blurhashOptions,
+    },
+    mean: {
+      control: "select",
+      options: Object.keys(meanOptions),
+      mapping: meanOptions,
+    },
     class: { control: "text" },
+    width: { control: "number" },
+    height: { control: "number" },
   },
 } satisfies Meta<Image>;
 
