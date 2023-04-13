@@ -1,9 +1,9 @@
 <script lang="ts">
   import "./Image.scss";
+  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
   import classNames from "$lib/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import type { Color } from "./types";
-  import { browser } from "$app/environment";
 
   export let src: string;
   export let alt: string;
@@ -20,11 +20,6 @@
     console.warn("blurhash was set but width or height was missing");
   }
 
-  let nativeLazyLoading = false;
-  if (browser) {
-    nativeLazyLoading = "loading" in HTMLImageElement.prototype;
-  }
-
   const canvasSize = 32;
 
   let thisBg: HTMLCanvasElement;
@@ -37,13 +32,17 @@
   $: load = !!(intersecting && src) || preload;
   $: if (!load) imageLoaded = false;
 
-  $: srcProp = preload
-    ? { src }
-    : nativeLazyLoading
-    ? ({ src, loading: "lazy" } as const)
-    : load
-    ? { src }
-    : {};
+  const getSrcProps = (
+    ...[preload, load, lazyImageLoadingSupport, intersectionObserverSupport]: boolean[]
+  ) => {
+    if (preload) return { src };
+    if (lazyImageLoadingSupport) return { src, loading: "lazy" } as const;
+    if (!intersectionObserverSupport) return { src };
+    if (load) return { src };
+    return {};
+  };
+
+  $: srcProps = getSrcProps(preload, load, lazyImageLoadingSupport, intersectionObserverSupport);
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-lazy-img__loaded"
@@ -69,7 +68,7 @@
   target={thisContainer}
   once={true}
   onIntersect={() => (intersecting = true)}
-  enabled={!preload && !nativeLazyLoading}
+  enabled={!preload && intersectionObserverSupport && !lazyImageLoadingSupport}
 >
   <div
     role="img"
@@ -92,7 +91,7 @@
       alt=""
       class={classNames("ldaf-lazy-img__img", imageLoadClass, imageClass)}
       on:load={() => (imageLoaded = true)}
-      {...srcProp}
+      {...srcProps}
     />
     {#if blurhash}
       <canvas
