@@ -10,7 +10,7 @@ import Image from "$lib/components/Image";
 import BlurhashRendererDecorator from "./decorators/BlurhashRendererDecorator.svelte";
 import RootIntersectionObserverDecorator from "./decorators/RootIntersectionObserverDecorator.svelte";
 
-const srcOptions = { "sample image": sampleImage, "no image": "" };
+const srcOptions = { "sample image": sampleImage, "no image": undefined };
 const blurhashOptions = { "sample image blurhash": sampleImageBlurhash, "no blurhash": undefined };
 const meanOptions = { "sample image mean color": sampleImageMean, "no mean color": undefined };
 

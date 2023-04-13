@@ -2,39 +2,38 @@
   import "./Image.scss";
   import classNames from "$lib/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
+  import type { Color } from "./types";
+
+  export let src: string;
+  export let alt: string;
+  export let preload = false;
+  export let height: undefined | number = undefined;
+  export let width: undefined | number = undefined;
+  export let blurhash: undefined | string = undefined;
+  export let mean: undefined | Color = undefined;
 
   let thisImg: HTMLImageElement;
   let thisBg: HTMLCanvasElement;
   let thisContainer: HTMLDivElement;
 
+  let load = false;
   let imageLoaded = false;
+  let intersecting = false;
+  $: load = !!(intersecting && src);
+  $: if (!load) imageLoaded = false;
+
+  $: srcProps = preload || load ? { src } : {};
   $: imageLoadClass = imageLoaded
     ? "ldaf-lazy-img__loaded"
     : thisImg && thisImg.src
     ? "ldaf-lazy-img__loading"
     : "ldaf-lazy-img__unloaded";
 
-  export let src: string;
-  export let preload = false;
-
-  $: preloadProps = preload ? { src } : {};
-
-  export let alt: string;
-
-  export let height: undefined | number = undefined;
-  export let width: undefined | number = undefined;
-  export let blurhash: undefined | string = undefined;
-  type Color = { r: number; g: number; b: number };
-  export let mean: undefined | Color = undefined;
-
   if ((!width || !height) && blurhash) {
     console.warn("blurhash was set but width or height was missing");
   }
 
   const canvasSize = 32;
-
-  let intersecting = false;
-  $: if (intersecting) thisImg.src = src;
 
   // This theoretically shouldn't be needed since the BlurhashRenderer script will have already run and
   // drawn the blurhash before Svelte has mounted and this runs. Unfortunately, when Svelte first
@@ -78,15 +77,17 @@
       class={classNames("ldaf-lazy-img__img", imageLoadClass, imageClass)}
       bind:this={thisImg}
       on:load={() => (imageLoaded = true)}
-      {...preloadProps}
+      {...srcProps}
     />
-    <canvas
-      class="ldaf-lazy-img__blur-bg"
-      width={canvasSize}
-      height={canvasSize}
-      data-blurhash={blurhash}
-      bind:this={thisBg}
-    />
+    {#if blurhash}
+      <canvas
+        class="ldaf-lazy-img__blur-bg"
+        width={canvasSize}
+        height={canvasSize}
+        data-blurhash={blurhash}
+        bind:this={thisBg}
+      />
+    {/if}
     <div
       class="ldaf-lazy-img__color-bg"
       style={mean && `background-color: rgb(${mean.r}, ${mean.g}, ${mean.b});`}
