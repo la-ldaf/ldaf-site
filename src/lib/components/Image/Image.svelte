@@ -6,9 +6,11 @@
   import { browser } from "$app/environment";
   import type { Color } from "./types";
 
+  type Loading = "eager" | "lazy";
+
   export let src: string;
   export let alt: string;
-  export let preload = false;
+  export let loading: Loading = "lazy";
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
   export let blurhash: undefined | string = undefined;
@@ -26,29 +28,19 @@
   let thisBg: HTMLCanvasElement;
   let thisContainer: HTMLDivElement;
 
-  let load = false;
   let imageLoaded = false;
+  $: if (!src) imageLoaded = false;
+
   let intersecting = false;
 
-  $: load = !!(intersecting && src) || preload;
-  $: if (!load || !src) imageLoaded = false;
-
-  const getSrcProps = (
-    src: string,
-    ...[preload, load, lazyImageLoadingSupport, intersectionObserverSupport]: boolean[]
-  ) => {
-    if (!browser || !src) return {};
-    if (preload || lazyImageLoadingSupport || !intersectionObserverSupport || load) return { src };
-    return {};
-  };
-
-  $: srcProps = getSrcProps(
-    src,
-    preload,
-    load,
-    lazyImageLoadingSupport,
-    intersectionObserverSupport
-  );
+  $: srcProps =
+    loading === "eager" && src
+      ? { src }
+      : !browser || !src
+      ? {}
+      : lazyImageLoadingSupport || !intersectionObserverSupport || intersecting
+      ? { src }
+      : {};
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-img__loaded"
@@ -74,15 +66,20 @@
   target={thisContainer}
   once={true}
   onIntersect={() => (intersecting = true)}
-  enabled={!preload && intersectionObserverSupport && !lazyImageLoadingSupport}
+  enabled={loading === "lazy" && intersectionObserverSupport && !lazyImageLoadingSupport}
 >
   <div
     role="img"
     aria-label={alt}
-    class={classNames("ldaf-img", "ldaf-img__container", preload && "ldaf-img__preload", className)}
+    class={classNames(
+      "ldaf-img",
+      "ldaf-img__container",
+      loading === "eager" && "ldaf-img__eager",
+      className
+    )}
     bind:this={thisContainer}
   >
-    {#if !preload}
+    {#if loading === "lazy"}
       <noscript>
         <img {...imgProps} class="ldaf-img__backup-img" {src} alt="" />
       </noscript>
@@ -92,7 +89,7 @@
       alt=""
       class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
       on:load={() => (imageLoaded = true)}
-      loading={preload ? "eager" : "lazy"}
+      {loading}
       {...srcProps}
     />
     {#if blurhash}
