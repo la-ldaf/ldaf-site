@@ -10,7 +10,8 @@
 
   export let navItems: NavItemType[] = [];
 
-  let navMenuExpanded = false;
+  // Need to export this as a prop so we can reset it on route change.
+  export let navMenuExpanded = false;
   const toggleNavMenu = (show: boolean) => (navMenuExpanded = show);
 
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
@@ -44,10 +45,10 @@
       <div class="usa-nav__secondary">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
-            <a href="/"> Secondary link </a>
+            <a href="/news">Grants and funding</a>
           </li>
           <li class="usa-nav__secondary-item">
-            <a href="/" class="usa-current"> Another secondary link </a>
+            <a href="/news" class="usa-current">Licensing and permits</a>
           </li>
         </ul>
 
