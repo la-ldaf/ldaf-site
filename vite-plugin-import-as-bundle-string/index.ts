@@ -9,7 +9,13 @@ const escapeJSString = (unescaped: string) =>
 
 export default () => {
   const bundleStringRegex = /\?bundlestring$/;
-  const plugins = [typescript(), nodeResolve(), terser()];
+  const plugins = [
+    typescript(
+      process.env.NODE_ENV === "production" ? {} : { sourceMap: true, inlineSources: true }
+    ),
+    nodeResolve(),
+    process.env.NODE_ENV === "production" && terser(),
+  ];
   return {
     name: "import-as-bundle-string-loader",
     load: async function (id: string) {
@@ -19,7 +25,10 @@ export default () => {
         input: path,
         plugins,
       });
-      const { output } = await bundle.generate({});
+      const { output } = await bundle.generate({
+        sourcemap: process.env.NODE_ENV === "production" ? "hidden" : "inline",
+        format: "iife",
+      });
       if (output.length < 0) throw new Error(`rollup could not generate a code file for ${path}`);
       if (output.length > 1) {
         throw new Error(`rollup generated more than one code file for ${path}`);
