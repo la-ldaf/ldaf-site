@@ -2,7 +2,9 @@ name: "Linting and Testing"
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+  #  by default, runs when a PR activity type
+  #  is `opened`, `synchronize`, or `reopened`
+  # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
 
 jobs:
   lint-and-test:
@@ -23,6 +25,9 @@ jobs:
 
       - name: Prettier & ESLint
         run: npm run lint
+
+      - name: svelte-check (diagnostic checks for unused CSS, Svelte A11y hints, and JS/TS errors)
+        run: npm run check
 
       - name: Unit tests
         run: npm run test:unit
