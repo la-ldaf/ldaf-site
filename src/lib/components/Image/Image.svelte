@@ -1,9 +1,10 @@
 <script lang="ts">
   import "./Image.scss";
+  import { browser } from "$app/environment";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
   import classNames from "$lib/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
-  import { browser } from "$app/environment";
+  import warn from "$lib/warn";
   import type { Color } from "./types";
 
   type Loading = "eager" | "lazy";
@@ -19,9 +20,7 @@
   export { className as class };
   export let imageClass: string | undefined = undefined;
 
-  if ((!width || !height) && import.meta.env.MODE === "development") {
-    console.warn("width or height was missing!");
-  }
+  if (!width || !height) warn("image width or height was missing!");
 
   const canvasSize = 32;
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext, hasContext } from "svelte";
   import { browser } from "$app/environment";
+  import warn from "$lib/warn";
   import { getRootObserver, type RootObserver } from "./observe";
   import key from "./key";
 
@@ -18,8 +19,8 @@
 
   if (enabled && browser && hasContext(key)) {
     observer = getContext<RootObserver>(key);
-  } else if (browser && enabled && import.meta.env.MODE === "development") {
-    console.warn(
+  } else if (browser && enabled) {
+    warn(
       "<IntersectionObserver> was not wrapped in a <RootIntersectionObserver>. It will continue to work, but it is more efficient to wrap the page in a single <RootIntersectionObserver> that can be used by all <IntersectionObserver> components. A <RootIntersectionObserver> also allows you to pass options to the IntersectionObserver used behind the scenes."
     );
     observer = getRootObserver();
