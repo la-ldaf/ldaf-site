@@ -26,7 +26,7 @@ export default () => {
         plugins,
       });
       const { output } = await bundle.generate({
-        sourcemap: process.env.NODE_ENV === "production" ? "hidden" : "inline",
+        sourcemap: process.env.NODE_ENV === "production" ? false : "inline",
         format: "iife",
       });
       if (output.length < 0) throw new Error(`rollup could not generate a code file for ${path}`);
