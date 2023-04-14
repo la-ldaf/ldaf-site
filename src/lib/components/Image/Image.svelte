@@ -19,8 +19,8 @@
   export { className as class };
   export let imageClass: string | undefined = undefined;
 
-  if ((!width || !height) && blurhash) {
-    console.warn("blurhash was set but width or height was missing");
+  if ((!width || !height) && import.meta.env.MODE === "development") {
+    console.warn("width or height was missing!");
   }
 
   const canvasSize = 32;
@@ -55,7 +55,7 @@
   // that. Unfortunately this does not solve the problem of drawing the blurhashes when the
   // BlurhashRenderer has been omitted, since this relies on the window global that is set by that
   // script.
-  $: if (width && height && blurhash && thisBg && window.drawBlurhash) {
+  $: if (blurhash && thisBg && window.drawBlurhash) {
     window.drawBlurhash(thisBg, blurhash);
   }
 
