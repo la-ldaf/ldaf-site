@@ -12,20 +12,20 @@
   export let enabled = true;
 
   let intersecting = false;
-  $: if (intersecting && onIntersect && enabled) onIntersect();
+  $: if (enabled && intersecting && onIntersect) onIntersect();
 
   let observer: RootObserver | undefined;
 
-  if (browser && hasContext(key) && enabled) {
+  if (enabled && browser && hasContext(key)) {
     observer = getContext<RootObserver>(key);
-  } else if (browser && enabled) {
+  } else if (browser && enabled && import.meta.env.MODE === "development") {
     console.warn(
       "<IntersectionObserver> was not wrapped in a <RootIntersectionObserver>. It will continue to work, but it is more efficient to wrap the page in a single <RootIntersectionObserver> that can be used by all <IntersectionObserver> components. A <RootIntersectionObserver> also allows you to pass options to the IntersectionObserver used behind the scenes."
     );
     observer = getRootObserver();
   }
 
-  $: if (observer && enabled) {
+  $: if (enabled && observer) {
     // If the target has been changed, unobserve the previous target
     if (lastTarget && target !== lastTarget) observer.unobserve(lastTarget);
     if (!target) break $;
