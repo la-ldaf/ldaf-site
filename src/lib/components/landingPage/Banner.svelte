@@ -1,8 +1,8 @@
 <script>
   import "./Banner.scss";
   import usFlagSmall from "@uswds/uswds/img/us_flag_small.png";
-  import iconDotGov from "@uswds/uswds/img/icon-dot-gov.svg";
-  import iconHTTPS from "@uswds/uswds/img/icon-https.svg";
+  import iconDotGov from "@uswds/uswds/img/icon-dot-gov.svg?url";
+  import iconHTTPS from "@uswds/uswds/img/icon-https.svg?url";
   // TODO: figure out how to/if we want to import component JS or
   // write any interactivity ourselves
   // Related Ticket: https://ldaf.atlassian.net/browse/LDAF-173

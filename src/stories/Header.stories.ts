@@ -29,7 +29,7 @@ export const Default: Story = {
   args: {
     navItems: [
       { id: genId(), name: "NavItem", link: "/nav-item" },
-      { id: genId(), name: "Active NavItem", link: "/active-nav-item", isCurrent: true },
+      { id: genId(), name: "Active NavItem", link: "/active-nav-item", current: true },
       {
         id: genId(),
         name: "Menu 1",
@@ -43,19 +43,19 @@ export const Default: Story = {
       {
         id: genId(),
         name: "MegaMenu 1",
-        megaMenuColumns: 2,
+        columns: 2,
         children: generateMenuItems(4, "MegaMenu 1"),
       },
       {
         id: genId(),
         name: "MegaMenu 2",
-        megaMenuColumns: 3,
+        columns: 3,
         children: generateMenuItems(7, "MegaMenu 2"),
       },
       {
         id: genId(),
         name: "MegaMenu 3",
-        megaMenuColumns: 5,
+        columns: 5,
         children: generateMenuItems(22, "MegaMenu 3"),
       },
     ],

@@ -1,6 +1,6 @@
 <script>
   import "@uswds/uswds/scss/usa-identifier";
-  import circleGray20 from "@uswds/uswds/img/circle-gray-20.svg";
+  import circleGray20 from "@uswds/uswds/img/circle-gray-20.svg?url";
 </script>
 
 <div class="usa-identifier">

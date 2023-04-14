@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
-import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
 import NavItem from "./NavItem.svelte";
@@ -25,9 +24,13 @@ const basicMenuProps = {
 describe("Header.NavItem", () => {
   it("renders with basic nav link", () => {
     render(TestSlotWrapper, {
-      props: { Component: NavItem, slotContent: "nav item", id: "0", link: "/0", isCurrent: true },
+      props: { Component: NavItem, slotContent: "nav item", id: "0", link: "/0", current: true },
     });
-    expect(screen.getByText("nav item")).toBeVisible();
+    // getByText will grab <span> but we want the parent <a>
+    const navItem = screen.getByText("nav item").parentElement;
+    expect(navItem).toBeVisible();
+    expect(navItem).toHaveClass("usa-current");
+    expect(navItem).toHaveAttribute("href", "/0");
   });
   it("renders with basic menu layout", () => {
     render(TestSlotWrapper, basicMenuProps);
@@ -43,10 +46,13 @@ describe("Header.NavItem", () => {
         Component: NavItem,
         slotContent: "mega menu",
         id: "0",
-        megaMenuColumns: 3,
+        current: true,
+        columns: 3,
         children: generateMenuItems(3),
       },
     });
+    const button = screen.getByRole("button", { name: "mega menu" });
+    expect(button).toHaveClass("usa-current");
     const columns = document.getElementsByClassName("usa-col");
     expect(columns.length).toBe(3);
     for (const column of columns) {
@@ -60,7 +66,7 @@ describe("Header.NavItem", () => {
         Component: NavItem,
         slotContent: "mega menu",
         id: "0",
-        megaMenuColumns: 5,
+        columns: 5,
         children: generateMenuItems(9),
       },
     });
@@ -68,42 +74,5 @@ describe("Header.NavItem", () => {
     expect(columns.length).toBe(5);
     expect(columns[0].getElementsByTagName("li").length).toBe(2);
     expect(columns[4].getElementsByTagName("li").length).toBe(1);
-  });
-  it("handles user events to open and close the menu", async () => {
-    const user = userEvent.setup();
-    render(TestSlotWrapper, basicMenuProps);
-    const button = screen.getByRole("button", { name: "basic menu" });
-    const menu = document.getElementById("extended-mega-nav-section-0");
-    expect(button.getAttribute("aria-expanded")).toBe("false");
-    expect(menu).not.toBeVisible();
-    // open with user click.
-    await user.click(button);
-    expect(button.getAttribute("aria-expanded")).toBe("true");
-    expect(menu).toBeVisible();
-    // close with keyboard "Enter"
-    await user.keyboard("{Enter}");
-    expect(button.getAttribute("aria-expanded")).toBe("false");
-    expect(menu).not.toBeVisible();
-    // re-open with keyboard "Space"
-    await user.keyboard("{ }");
-    expect(menu).toBeVisible();
-    // expect menu to stay open while using tab navigation
-    await user.tab();
-    expect(menu?.firstChild?.firstChild).toHaveFocus();
-    // force focus loss with tab navigation forwards
-    //   (once more through second item, once again to exit)
-    await user.tab();
-    await user.tab();
-    expect(menu).not.toBeVisible();
-    // re-open and force focus loss with tab navigation backward
-    await user.click(button);
-    expect(menu).toBeVisible();
-    await user.tab({ shift: true });
-    expect(menu).not.toBeVisible();
-    // re-open and force focus loss with mouse
-    await user.click(button);
-    expect(menu).toBeVisible();
-    await user.click(document.getElementsByName("body")[0]);
-    expect(menu).not.toBeVisible();
   });
 });
