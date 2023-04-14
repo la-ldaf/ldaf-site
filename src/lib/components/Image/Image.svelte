@@ -101,9 +101,11 @@
         bind:this={thisBg}
       />
     {/if}
-    <div
-      class="ldaf-img__color-bg"
-      style={mean && `background-color: rgb(${mean.r}, ${mean.g}, ${mean.b});`}
-    />
+    {#if mean}
+      <div
+        class="ldaf-img__color-bg"
+        style={`background-color: rgb(${mean.r}, ${mean.g}, ${mean.b});`}
+      />
+    {/if}
   </div>
 </IntersectionObserver>
