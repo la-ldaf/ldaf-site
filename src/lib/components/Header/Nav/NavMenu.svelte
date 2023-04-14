@@ -19,10 +19,12 @@
   // If we want more than one column, evenly divide the nav items into mega menu columns.
   // TODO: We may want to let the CMS determine the position of each item in the future.
   let megaMenuColumns: NavLinkType[][] = [];
-  if (columns > 1) {
-    // Calculate the maximum length of columns (maximum number of items in a column) and provide
-    //   to chunk as the size (second) parameter.
-    megaMenuColumns = chunk(children, Math.ceil(children.length / columns));
+  $: {
+    if (columns > 1) {
+      // Calculate the maximum length of columns (maximum number of items in a column) and provide
+      //   to chunk as the size (second) parameter.
+      megaMenuColumns = chunk(children, Math.ceil(children.length / columns));
+    }
   }
 
   // We can't use on:click since it only triggers if the mousedown and mouseup events occur on the
