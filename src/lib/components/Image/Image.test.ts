@@ -8,6 +8,10 @@ import sampleImageBlurhash, {
   mean as sampleImageMean,
 } from "../../../sample.jpg?blurhash";
 
+import * as environment from "$app/environment";
+import * as support from "$lib/support";
+import Image from "./Image.svelte";
+
 vi.mock("$app/environment", () => ({
   browser: false,
 }));
@@ -17,17 +21,25 @@ vi.mock("$lib/support", () => ({
   intersectionObserverSupport: false,
 }));
 
-import * as environment from "$app/environment";
-import * as support from "$lib/support";
-import Image from "./Image.svelte";
-
 const withBrowser = (value = true) => ((environment as Record<"browser", boolean>).browser = value);
 const withSupport = <T extends keyof typeof support>(key: T, value = true) =>
   ((support as Record<T, boolean>)[key] = value);
 
-const getContainer = () => screen.getAllByRole("img").find((n) => n instanceof HTMLDivElement)!;
-const getImage = () => screen.getAllByRole("img").find((n) => n instanceof HTMLImageElement)!;
-const getBlurBg = () => getContainer().querySelector(".ldaf-img__blur-bg");
+const getContainer = () => {
+  const container = screen.getAllByRole("img").find((n) => n.className.includes("ldaf-img"));
+  if (!container) throw new Error("no container found!");
+  return container;
+};
+
+const getImage = () => {
+  const image = screen
+    .getAllByRole("img")
+    .find((n) => n.className.includes("ldaf-img__img") && n instanceof HTMLImageElement);
+  if (!image) throw new Error("no image found!");
+  return image;
+};
+
+const getBlurBg = () => getContainer().querySelector("canvas.ldaf-img__blur-bg");
 const getMeanBg = () => getContainer().querySelector(".ldaf-img__color-bg");
 
 afterEach(() => vi.resetAllMocks());
@@ -54,23 +66,75 @@ describe("Image", () => {
   describe("in the browser", () => {
     beforeEach(() => withBrowser(true));
 
-    it('renders with src in the browser when loading="lazy" is available', () => {
-      withSupport("intersectionObserverSupport");
-      withSupport("lazyImageLoadingSupport");
-      render(Image, {
-        props: { src: sampleImage, alt: "" },
+    describe('when loading="lazy" is available', () => {
+      beforeEach(() => {
+        withSupport("intersectionObserverSupport");
+        withSupport("lazyImageLoadingSupport");
       });
-      expect(getImage()).toHaveAttribute("src", sampleImage);
+      it("renders with src", () => {
+        render(Image, {
+          props: { src: sampleImage, alt: "" },
+        });
+        expect(getImage()).toHaveAttribute("src", sampleImage);
+      });
     });
 
-    it('renders with src in the browser when neither IntersectionObserver nor loading="lazy" is available', () => {
-      withSupport("intersectionObserverSupport", false);
-      withSupport("lazyImageLoadingSupport", false);
-      render(Image, {
-        props: { src: sampleImage, alt: "" },
+    describe('when loading="lazy" is not available but IntersectionObserver is available', () => {
+      beforeEach(() => {
+        withSupport("intersectionObserverSupport");
+        withSupport("lazyImageLoadingSupport", false);
       });
-      const image = screen.getAllByRole("img").find((el) => el instanceof HTMLImageElement);
-      expect(image).toHaveAttribute("src", sampleImage);
+      it("renders without src", () => {
+        render(Image, {
+          props: { src: sampleImage, alt: "" },
+        });
+        expect(getImage()).not.toHaveAttribute("src");
+      });
+    });
+
+    describe('when neither loading="lazy" nor IntersectionObserver is available', () => {
+      beforeEach(() => {
+        withSupport("intersectionObserverSupport", false);
+        withSupport("lazyImageLoadingSupport", false);
+      });
+      it('renders with src when neither IntersectionObserver nor loading="lazy" is available', () => {
+        render(Image, {
+          props: { src: sampleImage, alt: "" },
+        });
+        expect(getImage()).toHaveAttribute("src", sampleImage);
+      });
+    });
+
+    describe("when mean color of image is provided", () => {
+      it("renders a background div with the mean background color", () => {
+        render(Image, {
+          props: { src: sampleImage, alt: "", mean: sampleImageMean },
+        });
+        expect(getMeanBg()).toHaveAttribute(
+          "style",
+          `background-color: rgb(${sampleImageMean.r}, ${sampleImageMean.g}, ${sampleImageMean.b});`
+        );
+      });
+    });
+
+    describe("when blurhash of image is provided", () => {
+      it("renders a background canvas", () => {
+        render(Image, {
+          props: { src: sampleImage, alt: "", blurhash: sampleImageBlurhash },
+        });
+        expect(getBlurBg()).toBeInTheDocument();
+      });
+    });
+
+    describe("when width and height is provided", () => {
+      it("uses explicit width and height", () => {
+        render(Image, {
+          props: { src: sampleImage, alt: "", width: sampleImageWidth, height: sampleImageHeight },
+        });
+        const image = getImage();
+        expect(image).toHaveAttribute("width", `${sampleImageWidth}`);
+        expect(image).toHaveAttribute("height", `${sampleImageHeight}`);
+      });
     });
   });
 });
