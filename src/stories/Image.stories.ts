@@ -10,9 +10,9 @@ import Image from "$lib/components/Image";
 import BlurhashRendererDecorator from "./decorators/BlurhashRendererDecorator.svelte";
 import RootIntersectionObserverDecorator from "./decorators/RootIntersectionObserverDecorator.svelte";
 
-const srcOptions = { "sample image": sampleImage, "no image": undefined };
-const blurhashOptions = { "sample image blurhash": sampleImageBlurhash, "no blurhash": undefined };
-const meanOptions = { "sample image mean color": sampleImageMean, "no mean color": undefined };
+const srcOptions = { "sample image": sampleImage, none: undefined };
+const blurhashOptions = { "sample image blurhash": sampleImageBlurhash, none: undefined };
+const meanOptions = { "sample image mean color": sampleImageMean, none: undefined };
 
 const meta = {
   title: "Image",
@@ -22,24 +22,24 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     src: {
-      control: "select",
-      default: "sample image",
+      control: "inline-radio",
       options: Object.keys(srcOptions),
       mapping: srcOptions,
     },
     blurhash: {
-      control: "select",
+      control: "inline-radio",
       options: Object.keys(blurhashOptions),
       mapping: blurhashOptions,
     },
     mean: {
-      control: "select",
+      control: "inline-radio",
       options: Object.keys(meanOptions),
       mapping: meanOptions,
     },
     class: { control: "text" },
     width: { control: "number" },
     height: { control: "number" },
+    loading: { control: "inline-radio", options: ["eager", "lazy"] },
   },
 } satisfies Meta<Image>;
 
