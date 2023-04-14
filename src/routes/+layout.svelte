@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type NavItemType from "$lib/components/Header/Nav/NavItemType";
+  import type { NavItemType } from "$lib/components/Header/Nav";
 
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
@@ -15,10 +15,10 @@
   // Update the active nav item based on the current path.
   let activeNavItemIndex = -1;
   $: {
-    activeNavItemIndex = navItems.findIndex((item) => item.link === $page.url.pathname);
-    navItems.forEach((_, i) => {
-      navItems[i].isCurrent = i === activeNavItemIndex;
-    });
+    activeNavItemIndex = navItems.findIndex(
+      (item) => "link" in item && item.link === $page.url.pathname
+    );
+    navItems.forEach((_, i) => (navItems[i].current = i === activeNavItemIndex));
   }
 
   let navMenuExpanded = false;

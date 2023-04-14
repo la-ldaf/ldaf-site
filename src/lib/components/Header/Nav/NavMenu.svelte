@@ -49,6 +49,8 @@
   };
 </script>
 
+<!-- TODO: This div is necessary for handling focus loss, but it breaks the styling for a menu
+           being marked with an underline as the active / current nav item. -->
 <div on:focusout={handleDropdownFocusLoss}>
   <button
     type="button"
