@@ -1,5 +1,5 @@
 <script lang="ts">
-  import classNames from "$lib/classNames";
+  import classNames from "$lib/util/classNames";
   import icons from "./icons";
   type IconName = Extract<keyof typeof icons, string>;
 

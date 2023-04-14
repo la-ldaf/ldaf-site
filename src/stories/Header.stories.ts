@@ -29,7 +29,7 @@ export const Default: Story = {
   args: {
     navItems: [
       { id: genId(), name: "NavItem", link: "/nav-item" },
-      { id: genId(), name: "Active NavItem", link: "/active-nav-item", isCurrent: true },
+      { id: genId(), name: "Active NavItem", link: "/active-nav-item", current: true },
       {
         id: genId(),
         name: "Menu 1",

@@ -5,6 +5,7 @@
 
   export let items: NavItemType[] = [];
 
+  // The index of the item that is currently expanded.
   let expandedI: number | undefined = undefined;
 </script>
 
@@ -16,8 +17,10 @@
         expanded={i === expandedI}
         on:toggle={() => (expandedI = expandedI === i ? undefined : i)}
         on:close={() => expandedI === i && (expandedI = undefined)}
-        {...restProps}>{name}</NavItem
+        {...restProps}
       >
+        {name}
+      </NavItem>
     </li>
   {/each}
 </ul>

@@ -16,10 +16,14 @@
 
   $: buttonClassNames = classNames("usa-accordion__button usa-nav__link", current && "usa-current");
 
-  // Divide nav items into columns.
+  // If we want more than one column, evenly divide the nav items into mega menu columns.
   // TODO: We may want to let the CMS determine the position of each item in the future.
-  // let childColumns: NavLinkType[][];
-  $: childColumns = chunk(children, Math.ceil(children.length / columns));
+  let megaMenuColumns: NavLinkType[][] = [];
+  if (columns > 1) {
+    // Calculate the maximum length of columns (maximum number of items in a column) and provide
+    //   to chunk as the size (second) parameter.
+    megaMenuColumns = chunk(children, Math.ceil(children.length / columns));
+  }
 
   // We can't use on:click since it only triggers if the mousedown and mouseup events occur on the
   //   same target, and on mobile the collapse of an accordion when it loses focus happens on
@@ -52,9 +56,11 @@
     on:keydown={handleKeyDown}
     on:mousedown={handleMouseDown}
   >
+    <!-- Extra <span/> element is necessary for expand icons to load. -->
     <span><slot /></span>
   </button>
   {#if columns <= 1}
+    <!-- Basic Menu Layout-->
     <ul id="extended-mega-nav-section-{id}" class="usa-nav__submenu" hidden={!expanded}>
       {#each children as { id, link, name } (id)}
         <li class="usa-nav__submenu-item">
@@ -63,13 +69,14 @@
       {/each}
     </ul>
   {:else}
+    <!-- Mega Menu Layout -->
     <div
       id="extended-mega-nav-section-{id}"
       class="usa-nav__submenu usa-megamenu"
       hidden={!expanded}
     >
       <div class="grid-row grid-gap-4">
-        {#each childColumns as column, i (i)}
+        {#each megaMenuColumns as column, i (i)}
           <div class="usa-col">
             <ul class="usa-nav__submenu-list">
               {#each column as { id, link, name } (id)}
