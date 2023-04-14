@@ -14,6 +14,7 @@ import {
   type TableRow,
   type TableHeaderCell,
   type TableCell,
+  type Quote,
 } from "@contentful/rich-text-types";
 
 import type { HeadingLevel, HeadingTypeByLevel } from "./headings";

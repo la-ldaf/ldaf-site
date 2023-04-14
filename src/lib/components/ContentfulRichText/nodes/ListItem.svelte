@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { Node as NodeType, UnorderedList } from "@contentful/rich-text-types";
+  import type { Node as NodeType, ListItem } from "@contentful/rich-text-types";
   import Node from "./Node.svelte";
   import { isListItem } from "../predicates";
 
   export let node: NodeType;
 
-  let li: UnorderedList;
+  let li: ListItem;
   if (!isListItem(node)) {
     throw new Error("node is not a paragraph");
   }
