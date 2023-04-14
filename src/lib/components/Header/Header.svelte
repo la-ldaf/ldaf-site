@@ -1,6 +1,6 @@
 <script lang="ts">
-  import iconClose from "@uswds/uswds/img/usa-icons/close.svg";
-  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg";
+  import iconClose from "@uswds/uswds/img/usa-icons/close.svg?url";
+  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
   import "./Header.scss";
 
   import type { NavItemType } from "./Nav";
