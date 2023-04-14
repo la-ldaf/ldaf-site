@@ -1,11 +1,11 @@
 <script lang="ts">
-  import iconClose from "@uswds/uswds/img/usa-icons/close.svg?url";
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
   import "./Header.scss";
 
   import type { NavItemType } from "./Nav";
 
   import classNames from "$lib/util/classNames";
+  import Icon from "$lib/components/Icon";
   import Nav from "./Nav";
 
   export let navItems: NavItemType[] = [];
@@ -35,7 +35,7 @@
     <div class="usa-nav__inner">
       <button type="button" class="usa-nav__close" on:click={() => toggleNavMenu(false)}>
         <!-- TODO: Replace alt text with content from CMS. -->
-        <img src={iconClose} alt="Close" />
+        <Icon name="close" alt="Close" size={3} />
       </button>
 
       <Nav items={navItems} />
