@@ -2,23 +2,32 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
-import LinkTest from "./LinkTest.svelte";
+import TestSlotWrapper from "$lib/components/TestSlotWrapper.svelte";
 import Link from "./Link.svelte";
+
+const slotContent = "link text";
 
 describe("Link", () => {
   it("renders", () => {
-    render(LinkTest, { props: { Component: Link, href: "/about" } });
-    expect(screen.getByText("link text")).toHaveAttribute("href", "/about");
+    render(TestSlotWrapper, { props: { Component: Link, slotContent, href: "/about" } });
+    expect(screen.getByText(slotContent)).toHaveAttribute("href", "/about");
   });
   it("renders with an external link", () => {
-    render(LinkTest, {
-      props: { Component: Link, href: "https://designsystem.digital.gov", external: true },
+    render(TestSlotWrapper, {
+      props: {
+        Component: Link,
+        slotContent,
+        href: "https://designsystem.digital.gov",
+        external: true,
+      },
     });
-    expect(screen.getByText("link text")).toHaveAttribute("rel", "external");
+    expect(screen.getByText(slotContent)).toHaveAttribute("rel", "external");
   });
   it("renders with an alternate variation", () => {
-    render(LinkTest, { props: { Component: Link, href: "/", alternate: true } });
+    render(TestSlotWrapper, {
+      props: { Component: Link, slotContent, href: "/", alternate: true },
+    });
     // Ideally we would check the color here, but toHaveStyle doesn't work.
-    expect(screen.getByText("link text")).toHaveClass("usa-link--alt");
+    expect(screen.getByText(slotContent)).toHaveClass("usa-link--alt");
   });
 });
