@@ -18,7 +18,7 @@ const generateMenuItems = (n: number, prefix = "Menu 1") =>
   }));
 
 const meta = {
-  title: "Example/Header",
+  title: "Header",
   component: Header,
   tags: ["autodocs"],
 } satisfies Meta<Header>;
