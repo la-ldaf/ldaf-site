@@ -1,5 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="./vite-plugin-blurhash/index.d.ts"/>
+// This file is explicitly included in the tsconfig.json, and is used to import global type
+// declarations from our custom Vite plugins. This needs to be done using triple slash references,
+// which are otherwise disabled.
 
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/* eslint @typescript-eslint/triple-slash-reference: 0 */
+
+/// <reference path="./vite-plugin-blurhash/index.d.ts"/>
 /// <reference path="./vite-plugin-import-as-bundle-string/index.d.ts"/>
