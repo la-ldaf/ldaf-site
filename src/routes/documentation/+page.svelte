@@ -1,5 +1,3 @@
-<a class="usa-skipnav" href="#main-content">Skip to main content</a>
-
 <div class="usa-section">
   <div class="grid-container">
     <div class="grid-row grid-gap">
