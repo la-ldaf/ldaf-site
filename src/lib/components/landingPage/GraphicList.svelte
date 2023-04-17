@@ -1,5 +1,4 @@
 <script>
-  import "./GraphicList.scss";
   import circle124 from "@uswds/uswds/img/circle-124.png";
 </script>
 

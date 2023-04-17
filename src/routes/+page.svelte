@@ -1,5 +1,4 @@
 <script>
-  import "./page.scss";
   import GraphicList from "$lib/components/landingPage/GraphicList.svelte";
   import Hero from "$lib/components/landingPage/Hero.svelte";
 </script>

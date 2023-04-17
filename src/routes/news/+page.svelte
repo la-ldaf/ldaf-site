@@ -1,7 +1,3 @@
-<script lang="ts">
-  import "@uswds/uswds/scss/usa-alert";
-</script>
-
 <section class="usa-section">
   <div class="grid-container">
     <h1>News</h1>
