@@ -28,7 +28,7 @@
     "@storybook/blocks": "^7.0.4",
     "@storybook/svelte": "^7.0.4",
     "@storybook/sveltekit": "^7.0.4",
-    "@storybook/testing-library": "^0.0.14-next.1",
+    "@storybook/testing-library": "^0.1.0",
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.15.4",
     "@testing-library/jest-dom": "^5.16.5",
