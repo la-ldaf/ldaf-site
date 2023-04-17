@@ -3,7 +3,6 @@
   $theme-image-path: $theme-image-path,
   $theme-show-notifications: false
 );
-@use "usa-link";
 // For some reason the USWDS rules for alternate color links depends on the link being a child of an element with the 'usa-dark-background' class.
 // This seems overly restrictive, so we'll set up the alternate style to be independent of its parent element.
 // Following styles were taken from: https://github.com/uswds/uswds/blob/30c61f34288bc706961b12b536fdc57537026385/packages/usa-dark-background/src/styles/_usa-dark-background.scss
