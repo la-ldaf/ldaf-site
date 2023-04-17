@@ -1,6 +1,5 @@
 <script lang="ts">
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
-  import "./Header.scss";
 
   import type { NavItemType } from "./Nav";
 
@@ -48,7 +47,7 @@
             <a href="/news">Grants and funding</a>
           </li>
           <li class="usa-nav__secondary-item">
-            <a href="/news" class="usa-current">Licensing and permits</a>
+            <a href="/documentation" class="usa-current">Licensing and permits</a>
           </li>
         </ul>
 
