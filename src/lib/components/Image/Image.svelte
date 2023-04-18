@@ -70,7 +70,7 @@
 <IntersectionObserver
   target={thisContainer}
   once={true}
-  onIntersect={() => (intersecting = true)}
+  on:intersect={() => (intersecting = true)}
   enabled={loading === "lazy" && intersectionObserverSupport && !lazyImageLoadingSupport}
 >
   <div

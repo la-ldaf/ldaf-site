@@ -1,19 +1,20 @@
 <script lang="ts">
-  import { getContext, hasContext } from "svelte";
+  import { createEventDispatcher, getContext, hasContext } from "svelte";
   import { browser } from "$app/environment";
   import warn from "$lib/util/warn";
   import { getRootObserver, type RootObserver } from "./observe";
   import key from "./key";
 
-  let lastTarget: HTMLElement | undefined = undefined;
+  const dispatch = createEventDispatcher();
 
-  export let target: HTMLElement;
+  let lastTarget: Element | undefined = undefined;
+
+  export let target: Element;
   export let once = false;
-  export let onIntersect: (() => void) | undefined = undefined;
   export let enabled = true;
 
   let intersecting = false;
-  $: if (enabled && intersecting && onIntersect) onIntersect();
+  $: if (enabled && intersecting) dispatch("intersect");
 
   let observer: RootObserver | undefined;
 
