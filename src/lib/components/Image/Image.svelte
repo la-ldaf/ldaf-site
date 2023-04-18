@@ -112,7 +112,9 @@
     {#if mean}
       <div
         class="ldaf-img__color-bg"
-        style={`background-color: rgb(${mean.r}, ${mean.g}, ${mean.b});`}
+        style={`background-color: rgb(${Math.round(mean.r)}, ${Math.round(mean.g)}, ${Math.round(
+          mean.b
+        )});`}
       />
     {/if}
   </div>

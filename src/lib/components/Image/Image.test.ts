@@ -112,7 +112,9 @@ describe("Image", () => {
         });
         expect(getMeanBg()).toHaveAttribute(
           "style",
-          `background-color: rgb(${sampleImageMean.r}, ${sampleImageMean.g}, ${sampleImageMean.b});`
+          `background-color: rgb(${Math.round(sampleImageMean.r)}, ${Math.round(
+            sampleImageMean.g
+          )}, ${Math.round(sampleImageMean.b)});`
         );
       });
     });
