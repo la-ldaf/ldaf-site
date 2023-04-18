@@ -5,7 +5,6 @@ import {
   VERCEL_GIT_COMMIT_SHA,
 } from "$env/static/private";
 
-/** @type {import('./$types').LayoutServerLoad} */
 export const load = () => ({
   VERCEL_ENV,
   VERCEL_GIT_REPO_OWNER,
