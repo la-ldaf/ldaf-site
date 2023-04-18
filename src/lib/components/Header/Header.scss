@@ -1,0 +1,23 @@
+.usa-header--extended .ldaf-nav.usa-navbar {
+  height: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 20px;
+
+  .usa-logo {
+    max-width: 65%;
+  }
+}
+
+.ldaf-nav .usa-nav__secondary {
+  position: initial;
+
+  a {
+    color: #d1e9ff;
+  }
+}
+.ldaf-header.usa-header--extended .usa-nav__primary {
+  justify-content: center;
+}

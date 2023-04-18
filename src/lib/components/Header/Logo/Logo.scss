@@ -1,8 +1,37 @@
 .usa-header--extended {
   .ldaf-logo.usa-logo {
-    max-width: 80px;
-    margin: 5px 0 0;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    img {
+      max-width: 100px;
+    }
+    font-size: initial;
+    width: 100%;
   }
+
+  background: linear-gradient(to right, transparent, #00284d 45%),
+    url("../../../assets/header-background.png");
+  height: 148px;
+
+  .usa-logo .agency-name,
+  .usa-logo .agency-commissioner {
+    color: #ffd675;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 5px;
+  }
+
+  .usa-logo .separator {
+    height: 65px;
+    border-left: 1px solid #ffd675;
+  }
+}
+
+.agency-info {
+  display: flex;
+  column-gap: 10px;
 }
 
 @media all and (max-width: 63.99em) {
