@@ -22,6 +22,8 @@
 
   if (!width || !height) warn("image width or height was missing!");
 
+  $: decoding = loading === "lazy" ? "async" : "auto";
+
   const canvasSize = 32;
 
   let thisBg: HTMLCanvasElement;
@@ -93,6 +95,7 @@
       class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
       on:load={() => (imageLoaded = true)}
       {loading}
+      {decoding}
       {...srcProps}
     />
     {#if blurhash}
