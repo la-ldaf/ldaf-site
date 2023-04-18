@@ -37,9 +37,11 @@
   const withNoSrcProp = {};
   let srcProps = withNoSrcProp;
   $: withSrcProp = { src };
-  $: if (loading === "eager" && src) {
+  $: if (!src) {
+    srcProps = withNoSrcProp;
+  } else if (loading === "eager") {
     srcProps = withSrcProp;
-  } else if (!browser || !src) {
+  } else if (!browser) {
     srcProps = withNoSrcProp;
   } else if (lazyImageLoadingSupport || !intersectionObserverSupport || intersecting) {
     srcProps = withSrcProp;
