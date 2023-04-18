@@ -1,29 +1,14 @@
 import "@testing-library/jest-dom";
-import { vi, describe, it, expect, type Mock } from "vitest";
-
-const disconnect: Mock<[], void> = vi.fn();
-const observe: Mock<[Element], void> = vi.fn();
-const takeRecords = vi.fn();
-const unobserve: Mock<[Element], void> = vi.fn();
-let intersectionObserverCallback: (entries: ObserverEntry[]) => void;
-let intersectionObserverOptions: IntersectionObserverInit;
-
-const IntersectionObserverMock: Mock<[() => void, IntersectionObserverInit]> = vi.fn(
-  (callback, options) => {
-    intersectionObserverCallback = callback;
-    intersectionObserverOptions = options;
-    return {
-      disconnect,
-      observe,
-      takeRecords,
-      unobserve,
-    };
-  }
-);
+import { vi, describe, it, expect } from "vitest";
+import IntersectionObserverMock, {
+  intersect,
+  observe,
+  callback,
+} from "./__tests__/IntersectionObserverMock";
 
 vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
 
-import { getRootObserver, type ObserverEntry, type RootObserver } from "./observe";
+import { getRootObserver, type RootObserver } from "./observe";
 
 let rootObserver: RootObserver;
 
@@ -37,7 +22,7 @@ describe("getRootObserver", () => {
   it("returns a root observer", () => {
     expect(IntersectionObserverMock).toHaveBeenCalledTimes(1);
     expect(IntersectionObserverMock.mock.calls[0]).toMatchObject([
-      intersectionObserverCallback,
+      callback,
       getRootObserverOptions,
     ]);
     expect(rootObserver).toBeDefined();
@@ -59,31 +44,31 @@ describe("RootObserver", () => {
     });
 
     it("observes an element", () => {
-      intersectionObserverCallback([{ target: element, isIntersecting: false }]);
+      intersect([{ target: element, isIntersecting: false }]);
       expect(callback).toHaveBeenCalledOnce();
       expect(callback).toHaveBeenCalledWith({ target: element, isIntersecting: false });
       callback.mockRestore();
 
-      intersectionObserverCallback([{ target: element, isIntersecting: true }]);
+      intersect([{ target: element, isIntersecting: true }]);
       expect(callback).toHaveBeenCalledOnce();
       expect(callback).toHaveBeenCalledWith({ target: element, isIntersecting: true });
     });
 
     it("ignores other elements", () => {
       const anotherElement = document.createElement("div");
-      intersectionObserverCallback([{ target: anotherElement, isIntersecting: true }]);
+      intersect([{ target: anotherElement, isIntersecting: true }]);
       expect(callback).not.toHaveBeenCalled();
 
       const anotherCallback = vi.fn();
       rootObserver.observe(anotherElement, anotherCallback);
-      intersectionObserverCallback([{ target: anotherElement, isIntersecting: true }]);
+      intersect([{ target: anotherElement, isIntersecting: true }]);
       expect(anotherCallback).toHaveBeenCalled();
       expect(callback).not.toHaveBeenCalled();
     });
 
     it("unobserves an element", () => {
       rootObserver.unobserve(element);
-      intersectionObserverCallback([{ target: element, isIntersecting: true }]);
+      intersect([{ target: element, isIntersecting: true }]);
       expect(callback).not.toHaveBeenCalled();
     });
   });
@@ -91,15 +76,15 @@ describe("RootObserver", () => {
   describe('with "once" option', () => {
     beforeEach(() => rootObserver.observe(element, callback, { once: true }));
     it("observes an element intersect once", () => {
-      intersectionObserverCallback([{ target: element, isIntersecting: false }]);
+      intersect([{ target: element, isIntersecting: false }]);
       expect(callback).toHaveBeenCalledOnce();
       expect(callback).toHaveBeenLastCalledWith({ target: element, isIntersecting: false });
 
-      intersectionObserverCallback([{ target: element, isIntersecting: true }]);
+      intersect([{ target: element, isIntersecting: true }]);
       expect(callback).toHaveBeenCalledTimes(2);
       expect(callback).toHaveBeenLastCalledWith({ target: element, isIntersecting: true });
 
-      intersectionObserverCallback([{ target: element, isIntersecting: true }]);
+      intersect([{ target: element, isIntersecting: true }]);
       expect(callback).toHaveBeenCalledTimes(2);
     });
   });
