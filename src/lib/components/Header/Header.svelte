@@ -5,6 +5,7 @@
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
+  import Logo from "./Logo";
   import Nav from "./Nav";
 
   export let navItems: NavItemType[] = [];
@@ -20,13 +21,7 @@
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="usa-header usa-header--extended">
   <div class="usa-navbar">
-    <div class="usa-logo" id="basic-logo">
-      <em class="usa-logo__text">
-        <!--TODO: Replace with content from CMS. -->
-        <a href="/" title="<Project title>"> &lt;Project title&gt; </a>
-      </em>
-    </div>
-
+    <Logo />
     <!--TODO: Replace with content from CMS. -->
     <button type="button" class="usa-menu-btn" on:click={() => toggleNavMenu(true)}> Menu </button>
   </div>
