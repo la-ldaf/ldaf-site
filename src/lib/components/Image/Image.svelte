@@ -4,7 +4,7 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
-  import warn from "$lib/warn";
+  import warn from "$lib/util/warn";
   import type { Color } from "./types";
 
   type Loading = "eager" | "lazy";

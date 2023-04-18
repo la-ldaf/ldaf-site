@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, hasContext } from "svelte";
   import { browser } from "$app/environment";
-  import warn from "$lib/warn";
+  import warn from "$lib/util/warn";
   import { getRootObserver, type RootObserver } from "./observe";
   import key from "./key";
 
