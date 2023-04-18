@@ -29,14 +29,6 @@
         do you do your work? Write in the present tense, and stay brief here. People who are
         interested can find details on internal pages.
       </p>
-      <Image
-        alt=""
-        src={sampleImage}
-        blurhash={sampleImageBlurhash}
-        width={sampleImageWidth}
-        height={sampleImageHeight}
-        mean={sampleImageMean}
-      />
       <a class="usa-button usa-button--big" href="/">Call to action</a>
     </div>
   </div>
@@ -52,5 +44,13 @@
       in touch,” “Learn more,” and so on.
     </p>
     <a class="usa-button usa-button--big" href="/">Call to action</a>
+    <Image
+      alt=""
+      src={sampleImage}
+      blurhash={sampleImageBlurhash}
+      width={sampleImageWidth}
+      height={sampleImageHeight}
+      mean={sampleImageMean}
+    />
   </div>
 </section>
