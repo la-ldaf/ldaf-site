@@ -22,7 +22,7 @@ const resolveOptions = (options: ObserveOptions): ResolvedObserveOptions => ({
 
 export type ObserveCallbacks = AnyMap<Element, ObserveCallback>;
 
-export const unobserve = (
+const unobserve = (
   observer: IntersectionObserver,
   callbacks: ObserveCallbacks,
   target: Element
@@ -31,7 +31,7 @@ export const unobserve = (
   observer.unobserve(target);
 };
 
-export const observe = (
+const observe = (
   observer: IntersectionObserver,
   callbacks: ObserveCallbacks,
   target: Element,
@@ -52,14 +52,14 @@ export const observe = (
   observer.observe(target);
 };
 
-export const getObserverCallback =
-  (callbacks: ObserveCallbacks) => (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
-      const { target, isIntersecting } = entry;
-      const callback = callbacks.get(target);
-      if (callback) callback({ target, isIntersecting });
-    });
-  };
+export type ObserverEntry = Pick<IntersectionObserverEntry, "target" | "isIntersecting">;
+const getObserverCallback = (callbacks: ObserveCallbacks) => (entries: ObserverEntry[]) => {
+  entries.forEach((entry) => {
+    const { target, isIntersecting } = entry;
+    const callback = callbacks.get(target);
+    if (callback) callback({ target, isIntersecting });
+  });
+};
 
 export type RootObserver = {
   unobserve: (target: Element) => void;
@@ -74,6 +74,7 @@ export const getRootObserver = (
   const observer = new IntersectionObserver(getObserverCallback(callbacks), options);
   return {
     unobserve: (target) => unobserve(observer, callbacks, target),
-    observe: (target, callback, options) => observe(observer, callbacks, target, callback, options),
+    observe: (target, callback, options = {}) =>
+      observe(observer, callbacks, target, callback, options),
   };
 };
