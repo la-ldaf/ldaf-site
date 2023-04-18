@@ -42,7 +42,7 @@ const getImage = () => {
 const getBlurBg = () => getContainer().querySelector("canvas.ldaf-img__blur-bg");
 const getMeanBg = () => getContainer().querySelector(".ldaf-img__color-bg");
 
-afterEach(() => vi.resetAllMocks());
+afterEach(() => vi.restoreAllMocks());
 
 describe("Image", () => {
   describe("on the server", () => {
