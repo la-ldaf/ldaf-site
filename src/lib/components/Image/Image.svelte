@@ -32,14 +32,18 @@
 
   let intersecting = false;
 
-  $: srcProps =
-    loading === "eager" && src
-      ? { src }
-      : !browser || !src
-      ? {}
-      : lazyImageLoadingSupport || !intersectionObserverSupport || intersecting
-      ? { src }
-      : {};
+  const withNoSrcProp = {};
+  let srcProps = withNoSrcProp;
+  $: withSrcProp = { src };
+  $: if (loading === "eager" && src) {
+    srcProps = withSrcProp;
+  } else if (!browser || !src) {
+    srcProps = withNoSrcProp;
+  } else if (lazyImageLoadingSupport || !intersectionObserverSupport || intersecting) {
+    srcProps = withSrcProp;
+  } else {
+    srcProps = withNoSrcProp;
+  }
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-img__loaded"
