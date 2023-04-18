@@ -18,6 +18,9 @@ export default defineConfig({
     include: ["src/**/*.{test,spec}.{js,ts}"],
     globals: true,
     environment: "jsdom",
+    coverage: {
+      reporter: ["text", "json", "html"],
+    },
   },
   css: {
     preprocessorOptions: {
