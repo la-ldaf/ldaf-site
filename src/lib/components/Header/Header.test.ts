@@ -7,7 +7,7 @@ import Header from "./Header.svelte";
 describe("Header", () => {
   it("renders", () => {
     render(Header);
-    expect(screen.getByText("<Project title>")).toBeVisible();
+    expect(screen.getByAltText("LDAF Logo")).toBeVisible();
   });
   it("opens nav on menu button click and closes it on close button click", async () => {
     render(Header, { props: { navItems: [{ id: "1", link: "/", name: "test" }] } });
