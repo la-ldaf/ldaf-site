@@ -14,7 +14,7 @@
 
 <RootIntersectionObserver {...rootProps}>
   <IntersectionObserver target={thisDiv} on:intersect let:intersecting {...props}>
-    <div data-testid={targetTestId} bind:this={thisDiv}>
+    <div data-testid={targetTestId} id="abc" bind:this={thisDiv}>
       {#if intersecting}
         {intersectingText}
       {:else}

@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/svelte";
+import { render, screen, waitFor } from "@testing-library/svelte";
 import { vi, describe, it, expect } from "vitest";
 import sampleImage from "../../../sample.jpg";
 import sampleImageBlurhash, {
@@ -11,6 +11,10 @@ import sampleImageBlurhash, {
 import * as environment from "$app/environment";
 import * as support from "$lib/support";
 import Image from "./Image.svelte";
+import IntersectionObserverMock, {
+  intersect,
+  mockRestore as intersectionObserverMockRestore,
+} from "../IntersectionObserver/__tests__/IntersectionObserverMock";
 
 vi.mock("$app/environment", () => ({
   browser: false,
@@ -80,15 +84,17 @@ describe("Image", () => {
     });
 
     describe('when loading="lazy" is not available but IntersectionObserver is available', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
+        vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
         withSupport("intersectionObserverSupport");
         withSupport("lazyImageLoadingSupport", false);
+        render(Image, { props: { src: sampleImage, alt: "" } });
+        return () => intersectionObserverMockRestore();
       });
-      it("renders without src", () => {
-        render(Image, {
-          props: { src: sampleImage, alt: "" },
-        });
-        expect(getImage()).not.toHaveAttribute("src");
+      it("renders without src", () => expect(getImage()).not.toHaveAttribute("src"));
+      it("adds src on intersect", async () => {
+        intersect();
+        await waitFor(() => expect(getImage()).toHaveAttribute("src", sampleImage));
       });
     });
 
@@ -96,20 +102,16 @@ describe("Image", () => {
       beforeEach(() => {
         withSupport("intersectionObserverSupport", false);
         withSupport("lazyImageLoadingSupport", false);
+        render(Image, { props: { src: sampleImage, alt: "" } });
       });
-      it('renders with src when neither IntersectionObserver nor loading="lazy" is available', () => {
-        render(Image, {
-          props: { src: sampleImage, alt: "" },
-        });
-        expect(getImage()).toHaveAttribute("src", sampleImage);
-      });
+      it("renders with src", () => expect(getImage()).toHaveAttribute("src", sampleImage));
     });
 
     describe("when mean color of image is provided", () => {
+      beforeEach(() =>
+        render(Image, { props: { src: sampleImage, alt: "", mean: sampleImageMean } })
+      );
       it("renders a background div with the mean background color", () => {
-        render(Image, {
-          props: { src: sampleImage, alt: "", mean: sampleImageMean },
-        });
         expect(getMeanBg()).toHaveAttribute(
           "style",
           `background-color: rgb(${Math.round(sampleImageMean.r)}, ${Math.round(
