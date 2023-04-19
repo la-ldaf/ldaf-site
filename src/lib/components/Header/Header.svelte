@@ -1,5 +1,6 @@
 <script lang="ts">
   import "./Header.scss";
+  import ldafLogo from "$lib/assets/ldaf-logo-transparent.png";
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
 
   import type { NavItemType } from "./Nav";
@@ -33,6 +34,14 @@
         <!-- TODO: Replace alt text with content from CMS. -->
         <Icon name="close" alt="Close" size={3} />
       </button>
+
+      <a class="ldaf-logo-link" href="/" title="<Project title>">
+        <img class="ldaf-logo--compact" src={ldafLogo} alt="LDAF Logo" />
+      </a>
+      <div class="agency-commissioner">
+        <span>Mike Strain, DVM</span>
+        <span class="text-italic">Commissioner</span>
+      </div>
 
       <Nav items={navItems} />
 

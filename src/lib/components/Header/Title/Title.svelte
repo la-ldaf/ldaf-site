@@ -21,10 +21,12 @@
 </div>
 
 <div class="usa-logo ldaf-logo-compact">
-  <div class="agency-name">
-    <span class="text-bold">Louisiana Department of</span>
-    <span class="text-bold">Agriculture and Forestry</span>
-  </div>
+  <a href="/" title="<Project title>">
+    <div class="agency-name">
+      <span class="text-bold">Louisiana Department of</span>
+      <span class="text-bold">Agriculture and Forestry</span>
+    </div>
+  </a>
 </div>
 
 <style>

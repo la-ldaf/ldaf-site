@@ -22,6 +22,14 @@
     border-bottom: none;
   }
 
+  .ldaf-logo--compact {
+    max-width: 68px;
+  }
+
+  .usa-nav__inner .agency-commissioner span {
+    margin-top: 5px;
+    display: inline-block;
+  }
   .usa-input {
     border-radius: 5px 0 0 5px;
   }
@@ -46,6 +54,11 @@
     a {
       color: #d1e9ff;
     }
+  }
+
+  .usa-nav__inner .agency-commissioner,
+  .usa-nav__inner .ldaf-logo-link {
+    display: none;
   }
 }
 
