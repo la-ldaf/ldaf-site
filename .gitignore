@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 coverage
 build-storybook.log
 /storybook-static
+.vercel

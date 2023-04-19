@@ -1,38 +1,65 @@
-# create-svelte
+# Louisiana Department of Agriculture and Forestry Website
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Getting started
 
-## Creating a project
+To easily stay in sync with the project version of `npm`, we recommend installing `nvm`, the [Node Version Manager](https://github.com/nvm-sh/nvm). Once installed, you can simply run `nvm install` in the project root to install the version of `npm` specified in `.nvmrc`.
 
-If you're seeing this, you've probably already done this step. Congrats!
+To install all relevant dependencies:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+```
+npm install
 ```
 
-## Developing
+To run the site locally and open the app in a new browser tab:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
+```
 npm run dev -- --open
 ```
 
-## Building
+To build the site for production and preview it locally:
 
-To create a production version of your app:
-
-```bash
+```
 npm run build
+npm run preview
 ```
 
-You can preview the production build with `npm run preview`.
+## Storybook
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+To run Storybook locally:
+
+```
+npm run storybook
+```
+
+To deploy Storybook to chromatic (requires `CHROMATIC_PROJECT_TOKEN` be set in `.env`):
+
+```
+npm run chromatic
+```
+
+## Vercel
+
+If you are a member of the LDAF team on Vercel, first set up the Vercel CLI:
+
+```
+npm i -g vercel
+vercel login
+```
+
+Then link your local project to the Vercel project (choosing the `LDAF` scope) with:
+
+```
+vercel link
+```
+
+You can then retrieve environment variables from Vercel with:
+
+```
+vercel env pull
+```
+
+Or run the project locally with:
+
+```
+vercel dev
+```
