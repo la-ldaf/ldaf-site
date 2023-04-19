@@ -4,8 +4,10 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
     "plugin:storybook/recommended",
+    // From the prettier/eslint-config-prettier README:
+    // "Make sure to put it last, so it gets the chance to override other configs."
+    "prettier",
   ],
   plugins: ["svelte3", "@typescript-eslint"],
   ignorePatterns: ["*.cjs"],
