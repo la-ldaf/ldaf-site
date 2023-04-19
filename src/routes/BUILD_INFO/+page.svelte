@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Link from "$lib/components/Link";
   export let data;
   const { VERCEL_ENV, VERCEL_GIT_REPO_OWNER, VERCEL_GIT_REPO_SLUG, VERCEL_GIT_COMMIT_SHA } = data;
