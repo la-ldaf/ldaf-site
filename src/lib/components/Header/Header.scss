@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: space-between;
     max-width: none;
+    border-bottom: 4px solid #ffd675;
 
     .usa-logo {
       max-width: 65%;
@@ -18,16 +19,36 @@
 @media all and (max-width: 63.99em) {
   .usa-header--extended .ldaf-nav.usa-navbar {
     background: #00284d;
+    border-bottom: none;
+  }
+
+  .usa-input {
+    border-radius: 5px 0 0 5px;
+  }
+
+  .ldaf-header nav {
+    background: #f0f0f0;
+
+    .usa-input {
+      border-radius: 5px 0 0 5px;
+    }
+
+    a {
+      color: #1670d9;
+    }
   }
 }
 
-.ldaf-nav .usa-nav__secondary {
-  position: initial;
+@media all and (min-width: 63.99em) {
+  .ldaf-nav--secondary.usa-nav__secondary {
+    bottom: 5rem;
 
-  a {
-    color: #d1e9ff;
+    a {
+      color: #d1e9ff;
+    }
   }
 }
+
 .ldaf-header.usa-header--extended .usa-nav__primary {
   justify-content: center;
 }
