@@ -5,7 +5,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    open-pull-requests-limit: 10
     ignore:
       # Ignore Storybook updates since they should be applied all at once, not piecemeal.
       # TODO: Once GitHub supports grouped updates, group Storybook dependencies together.
@@ -28,7 +29,8 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    open-pull-requests-limit: 10
     reviewers:
       - "la-ldaf/ad-hoc-engineers"
     commit-message:
