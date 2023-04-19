@@ -21,7 +21,7 @@ const encodePathToBlurHashAndInfo = async (path: string): Promise<BlurHashAndInf
   const [
     {
       dominant,
-      channels: [r, g, b],
+      channels: [{ mean: r }, { mean: g }, { mean: b }],
     },
     {
       data: buffer,
@@ -34,7 +34,7 @@ const encodePathToBlurHashAndInfo = async (path: string): Promise<BlurHashAndInf
     height,
     blurhash,
     dominant,
-    mean: { r: r.mean, g: g.mean, b: b.mean },
+    mean: { r, g, b },
   };
 };
 
