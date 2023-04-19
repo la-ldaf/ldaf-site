@@ -1,15 +1,23 @@
-.usa-header--extended .ldaf-nav.usa-navbar {
-  background: linear-gradient(to right, transparent, #00284d 45%),
-    url("../../assets/header-background.png");
-  height: 148px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  max-width: none;
+@media all and (min-width: 63.99em) {
+  .usa-header--extended .ldaf-nav.usa-navbar {
+    background: linear-gradient(to right, transparent, #00284d 45%),
+      url("../../assets/header-background.png");
+    height: 148px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: none;
 
-  .usa-logo {
-    max-width: 65%;
+    .usa-logo {
+      max-width: 65%;
+    }
+  }
+}
+
+@media all and (max-width: 63.99em) {
+  .usa-header--extended .ldaf-nav.usa-navbar {
+    background: #00284d;
   }
 }
 

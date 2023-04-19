@@ -1,5 +1,5 @@
 .usa-header--extended {
-  .ldaf-logo.usa-logo {
+  .ldaf-logo--extended.usa-logo {
     display: flex;
     align-items: center;
     column-gap: 10px;
@@ -31,10 +31,20 @@
 }
 
 @media all and (max-width: 63.99em) {
+  .usa-header--extended .ldaf-logo--extended.usa-logo {
+    display: none;
+  }
+
   .usa-header--extended {
-    .ldaf-logo.usa-logo {
+    .ldaf-logo--extended.usa-logo {
       max-width: 50px;
       margin: 5px 2px 5px 0;
     }
+  }
+}
+
+@media all and (min-width: 64em) {
+  .ldaf-logo-compact {
+    display: none;
   }
 }

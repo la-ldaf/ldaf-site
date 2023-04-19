@@ -6,7 +6,7 @@
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
-  import Logo from "./Logo";
+  import Title from "./Title";
   import Nav from "./Nav";
 
   export let navItems: NavItemType[] = [];
@@ -22,7 +22,7 @@
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="ldaf-header usa-header usa-header--extended">
   <div class="ldaf-nav usa-navbar">
-    <Logo />
+    <Title />
     <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
     <div class="usa-nav__secondary">
       <ul class="usa-nav__secondary-links">
