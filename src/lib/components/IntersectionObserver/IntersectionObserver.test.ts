@@ -7,13 +7,13 @@ import IntersectionObserverMock, {
   observe as intersectionObserverObserve,
   callback as intersectionObserverCallback,
   intersect,
-  mockRestore as intersectionObserverMockRestore,
   unobserve as intersectionObserverUnobserve,
+  stub as stubIntersectionObserver,
+  unstub as unstubIntersectionObserver,
+  restoreStub as restoreIntersectionObserverStub,
 } from "./__tests__/IntersectionObserverMock";
 import IntersectionObserverTest from "./__tests__/IntersectionObserverTest.svelte";
 import * as environment from "$app/environment";
-
-vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
 
 vi.mock("$app/environment", () => ({
   browser: false,
@@ -21,10 +21,15 @@ vi.mock("$app/environment", () => ({
 
 const withBrowser = (value = true) => ((environment as Record<"browser", boolean>).browser = value);
 
+beforeAll(() => {
+  stubIntersectionObserver();
+  return () => unstubIntersectionObserver();
+});
+
 beforeEach(() => withBrowser());
 afterEach(() => {
   vi.restoreAllMocks();
-  intersectionObserverMockRestore();
+  restoreIntersectionObserverStub();
 });
 
 describe("IntersectionObserver", () => {

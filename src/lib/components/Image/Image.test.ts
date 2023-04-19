@@ -13,7 +13,9 @@ import * as support from "$lib/support";
 import Image from "./Image.svelte";
 import IntersectionObserverMock, {
   intersect,
-  mockRestore as intersectionObserverMockRestore,
+  stub as stubIntersectionObserver,
+  unstub as unstubIntersectionObserver,
+  restoreStub as restoreIntersectionObserverStub,
 } from "../IntersectionObserver/__tests__/IntersectionObserverMock";
 
 vi.mock("$app/environment", () => ({
@@ -84,12 +86,15 @@ describe("Image", () => {
     });
 
     describe('when loading="lazy" is not available but IntersectionObserver is available', () => {
+      beforeAll(() => {
+        stubIntersectionObserver();
+        return () => unstubIntersectionObserver();
+      });
       beforeEach(async () => {
-        vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
         withSupport("intersectionObserverSupport");
         withSupport("lazyImageLoadingSupport", false);
         render(Image, { props: { src: sampleImage, alt: "" } });
-        return () => intersectionObserverMockRestore();
+        return () => restoreIntersectionObserverStub();
       });
       it("renders without src", () => expect(getImage()).not.toHaveAttribute("src"));
       it("adds src on intersect", async () => {

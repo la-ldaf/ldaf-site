@@ -4,22 +4,25 @@ import "@testing-library/jest-dom";
 import { vi, type Mock } from "vitest";
 import type { ObserverEntry } from "../observe";
 
-export let targets: Element[] = [];
-export let formerTargets: Element[] = [];
-export const mockRestore = () => {
-  targets = [];
-  formerTargets = [];
+type MockState = {
+  targets: Element[];
+  formerTargets: Element[];
 };
 
+const getInitialMockState = (): MockState => ({ targets: [], formerTargets: [] });
+let mockState = getInitialMockState();
+
 export const observe: Mock<[Element], void> = vi.fn((target) => {
-  targets.push(target);
+  mockState.targets.push(target);
 });
+
 export const unobserve: Mock<[Element], void> = vi.fn((target) => {
-  const i = targets.indexOf(target);
+  const i = mockState.targets.indexOf(target);
   if (i < 0) return;
-  targets.splice(i, 1);
-  formerTargets.push(target);
+  mockState.targets.splice(i, 1);
+  mockState.formerTargets.push(target);
 });
+
 export const disconnect: Mock<[], void> = vi.fn();
 
 export const takeRecords = vi.fn();
@@ -57,7 +60,7 @@ const IntersectionObserverMock: Mock<[() => void, IntersectionObserverInit]> = v
   };
 });
 
-const firstTarget = (): Element | undefined => targets[0] || formerTargets[0];
+const firstTarget = (): Element | undefined => mockState.targets[0] || mockState.formerTargets[0];
 
 type ObserverEntryInit =
   | {
@@ -97,6 +100,21 @@ export const intersect = (arg?: ObserverEntryInit[] | ObserverEntryInit) => {
     throw new Error(`unexpected argument ${arg}`);
   }
   callback(entries.map(createIntersectionObserverEntry));
+};
+
+const originalIntersectionObserver = window.IntersectionObserver;
+export const stub = () => {
+  vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
+  mockState = getInitialMockState();
+};
+
+export const restoreStub = () => {
+  IntersectionObserverMock.mockRestore();
+  mockState = getInitialMockState();
+};
+
+export const unstub = () => {
+  window.IntersectionObserver = originalIntersectionObserver;
 };
 
 export default IntersectionObserverMock;
