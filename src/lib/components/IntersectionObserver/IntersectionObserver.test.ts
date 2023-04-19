@@ -34,7 +34,7 @@ describe("IntersectionObserver", () => {
 
   let component: IntersectionObserverTest;
 
-  const renderWithProps = (props?: ComponentProps<IntersectionObserverTest>) => {
+  const renderWithProps = (props?: Partial<ComponentProps<IntersectionObserverTest>>) => {
     ({ component } = render(IntersectionObserverTest, {
       props: {
         targetTestId,

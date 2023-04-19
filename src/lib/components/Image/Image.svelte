@@ -22,7 +22,7 @@
 
   if (!width || !height) warn("image width or height was missing!");
 
-  $: decoding = loading === "lazy" ? "async" : "auto";
+  $: decoding = loading === "lazy" ? ("async" as const) : ("auto" as const);
 
   const canvasSize = 32;
 
