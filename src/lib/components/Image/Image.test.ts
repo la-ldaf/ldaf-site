@@ -11,12 +11,7 @@ import sampleImageBlurhash, {
 import * as environment from "$app/environment";
 import * as support from "$lib/support";
 import Image from "./Image.svelte";
-import IntersectionObserverMock, {
-  intersect,
-  stub as stubIntersectionObserver,
-  unstub as unstubIntersectionObserver,
-  restoreStub as restoreIntersectionObserverStub,
-} from "../IntersectionObserver/__tests__/IntersectionObserverMock";
+import { mock as intersectionObserverMock } from "../IntersectionObserver/__tests__/IntersectionObserverMock";
 
 vi.mock("$app/environment", () => ({
   browser: false,
@@ -87,18 +82,18 @@ describe("Image", () => {
 
     describe('when loading="lazy" is not available but IntersectionObserver is available', () => {
       beforeAll(() => {
-        stubIntersectionObserver();
-        return () => unstubIntersectionObserver();
+        intersectionObserverMock.setup();
+        return () => intersectionObserverMock.teardown();
       });
       beforeEach(async () => {
         withSupport("intersectionObserverSupport");
         withSupport("lazyImageLoadingSupport", false);
         render(Image, { props: { src: sampleImage, alt: "" } });
-        return () => restoreIntersectionObserverStub();
+        return () => intersectionObserverMock.restore();
       });
       it("renders without src", () => expect(getImage()).not.toHaveAttribute("src"));
       it("adds src on intersect", async () => {
-        intersect();
+        intersectionObserverMock.intersect();
         await waitFor(() => expect(getImage()).toHaveAttribute("src", sampleImage));
       });
     });

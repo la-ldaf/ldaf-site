@@ -1,12 +1,9 @@
 import "@testing-library/jest-dom";
 import { vi, describe, it, expect } from "vitest";
 import IntersectionObserverMock, {
-  intersect,
-  observe,
-  callback,
+  mock as intersectionObserverMock,
 } from "./__tests__/IntersectionObserverMock";
-
-vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
+const { intersect } = intersectionObserverMock;
 
 import { getRootObserver, type RootObserver } from "./observe";
 
@@ -14,15 +11,25 @@ let rootObserver: RootObserver;
 
 const getRootObserverOptions = { rootMargin: "100px" };
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-beforeEach(() => (rootObserver = getRootObserver(getRootObserverOptions)!));
-afterEach(() => vi.restoreAllMocks());
+beforeAll(() => {
+  intersectionObserverMock.setup();
+  return () => intersectionObserverMock.teardown();
+});
+
+beforeEach(() => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  rootObserver = getRootObserver(getRootObserverOptions)!;
+  return () => {
+    vi.restoreAllMocks();
+    intersectionObserverMock.restore();
+  };
+});
 
 describe("getRootObserver", () => {
   it("returns a root observer", () => {
     expect(IntersectionObserverMock).toHaveBeenCalledTimes(1);
     expect(IntersectionObserverMock.mock.calls[0]).toMatchObject([
-      callback,
+      intersectionObserverMock.callback,
       getRootObserverOptions,
     ]);
     expect(rootObserver).toBeDefined();
@@ -39,36 +46,37 @@ describe("RootObserver", () => {
     beforeEach(() => rootObserver.observe(element, callback));
 
     it("calls IntersectionObserver when observing", () => {
+      const { observe } = intersectionObserverMock;
       expect(observe).toHaveBeenCalledOnce();
       expect(observe).toHaveBeenCalledWith(element);
     });
 
     it("observes an element", () => {
-      intersect([{ target: element, isIntersecting: false }]);
+      intersect(false);
       expect(callback).toHaveBeenCalledOnce();
       expect(callback).toHaveBeenCalledWith({ target: element, isIntersecting: false });
       callback.mockRestore();
 
-      intersect([{ target: element, isIntersecting: true }]);
+      intersect();
       expect(callback).toHaveBeenCalledOnce();
       expect(callback).toHaveBeenCalledWith({ target: element, isIntersecting: true });
     });
 
     it("ignores other elements", () => {
       const anotherElement = document.createElement("div");
-      intersect([{ target: anotherElement, isIntersecting: true }]);
+      intersect({ target: anotherElement, isIntersecting: true });
       expect(callback).not.toHaveBeenCalled();
 
       const anotherCallback = vi.fn();
       rootObserver.observe(anotherElement, anotherCallback);
-      intersect([{ target: anotherElement, isIntersecting: true }]);
+      intersect({ target: anotherElement, isIntersecting: true });
       expect(anotherCallback).toHaveBeenCalled();
       expect(callback).not.toHaveBeenCalled();
     });
 
     it("unobserves an element", () => {
       rootObserver.unobserve(element);
-      intersect([{ target: element, isIntersecting: true }]);
+      intersect();
       expect(callback).not.toHaveBeenCalled();
     });
   });
@@ -76,15 +84,15 @@ describe("RootObserver", () => {
   describe('with "once" option', () => {
     beforeEach(() => rootObserver.observe(element, callback, { once: true }));
     it("observes an element intersect once", () => {
-      intersect([{ target: element, isIntersecting: false }]);
+      intersect(false);
       expect(callback).toHaveBeenCalledOnce();
       expect(callback).toHaveBeenLastCalledWith({ target: element, isIntersecting: false });
 
-      intersect([{ target: element, isIntersecting: true }]);
+      intersect();
       expect(callback).toHaveBeenCalledTimes(2);
       expect(callback).toHaveBeenLastCalledWith({ target: element, isIntersecting: true });
 
-      intersect([{ target: element, isIntersecting: true }]);
+      intersect();
       expect(callback).toHaveBeenCalledTimes(2);
     });
   });

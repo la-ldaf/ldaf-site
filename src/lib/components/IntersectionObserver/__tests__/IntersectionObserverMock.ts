@@ -4,28 +4,50 @@ import "@testing-library/jest-dom";
 import { vi, type Mock } from "vitest";
 import type { ObserverEntry } from "../observe";
 
-type MockState = {
+type IntersectionObserverType = Pick<
+  (typeof IntersectionObserver)["prototype"],
+  keyof (typeof IntersectionObserver)["prototype"]
+>;
+
+type Instance = {
+  callback: IntersectionObserverCallback;
   targets: Element[];
   formerTargets: Element[];
+  observer: IntersectionObserverType;
 };
 
-const getInitialMockState = (): MockState => ({ targets: [], formerTargets: [] });
-let mockState = getInitialMockState();
+const getInitialInstance = (
+  callback: IntersectionObserverCallback,
+  observer: IntersectionObserverType
+): Instance => ({ callback, observer, targets: [], formerTargets: [] });
 
-export const observe: Mock<[Element], void> = vi.fn((target) => {
-  mockState.targets.push(target);
-});
+let instances: Instance[] = [];
 
-export const unobserve: Mock<[Element], void> = vi.fn((target) => {
-  const i = mockState.targets.indexOf(target);
-  if (i < 0) return;
-  mockState.targets.splice(i, 1);
-  mockState.formerTargets.push(target);
-});
+const getObserve: (i: number) => Mock<[Element], void> = (i) =>
+  vi.fn((target) => {
+    instances[i].targets.push(target);
+  });
 
-export const disconnect: Mock<[], void> = vi.fn();
+const getUnobserve: (i: number) => Mock<[Element], void> = (i) =>
+  vi.fn((target) => {
+    const targetI = instances[i].targets.indexOf(target);
+    if (targetI < 0) return;
+    instances[i].targets.splice(targetI, 1);
+    instances[i].formerTargets.push(target);
+  });
 
-export const takeRecords = vi.fn();
+const getDisconnect: (i: number) => Mock<[], void> = (i) =>
+  vi.fn(() => {
+    instances[i].formerTargets.push(...instances[i].targets);
+    instances[i].targets = [];
+  });
+
+const getTakeRecords: (i: number) => Mock<[], IntersectionObserverEntry[]> = (i: number) =>
+  vi.fn(() =>
+    instances[i].targets.map((target) =>
+      createIntersectionObserverEntry({ target, isIntersecting: true })
+    )
+  );
 
 export const createIntersectionObserverEntry = ({
   target,
@@ -46,21 +68,31 @@ export const createIntersectionObserverEntry = ({
   };
 };
 
-export let callback: (entries: IntersectionObserverEntry[]) => void;
-export let options: IntersectionObserverInit;
+const IntersectionObserverMock: Mock<[() => void, IntersectionObserverInit]> = vi.fn(
+  (callback, { root = null, rootMargin, threshold = null }) => {
+    const i = instances.length;
+    const observer: IntersectionObserverType = {
+      root,
+      rootMargin: rootMargin ?? "",
+      thresholds: Array.isArray(threshold) ? threshold : threshold ? [threshold] : [0],
+      disconnect: getDisconnect(i),
+      observe: getObserve(i),
+      takeRecords: getTakeRecords(i),
+      unobserve: getUnobserve(i),
+    };
+    const instance = getInitialInstance(callback, observer);
+    instances.push(instance);
+    return observer;
+  }
+);
 
-const IntersectionObserverMock: Mock<[() => void, IntersectionObserverInit]> = vi.fn((cb, opts) => {
-  callback = cb;
-  options = opts;
-  return {
-    disconnect,
-    observe,
-    takeRecords,
-    unobserve,
-  };
-});
+const getInstance = (stateIndex = 0): Instance | undefined => instances[stateIndex];
 
-const firstTarget = (): Element | undefined => mockState.targets[0] || mockState.formerTargets[0];
+const getTarget = (stateIndex = 0, targetIndex = 0): Element | undefined => {
+  const instance = getInstance(stateIndex);
+  if (!instance) return;
+  return instance.targets[targetIndex] || instance.formerTargets[targetIndex];
+};
 
 type ObserverEntryInit =
   | {
@@ -70,27 +102,31 @@ type ObserverEntryInit =
   | boolean
   | undefined;
 
-const observerEntryInit = (init: ObserverEntryInit): ObserverEntry => {
-  const defaultTarget = firstTarget();
-  if ((typeof init === "boolean" || init === undefined || !init.target) && !defaultTarget) {
-    throw new Error("could not initialize observer entry without a target");
-  }
-  if (init === undefined) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return { target: defaultTarget!, isIntersecting: true };
-  }
-  if (typeof init === "boolean") {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return { target: defaultTarget!, isIntersecting: init };
-  }
-  return {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    target: (init.target || firstTarget())!,
-    isIntersecting: init.isIntersecting === undefined ? true : init.isIntersecting,
+const getObserverEntryInit =
+  (i: number) =>
+  (init: ObserverEntryInit): ObserverEntry => {
+    const defaultTarget = getTarget(i);
+    if ((typeof init === "boolean" || init === undefined || !init.target) && !defaultTarget) {
+      console.trace();
+      throw new Error("could not initialize observer entry without a target");
+    }
+    if (init === undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return { target: defaultTarget!, isIntersecting: true };
+    }
+    if (typeof init === "boolean") {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return { target: defaultTarget!, isIntersecting: init };
+    }
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      target: (init.target || defaultTarget)!,
+      isIntersecting: init.isIntersecting === undefined ? true : init.isIntersecting,
+    };
   };
-};
 
-export const intersect = (arg?: ObserverEntryInit[] | ObserverEntryInit) => {
+const getIntersect = (i: number) => (arg?: ObserverEntryInit[] | ObserverEntryInit) => {
+  const observerEntryInit = getObserverEntryInit(i);
   let entries: ObserverEntry[];
   if (Array.isArray(arg)) {
     entries = arg.map(observerEntryInit);
@@ -99,22 +135,51 @@ export const intersect = (arg?: ObserverEntryInit[] | ObserverEntryInit) => {
   } else {
     throw new Error(`unexpected argument ${arg}`);
   }
-  callback(entries.map(createIntersectionObserverEntry));
+  const instance = getInstance(i);
+  if (!instance) throw new Error(`could not find instance for index ${i}`);
+  instance.callback(entries.map(createIntersectionObserverEntry), instance.observer);
 };
 
 const originalIntersectionObserver = window.IntersectionObserver;
-export const stub = () => {
-  vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
-  mockState = getInitialMockState();
-};
 
-export const restoreStub = () => {
-  IntersectionObserverMock.mockRestore();
-  mockState = getInitialMockState();
-};
+export const mock = {
+  setup: () => {
+    instances = [];
+    vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
+  },
+  restore: () => {
+    instances = [];
+    IntersectionObserverMock.mockRestore();
+  },
+  teardown: () => {
+    instances = [];
+    window.IntersectionObserver = originalIntersectionObserver;
+  },
 
-export const unstub = () => {
-  window.IntersectionObserver = originalIntersectionObserver;
+  get instances() {
+    return instances;
+  },
+
+  get intersect() {
+    return getIntersect(0);
+  },
+
+  get observe() {
+    return this.instances[0]?.observer?.observe;
+  },
+  get unobserve() {
+    return this.instances[0]?.observer?.unobserve;
+  },
+  get disconnect() {
+    return this.instances[0]?.observer?.disconnect;
+  },
+  get takeRecords() {
+    return this.instances[0]?.observer?.takeRecords;
+  },
+
+  get callback() {
+    return this.instances[0]?.callback;
+  },
 };
 
 export default IntersectionObserverMock;

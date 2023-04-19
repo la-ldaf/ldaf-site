@@ -4,14 +4,10 @@ import type { ComponentProps } from "svelte";
 import { vi, describe, it, expect } from "vitest";
 
 import IntersectionObserverMock, {
-  observe as intersectionObserverObserve,
-  callback as intersectionObserverCallback,
-  intersect,
-  unobserve as intersectionObserverUnobserve,
-  stub as stubIntersectionObserver,
-  unstub as unstubIntersectionObserver,
-  restoreStub as restoreIntersectionObserverStub,
+  mock as intersectionObserverMock,
 } from "./__tests__/IntersectionObserverMock";
+const { intersect, observe, unobserve } = intersectionObserverMock;
+
 import IntersectionObserverTest from "./__tests__/IntersectionObserverTest.svelte";
 import * as environment from "$app/environment";
 
@@ -22,14 +18,14 @@ vi.mock("$app/environment", () => ({
 const withBrowser = (value = true) => ((environment as Record<"browser", boolean>).browser = value);
 
 beforeAll(() => {
-  stubIntersectionObserver();
-  return () => unstubIntersectionObserver();
+  intersectionObserverMock.setup();
+  return () => intersectionObserverMock.teardown();
 });
 
 beforeEach(() => withBrowser());
 afterEach(() => {
   vi.restoreAllMocks();
-  restoreIntersectionObserverStub();
+  intersectionObserverMock.restore();
 });
 
 describe("IntersectionObserver", () => {
@@ -55,8 +51,8 @@ describe("IntersectionObserver", () => {
 
     it("sets up an IntersectionObserver", async () => {
       expect(IntersectionObserverMock).toHaveBeenCalledOnce();
-      expect(IntersectionObserverMock).toHaveBeenCalledWith(intersectionObserverCallback, {});
-      expect(intersectionObserverObserve).toHaveBeenCalledOnce();
+      expect(IntersectionObserverMock).toHaveBeenCalledWith(intersectionObserverMock.callback, {});
+      expect(intersectionObserverMock.observe).toHaveBeenCalledOnce();
     });
 
     it("emits an event on intersection", async () => {
@@ -77,7 +73,7 @@ describe("IntersectionObserver", () => {
       component.$on("intersect", onIntersect);
       intersect();
       await waitFor(() => expect(onIntersect).toHaveBeenCalledOnce());
-      expect(intersectionObserverUnobserve).toHaveBeenCalledOnce();
+      expect(intersectionObserverMock.unobserve).toHaveBeenCalledOnce();
       intersect(false);
       intersect();
       await waitFor(() => screen.findByText(intersectingText));
