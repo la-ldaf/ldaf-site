@@ -6,7 +6,7 @@ import { vi, describe, it, expect } from "vitest";
 import IntersectionObserverMock, {
   mock as intersectionObserverMock,
 } from "./__tests__/IntersectionObserverMock";
-const { intersect, observe, unobserve } = intersectionObserverMock;
+const { intersect } = intersectionObserverMock;
 
 import IntersectionObserverTest from "./__tests__/IntersectionObserverTest.svelte";
 import * as environment from "$app/environment";
