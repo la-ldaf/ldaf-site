@@ -20,7 +20,7 @@
     "chromatic": "chromatic"
   },
   "devDependencies": {
-    "@playwright/test": "^1.28.1",
+    "@playwright/test": "^1.32.3",
     "@poppanator/sveltekit-svg": "^3.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-terser": "^0.4.1",
