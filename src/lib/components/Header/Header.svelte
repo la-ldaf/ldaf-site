@@ -53,7 +53,7 @@
 
         <!-- TODO: Replace with <Search/> component. -->
         <section aria-label="Search component">
-          <form class="usa-search usa-search--small " role="search">
+          <form class="usa-search usa-search--small" role="search">
             <label class="usa-sr-only" for="search-field"> Search </label>
             <input class="usa-input" id="search-field" type="search" name="search" />
             <button class="usa-button" type="submit">
