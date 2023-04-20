@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
-import ProseDecorator from "./decorators/Prose.svelte";
+import ProseDecorator from "./decorators/ProseDecorator.svelte";
 import Link from "./LinkView.svelte";
 
 const meta = {

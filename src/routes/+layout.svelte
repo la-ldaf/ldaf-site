@@ -8,6 +8,9 @@
   import Footer from "$lib/components/landingPage/Footer.svelte";
   import Header from "$lib/components/Header";
   import Identifier from "$lib/components/landingPage/Identifier.svelte";
+  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
+  import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
+  import { BlurhashRenderer } from "$lib/components/Image";
 
   export let data;
   const { navItems }: { navItems: NavItemType[] } = data;
@@ -25,12 +28,16 @@
   $: if ($navigating) navMenuExpanded = false;
 </script>
 
-<a class="usa-skipnav" href="#main-content">Skip to main content</a>
-<Banner />
-<div class="usa-overlay" />
-<Header {navItems} bind:navMenuExpanded />
-<main id="main-content">
-  <slot />
-</main>
-<Footer />
-<Identifier />
+<RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
+  <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+  <Banner />
+  <div class="usa-overlay" />
+  <Header {navItems} bind:navMenuExpanded />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer />
+  <Identifier />
+</RootIntersectionObserver>
+
+<BlurhashRenderer />

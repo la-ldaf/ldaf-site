@@ -1,6 +1,13 @@
-<script>
+<script lang="ts">
+  import sampleImage from "../sample.jpg";
+  import sampleImageBlurhash, {
+    width as sampleImageWidth,
+    height as sampleImageHeight,
+    mean as sampleImageMean,
+  } from "../sample.jpg?blurhash";
   import GraphicList from "$lib/components/landingPage/GraphicList.svelte";
   import Hero from "$lib/components/landingPage/Hero.svelte";
+  import Image from "$lib/components/Image";
 </script>
 
 <Hero />
@@ -22,6 +29,7 @@
         do you do your work? Write in the present tense, and stay brief here. People who are
         interested can find details on internal pages.
       </p>
+      <a class="usa-button usa-button--big" href="/">Call to action</a>
     </div>
   </div>
 </section>
@@ -36,5 +44,13 @@
       in touch,” “Learn more,” and so on.
     </p>
     <a class="usa-button usa-button--big" href="/">Call to action</a>
+    <Image
+      alt=""
+      src={sampleImage}
+      blurhash={sampleImageBlurhash}
+      width={sampleImageWidth}
+      height={sampleImageHeight}
+      mean={sampleImageMean}
+    />
   </div>
 </section>
