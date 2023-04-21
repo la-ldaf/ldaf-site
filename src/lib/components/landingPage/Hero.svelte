@@ -1,9 +1,9 @@
 <script lang="ts">
   import "./Hero.scss";
-  import heroImg from "@uswds/uswds/img/hero.jpg?quality=75";
-  import heroImgMobile from "@uswds/uswds/img/hero.jpg?quality=75&w=412";
-  import heroImgWebp from "@uswds/uswds/img/hero.jpg?webp&quality=75";
-  import heroImgWebpMobile from "@uswds/uswds/img/hero.jpg?webp&quality=75&w=412";
+  import heroImg from "@uswds/uswds/img/hero.jpg?quality=75&imagetools";
+  import heroImgMobile from "@uswds/uswds/img/hero.jpg?quality=75&w=412&imagetools";
+  import heroImgWebp from "@uswds/uswds/img/hero.jpg?webp&quality=75&imagetools";
+  import heroImgWebpMobile from "@uswds/uswds/img/hero.jpg?webp&quality=75&w=412&imagetools";
   import heroImgBlurhash, {
     width as heroImgWidth,
     height as heroImgHeight,

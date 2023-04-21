@@ -1,8 +1,8 @@
 <script lang="ts">
-  import sampleImage from "../sample.jpg?quality=75";
-  import sampleImageMobile from "../sample.jpg?quality=75&w=412";
-  import sampleImageWebp from "../sample.jpg?webp&quality=75";
-  import sampleImageWebpMobile from "../sample.jpg?webp&quality=75&w=412";
+  import sampleImage from "../sample.jpg?quality=75&imagetools";
+  import sampleImageMobile from "../sample.jpg?quality=75&w=412&imagetools";
+  import sampleImageWebp from "../sample.jpg?webp&quality=75&imagetools";
+  import sampleImageWebpMobile from "../sample.jpg?webp&quality=75&w=412&imagetools";
   import sampleImageBlurhash, {
     width as sampleImageWidth,
     height as sampleImageHeight,
