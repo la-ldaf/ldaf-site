@@ -2,7 +2,7 @@ import type { PlaywrightTestConfig } from "@playwright/test";
 
 const config: PlaywrightTestConfig = {
   testDir: "e2e-tests",
-  timeout: 60 * 60 * 1000,
+  globalTimeout: 60 * 60 * 1000,
   // retry once in CI
   retries: process.env.CI ? 1 : 0,
   // limit number of concurrent workers in CI, use default locally
