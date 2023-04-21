@@ -7,6 +7,9 @@
   import warn from "$lib/util/warn";
   import type { Loading, LazyLoading, Color } from "./types";
 
+  export let height: undefined | number = undefined;
+  export let width: undefined | number = undefined;
+
   export let src: string;
 
   // Tuple of [src, width]
@@ -21,9 +24,12 @@
   };
 
   const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
-    [defaultSrc, ...(widths ?? []).map(([source, width]) => `${source} ${width}w`)]
-      .reverse()
-      .join(", ");
+    [
+      ...(widths ?? []).flatMap(([source, sourceWidth]) =>
+        !width || width >= sourceWidth ? [`${source} ${sourceWidth}w`] : []
+      ),
+      defaultSrc,
+    ].join(", ");
 
   type Sources = Source[];
 
@@ -31,8 +37,6 @@
 
   export let alt: string;
   export let loading: Loading = "lazy";
-  export let height: undefined | number = undefined;
-  export let width: undefined | number = undefined;
   export let blurhash: undefined | string = undefined;
   export let mean: undefined | Color = undefined;
   let className: string | undefined = undefined;
