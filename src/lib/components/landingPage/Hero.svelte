@@ -19,7 +19,7 @@
     src={heroImg}
     sources={[
       { type: "image/webp", srcset: [heroImgWebp, [heroImgWebpMobile, 412]] },
-      { type: "image/jpg", srcset: [heroImg, [heroImgMobile, 412]] },
+      { type: "image/jpeg", srcset: [heroImg, [heroImgMobile, 412]] },
     ]}
     blurhash={heroImgBlurhash}
     width={heroImgWidth}
