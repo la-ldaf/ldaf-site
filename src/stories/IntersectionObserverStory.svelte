@@ -11,7 +11,7 @@
     (resolve) => (resolveViewElement = resolve)
   );
   $: if (resolveViewElement && viewElement) resolveViewElement(viewElement);
-  let childElements: HTMLDivElement[] = [];
+  const childElements: HTMLDivElement[] = [];
 </script>
 
 <RootIntersectionObserver rootMargin="-25% 0px -25% 0px" root={viewElementPromise}>
