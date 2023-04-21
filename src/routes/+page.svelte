@@ -1,5 +1,8 @@
 <script lang="ts">
-  import sampleImage from "../sample.jpg";
+  import sampleImage from "../sample.jpg?quality=75";
+  import sampleImageMobile from "../sample.jpg?quality=75&w=412";
+  import sampleImageWebp from "../sample.jpg?webp&quality=75";
+  import sampleImageWebpMobile from "../sample.jpg?webp&quality=75&w=412";
   import sampleImageBlurhash, {
     width as sampleImageWidth,
     height as sampleImageHeight,
@@ -47,6 +50,10 @@
     <Image
       alt=""
       src={sampleImage}
+      sources={[
+        { type: "image/webp", srcset: [sampleImageWebp, [sampleImageWebpMobile, 412]] },
+        { type: "image/jpeg", srcset: [sampleImage, [sampleImageMobile, 412]] },
+      ]}
       blurhash={sampleImageBlurhash}
       width={sampleImageWidth}
       height={sampleImageHeight}

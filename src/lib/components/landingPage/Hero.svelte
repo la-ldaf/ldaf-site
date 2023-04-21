@@ -1,6 +1,9 @@
 <script lang="ts">
   import "./Hero.scss";
-  import heroImg from "@uswds/uswds/img/hero.jpg";
+  import heroImg from "@uswds/uswds/img/hero.jpg?quality=75";
+  import heroImgMobile from "@uswds/uswds/img/hero.jpg?quality=75&w=412";
+  import heroImgWebp from "@uswds/uswds/img/hero.jpg?webp&quality=75";
+  import heroImgWebpMobile from "@uswds/uswds/img/hero.jpg?webp&quality=75&w=412";
   import heroImgBlurhash, {
     width as heroImgWidth,
     height as heroImgHeight,
@@ -14,6 +17,10 @@
     alt=""
     class="usa-hero__bg-img"
     src={heroImg}
+    sources={[
+      { type: "image/webp", srcset: [heroImgWebp, [heroImgWebpMobile, 412]] },
+      { type: "image/jpg", srcset: [heroImg, [heroImgMobile, 412]] },
+    ]}
     blurhash={heroImgBlurhash}
     width={heroImgWidth}
     height={heroImgHeight}

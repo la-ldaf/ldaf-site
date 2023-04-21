@@ -8,6 +8,27 @@
   import type { Loading, LazyLoading, Color } from "./types";
 
   export let src: string;
+
+  // Tuple of [src, width]
+  type SrcsetDefault = string;
+  type SrcsetWidth = [string, number];
+  type Srcset = [SrcsetDefault, ...SrcsetWidth[]];
+
+  type Source = {
+    media?: string;
+    type?: `image/${string}`;
+    srcset: Srcset;
+  };
+
+  const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
+    [defaultSrc, ...(widths ?? []).map(([source, width]) => `${source} ${width}w`)]
+      .reverse()
+      .join(", ");
+
+  type Sources = Source[];
+
+  export let sources: Sources = [];
+
   export let alt: string;
   export let loading: Loading = "lazy";
   export let height: undefined | number = undefined;
@@ -114,15 +135,20 @@
         <img {...imgProps} class="ldaf-img__backup-img" {src} alt="" />
       </noscript>
     {/if}
-    <img
-      {...imgProps}
-      alt=""
-      class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
-      on:load={() => (imageLoaded = true)}
-      {loading}
-      {decoding}
-      {...srcProps}
-    />
+    <picture>
+      {#each sources as { media, type, srcset }}
+        <source {media} {type} srcset={getSrcsetAttr(srcset)} />
+      {/each}
+      <img
+        {...imgProps}
+        alt=""
+        class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
+        on:load={() => (imageLoaded = true)}
+        {loading}
+        {decoding}
+        {...srcProps}
+      />
+    </picture>
     {#if blurhash}
       <canvas
         class="ldaf-img__blur-bg"
