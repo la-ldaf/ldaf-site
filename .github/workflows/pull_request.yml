@@ -40,8 +40,6 @@ jobs:
         run: npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
-      - name: Set blank environment variables
-        run: set -a; source .env.ci; set +a;
       - name: Build site and run end-to-end tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v3
