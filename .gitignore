@@ -12,3 +12,5 @@ coverage
 build-storybook.log
 /storybook-static
 .vercel
+e2e-tests/report
+e2e-tests/results
