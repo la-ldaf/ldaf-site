@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, getContext, hasContext, onMount } from "svelte";
+  import { createEventDispatcher, getContext, hasContext } from "svelte";
   import { browser } from "$app/environment";
   import warn from "$lib/util/warn";
   import { getRootObserver, type RootObserver } from "./observe";
@@ -33,12 +33,11 @@
   observerPromise.then((resolved) => (observer = resolved));
 
   $: if (enabled && observer) {
-    // If the target has been changed, unobserve the previous target
-    if (lastTarget && target !== lastTarget) observer.unobserve(lastTarget);
-    if (!target) break $;
     if (target === lastTarget) break $;
-    observer.observe(target, ({ isIntersecting }) => (intersecting = isIntersecting), { once });
+    if (lastTarget) observer.unobserve(lastTarget);
     lastTarget = target;
+    if (!target) break $;
+    observer.observe(target, ({ isIntersecting }) => (intersecting = isIntersecting), { once });
   }
 </script>
 

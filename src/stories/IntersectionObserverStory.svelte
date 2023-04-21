@@ -6,11 +6,11 @@
   let numberOfChildren = 25;
 
   let viewElement: HTMLDivElement;
-  let resolveViewElementPromise: (viewElement: Element) => void;
+  let resolveViewElement: (viewElement: Element) => void;
   const viewElementPromise = new Promise<Element | undefined>(
-    (resolve) => (resolveViewElementPromise = resolve)
+    (resolve) => (resolveViewElement = resolve)
   );
-  $: if (resolveViewElementPromise && viewElement) resolveViewElementPromise(viewElement);
+  $: if (resolveViewElement && viewElement) resolveViewElement(viewElement);
   let childElements: HTMLDivElement[] = [];
 </script>
 
