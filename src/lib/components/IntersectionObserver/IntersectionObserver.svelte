@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, getContext, hasContext } from "svelte";
+  import { createEventDispatcher, getContext, hasContext, onMount } from "svelte";
   import { browser } from "$app/environment";
   import warn from "$lib/util/warn";
   import { getRootObserver, type RootObserver } from "./observe";
@@ -16,16 +16,21 @@
   let intersecting = false;
   $: if (enabled && intersecting) dispatch("intersect");
 
+  let observerPromise: Promise<RootObserver | undefined>;
   let observer: RootObserver | undefined;
 
   if (enabled && browser && hasContext(key)) {
-    observer = getContext<RootObserver>(key);
+    observerPromise = getContext<Promise<RootObserver | undefined>>(key);
   } else if (browser && enabled) {
     warn(
       "<IntersectionObserver> was not wrapped in a <RootIntersectionObserver>. It will continue to work, but it is more efficient to wrap the page in a single <RootIntersectionObserver> that can be used by all <IntersectionObserver> components. A <RootIntersectionObserver> also allows you to pass options to the IntersectionObserver used behind the scenes."
     );
-    observer = getRootObserver();
+    observerPromise = new Promise((resolve) => onMount(() => resolve(getRootObserver())));
+  } else {
+    observerPromise = Promise.resolve(undefined);
   }
+
+  observerPromise.then((resolved) => (observer = resolved));
 
   $: if (enabled && observer) {
     // If the target has been changed, unobserve the previous target
