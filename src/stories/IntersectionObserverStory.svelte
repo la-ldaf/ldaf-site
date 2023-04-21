@@ -18,11 +18,7 @@
   <div class="view" bind:this={viewElement}>
     <div class="viewBorder" />
     {#each { length: numberOfChildren } as _, i}
-      <IntersectionObserver
-        let:intersecting
-        on:intersect={() => console.log(childElements[i])}
-        target={childElements[i]}
-      >
+      <IntersectionObserver let:intersecting target={childElements[i]}>
         <div
           class={classNames("child", intersecting && "intersecting")}
           bind:this={childElements[i]}

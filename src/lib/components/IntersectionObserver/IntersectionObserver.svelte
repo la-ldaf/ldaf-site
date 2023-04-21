@@ -25,7 +25,7 @@
     warn(
       "<IntersectionObserver> was not wrapped in a <RootIntersectionObserver>. It will continue to work, but it is more efficient to wrap the page in a single <RootIntersectionObserver> that can be used by all <IntersectionObserver> components. A <RootIntersectionObserver> also allows you to pass options to the IntersectionObserver used behind the scenes."
     );
-    observerPromise = new Promise((resolve) => onMount(() => resolve(getRootObserver())));
+    observerPromise = Promise.resolve(getRootObserver());
   } else {
     observerPromise = Promise.resolve(undefined);
   }
@@ -36,6 +36,7 @@
     // If the target has been changed, unobserve the previous target
     if (lastTarget && target !== lastTarget) observer.unobserve(lastTarget);
     if (!target) break $;
+    if (target === lastTarget) break $;
     observer.observe(target, ({ isIntersecting }) => (intersecting = isIntersecting), { once });
     lastTarget = target;
   }

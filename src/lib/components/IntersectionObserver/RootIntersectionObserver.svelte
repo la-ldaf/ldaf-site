@@ -1,23 +1,24 @@
 <script lang="ts">
   import { getRootObserver, type RootObserver } from "./observe";
-  import { onMount, setContext } from "svelte";
+  import { setContext } from "svelte";
   import key from "./key";
   import { browser } from "$app/environment";
 
-  type Root = Element | undefined;
+  type RootOption = Element | undefined;
 
-  export let root: Root | Promise<Root> = undefined;
+  export let root: RootOption | Promise<RootOption> = undefined;
   export let rootMargin: string | undefined = undefined;
   export let enabled = true;
 
-  const rootObserverPromise = new Promise<RootObserver | undefined>((resolve) =>
-    browser
-      ? onMount(async () => resolve(getRootObserver({ root: await root, rootMargin })))
-      : resolve(undefined)
-  );
+  const getRootObserverPromise = async (): Promise<RootObserver | undefined> => {
+    if (!browser) return undefined;
+    if (!root) return getRootObserver({ rootMargin });
+    if (root instanceof Element) return getRootObserver({ root, rootMargin });
+    if (root instanceof Promise) return getRootObserver({ root: await root, rootMargin });
+  };
 
   if (enabled && browser) {
-    setContext<Promise<RootObserver | undefined>>(key, rootObserverPromise);
+    setContext<Promise<RootObserver | undefined>>(key, getRootObserverPromise());
   }
 </script>
 
