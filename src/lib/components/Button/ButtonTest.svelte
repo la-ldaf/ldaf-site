@@ -3,7 +3,7 @@
   import Button from "./Button.svelte";
 
   type $$Props = ComponentProps<Button> & {
-    slot: string;
+    slot?: string;
   };
 
   export let slot: string | undefined = "Button";
