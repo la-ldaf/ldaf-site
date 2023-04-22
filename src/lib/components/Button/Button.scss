@@ -51,9 +51,11 @@ $colors: (
   color: map.get($colors, "primary");
   background: #fff;
   &:hover {
+    color: map.get($colors, "primary");
     background: map.get($colors, "gray-05");
   }
   &:active {
+    color: map.get($colors, "primary");
     background: map.get($colors, "primary-lightest");
   }
   &:disabled {
@@ -84,15 +86,18 @@ $colors: (
   background: none;
   color: map.get($colors, "primary");
   border: 2px solid map.get($colors, "primary");
+  box-shadow: none;
   &:hover {
     background: none;
     color: map.get($colors, "primary-dark");
     border: 2px solid map.get($colors, "primary-dark");
+    box-shadow: none;
   }
   &:active {
     background: none;
     color: map.get($colors, "base-darker");
     border: 2px solid map.get($colors, "base-darker");
+    box-shadow: none;
   }
   &:disabled {
     background: none;
