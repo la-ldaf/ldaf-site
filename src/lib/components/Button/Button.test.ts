@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
-import ButtonTest from "./ButtonTest.svelte";
+import ButtonTest from "./__tests__/ButtonTest.svelte";
 
 describe("Button", () => {
   it("renders", async () => {
