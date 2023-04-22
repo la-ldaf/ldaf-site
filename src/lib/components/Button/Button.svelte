@@ -1,7 +1,8 @@
 <script lang="ts">
-  import "@uswds/uswds/scss/usa-button";
+  import "./Button.scss";
   import classNames from "$lib/util/classNames";
-  import type { Variant, Size, Type } from "./buttonOptions";
+  import type { Variant, Type } from "./buttonOptions";
+  import warn from "$lib/util/warn";
 
   export let disabled = false;
 
@@ -11,17 +12,20 @@
 
   const variantClassesDict: Record<Variant, string[]> = {
     primary: [],
-    secondary: ["usa-button--secondary"],
     base: ["usa-button--base"],
-    "accent-cool": ["usa-button--accent-cool"],
-    "accent-warm": ["usa-button--accent-warm"],
+    inverse: ["usa-button--inverse"],
+    "text-only": ["usa-button--text-only"],
     outline: ["usa-button--outline"],
-    "outline-inverse": ["usa-button--outline", "usa-button--inverse"],
+    "outline-inverse": ["usa-button--outline-inverse"],
+    big: ["usa-button--big"],
+    "big-inverse": ["usa-button--big-inverse"],
   };
 
-  $: variantClasses = variantClassesDict[variant];
+  $: variantClasses = unstyled ? [] : variantClassesDict[variant];
 
-  export let size: Size = "normal";
+  $: if (unstyled && variant !== "primary") {
+    warn("variant has no effect on an unstyled button!");
+  }
 
   export let type: Type = "button";
 
@@ -33,13 +37,7 @@
   {type}
   {disabled}
   aria-disabled={disabled}
-  class={classNames(
-    "usa-button",
-    unstyled && "usa-button--unstyled",
-    size === "big" && "usa-button--big",
-    ...variantClasses,
-    className
-  )}
+  class={classNames("usa-button", unstyled && "usa-button--unstyled", ...variantClasses, className)}
   on:click
 >
   <slot>Button</slot>

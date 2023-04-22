@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
-import Button, { variants, sizes, types } from "$lib/components/Button";
+import Button, { variants, types } from "$lib/components/Button";
+import DarkBackgroundDecorator from "./decorators/DarkBackgroundDecorator.svelte";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/svelte/writing-stories/introduction
 const meta = {
@@ -11,10 +12,6 @@ const meta = {
     variant: {
       control: { type: "select" },
       options: variants,
-    },
-    size: {
-      control: { type: "select" },
-      options: sizes,
     },
     type: {
       control: { type: "select" },
@@ -31,27 +28,15 @@ export const Primary: Story = {
   args: {},
 };
 
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-  },
-};
-
 export const Base: Story = {
   args: {
     variant: "base",
   },
 };
 
-export const AccentCool: Story = {
+export const TextOnly: Story = {
   args: {
-    variant: "accent-cool",
-  },
-};
-
-export const AccentWarm: Story = {
-  args: {
-    variant: "accent-warm",
+    variant: "text-only",
   },
 };
 
@@ -62,6 +47,8 @@ export const Outline: Story = {
 };
 
 export const OutlineInverse: Story = {
+  // @ts-expect-error annoying
+  decorators: [() => DarkBackgroundDecorator],
   args: {
     variant: "outline-inverse",
   },
@@ -69,6 +56,14 @@ export const OutlineInverse: Story = {
 
 export const Big: Story = {
   args: {
-    size: "big",
+    variant: "big",
+  },
+};
+
+export const BigInverse: Story = {
+  // @ts-expect-error annoying
+  decorators: [() => DarkBackgroundDecorator],
+  args: {
+    variant: "big-inverse",
   },
 };
