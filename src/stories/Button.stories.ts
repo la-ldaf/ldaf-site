@@ -34,6 +34,14 @@ export const Base: Story = {
   },
 };
 
+export const Inverse: Story = {
+  // @ts-expect-error annoying
+  decorators: [() => DarkBackgroundDecorator],
+  args: {
+    variant: "inverse",
+  },
+};
+
 export const TextOnly: Story = {
   args: {
     variant: "text-only",
