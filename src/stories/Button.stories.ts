@@ -35,8 +35,9 @@ export const Base: Story = {
 };
 
 export const Inverse: Story = {
-  // @ts-expect-error annoying
-  decorators: [() => DarkBackgroundDecorator],
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
   args: {
     variant: "inverse",
   },
@@ -55,8 +56,9 @@ export const Outline: Story = {
 };
 
 export const OutlineInverse: Story = {
-  // @ts-expect-error annoying
-  decorators: [() => DarkBackgroundDecorator],
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
   args: {
     variant: "outline-inverse",
   },
@@ -69,8 +71,9 @@ export const Big: Story = {
 };
 
 export const BigInverse: Story = {
-  // @ts-expect-error annoying
-  decorators: [() => DarkBackgroundDecorator],
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
   args: {
     variant: "big-inverse",
   },
