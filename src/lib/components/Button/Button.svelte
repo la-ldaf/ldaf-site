@@ -1,6 +1,6 @@
 <script lang="ts">
   import "@uswds/uswds/scss/usa-button";
-  import classNames from "$lib/classNames";
+  import classNames from "$lib/util/classNames";
   import type { Variant, Size, Type } from "./buttonOptions";
 
   export let disabled = false;
