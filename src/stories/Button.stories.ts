@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
 import Button, { variants, types } from "$lib/components/Button";
-import DarkBackgroundDecorator from "./decorators/DarkBackgroundDecorator.svelte";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/svelte/writing-stories/introduction
 const meta = {
