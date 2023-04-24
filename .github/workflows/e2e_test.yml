@@ -1,7 +1,7 @@
 name: "End-to-End Testing"
 
 on:
-  pull_request:
+  pull_request: # empty object will use defaults
   push:
     branches:
       - "main"
@@ -16,7 +16,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version-file: ".nvmrc"
           cache: npm
       - name: Install dependencies
         run: npm ci
