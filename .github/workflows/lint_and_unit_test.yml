@@ -8,19 +8,25 @@ on: pull_request
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
           cache: npm
+
       - name: Install
         run: npm ci
+
       - name: Prettier & ESLint
         run: npm run lint
+
       - name: svelte-check (diagnostic checks for unused CSS, Svelte A11y hints, and JS/TS errors)
         run: npm run check
+
       - name: Unit tests
         run: npm run test:unit
