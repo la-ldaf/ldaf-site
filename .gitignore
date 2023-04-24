@@ -6,12 +6,11 @@ node_modules
 .env
 .env.*
 !.env.example
-!.env.ci
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-coverage
+/coverage
 build-storybook.log
 /storybook-static
-.vercel
-e2e-tests/report
-e2e-tests/results
+/.vercel
+/e2e-tests/report
+/e2e-tests/results
