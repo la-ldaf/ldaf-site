@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "node scripts/pre-build.js && vite build",
     "preview": "vite preview",
-    "test": "npm run check && npm run lint && npm run test:unit:coverage",
+    "test": "npm run lint && npm run check && npm run test:unit:coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "npm run test:e2e -- --ui",
     "test:unit": "vitest",

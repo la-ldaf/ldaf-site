@@ -14,9 +14,10 @@ const config: PlaywrightTestConfig = {
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npm run build -- --mode ci && npm run preview",
+    command: "npm run build && npm run preview",
     port: 4173,
     reuseExistingServer: !process.env.CI,
+    // Set a ridiculously long timeout to allow the site to be built.
     timeout: 60 * 60 * 1000,
   },
   outputDir: "e2e-tests/results",
