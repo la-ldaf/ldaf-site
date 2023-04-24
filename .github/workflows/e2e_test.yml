@@ -1,8 +1,8 @@
 name: "End-to-End Testing"
 
 on:
-  - pull_request
-  - push:
+  pull_request
+  push:
     branches:
       - "main"
 
