@@ -5,6 +5,11 @@ name: "Linting and Unit Testing"
 # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
 on: pull_request
 
+# Allow the coverage reporter to write comments on GitHub PRs
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
@@ -32,4 +37,7 @@ jobs:
         run: npm run test:unit:coverage
 
       - name: Report code coverage
+        # https://github.com/marketplace/actions/code-coverage-report
         uses: romeovs/lcov-reporter-action@v0.2.11
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
