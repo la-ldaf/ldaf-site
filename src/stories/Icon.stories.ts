@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
-import Icon from "./IconStory.svelte";
+import IconStory from "./IconStory.svelte";
 import { names as iconNames } from "$icons";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/svelte/writing-stories/introduction
 const meta = {
   title: "Components/Icon",
-  component: Icon,
+  component: IconStory,
   tags: ["autodocs"],
   argTypes: {
     name: {
