@@ -1,6 +1,8 @@
 import type { Preview } from "@storybook/svelte";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 
+import "../src/app.scss";
+
 const customViewports = {
   desktop: {
     name: "Desktop",
