@@ -1,3 +1,71 @@
 /* Variables and mixins declared here will be available in all other SCSS files */
 $theme-font-path: "@uswds/uswds/fonts";
 $theme-image-path: "@uswds/uswds/img";
+
+/* Design System Color Palette */
+
+/* Theme Palette */
+$base-lightest: #f2f1f0;
+$base-lighter: #dfe1e2;
+$base-light: #a9aeb1;
+$base-base: #71767a;
+$base-dark: #565c65;
+$base-darker: #3d4551;
+$base-ink: #1b1b1b;
+
+$primary-super-light: #f0f8ff;
+$primary-lightest: #d1e9ff;
+$primary-lighter: #6fb1fc;
+$primary-light: #1670d9;
+$primary: #0051ad;
+$primary-dark: #063c7a;
+$primary-darkest: #00284d;
+
+$accent-super-light: #fff7e5;
+$accent-lightest: #fff0cf;
+$accent-lighter: #ffe3a1;
+$accent-light: #ffd675;
+$accent-warm: #ffc745;
+$accent-dark: #ffb200;
+$accent-darker: #d49400;
+
+$grayscale-01: #f9f9f9;
+$grayscale-05: #f2f2f0;
+$grayscale-10: #dddcd9;
+$grayscale-30: #adacaa;
+$grayscale-50: #757473;
+$grayscale-70: #454544;
+$grayscale-90: #171717;
+
+/* Miscellaneous */
+$primary-vivid: #0050d8;
+$color-violet-70v: #562b97;
+
+/* Warnings, Alerts, and Errors */
+$info-lighter: #e0fbff;
+$info-light: #7ee5f7;
+$info: #00bde3;
+$info-dark: #009ec1;
+$info-darker: #2e6276;
+
+$error-lighter: #fbe2d6;
+$error-light: #ff8956;
+$error: #d54309;
+$error-dark: #b50909;
+$error-darker: #6f2725;
+
+$warning-lighter: #fff4bf;
+$warning-light: #ffe065;
+$warning: #ffb105;
+$warning-dark: #e5a000;
+$warning-darker: #936620;
+
+$success-lighter: #fff4bf;
+$success-light: #ffe065;
+$success: #ffb105;
+$success-dark: #e5a000;
+$success-darker: #936620;
+
+$disabled: #e6e6e6;
+$disabled-dark: #c9c9c9;
+$disabled-darker: #adadad;
