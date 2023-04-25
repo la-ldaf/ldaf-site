@@ -93,6 +93,7 @@ describe("Image", () => {
       });
       it("renders without src", () => expect(getImage()).not.toHaveAttribute("src"));
       it("adds src on intersect", async () => {
+        await waitFor(() => expect(intersectionObserverMock.observe).toHaveBeenCalledOnce());
         intersectionObserverMock.intersect();
         await waitFor(() => expect(getImage()).toHaveAttribute("src", sampleImage));
       });

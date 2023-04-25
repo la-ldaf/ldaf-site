@@ -46,11 +46,16 @@ describe("IntersectionObserver", () => {
     }));
   };
 
+  const waitForInitialization = async () =>
+    waitFor(() => expect(IntersectionObserverMock).toHaveBeenCalledOnce());
+
   describe("with default props", () => {
-    beforeEach(() => renderWithProps());
+    beforeEach(async () => {
+      renderWithProps();
+      await waitForInitialization();
+    });
 
     it("sets up an IntersectionObserver", async () => {
-      expect(IntersectionObserverMock).toHaveBeenCalledOnce();
       expect(IntersectionObserverMock).toHaveBeenCalledWith(intersectionObserverMock.callback, {});
       expect(intersectionObserverMock.observe).toHaveBeenCalledOnce();
     });
@@ -67,7 +72,10 @@ describe("IntersectionObserver", () => {
   });
 
   describe('with "once" set', () => {
-    beforeEach(() => renderWithProps({ props: { once: true } }));
+    beforeEach(async () => {
+      renderWithProps({ props: { once: true } });
+      await waitForInitialization();
+    });
     it("emits an event on the first intersection", async () => {
       const onIntersect = vi.fn();
       component.$on("intersect", onIntersect);
