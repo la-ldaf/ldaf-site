@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
 import NavItem from "./NavItem.svelte";
-import TestSlotWrapper from "$lib/components/TestSlotWrapper.svelte";
+import SlotWrapper from "$lib/components/__tests__/SlotWrapper.svelte";
 
 const generateMenuItems = (n: number) =>
   [...Array(n)].map((_, i) => ({
@@ -23,7 +23,7 @@ const basicMenuProps = {
 
 describe("Header.NavItem", () => {
   it("renders with basic nav link", () => {
-    render(TestSlotWrapper, {
+    render(SlotWrapper, {
       props: { Component: NavItem, slotContent: "nav item", id: "0", link: "/0", current: true },
     });
     // getByText will grab <span> but we want the parent <a>
@@ -33,7 +33,7 @@ describe("Header.NavItem", () => {
     expect(navItem).toHaveAttribute("href", "/0");
   });
   it("renders with basic menu layout", () => {
-    render(TestSlotWrapper, basicMenuProps);
+    render(SlotWrapper, basicMenuProps);
     const button = screen.getByRole("button", { name: "basic menu" });
     const menu = document.getElementById("extended-mega-nav-section-0");
     expect(button).toHaveTextContent("basic menu");
@@ -41,7 +41,7 @@ describe("Header.NavItem", () => {
   });
   it("renders with even mega menu layout", () => {
     // 3 columns, 1 item each
-    render(TestSlotWrapper, {
+    render(SlotWrapper, {
       props: {
         Component: NavItem,
         slotContent: "mega menu",
@@ -61,7 +61,7 @@ describe("Header.NavItem", () => {
   });
   it("renders with uneven mega menu layout", () => {
     // 5 columns, 9 items total
-    render(TestSlotWrapper, {
+    render(SlotWrapper, {
       props: {
         Component: NavItem,
         slotContent: "mega menu",

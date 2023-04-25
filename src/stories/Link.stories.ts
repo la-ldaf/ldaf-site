@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
-import ProseDecorator from "./decorators/Prose.svelte";
+import ProseDecorator from "./decorators/ProseDecorator.svelte";
 import Link from "./LinkView.svelte";
 
 const meta = {
-  title: "Example/Link",
+  title: "Components/Link",
   component: Link,
   // @ts-expect-error Unclear how to resolve SvelteComponent <=> SvelteStoryResult type mismatch.
   // TODO: Check back on this once they have a TS example: https://storybook.js.org/docs/svelte/writing-stories/decorators#global-decorators

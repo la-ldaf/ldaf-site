@@ -1,4 +1,25 @@
+<script lang="ts">
+  import "./Hero.scss";
+  import heroImg from "@uswds/uswds/img/hero.jpg";
+  import heroImgBlurhash, {
+    width as heroImgWidth,
+    height as heroImgHeight,
+    mean as heroImgMean,
+  } from "@uswds/uswds/img/hero.jpg?blurhash";
+  import Image from "../Image";
+</script>
+
 <section class="usa-hero" aria-label="Introduction">
+  <Image
+    alt=""
+    class="usa-hero__bg-img"
+    src={heroImg}
+    blurhash={heroImgBlurhash}
+    width={heroImgWidth}
+    height={heroImgHeight}
+    mean={heroImgMean}
+    loading="eager"
+  />
   <div class="grid-container">
     <div class="usa-hero__callout">
       <h1 class="usa-hero__heading">

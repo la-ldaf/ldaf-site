@@ -33,10 +33,7 @@
           class="usa-accordion__button usa-banner__button"
           aria-expanded={bannerExpanded}
           aria-controls="gov-banner-default"
-          on:click={() => {
-            bannerExpanded = !bannerExpanded;
-            console.log(`Banner expanded: ${bannerExpanded}`);
-          }}
+          on:click={() => (bannerExpanded = !bannerExpanded)}
         >
           <span class="usa-banner__button-text">Here’s how you know</span>
         </button>
