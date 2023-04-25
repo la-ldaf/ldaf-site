@@ -24,7 +24,7 @@ const meta = {
       url: "https://www.figma.com/file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?node-id=2196-11369&t=w7ksKxV0kX4Da0k0-4",
     },
   },
-} satisfies Meta<Icon>;
+} satisfies Meta<IconStory>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
