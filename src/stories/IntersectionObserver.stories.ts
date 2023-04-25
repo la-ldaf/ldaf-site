@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/svelte";
 import IntersectionObserverStory from "./IntersectionObserverStory.svelte";
 
 const meta = {
-  title: "IntersectionObserver",
+  title: "Examples/IntersectionObserver",
   component: IntersectionObserverStory,
   tags: [],
   argTypes: {},
