@@ -1,3 +1,17 @@
+.ldaf-header .ldaf-secondary-nav {
+  .usa-input {
+    border-radius: 5px 0 0 5px;
+  }
+
+  a {
+    color: $primary-light;
+  }
+}
+
+.ldaf-header.usa-header--extended .usa-nav__primary {
+  justify-content: center;
+}
+
 @media all and (min-width: 64em) {
   .usa-header--extended .ldaf-nav.usa-navbar {
     background: linear-gradient(to right, transparent, #00284d 45%),
@@ -14,15 +28,18 @@
       max-width: 65%;
     }
   }
-}
 
-.ldaf-header .ldaf-secondary-nav {
-  .usa-input {
-    border-radius: 5px 0 0 5px;
+  .ldaf-secondary-nav.usa-nav__secondary {
+    bottom: 5rem;
+
+    a {
+      color: $primary-lightest;
+    }
   }
 
-  a {
-    color: $primary-light;
+  .usa-nav__inner .ldaf-agency-commissioner,
+  .usa-nav__inner .ldaf-logo-link {
+    display: none;
   }
 }
 
@@ -40,23 +57,4 @@
     margin-top: 5px;
     display: inline-block;
   }
-}
-
-@media all and (min-width: 64em) {
-  .ldaf-secondary-nav.usa-nav__secondary {
-    bottom: 5rem;
-
-    a {
-      color: $primary-lightest;
-    }
-  }
-
-  .usa-nav__inner .ldaf-agency-commissioner,
-  .usa-nav__inner .ldaf-logo-link {
-    display: none;
-  }
-}
-
-.ldaf-header.usa-header--extended .usa-nav__primary {
-  justify-content: center;
 }
