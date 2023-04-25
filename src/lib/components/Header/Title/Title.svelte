@@ -20,7 +20,6 @@
   </div>
 </div>
 
-<!-- <div class="usa-logo ldaf-logo-compact"> -->
 <div class="usa-logo ldaf-title-compact">
   <a href="/" title="<Project title>">
     <div class="ldaf-agency-name">

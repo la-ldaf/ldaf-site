@@ -7,7 +7,8 @@ import Header from "./Header.svelte";
 describe("Header", () => {
   it("renders", () => {
     render(Header);
-    expect(screen.getByAltText("LDAF Logo")).toBeVisible();
+    // Implicit ARIA role for the HTML <header> element
+    expect(screen.getByRole("banner")).toBeVisible();
   });
   it("opens nav on menu button click and closes it on close button click", async () => {
     render(Header, { props: { navItems: [{ id: "1", link: "/", name: "test" }] } });
