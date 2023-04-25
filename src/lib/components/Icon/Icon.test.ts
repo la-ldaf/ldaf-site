@@ -13,8 +13,9 @@ describe("Icon", () => {
   });
   it("renders with a different size", () => {
     render(Icon, { props: { src: rssIcon, alt: "RSS Feed", size: 6 } });
-    expect(screen.getByAltText("RSS Feed")).toHaveClass("usa-icon");
+    const iconByAltText = screen.getByAltText("RSS Feed");
+    expect(iconByAltText).toHaveClass("usa-icon");
+    expect(iconByAltText).toHaveClass("usa-icon--size-6");
     expect(screen.getByRole("img")).toHaveClass("usa-icon");
-    expect(screen.getByAltText("RSS Feed")).toHaveClass("usa-icon--size-6");
   });
 });
