@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./Header.scss";
-  import ldafLogo from "$lib/assets/ldaf-logo-transparent.png";
+  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
 
   import type { NavItemType } from "./Nav";
@@ -36,9 +36,9 @@
       </button>
 
       <a class="ldaf-logo-link" href="/" title="<Project title>">
-        <img class="ldaf-logo--compact" src={ldafLogo} alt="LDAF Logo" />
+        <img class="ldaf-logo-compact" src={ldafLogo} alt="LDAF Logo" />
       </a>
-      <div class="agency-commissioner">
+      <div class="ldaf-agency-commissioner">
         <span>Mike Strain, DVM</span>
         <span class="text-italic">Commissioner</span>
       </div>
@@ -46,7 +46,7 @@
       <Nav items={navItems} />
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
-      <div class="ldaf-nav--secondary usa-nav__secondary">
+      <div class="ldaf-secondary-nav usa-nav__secondary">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
             <a href="/news">Grants and funding</a>

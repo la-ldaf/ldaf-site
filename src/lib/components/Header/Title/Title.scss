@@ -10,9 +10,9 @@
     width: 100%;
   }
 
-  .usa-logo .agency-name,
-  .usa-logo .agency-commissioner {
-    color: #ffd675;
+  .usa-logo .ldaf-agency-name,
+  .usa-logo .ldaf-agency-commissioner {
+    color: $accent-light;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,11 +21,11 @@
 
   .usa-logo .separator {
     height: 65px;
-    border-left: 1px solid #ffd675;
+    border-left: 1px solid $accent-light;
   }
 }
 
-.agency-info {
+.ldaf-agency-info {
   display: flex;
   column-gap: 10px;
 }
@@ -44,7 +44,7 @@
 }
 
 @media all and (min-width: 64em) {
-  .ldaf-logo-compact {
+  .ldaf-title-compact {
     display: none;
   }
 }

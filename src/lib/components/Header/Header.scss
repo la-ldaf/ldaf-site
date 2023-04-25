@@ -1,4 +1,4 @@
-@media all and (min-width: 63.99em) {
+@media all and (min-width: 64em) {
   .usa-header--extended .ldaf-nav.usa-navbar {
     background: linear-gradient(to right, transparent, #00284d 45%),
       url("../../assets/header-background.png");
@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     max-width: none;
-    border-bottom: 4px solid #ffd675;
+    border-bottom: 4px solid $accent-light;
 
     .usa-logo {
       max-width: 65%;
@@ -16,47 +16,42 @@
   }
 }
 
-@media all and (max-width: 63.99em) {
-  .usa-header--extended .ldaf-nav.usa-navbar {
-    background: #00284d;
-    border-bottom: none;
-  }
-
-  .ldaf-logo--compact {
-    max-width: 68px;
-  }
-
-  .usa-nav__inner .agency-commissioner span {
-    margin-top: 5px;
-    display: inline-block;
-  }
+.ldaf-header .ldaf-secondary-nav {
   .usa-input {
     border-radius: 5px 0 0 5px;
   }
 
-  .ldaf-header nav {
-    background: #f0f0f0;
-
-    .usa-input {
-      border-radius: 5px 0 0 5px;
-    }
-
-    a {
-      color: #1670d9;
-    }
+  a {
+    color: $primary-light;
   }
 }
 
-@media all and (min-width: 63.99em) {
-  .ldaf-nav--secondary.usa-nav__secondary {
+@media all and (max-width: 63.99em) {
+  .usa-header--extended .ldaf-nav.usa-navbar {
+    background: $primary-darkest;
+    border-bottom: none;
+  }
+
+  .ldaf-logo-compact {
+    max-width: 68px;
+  }
+
+  .usa-nav__inner .ldaf-agency-commissioner span {
+    margin-top: 5px;
+    display: inline-block;
+  }
+}
+
+@media all and (min-width: 64em) {
+  .ldaf-secondary-nav.usa-nav__secondary {
     bottom: 5rem;
 
     a {
-      color: #d1e9ff;
+      color: $primary-lightest;
     }
   }
 
-  .usa-nav__inner .agency-commissioner,
+  .usa-nav__inner .ldaf-agency-commissioner,
   .usa-nav__inner .ldaf-logo-link {
     display: none;
   }
