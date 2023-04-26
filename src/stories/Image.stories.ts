@@ -15,7 +15,7 @@ const blurhashOptions = { "sample image blurhash": sampleImageBlurhash, none: un
 const meanOptions = { "sample image mean color": sampleImageMean, none: undefined };
 
 const meta = {
-  title: "Image",
+  title: "Components/Image",
   component: Image,
   // @ts-expect-error Unclear how to resolve SvelteComponent <=> SvelteStoryResult type mismatch.
   decorators: [() => BlurhashRendererDecorator, () => RootIntersectionObserverDecorator],
