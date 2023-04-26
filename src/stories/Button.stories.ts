@@ -17,6 +17,12 @@ const meta = {
       options: types,
     },
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: " https://www.figma.com/file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?node-id=2196-3764&t=HICajhP8FIexorTH-4",
+    },
+  },
 } satisfies Meta<Button>;
 
 export default meta;
