@@ -1,12 +1,13 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import svg from "@poppanator/sveltekit-svg";
-import type { Plugin } from "vite";
+import type { PluginOption } from "vite";
 import { purgeCss } from "vite-plugin-svelte-purgecss";
+import ldafIcon from "./vite-plugin-ldaf-icon";
 import { defineConfig } from "vitest/config";
 import blurhash from "./vite-plugin-blurhash";
 import bundlestring from "./vite-plugin-import-as-bundle-string";
 
-const plugins: Plugin[] = [...(await sveltekit()), svg(), blurhash(), bundlestring()];
+const plugins: PluginOption[] = [sveltekit(), svg(), blurhash(), bundlestring(), ldafIcon()];
 
 if (process.env.NODE_ENV === "production") {
   plugins.push(purgeCss());
