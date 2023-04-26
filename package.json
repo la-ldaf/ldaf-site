@@ -56,7 +56,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rollup": "^3.21.0",
-    "sass": "^1.62.0",
+    "sass": "^1.62.1",
     "sharp": "^0.32.0",
     "storybook": "^7.1.0-alpha.6",
     "storybook-addon-designs": "^7.0.0-beta.2",
