@@ -16,6 +16,9 @@ $colors: (
   "text-only-hover": rgba(6, 60, 122, 16%),
   "text-only-active": rgba(6, 60, 122, 30%),
   "outline-inverse": #dcdee0,
+  "unstyled-fg": #005ea2,
+  "unstyled-fg-hover": #1a4480,
+  "unstyled-fg-active": #162e51,
 );
 
 .usa-button {
@@ -150,5 +153,13 @@ $colors: (
 
 .usa-button.usa-button--unstyled {
   background: none;
-  color: #005ea2;
+  color: map.get($colors, "unstyled-fg");
+  &:hover {
+    background: none;
+    color: map.get($colors, "unstyled-fg-hover");
+  }
+  &:active {
+    background: none;
+    color: map.get($colors, "unstyled-fg-active");
+  }
 }
