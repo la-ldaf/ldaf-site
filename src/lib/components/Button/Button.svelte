@@ -2,7 +2,6 @@
   import "./Button.scss";
   import classNames from "$lib/util/classNames";
   import type { Variant, Type } from "./buttonOptions";
-  import warn from "$lib/util/warn";
 
   export let disabled = false;
 
