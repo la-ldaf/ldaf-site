@@ -5,7 +5,7 @@
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
-  import type { Loading, LazyLoading, Color, Sources } from "./types";
+  import type { Loading, LazyLoading, Color, Sources, Srcset } from "./types";
 
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
