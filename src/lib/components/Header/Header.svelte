@@ -1,5 +1,6 @@
 <script lang="ts">
-  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
+  import { url as searchWhiteIcon } from "$icons/search--white";
+  import { url as closeIcon } from "$icons/close";
 
   import type { NavItemType } from "./Nav";
 
@@ -35,7 +36,7 @@
     <div class="usa-nav__inner">
       <button type="button" class="usa-nav__close" on:click={() => toggleNavMenu(false)}>
         <!-- TODO: Replace alt text with content from CMS. -->
-        <Icon name="close" alt="Close" size={3} />
+        <Icon src={closeIcon} alt="Close" size={3} />
       </button>
 
       <Nav items={navItems} />
@@ -57,7 +58,7 @@
             <label class="usa-sr-only" for="search-field"> Search </label>
             <input class="usa-input" id="search-field" type="search" name="search" />
             <button class="usa-button" type="submit">
-              <img src={iconBgSearchWhite} class="usa-search__submit-icon" alt="Search" />
+              <Icon src={searchWhiteIcon} alt="Search" plain class="usa-search__submit-icon" />
             </button>
           </form>
         </section>

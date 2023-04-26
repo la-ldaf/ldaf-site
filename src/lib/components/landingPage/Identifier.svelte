@@ -1,5 +1,6 @@
 <script>
-  import circleGray20 from "@uswds/uswds/img/circle-gray-20.svg?url";
+  import { url as circleGray20Icon } from "$icons/circle-gray-20";
+  import Icon from "../Icon";
 </script>
 
 <div class="usa-identifier">
@@ -10,14 +11,15 @@
     <div class="usa-identifier__container">
       <div class="usa-identifier__logos">
         <a href="/" class="usa-identifier__logo"
-          ><img
+          ><Icon
+            src={circleGray20Icon}
+            alt="&lt;Parent agency&gt; logo"
+            plain
             class="usa-identifier__logo-img"
-            src={circleGray20}
             width={120}
             height={120}
-            alt="&lt;Parent agency&gt; logo"
-          />
-        </a>
+          /></a
+        >
       </div>
       <section class="usa-identifier__identity" aria-label="Agency description">
         <p class="usa-identifier__identity-domain">domain.gov</p>

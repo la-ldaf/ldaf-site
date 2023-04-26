@@ -1,10 +1,11 @@
 <script>
   import logoImg from "@uswds/uswds/img/logo-img.png";
-  import iconFacebook from "@uswds/uswds/img/usa-icons/facebook.svg?url";
-  import iconTwitter from "@uswds/uswds/img/usa-icons/twitter.svg?url";
-  import iconYouTube from "@uswds/uswds/img/usa-icons/youtube.svg?url";
-  import iconInstagram from "@uswds/uswds/img/usa-icons/instagram.svg?url";
-  import iconRSS from "@uswds/uswds/img/usa-icons/rss_feed.svg?url";
+  import Icon from "$lib/components/Icon";
+  import { url as facebookIcon } from "$icons/facebook";
+  import { url as twitterIcon } from "$icons/twitter";
+  import { url as youtubeIcon } from "$icons/youtube";
+  import { url as instagramIcon } from "$icons/instagram";
+  import { url as rssIcon } from "$icons/rss_feed";
 </script>
 
 <footer class="usa-footer">
@@ -74,56 +75,60 @@
           <div class="usa-footer__social-links grid-row grid-gap-1">
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={iconFacebook}
-                  width={40}
-                  height={40}
+                ><Icon
+                  src={facebookIcon}
                   alt="Facebook"
+                  class="usa-social-link__icon"
+                  width={40}
+                  height={40}
                 /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={iconTwitter}
-                  width={40}
-                  height={40}
+                ><Icon
+                  src={twitterIcon}
                   alt="Twitter"
+                  plain
+                  class="usa-social-link__icon"
+                  width={40}
+                  height={40}
                 /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={iconYouTube}
-                  height={40}
-                  width={40}
+                ><Icon
+                  src={youtubeIcon}
                   alt="YouTube"
+                  plain
+                  class="usa-social-link__icon"
+                  width={40}
+                  height={40}
                 /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
-                  class="usa-social-link__icon"
-                  src={iconInstagram}
-                  height={40}
-                  width={40}
+                ><Icon
+                  src={instagramIcon}
                   alt="Instagram"
+                  plain
+                  class="usa-social-link__icon"
+                  width={40}
+                  height={40}
                 /></a
               >
             </div>
             <div class="grid-col-auto">
               <a class="usa-social-link" href="/"
-                ><img
+                ><Icon
+                  src={rssIcon}
+                  alt="RSS Feed"
+                  plain
                   class="usa-social-link__icon"
-                  src={iconRSS}
-                  height={40}
                   width={40}
-                  alt="RSS"
+                  height={40}
                 /></a
               >
             </div>
