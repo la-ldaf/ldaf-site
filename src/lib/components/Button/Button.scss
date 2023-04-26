@@ -105,23 +105,19 @@ $colors: (
 
 .usa-button--outline-inverse,
 .usa-button.usa-button--outline-inverse {
-  background: none;
   color: map.get($colors, "outline-inverse");
-  border: 2px solid map.get($colors, "base-light");
+  border-color: map.get($colors, "base-light");
   &:hover {
-    background: none;
     color: map.get($colors, "base-lightest");
-    border: 2px solid map.get($colors, "base-lightest");
+    border-color: map.get($colors, "base-lightest");
   }
   &:active {
-    background: none;
     color: #fff;
-    border: 2px solid #fff;
+    border-color: #fff;
   }
   &:disabled {
-    background: none;
     color: map.get($colors, "disabled-dark");
-    border: 2px solid map.get($colors, "disabled-dark");
+    border-color: map.get($colors, "disabled-dark");
   }
 }
 
@@ -142,7 +138,6 @@ $colors: (
 
 .usa-button--big-inverse,
 .usa-button.usa-button--big-inverse {
-  @extend .usa-button--big;
   background: #fff;
   color: map.get($colors, "primary");
   &:hover {

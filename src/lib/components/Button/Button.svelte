@@ -16,9 +16,9 @@
     inverse: ["usa-button--inverse"],
     "text-only": ["usa-button--text-only"],
     outline: ["usa-button--outline"],
-    "outline-inverse": ["usa-button--outline-inverse"],
+    "outline-inverse": ["usa-button--outline", "usa-button--outline-inverse"],
     big: ["usa-button--big"],
-    "big-inverse": ["usa-button--big-inverse"],
+    "big-inverse": ["usa-button--big", "usa-button--big-inverse"],
   };
 
   $: variantClasses = unstyled ? [] : variantClassesDict[variant];
