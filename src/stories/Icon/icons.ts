@@ -4,9 +4,9 @@ const iconSrcByPath = import.meta.glob<{ default: string }>(
 );
 
 const iconSrcByName = Object.fromEntries(
-  Object.entries(iconSrcByPath).map(([path, srcPromise]) => [
+  Object.entries(iconSrcByPath).map(([path, getSrc]) => [
     path.split("/").slice(-1)[0].split(".")[0],
-    srcPromise,
+    getSrc,
   ])
 );
 
