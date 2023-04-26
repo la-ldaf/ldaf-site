@@ -1,5 +1,6 @@
 <script lang="ts">
   import Image from "$lib/components/Image";
+  import type { LazyLoading } from "$lib/components/Image/types";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
 
   import sampleImage from "../../../sample.jpg";
@@ -9,8 +10,7 @@
     mean as sampleImageMean,
   } from "../../../sample.jpg?blurhash";
 
-  export let nativeLazyLoading = false;
-  export let intersectionObserverLazyLoading = true;
+  export let lazyLoadingType: LazyLoading = "intersectionObserver";
 
   let images: {
     src: string;
@@ -24,16 +24,17 @@
 
   let observer: IntersectionObserver;
 
+  const image = {
+    src: sampleImage,
+    blurhash: sampleImageBlurhash,
+    mean: sampleImageMean,
+    width: sampleImageWidth,
+    height: sampleImageHeight,
+  };
   $: if (thisContainer && thisEndOfList && !observer) {
     observer = new IntersectionObserver(([{ isIntersecting }]) => {
       if (isIntersecting) {
-        images.push({
-          src: sampleImage,
-          blurhash: sampleImageBlurhash,
-          mean: sampleImageMean,
-          width: sampleImageWidth,
-          height: sampleImageHeight,
-        });
+        images.push(image, image, image, image, image);
         images = images;
       }
     });
@@ -51,16 +52,7 @@
   <div class="container" bind:this={thisContainer}>
     <div class="highlight-border" />
     {#each images as { src, blurhash, mean, width, height }}
-      <Image
-        alt=""
-        {nativeLazyLoading}
-        {intersectionObserverLazyLoading}
-        {src}
-        {blurhash}
-        {mean}
-        {width}
-        {height}
-      />
+      <Image alt="" {lazyLoadingType} {src} {blurhash} {mean} {width} {height} />
     {/each}
     <div class="end" bind:this={thisEndOfList} />
   </div>
@@ -85,7 +77,7 @@
     left: 0;
     top: 0;
     right: 0;
-    bottom: 75%;
+    bottom: 75vh;
     border-bottom: 1px solid green;
     z-index: 1;
     pointer-events: none;

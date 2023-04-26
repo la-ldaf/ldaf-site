@@ -5,9 +5,7 @@
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
-  import type { Color } from "./types";
-
-  type Loading = "eager" | "lazy";
+  import type { Loading, LazyLoading, Color } from "./types";
 
   export let src: string;
   export let alt: string;
@@ -19,9 +17,31 @@
   let className: string | undefined = undefined;
   export { className as class };
   export let imageClass: string | undefined = undefined;
-  export let nativeLazyLoading = loading === "lazy" && lazyImageLoadingSupport;
-  export let intersectionObserverLazyLoading =
-    loading === "lazy" && !nativeLazyLoading && intersectionObserverSupport;
+
+  const getLazyLoadingType = (
+    loading: Loading,
+    lazyImageLoadingSupport: boolean,
+    intersectionObserverSupport: boolean,
+    explicitLazyLoadingType?: LazyLoading
+  ): LazyLoading => {
+    if (explicitLazyLoadingType) return explicitLazyLoadingType;
+    if (loading !== "lazy") return "none";
+    if (lazyImageLoadingSupport) return "native";
+    if (intersectionObserverSupport) return "intersectionObserver";
+    return "none";
+  };
+
+  // Used to set the lazy loading type explicitly in Storybook
+  let explicitLazyLoadingType: LazyLoading | undefined = undefined;
+  export { explicitLazyLoadingType as lazyLoadingType };
+
+  let lazyLoadingType: LazyLoading;
+  $: lazyLoadingType = getLazyLoadingType(
+    loading,
+    lazyImageLoadingSupport,
+    intersectionObserverSupport,
+    explicitLazyLoadingType
+  );
 
   if (!width || !height) warn("image width or height was missing!");
 
@@ -46,7 +66,7 @@
     srcProps = withSrcProp;
   } else if (!browser) {
     srcProps = withNoSrcProp;
-  } else if (nativeLazyLoading || !intersectionObserverLazyLoading || intersecting) {
+  } else if (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting) {
     srcProps = withSrcProp;
   } else {
     srcProps = withNoSrcProp;
@@ -76,7 +96,7 @@
   target={thisContainer}
   once={true}
   on:intersect={() => (intersecting = true)}
-  enabled={intersectionObserverLazyLoading}
+  enabled={lazyLoadingType === "intersectionObserver"}
 >
   <div
     role="img"

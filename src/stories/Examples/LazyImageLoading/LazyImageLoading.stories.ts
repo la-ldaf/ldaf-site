@@ -7,6 +7,12 @@ const meta = {
   component: LazyImageLoading,
   // @ts-expect-error Unclear how to resolve SvelteComponent <=> SvelteStoryResult type mismatch.
   decorators: [() => BlurhashRendererDecorator],
+  argTypes: {
+    lazyLoadingType: {
+      control: { type: "radio" },
+      options: ["none", "native", "intersectionObserver"],
+    },
+  },
 } satisfies Meta<LazyImageLoading>;
 
 export default meta;
