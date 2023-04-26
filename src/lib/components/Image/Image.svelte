@@ -19,6 +19,9 @@
   let className: string | undefined = undefined;
   export { className as class };
   export let imageClass: string | undefined = undefined;
+  export let nativeLazyLoading = loading === "lazy" && lazyImageLoadingSupport;
+  export let intersectionObserverLazyLoading =
+    loading === "lazy" && !nativeLazyLoading && intersectionObserverSupport;
 
   if (!width || !height) warn("image width or height was missing!");
 
@@ -43,7 +46,7 @@
     srcProps = withSrcProp;
   } else if (!browser) {
     srcProps = withNoSrcProp;
-  } else if (lazyImageLoadingSupport || !intersectionObserverSupport || intersecting) {
+  } else if (nativeLazyLoading || !intersectionObserverLazyLoading || intersecting) {
     srcProps = withSrcProp;
   } else {
     srcProps = withNoSrcProp;
@@ -73,7 +76,7 @@
   target={thisContainer}
   once={true}
   on:intersect={() => (intersecting = true)}
-  enabled={loading === "lazy" && intersectionObserverSupport && !lazyImageLoadingSupport}
+  enabled={intersectionObserverLazyLoading}
 >
   <div
     role="img"
