@@ -13,6 +13,9 @@ permissions:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    # Create a GitHub Pages subpath for this PR
+    env:
+      PR_PATH: pull/${{ github.event.number }}
 
     steps:
       - name: Checkout
@@ -44,3 +47,26 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           delete-old-comments: true
+
+      - name: Set domain
+        run: echo "DOMAIN=${{ github.actor }}.github.io" >> $GITHUB_ENV
+
+      - name: Set base URL for preview
+        run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+
+      - name: Deploy to PR preview
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref != 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage
+          destination_dir: ${{ env.PR_PATH }}
+
+      - name: Post comment
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: deploy-preview
+          message: "A coverage report of ${{ github.event.after }} is uploaded and can be seen here:\n\n ✨ ${{ env.BASE_URL }} ✨\n\nChanges may take a few minutes to propagate. The source is here: https://github.com/${{ github.repository }}/tree/gh-pages-coverage-reports/${{ env.PR_PATH }}/"
