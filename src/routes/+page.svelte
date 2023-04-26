@@ -10,7 +10,21 @@
   } from "../sample.jpg?blurhash";
   import GraphicList from "$lib/components/landingPage/GraphicList.svelte";
   import Hero from "$lib/components/landingPage/Hero.svelte";
-  import Image from "$lib/components/Image";
+  import Image, {
+    generateSourcesFromFixedSetOfImages,
+    type FixedSetOfImages,
+  } from "$lib/components/Image";
+
+  const images = [
+    { format: "image/jpeg", size: "original", src: sampleImage },
+    { format: "image/jpeg", size: 412, src: sampleImageMobile },
+    { format: "image/webp", size: "original", src: sampleImageWebp },
+    { format: "image/webp", size: 412, src: sampleImageWebpMobile },
+  ] satisfies FixedSetOfImages;
+
+  const imageSources = generateSourcesFromFixedSetOfImages(images);
+
+  console.log({ imageSources });
 </script>
 
 <Hero />
@@ -50,10 +64,7 @@
     <Image
       alt=""
       src={sampleImage}
-      sources={[
-        { type: "image/webp", srcset: [sampleImageWebp, [sampleImageWebpMobile, 412]] },
-        { type: "image/jpeg", srcset: [sampleImage, [sampleImageMobile, 412]] },
-      ]}
+      sources={imageSources}
       blurhash={sampleImageBlurhash}
       width={sampleImageWidth}
       height={sampleImageHeight}

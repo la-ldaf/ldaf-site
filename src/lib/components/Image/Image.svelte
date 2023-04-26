@@ -1,11 +1,11 @@
 <script lang="ts">
   import "./Image.scss";
   import { browser } from "$app/environment";
-  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
+  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
-  import type { Loading, LazyLoading, Color } from "./types";
+  import type { Loading, LazyLoading, Color, Sources } from "./types";
 
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
@@ -13,16 +13,6 @@
   export let src: string;
 
   // Tuple of [src, width]
-  type SrcsetDefault = string;
-  type SrcsetWidth = [string, number];
-  type Srcset = [SrcsetDefault, ...SrcsetWidth[]];
-
-  type Source = {
-    media?: string;
-    type?: `image/${string}`;
-    srcset: Srcset;
-  };
-
   const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
     [
       ...(widths ?? []).flatMap(([source, sourceWidth]) =>
@@ -30,8 +20,6 @@
       ),
       defaultSrc,
     ].join(", ");
-
-  type Sources = Source[];
 
   export let sources: Sources = [];
 
