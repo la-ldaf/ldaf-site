@@ -1,10 +1,9 @@
-name: "Linting and Testing"
+name: "Linting and Unit Testing"
 
-on:
-  pull_request:
-  #  by default, runs when a PR activity type
-  #  is `opened`, `synchronize`, or `reopened`
-  # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
+#  by default, runs when a PR activity type
+#  is `opened`, `synchronize`, or `reopened`
+# (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
+on: pull_request
 
 jobs:
   lint-and-test:
@@ -17,7 +16,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: current
+          node-version-file: ".nvmrc"
           cache: npm
 
       - name: Install
