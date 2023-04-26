@@ -31,14 +31,14 @@
 
   let className = "";
   export { className as class };
+  $: classes = classNames(
+    "usa-button",
+    unstyled && "usa-button--unstyled",
+    ...variantClasses,
+    className
+  );
 </script>
 
-<button
-  {type}
-  {disabled}
-  aria-disabled={disabled}
-  class={classNames("usa-button", unstyled && "usa-button--unstyled", ...variantClasses, className)}
-  on:click
->
+<button {type} {disabled} aria-disabled={disabled} class={classes} on:click>
   <slot>Button</slot>
 </button>
