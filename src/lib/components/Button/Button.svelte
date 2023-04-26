@@ -21,11 +21,7 @@
     "big-inverse": ["usa-button--big", "usa-button--big-inverse"],
   };
 
-  $: variantClasses = unstyled ? [] : variantClassesDict[variant];
-
-  $: if (unstyled && variant !== "primary") {
-    warn("variant has no effect on an unstyled button!");
-  }
+  $: variantClasses = variantClassesDict[variant];
 
   export let type: Type = "button";
 
@@ -33,8 +29,8 @@
   export { className as class };
   $: classes = classNames(
     "usa-button",
-    unstyled && "usa-button--unstyled",
     ...variantClasses,
+    unstyled && "usa-button--unstyled",
     className
   );
 </script>

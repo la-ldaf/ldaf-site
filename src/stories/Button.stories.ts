@@ -16,6 +16,9 @@ const meta = {
       control: { type: "select" },
       options: types,
     },
+    unstyled: {
+      control: { type: "boolean" },
+    },
   },
   parameters: {
     design: {
@@ -81,5 +84,18 @@ export const BigInverse: Story = {
   },
   args: {
     variant: "big-inverse",
+  },
+};
+
+export const Unstyled: Story = {
+  args: {
+    unstyled: true,
+  },
+};
+
+export const BigUnstyled: Story = {
+  args: {
+    variant: "big",
+    unstyled: true,
   },
 };

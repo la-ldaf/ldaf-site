@@ -33,8 +33,7 @@ $colors: (
   }
 }
 
-.usa-button--base,
-.usa-button.usa-button--base {
+.usa-button--base {
   background: map.get($colors, "base-dark");
   &:hover {
     background: map.get($colors, "base-dark");
@@ -44,8 +43,7 @@ $colors: (
   }
 }
 
-.usa-button--inverse,
-.usa-button.usa-button--inverse {
+.usa-button--inverse {
   color: map.get($colors, "primary");
   background: #fff;
   &:hover {
@@ -79,8 +77,7 @@ $colors: (
   }
 }
 
-.usa-button--outline,
-.usa-button.usa-button--outline {
+.usa-button--outline {
   background: none;
   color: map.get($colors, "primary");
   border: 2px solid map.get($colors, "primary");
@@ -104,8 +101,7 @@ $colors: (
   }
 }
 
-.usa-button--outline-inverse,
-.usa-button.usa-button--outline-inverse {
+.usa-button--outline-inverse {
   color: map.get($colors, "outline-inverse");
   border-color: map.get($colors, "base-light");
   &:hover {
@@ -122,8 +118,7 @@ $colors: (
   }
 }
 
-.usa-button--big,
-.usa-button.usa-button--big {
+.usa-button--big {
   background: map.get($colors, "primary");
   color: #fff;
   &:hover {
@@ -137,8 +132,7 @@ $colors: (
   }
 }
 
-.usa-button--big-inverse,
-.usa-button.usa-button--big-inverse {
+.usa-button--big-inverse {
   background: #fff;
   color: map.get($colors, "primary");
   &:hover {
@@ -153,4 +147,9 @@ $colors: (
     background: map.get($colors, "disabled-dark");
     color: #fff;
   }
+}
+
+.usa-button--unstyled {
+  background: none;
+  color: #005ea2;
 }
