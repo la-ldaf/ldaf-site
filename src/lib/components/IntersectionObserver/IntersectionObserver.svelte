@@ -16,23 +16,28 @@
   let intersecting = false;
   $: if (enabled && intersecting) dispatch("intersect");
 
+  let observerPromise: Promise<RootObserver | undefined>;
   let observer: RootObserver | undefined;
 
   if (enabled && browser && hasContext(key)) {
-    observer = getContext<RootObserver>(key);
+    observerPromise = getContext<Promise<RootObserver | undefined>>(key);
   } else if (browser && enabled) {
     warn(
       "<IntersectionObserver> was not wrapped in a <RootIntersectionObserver>. It will continue to work, but it is more efficient to wrap the page in a single <RootIntersectionObserver> that can be used by all <IntersectionObserver> components. A <RootIntersectionObserver> also allows you to pass options to the IntersectionObserver used behind the scenes."
     );
-    observer = getRootObserver();
+    observerPromise = Promise.resolve(getRootObserver());
+  } else {
+    observerPromise = Promise.resolve(undefined);
   }
 
+  observerPromise.then((resolved) => (observer = resolved));
+
   $: if (enabled && observer) {
-    // If the target has been changed, unobserve the previous target
-    if (lastTarget && target !== lastTarget) observer.unobserve(lastTarget);
+    if (target === lastTarget) break $;
+    if (lastTarget) observer.unobserve(lastTarget);
+    lastTarget = target;
     if (!target) break $;
     observer.observe(target, ({ isIntersecting }) => (intersecting = isIntersecting), { once });
-    lastTarget = target;
   }
 </script>
 
