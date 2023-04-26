@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
+import type { Variant } from "./buttonOptions";
 
 import ButtonTest from "./__tests__/ButtonTest.svelte";
 
@@ -29,17 +30,21 @@ describe("Button", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  [
-    ["primary", "usa-button"],
-    ["base", "usa-button usa-button--base"],
-    ["inverse", "usa-button usa-button--inverse"],
-    ["text-only", "usa-button usa-button--text-only"],
-    ["outline", "usa-button usa-button--outline"],
-    ["outline-inverse", "usa-button usa-button--outline usa-button--outline-inverse"],
-    ["big", "usa-button usa-button--big"],
-    ["big-inverse", "usa-button usa-button--big usa-button--big-inverse"],
-  ]
-    .flatMap(([variant, expectedClass]): [{ variant: string; unstyled?: boolean }, string][] => [
+  type VariantAndClass = [Variant, string];
+
+  (
+    [
+      ["primary", "usa-button"],
+      ["base", "usa-button usa-button--base"],
+      ["inverse", "usa-button usa-button--inverse"],
+      ["text-only", "usa-button usa-button--text-only"],
+      ["outline", "usa-button usa-button--outline"],
+      ["outline-inverse", "usa-button usa-button--outline usa-button--outline-inverse"],
+      ["big", "usa-button usa-button--big"],
+      ["big-inverse", "usa-button usa-button--big usa-button--big-inverse"],
+    ] satisfies VariantAndClass[]
+  )
+    .flatMap(([variant, expectedClass]): [{ variant: Variant; unstyled?: boolean }, string][] => [
       [{ variant }, expectedClass],
       [{ variant, unstyled: true }, `${expectedClass} usa-button--unstyled`],
     ])
