@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { url as searchWhiteIcon } from "$icons/search--white";
   import { url as closeIcon } from "$icons/close";
 
   import type { NavItemType } from "./Nav";
@@ -7,6 +6,7 @@
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
   import Nav from "./Nav";
+  import Search from "$lib/components/Search";
 
   export let navItems: NavItemType[] = [];
 
@@ -52,15 +52,12 @@
           </li>
         </ul>
 
-        <!-- TODO: Replace with <Search/> component. -->
         <section aria-label="Search component">
-          <form class="usa-search usa-search--small" role="search">
-            <label class="usa-sr-only" for="search-field"> Search </label>
-            <input class="usa-input" id="search-field" type="search" name="search" />
-            <button class="usa-button" type="submit">
-              <Icon src={searchWhiteIcon} alt="Search" plain class="usa-search__submit-icon" />
-            </button>
-          </form>
+          <Search
+            size="small"
+            id="ldaf-header-search"
+            on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
+          />
         </section>
       </div>
     </div>
