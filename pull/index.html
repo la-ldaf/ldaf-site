@@ -1,6 +1,8 @@
 <!-- https://stackoverflow.com/a/53218452 -->
 <html>
   <body>
+    <h1>Pull Requests</h1>
+    <div id="pulls"></div>
     <script>
       (async () => {
         const response = await fetch("https://api.github.com/repos/la-ldaf/ldaf-site/contents/pull?ref=gh-pages");
@@ -13,7 +15,7 @@
         }
 
         htmlString += "</ul>";
-        document.getElementsByTagName("body")[0].innerHTML = htmlString;
+        document.getElementById("pulls")[0].innerHTML = htmlString;
       })()
     </script>
   <body>
