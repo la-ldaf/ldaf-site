@@ -10,8 +10,14 @@
         let htmlString = "<ul>";
         
         for (let file of data) {
-          if (file.name === "index.html") continue;
-          htmlString += `<li><a href="${file.path}/unit-test-coverage">Pull #${file.name} unit test coverage</a></li>`;
+          const { name } = file;
+          if (name === "index.html") continue;
+          htmlString += `
+          <li>
+            <h2><a href="https://github.com/la-ldaf/ldaf-site/pull/${name}">#${name}</a></h2>
+            <a href="${name}/unit-test-coverage">PR #${name} unit test coverage</a>
+          </li>
+          `;
         }
 
         htmlString += "</ul>";
