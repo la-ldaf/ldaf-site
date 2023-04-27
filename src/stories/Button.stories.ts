@@ -93,6 +93,16 @@ export const Unstyled: Story = {
   },
 };
 
+export const UnstyledInverse: Story = {
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
+  args: {
+    variant: "inverse",
+    unstyled: true,
+  },
+};
+
 export const BigUnstyled: Story = {
   args: {
     variant: "big",
