@@ -1,0 +1,22 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+import * as Stories from "./LazyImageLoading.stories";
+
+# Lazy Image Loading
+
+<Meta of={Stories} />
+
+Lazy image loading uses the following techniques, from most preferred to least:
+
+- `loading="lazy"` - this is always set on the `img` element, and if `"loading" in HTMLImageElement.prototype` evaluates to `true` then the `src` attribute is added immediately to the image and nothing else is done.
+
+- `IntersectionObserver` - if lazy loading is not natively supported, but `IntersectionObserver` is supported, then it is used to add the `src` to the image only when the image reaches the viewport.
+
+- No lazy image loading - if neither of the above techniques are available, the `src` element is immediately added to the image and the browser uses its default behavior. `loading="lazy"` is still added to the `img` element in case feature detection was mistaken.
+
+We could also use a scroll handler as a step in between `IntersectionObserver` and no lazy image loading, but this is unlikely to be helpful to many users.
+
+## Using the example
+
+To use the example, open it, then choose a lazy loading strategy, then refresh the preview and scroll down and new elements will be added as long as you keep scrolling. This is only really useful with the `IntersectionObserver` strategy, since it has a `rootMargin` of `75%` that makes images only load once they've reached the top quarter of the viewport. Native lazy loading will load the images at some point before they reach the viewport, so images will mostly appear to load instantly.
+
+Note that the green line indicating where the edge of the `IntersectionObserver` is is inaccurate unless you open the preview in a new tab (using the "open canvas in new tab" button in the top right). This is because of how the `IntersectionObserver` interacts with Storybook and does not represent how it works on the real site.
