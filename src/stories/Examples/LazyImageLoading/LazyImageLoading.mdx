@@ -19,4 +19,4 @@ We could also use a scroll handler as a step in between `IntersectionObserver` a
 
 To use the example, open it, then choose a lazy loading strategy, then refresh the preview and scroll down and new elements will be added as long as you keep scrolling. This is only really useful with the `IntersectionObserver` strategy, since it has a `rootMargin` of `75%` that makes images only load once they've reached the top quarter of the viewport. Native lazy loading will load the images at some point before they reach the viewport, so images will mostly appear to load instantly.
 
-Note that the green line indicating where the edge of the `IntersectionObserver` is is inaccurate unless you open the preview in a new tab. This is because of how the `IntersectionObserver` interacts with Storybook and does not represent how it works on the real site.
+Note that the green line indicating where the edge of the `IntersectionObserver` is is inaccurate unless you open the preview in a new tab (using the "open canvas in new tab" button in the top right). This is because of how the `IntersectionObserver` interacts with Storybook and does not represent how it works on the real site.
