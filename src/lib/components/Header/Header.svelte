@@ -1,7 +1,7 @@
 <script lang="ts">
   import "./Header.scss";
   import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
-  import iconBgSearchWhite from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
+  import { url as closeIcon } from "$icons/close";
 
   import type { NavItemType } from "./Nav";
 
@@ -9,6 +9,7 @@
   import Icon from "$lib/components/Icon";
   import Title from "./Title";
   import Nav from "./Nav";
+  import Search from "$lib/components/Search";
 
   export let navItems: NavItemType[] = [];
 
@@ -32,7 +33,7 @@
     <div class="usa-nav__inner">
       <button type="button" class="usa-nav__close" on:click={() => toggleNavMenu(false)}>
         <!-- TODO: Replace alt text with content from CMS. -->
-        <Icon name="close" alt="Close" size={3} />
+        <Icon src={closeIcon} alt="Close" size={3} />
       </button>
 
       <a class="ldaf-logo-link" href="/" title="<Project title>">
@@ -56,15 +57,12 @@
           </li>
         </ul>
 
-        <!-- TODO: Replace with <Search/> component. -->
         <section aria-label="Search component">
-          <form class="usa-search usa-search--small" role="search">
-            <label class="usa-sr-only" for="search-field"> Search </label>
-            <input class="usa-input" id="search-field" type="search" name="search" />
-            <button class="usa-button" type="submit">
-              <img src={iconBgSearchWhite} class="usa-search__submit-icon" alt="Search" />
-            </button>
-          </form>
+          <Search
+            size="small"
+            id="ldaf-header-search"
+            on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
+          />
         </section>
       </div>
     </div>

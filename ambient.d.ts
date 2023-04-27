@@ -6,3 +6,4 @@
 
 /// <reference path="./vite-plugin-blurhash/index.d.ts"/>
 /// <reference path="./vite-plugin-import-as-bundle-string/index.d.ts"/>
+/// <reference path="./vite-plugin-ldaf-icon/index.d.ts"/>

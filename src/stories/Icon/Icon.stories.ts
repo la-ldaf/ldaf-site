@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
-import Icon from "$lib/components/Icon";
-import icons from "$lib/components/Icon/icons";
+import IconStory from "./IconStory.svelte";
+import { names as iconNames } from "$icons";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/svelte/writing-stories/introduction
 const meta = {
   title: "Components/Icon",
-  component: Icon,
+  component: IconStory,
   tags: ["autodocs"],
   argTypes: {
     name: {
       control: { type: "select" },
-      options: Object.keys(icons),
+      options: iconNames,
     },
     size: {
       control: { type: "select" },
@@ -24,12 +24,12 @@ const meta = {
       url: "https://www.figma.com/file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?node-id=2196-11369&t=w7ksKxV0kX4Da0k0-4",
     },
   },
-} satisfies Meta<Icon>;
+} satisfies Meta<IconStory>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const sharedProps = { name: "accessibility_new", alt: "Accessbility New" };
+const sharedProps = { name: "accessibility_new", alt: "Accessibility New" };
 
 // More on writing stories with args: https://storybook.js.org/docs/7.0/svelte/writing-stories/args
 export const Small: Story = {

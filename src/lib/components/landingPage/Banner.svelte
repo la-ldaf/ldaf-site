@@ -1,8 +1,9 @@
 <script>
   import "./Banner.scss";
   import usFlagSmall from "@uswds/uswds/img/us_flag_small.png";
-  import iconDotGov from "@uswds/uswds/img/icon-dot-gov.svg?url";
-  import iconHTTPS from "@uswds/uswds/img/icon-https.svg?url";
+  import { url as dotGovIcon } from "$icons/icon-dot-gov";
+  import { url as httpsIcon } from "$icons/icon-https";
+  import Icon from "$lib/components/Icon";
   // TODO: figure out how to/if we want to import component JS or
   // write any interactivity ourselves
   // Related Ticket: https://ldaf.atlassian.net/browse/LDAF-173
@@ -46,12 +47,13 @@
     >
       <div class="grid-row grid-gap-lg">
         <div class="usa-banner__guidance tablet:grid-col-6">
-          <img
+          <Icon
+            src={dotGovIcon}
+            alt=""
+            plain
             class="usa-banner__icon usa-media-block__img"
-            src={iconDotGov}
             width={64}
             height={64}
-            alt=""
             aria-hidden={!bannerExpanded}
           />
           <div class="usa-media-block__body">
@@ -63,12 +65,13 @@
           </div>
         </div>
         <div class="usa-banner__guidance tablet:grid-col-6">
-          <img
+          <Icon
+            src={httpsIcon}
+            alt=""
+            plain
             class="usa-banner__icon usa-media-block__img"
-            src={iconHTTPS}
             width={64}
             height={64}
-            alt=""
             aria-hidden={!bannerExpanded}
           />
           <div class="usa-media-block__body">

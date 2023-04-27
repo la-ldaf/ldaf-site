@@ -8,7 +8,9 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-coverage
+/coverage
 build-storybook.log
 /storybook-static
-.vercel
+/.vercel
+/e2e-tests/report
+/e2e-tests/results

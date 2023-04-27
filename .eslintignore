@@ -8,6 +8,8 @@ node_modules
 !.env.example
 /storybook-static
 /.vercel
+/e2e-tests/report
+/e2e-tests/results
 
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
