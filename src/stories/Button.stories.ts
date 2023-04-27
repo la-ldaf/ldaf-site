@@ -36,6 +36,10 @@ export const Primary: Story = {
   args: {},
 };
 
+export const Disabled: Story = {
+  args: { disabled: true },
+};
+
 export const Base: Story = {
   args: {
     variant: "base",
