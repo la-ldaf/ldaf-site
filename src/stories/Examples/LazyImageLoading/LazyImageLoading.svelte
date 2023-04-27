@@ -19,6 +19,7 @@
     width: number;
     height: number;
   }[] = [];
+
   let thisContainer: HTMLDivElement;
   let thisEndOfList: HTMLDivElement;
 
