@@ -1,17 +1,30 @@
 <script lang="ts">
   import "./Image.scss";
   import { browser } from "$app/environment";
-  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
+  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
-  import type { Loading, LazyLoading, Color } from "./types";
+  import type { Loading, LazyLoading, Color, Sources, Srcset } from "./types";
 
-  export let src: string;
-  export let alt: string;
-  export let loading: Loading = "lazy";
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
+
+  export let src: string;
+
+  // Tuple of [src, width]
+  const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
+    [
+      ...(widths ?? []).flatMap(([source, sourceWidth]) =>
+        !width || width >= sourceWidth ? [`${source} ${sourceWidth}w`] : []
+      ),
+      defaultSrc,
+    ].join(", ");
+
+  export let sources: Sources = [];
+
+  export let alt: string;
+  export let loading: Loading = "lazy";
   export let blurhash: undefined | string = undefined;
   export let mean: undefined | Color = undefined;
   let className: string | undefined = undefined;
@@ -114,15 +127,20 @@
         <img {...imgProps} class="ldaf-img__backup-img" {src} alt="" />
       </noscript>
     {/if}
-    <img
-      {...imgProps}
-      alt=""
-      class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
-      on:load={() => (imageLoaded = true)}
-      {loading}
-      {decoding}
-      {...srcProps}
-    />
+    <picture>
+      {#each sources as { media, type, srcset }}
+        <source {media} {type} srcset={getSrcsetAttr(srcset)} />
+      {/each}
+      <img
+        {...imgProps}
+        alt=""
+        class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
+        on:load={() => (imageLoaded = true)}
+        {loading}
+        {decoding}
+        {...srcProps}
+      />
+    </picture>
     {#if blurhash}
       <canvas
         class="ldaf-img__blur-bg"
