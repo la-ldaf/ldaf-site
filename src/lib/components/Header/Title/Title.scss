@@ -1,17 +1,16 @@
 .usa-header--extended {
-  .ldaf-logo--extended.usa-logo {
-    display: flex;
+  .ldaf-logo__wide {
     align-items: center;
     column-gap: 10px;
     img {
       max-width: 100px;
     }
     font-size: initial;
-    width: 100%;
   }
 
-  .usa-logo .ldaf-agency-name,
-  .usa-logo .ldaf-agency-commissioner {
+  .ldaf-name__compact,
+  .ldaf-name__wide,
+  .ldaf-commissioner__wide {
     color: $accent-light;
     display: flex;
     flex-direction: column;
@@ -31,20 +30,17 @@
 }
 
 @media all and (min-width: 64em) {
-  .ldaf-title-compact {
+  .ldaf-logo__wide {
+    display: flex;
+  }
+
+  .ldaf-title__compact {
     display: none;
   }
 }
 
 @media all and (max-width: 63.99em) {
-  .usa-header--extended .ldaf-logo--extended.usa-logo {
+  .ldaf-logo__wide {
     display: none;
-  }
-
-  .usa-header--extended {
-    .ldaf-logo--extended.usa-logo {
-      max-width: 50px;
-      margin: 5px 2px 5px 0;
-    }
   }
 }

@@ -36,10 +36,10 @@
         <Icon src={closeIcon} alt="Close" size={3} />
       </button>
 
-      <a class="ldaf-logo-link" href="/" title="<Project title>">
-        <img class="ldaf-logo-compact" src={ldafLogo} alt="LDAF Logo" />
+      <a class="ldaf-logo__compact" href="/" title="<Project title>">
+        <img src={ldafLogo} alt="LDAF Logo" />
       </a>
-      <div class="ldaf-agency-commissioner">
+      <div class="ldaf-commissioner__compact">
         <span>Mike Strain, DVM</span>
         <span class="text-italic">Commissioner</span>
       </div>
@@ -47,7 +47,7 @@
       <Nav items={navItems} />
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
-      <div class="ldaf-secondary-nav usa-nav__secondary">
+      <div class="ldaf-nav__secondary usa-nav__secondary">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
             <a href="/news">Grants and funding</a>
