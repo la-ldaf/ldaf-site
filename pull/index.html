@@ -1,7 +1,7 @@
 <!-- https://stackoverflow.com/a/53218452 -->
 <html>
   <body>
-    <h1>Pull Requests</h1>
+    <h1>Open Pull Requests</h1>
     <div id="pulls"></div>
     <script>
       (async () => {
@@ -15,7 +15,7 @@
         }
 
         htmlString += "</ul>";
-        document.getElementById("pulls")[0].innerHTML = htmlString;
+        document.getElementById("pulls").innerHTML = htmlString;
       })()
     </script>
   <body>
