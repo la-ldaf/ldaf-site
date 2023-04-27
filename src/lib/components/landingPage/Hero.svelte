@@ -9,7 +9,19 @@
     height as heroImgHeight,
     mean as heroImgMean,
   } from "@uswds/uswds/img/hero.jpg?blurhash";
-  import Image from "../Image";
+  import Image, {
+    generateSourcesFromFixedSetOfImages,
+    type FixedSetOfImages,
+  } from "$lib/components/Image";
+
+  const images = [
+    { format: "image/jpeg", size: "original", src: heroImg },
+    { format: "image/jpeg", size: 412, src: heroImgMobile },
+    { format: "image/webp", size: "original", src: heroImgWebp },
+    { format: "image/webp", size: 412, src: heroImgWebpMobile },
+  ] satisfies FixedSetOfImages;
+
+  const imageSources = generateSourcesFromFixedSetOfImages(images);
 </script>
 
 <section class="usa-hero" aria-label="Introduction">
@@ -17,10 +29,7 @@
     alt=""
     class="usa-hero__bg-img"
     src={heroImg}
-    sources={[
-      { type: "image/webp", srcset: [heroImgWebp, [heroImgWebpMobile, 412]] },
-      { type: "image/jpeg", srcset: [heroImg, [heroImgMobile, 412]] },
-    ]}
+    sources={imageSources}
     blurhash={heroImgBlurhash}
     width={heroImgWidth}
     height={heroImgHeight}
