@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     # Create a GitHub Pages subpath for this PR
     env:
-      PR_PATH: pull/${{ github.event.number }}
+      PR_PATH: pull/${{ github.event.number }}/unit-test-coverage
 
     steps:
       - name: Checkout
@@ -39,31 +39,30 @@ jobs:
       - name: Unit tests
         run: npm run test:unit:coverage
 
-      - name: Report code coverage
+      - name: Report code coverage to PR in comment
         # https://github.com/marketplace/actions/code-coverage-report
-        # Use hash over version to support delete-old-comments:
+        # Use a hash instead of version to support delete-old-comments field:
         # https://github.com/romeovs/lcov-reporter-action/issues/47#issuecomment-1362606540
         uses: romeovs/lcov-reporter-action@2a28ec3e25fb7eae9cb537e9141603486f810d1a
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           delete-old-comments: true
 
-      - name: Set preview URL
-        run: echo "BASE_URL=https://${{ github.actor }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+      - name: Set coverage report GitHub Pages preview URL
+        run: echo "BASE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
 
-      - name: Deploy to PR preview
+      - name: Deploy coverage report to GitHub Pages preview URL
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages-coverage-reports
           publish_dir: ./coverage
           destination_dir: ${{ env.PR_PATH }}
 
-      - name: Post comment
+      - name: Report deployment success message to PR in comment
         uses: hasura/comment-progress@v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: deploy-preview
-          message: "A coverage report of ${{ github.event.after }} is uploaded and can be seen here:\n\n ✨ ${{ env.BASE_URL }} ✨\n\nChanges may take a few minutes to propagate. The source is here: https://github.com/${{ github.repository }}/tree/gh-pages-coverage-reports/${{ env.PR_PATH }}/"
+          message: "A coverage report of ${{ github.event.after }} has been committed to the [`gh-pages` branch](https://github.com//tree/gh-pages/${{ env.PR_PATH }}).\n\nThe coverage report [can be viewed here](${{ env.BASE_URL }}) once changes have propagated (this may take a few minutes).
