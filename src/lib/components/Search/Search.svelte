@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  // import searchIcon from "$icons/search--white.svg";
-  import searchIcon from "@uswds/uswds/img/usa-icons-bg/search--white.svg?url";
+  import { url as searchIcon } from "$icons/search--white";
   import Button from "$lib/components/Button";
   import classNames from "$lib/util/classNames";
   import type { Size } from "./options";
