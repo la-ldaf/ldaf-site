@@ -19,6 +19,8 @@ $colors: (
   "unstyled-fg": #005ea2,
   "unstyled-fg-hover": #1a4480,
   "unstyled-fg-active": #162e51,
+  "unstyled-inverse": #e6e6e6,
+  "unstyled-inverse-active": #fff,
 );
 
 .usa-button {
@@ -164,5 +166,14 @@ $colors: (
     background: none;
     color: map.get($colors, "unstyled-fg-active");
     border: none;
+  }
+}
+
+.usa-button.usa-button--unstyled.usa-button--inverse,
+.usa-button.usa-button--unstyled.usa-button--outline-inverse,
+.usa-button.usa-button--unstyled.usa-button--big-inverse {
+  color: map.get($colors, "unstyled-inverse");
+  &:active {
+    color: map.get($colors, "unstyled-inverse-active");
   }
 }
