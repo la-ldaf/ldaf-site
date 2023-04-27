@@ -154,12 +154,15 @@ $colors: (
 .usa-button.usa-button--unstyled {
   background: none;
   color: map.get($colors, "unstyled-fg");
+  border: none;
   &:hover {
     background: none;
     color: map.get($colors, "unstyled-fg-hover");
+    border: none;
   }
   &:active {
     background: none;
     color: map.get($colors, "unstyled-fg-active");
+    border: none;
   }
 }
