@@ -33,7 +33,9 @@ $colors: (
   &:active {
     background: map.get($colors, "primary-darker");
   }
-  &:disabled {
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:active {
     background: map.get($colors, "disabled-dark");
   }
 }
@@ -45,6 +47,11 @@ $colors: (
   }
   &:active {
     background: map.get($colors, "base-darker");
+  }
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:active {
+    background: map.get($colors, "disabled-dark");
   }
 }
 
@@ -59,8 +66,11 @@ $colors: (
     color: map.get($colors, "primary");
     background: map.get($colors, "primary-lightest");
   }
-  &:disabled {
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:active {
     color: #fff;
+    background: map.get($colors, "disabled-dark");
   }
 }
 
@@ -75,12 +85,39 @@ $colors: (
     color: map.get($colors, "primary");
     background: map.get($colors, "text-only-active");
   }
-  &:disabled {
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:active {
     background: none;
     color: map.get($colors, "disabled");
   }
+}
+
+.usa-button.usa-button--outline {
+  background: none;
+  color: map.get($colors, "outline");
+  &:disabled,
   &:disabled:hover,
   &:disabled:active {
+    background: none;
+  }
+}
+
+.usa-button.usa-button--outline {
+  background: none;
+  color: map.get($colors, "primary");
+  &:hover {
+    background: none;
+    color: map.get($colors, "primary-dark");
+  }
+  &:active {
+    background: none;
+    color: map.get($colors, "base-darker");
+  }
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:active {
+    color: map.get($colors, "disabled");
     background: none;
   }
 }
@@ -99,6 +136,7 @@ $colors: (
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
+    background: none;
     color: map.get($colors, "disabled-dark");
     box-shadow: inset 0 0 0 2px map.get($colors, "disabled-dark");
   }
