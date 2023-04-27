@@ -23,8 +23,6 @@
   ] satisfies FixedSetOfImages;
 
   const imageSources = generateSourcesFromFixedSetOfImages(images);
-
-  console.log({ imageSources });
 </script>
 
 <Hero />
