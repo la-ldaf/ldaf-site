@@ -155,6 +155,7 @@ $colors: (
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
+    background: none;
     color: map.get($colors, "disabled");
   }
 
