@@ -3,7 +3,8 @@
   import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
 
-  import type { NavItemType } from "./Nav";
+  import type { NavItemType, NavLinkType } from "./Nav";
+  import type { SiteTitleType } from "./Title";
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
@@ -12,6 +13,8 @@
   import Search from "$lib/components/Search";
 
   export let navItems: NavItemType[] = [];
+  export let siteTitle: SiteTitleType;
+  export let secondaryNavItems: NavLinkType[] = [];
 
   // Need to export this as a prop so we can reset it on route change.
   export let navMenuExpanded = false;
@@ -24,7 +27,7 @@
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="ldaf-header usa-header usa-header--extended">
   <div class="ldaf-nav usa-navbar">
-    <Title />
+    <Title {siteTitle} />
     <!--TODO: Replace with content from CMS. -->
     <button type="button" class="usa-menu-btn" on:click={() => toggleNavMenu(true)}> Menu </button>
   </div>
@@ -40,8 +43,8 @@
         <img src={ldafLogo} alt="LDAF Logo" />
       </a>
       <div class="ldaf-commissioner__compact">
-        <span>Mike Strain, DVM</span>
-        <span class="text-italic">Commissioner</span>
+        <span>{siteTitle.commissionerRow1}</span>
+        <span class="text-italic">{siteTitle.commissionerRow2}</span>
       </div>
 
       <Nav items={navItems} />
@@ -49,12 +52,12 @@
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
       <div class="ldaf-nav__secondary usa-nav__secondary">
         <ul class="usa-nav__secondary-links">
-          <li class="usa-nav__secondary-item">
-            <a href="/news">Grants and funding</a>
-          </li>
-          <li class="usa-nav__secondary-item">
-            <a href="/documentation" class="usa-current">Licensing and permits</a>
-          </li>
+          {#each secondaryNavItems as item, i (item.id)}
+            {@const { name, link } = item}
+            <li class="usa-nav__secondary-item">
+              <a href={link}>{name}</a>
+            </li>
+          {/each}
         </ul>
 
         <section aria-label="Search component">
