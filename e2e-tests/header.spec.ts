@@ -54,7 +54,7 @@ test("mobile menu is closed on route change", async ({ page }) => {
   await mobileMenuButton.click();
   await expect(mobileMenuItem).toBeVisible();
   // perform navigation by clicking site title
-  await page.getByTitle("<Project title>").click();
+  await page.locator(".ldaf-title__compact a").first().click();
   await expect(page).toHaveURL("/");
   await expect(mobileMenuItem).toBeHidden();
 });
