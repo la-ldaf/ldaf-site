@@ -9,7 +9,7 @@ import sampleImageBlurhash, {
 } from "../../../sample.jpg?blurhash";
 
 import * as environment from "$app/environment";
-import * as support from "$lib/support";
+import * as support from "$lib/constants/support";
 import Image from "./Image.svelte";
 import { mock as intersectionObserverMock } from "../IntersectionObserver/__tests__/IntersectionObserverMock";
 
@@ -17,7 +17,7 @@ vi.mock("$app/environment", () => ({
   browser: false,
 }));
 
-vi.mock("$lib/support", () => ({
+vi.mock("$lib/constants/support", () => ({
   lazyImageLoadingSupport: false,
   intersectionObserverSupport: false,
 }));
