@@ -4,6 +4,11 @@ on:
   pull_request:
     types: [closed]
 
+permissions:
+  contents: read
+  # Allow us to write comments on PRs
+  pull-requests: write
+
 jobs:
   delete_pull_request_preview:
     runs-on: ubuntu-latest
