@@ -1,13 +1,15 @@
 name: "Linting and Testing"
 
 on:
-  #  by default, runs when a PR activity type
-  #  is `opened`, `synchronize`, or `reopened`
+  # Run on PRs; by default, runs when a PR activity type is `opened`, `synchronize`, or `reopened`
   # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
   pull_request: # empty object will use defaults
+  # Run on updates to `main` branch
   push:
     branches:
       - "main"
+  # Allow the jobs here to call each other
+  workflow-call: # empty
 
 permissions:
   # Allow us to commit to GitHub Pages
