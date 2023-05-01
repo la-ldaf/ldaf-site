@@ -65,6 +65,7 @@ jobs:
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
           path: coverage
+          retention-days: 1
 
   end-to-end-tests:
     name: "End-to-End Tests"
@@ -95,6 +96,7 @@ jobs:
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
           path: e2e-tests/report
+          retention-days: 1
 
   deploy-reports-to-gh-pages:
     name: "Deploy Reports to GitHub Pages"
