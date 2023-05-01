@@ -20,7 +20,7 @@ env:
   PR_PATH: pull/${{ github.event.number }}
   # Otherwise we'll use main/
   MAIN_PATH: main
-  # Names for reports
+  # Names for report paths on GitHub Pages
   UNIT_PATH: unit-test-coverage
   E2E_PATH: e2e-test-report
 
@@ -100,6 +100,7 @@ jobs:
 
   deploy-reports-to-gh-pages:
     name: "Deploy Reports to GitHub Pages"
+    # Wait for tests to complete before deploying.
     needs: [lint-and-unit-tests, end-to-end-tests]
     # We still want to upload reports regardless of whether tests failed.
     if: ${{ always() }}
