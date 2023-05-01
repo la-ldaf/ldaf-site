@@ -20,14 +20,12 @@ env:
   PR_PATH: pull/${{ github.event.number }}
   # Otherwise we'll use main/
   MAIN_PATH: main
-
-# Order of Operations:
-# 1. Run setup to install dependencies.
-# 2. Run unit tests and end-to-end tests concurrently.
-# 3. After all tests have completed, run a deploy to GH Pages for reports and post a comment on the PR.
+  # Names for reports
+  UNIT_PATH: unit-test-coverage
+  E2E_PATH: e2e-test-report
 
 jobs:
-  setup:
+  lint-and-unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -42,10 +40,6 @@ jobs:
       - name: Install
         run: npm ci
 
-  lint-and-unit-tests:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Prettier & ESLint
         run: npm run lint
 
@@ -65,17 +59,41 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           delete-old-comments: true
 
+      - name: Create artifact with report
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
+          path: coverage
+
   end-to-end-tests:
     needs: setup
     runs-on: ubuntu-latest
     # Set a ridiculously long timeout to allow site to be built
     timeout-minutes: 60
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Build site and run end-to-end tests
         run: npm run test:e2e
+
+      - name: Create artifact with report
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.E2E_PATH }}
+          path: e2e-tests/report
 
   deploy-reports-to-gh-pages:
     needs: [lint-and-unit-tests, end-to-end-tests]
@@ -83,33 +101,52 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Create directory and collect all relevant reports
-        run: >
-          mkdir pr-reports &&
-          mv coverage pr-reports/unit-test-coverage &&
-          mv e2e-tests/report pr-reports/e2e-test-report
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Set GitHub Pages preview URL for reports (for commenting)
-        if: github.ref != 'refs/heads/main'
-        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+      - name: Create directory to collect reports
+        run: mkdir pr-reports
 
-      - name: Deploy reports to GitHub Pages preview URL
-        # https://github.com/marketplace/actions/github-pages-action
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Download unit test report artifact
+        uses: actions/download-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./pr-reports
-          destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
+          name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
+          path: pr-reports
 
-      - name: Report deployment success message to PR in comment
-        if: github.ref != 'refs/heads/main'
-        # https://github.com/hasura/comment-progress
-        uses: hasura/comment-progress@v2.2.0
+      - name: Download end-to-end test report artifact
+        uses: actions/download-artifact@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          number: ${{ github.event.number }}
-          id: gh-pages-deploy
-          recreate: true
-          message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/unit-test-coverage) and the [end-to-end test report](${{ env.PREVIEW_URL }}/e2e-test-report) once changes have propagated (this may take a few minutes)."
+          name: ${{ github.event.after }}-${{ env.E2E_PATH }}
+          path: pr-reports
+
+      - name: Debug
+        run: ls -al pr-reports
+
+      #     mkdir pr-reports &&
+      #     mv coverage pr-reports/unit-test-coverage &&
+      #     mv e2e-tests/report pr-reports/e2e-test-report
+
+      # - name: Set GitHub Pages preview URL for reports (for commenting)
+      #   if: github.ref != 'refs/heads/main'
+      #   run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+
+      # - name: Deploy reports to GitHub Pages preview URL
+      #   # https://github.com/marketplace/actions/github-pages-action
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_branch: gh-pages
+      #     publish_dir: ./pr-reports
+      #     destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
+
+      # - name: Report deployment success message to PR in comment
+      #   if: github.ref != 'refs/heads/main'
+      #   # https://github.com/hasura/comment-progress
+      #   uses: hasura/comment-progress@v2.2.0
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     repository: ${{ github.repository }}
+      #     number: ${{ github.event.number }}
+      #     id: gh-pages-deploy
+      #     recreate: true
+      #     message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/unit-test-coverage) and the [end-to-end test report](${{ env.PREVIEW_URL }}/e2e-test-report) once changes have propagated (this may take a few minutes)."
