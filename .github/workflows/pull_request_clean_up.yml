@@ -1,0 +1,30 @@
+name: GitHub Pages Clean-Up
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete_pull_request_preview:
+    runs-on: ubuntu-latest
+    env:
+      PR_PATH: pull/${{github.event.number}}
+    steps:
+      - name: Create empty dir to clear PR preview
+        run: mkdir empty
+
+      - name: Deploy empty dir to GitHub Pages PR preview URL
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./empty
+          destination_dir: ${{ env.PR_PATH }}
+
+      - name: Comment on PR
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: coverage-report
+          message: "This PR was closed, so the coverage report has been deleted from the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }})."
