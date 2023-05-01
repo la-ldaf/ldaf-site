@@ -126,7 +126,7 @@ jobs:
 
       - name: Set GitHub Pages preview URL for reports (for commenting)
         if: github.ref != 'refs/heads/main'
-        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}" >> $GITHUB_ENV
 
       - name: Deploy reports to GitHub Pages preview URL
         # https://github.com/marketplace/actions/github-pages-action

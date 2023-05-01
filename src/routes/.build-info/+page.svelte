@@ -13,8 +13,9 @@
   const githubCommitUrl = `${githubBaseUrl}/commit/${VERCEL_GIT_COMMIT_SHA}`;
   const githubPullUrl = `${githubBaseUrl}/pull/${VERCEL_GIT_PULL_REQUEST_ID}`;
 
-  const githubPagesBaseUrl = `https://${VERCEL_GIT_REPO_OWNER}.github.io/${VERCEL_GIT_REPO_SLUG}`;
-  const coverageReportUrl = `${githubPagesBaseUrl}/pull/${VERCEL_GIT_PULL_REQUEST_ID}/unit-test-coverage`;
+  const githubPagesPullUrl = `https://${VERCEL_GIT_REPO_OWNER}.github.io/${VERCEL_GIT_REPO_SLUG}/pull/${VERCEL_GIT_PULL_REQUEST_ID}`;
+  const unitCoverageUrl = `${githubPagesPullUrl}/unit-test-coverage`;
+  const e2eReportUrl = `${githubPagesPullUrl}/e2e-test-report`;
 </script>
 
 <section class="usa-section">
@@ -39,7 +40,9 @@
       {#if VERCEL_GIT_PULL_REQUEST_ID}
         Link to PR in GitHub: <Link href={githubPullUrl}>{githubPullUrl}</Link>
         <br />
-        Link to coverage report: <Link href={coverageReportUrl}>{coverageReportUrl}</Link>
+        Link to unit test coverage report: <Link href={unitCoverageUrl}>{unitCoverageUrl}</Link>
+        <br />
+        Link to end-to-end test report: <Link href={e2eReportUrl}>{e2eReportUrl}</Link>
       {:else}
         This preview is not associated with a pull request.
       {/if}
