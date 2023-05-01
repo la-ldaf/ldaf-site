@@ -139,7 +139,7 @@ jobs:
 
       - name: Report deployment success message to PR in comment
         if: github.ref != 'refs/heads/main'
-        # https://github.com/hasura/comment-progress
+        # https://github.com/marketplace/actions/comment-progress
         uses: hasura/comment-progress@v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
