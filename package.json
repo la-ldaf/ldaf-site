@@ -57,7 +57,7 @@
     "prettier-plugin-svelte": "^2.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rollup": "^3.21.0",
+    "rollup": "^3.21.2",
     "sass": "^1.62.1",
     "sharp": "^0.32.1",
     "storybook": "^7.1.0-alpha.6",
