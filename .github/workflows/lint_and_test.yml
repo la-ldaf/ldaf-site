@@ -110,13 +110,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
-          path: pr-reports
+          path: pr-reports/${{ env.UNIT_PATH }}
 
       - name: Download end-to-end test report artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
-          path: pr-reports
+          path: pr-reports/${{ env.E2E_PATH }}
 
       - name: Debug
         run: ls -al pr-reports
