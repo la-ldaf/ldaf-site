@@ -8,7 +8,7 @@
   import Footer from "$lib/components/landingPage/Footer.svelte";
   import Header from "$lib/components/Header";
   import Identifier from "$lib/components/landingPage/Identifier.svelte";
-  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/support";
+  import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
 

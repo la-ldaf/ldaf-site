@@ -1,5 +1,8 @@
 <script lang="ts">
-  import sampleImage from "../sample.jpg";
+  import sampleImage from "../sample.jpg?quality=75&imagetools";
+  import sampleImageMobile from "../sample.jpg?quality=75&w=412&imagetools";
+  import sampleImageWebp from "../sample.jpg?webp&quality=75&imagetools";
+  import sampleImageWebpMobile from "../sample.jpg?webp&quality=75&w=412&imagetools";
   import sampleImageBlurhash, {
     width as sampleImageWidth,
     height as sampleImageHeight,
@@ -7,7 +10,19 @@
   } from "../sample.jpg?blurhash";
   import GraphicList from "$lib/components/landingPage/GraphicList.svelte";
   import Hero from "$lib/components/landingPage/Hero.svelte";
-  import Image from "$lib/components/Image";
+  import Image, {
+    generateSourcesFromFixedSetOfImages,
+    type FixedSetOfImages,
+  } from "$lib/components/Image";
+
+  const images = [
+    { format: "image/jpeg", size: "original", src: sampleImage },
+    { format: "image/jpeg", size: 412, src: sampleImageMobile },
+    { format: "image/webp", size: "original", src: sampleImageWebp },
+    { format: "image/webp", size: 412, src: sampleImageWebpMobile },
+  ] satisfies FixedSetOfImages;
+
+  const imageSources = generateSourcesFromFixedSetOfImages(images);
 </script>
 
 <Hero />
@@ -47,6 +62,7 @@
     <Image
       alt=""
       src={sampleImage}
+      sources={imageSources}
       blurhash={sampleImageBlurhash}
       width={sampleImageWidth}
       height={sampleImageHeight}
