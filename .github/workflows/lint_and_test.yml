@@ -9,7 +9,7 @@ on:
     branches:
       - "main"
   # Allow the jobs here to call each other
-  workflow-call: # empty
+  workflow_call: # empty
 
 permissions:
   # Allow us to commit to GitHub Pages
