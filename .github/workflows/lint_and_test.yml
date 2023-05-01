@@ -8,8 +8,6 @@ on:
   push:
     branches:
       - "main"
-  # Allow the jobs here to call each other
-  workflow_call: # empty
 
 permissions:
   # Allow us to commit to GitHub Pages
@@ -44,7 +42,7 @@ jobs:
       - name: Install
         run: npm ci
 
-  lint-and-unit-test:
+  lint-and-unit-tests:
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -67,7 +65,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           delete-old-comments: true
 
-  end-to-end-test:
+  end-to-end-tests:
     needs: setup
     runs-on: ubuntu-latest
     # Set a ridiculously long timeout to allow site to be built
