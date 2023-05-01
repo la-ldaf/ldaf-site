@@ -26,5 +26,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
-          id: coverage-report
-          message: "This PR was closed, so the coverage report has been deleted from the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }})."
+          id: gh-pages-deploy
+          message: "This PR was closed, so all reports have been deleted from the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }})."
