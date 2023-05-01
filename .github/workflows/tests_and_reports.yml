@@ -1,4 +1,4 @@
-name: "Linting and Testing"
+name: "Test and Deploy Reports"
 
 on:
   # Run on PRs; by default, runs when a PR activity type is `opened`, `synchronize`, or `reopened`
@@ -26,6 +26,7 @@ env:
 
 jobs:
   lint-and-unit-tests:
+    name: "ESLint, TypeScript Check, and Unit Tests"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -66,6 +67,7 @@ jobs:
           path: coverage
 
   end-to-end-tests:
+    name: "End-to-End Tests"
     runs-on: ubuntu-latest
     # Set a ridiculously long timeout to allow site to be built
     timeout-minutes: 60
@@ -95,6 +97,7 @@ jobs:
           path: e2e-tests/report
 
   deploy-reports-to-gh-pages:
+    name: "Deploy Reports to GitHub Pages"
     needs: [lint-and-unit-tests, end-to-end-tests]
     # We still want to upload reports regardless of whether tests failed.
     if: ${{ always() }}
@@ -118,34 +121,27 @@ jobs:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
           path: pr-reports/${{ env.E2E_PATH }}
 
-      - name: Debug
-        run: ls -al pr-reports
+      - name: Set GitHub Pages preview URL for reports (for commenting)
+        if: github.ref != 'refs/heads/main'
+        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
 
-      #     mkdir pr-reports &&
-      #     mv coverage pr-reports/unit-test-coverage &&
-      #     mv e2e-tests/report pr-reports/e2e-test-report
+      - name: Deploy reports to GitHub Pages preview URL
+        # https://github.com/marketplace/actions/github-pages-action
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./pr-reports
+          destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
 
-      # - name: Set GitHub Pages preview URL for reports (for commenting)
-      #   if: github.ref != 'refs/heads/main'
-      #   run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
-
-      # - name: Deploy reports to GitHub Pages preview URL
-      #   # https://github.com/marketplace/actions/github-pages-action
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: ./pr-reports
-      #     destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
-
-      # - name: Report deployment success message to PR in comment
-      #   if: github.ref != 'refs/heads/main'
-      #   # https://github.com/hasura/comment-progress
-      #   uses: hasura/comment-progress@v2.2.0
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     repository: ${{ github.repository }}
-      #     number: ${{ github.event.number }}
-      #     id: gh-pages-deploy
-      #     recreate: true
-      #     message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/unit-test-coverage) and the [end-to-end test report](${{ env.PREVIEW_URL }}/e2e-test-report) once changes have propagated (this may take a few minutes)."
+      - name: Report deployment success message to PR in comment
+        if: github.ref != 'refs/heads/main'
+        # https://github.com/hasura/comment-progress
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: gh-pages-deploy
+          recreate: true
+          message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/${{ env.UNIT_PATH }}) and the [end-to-end test report](${{ env.PREVIEW_URL }}/${{ env.E2E_PATH }}) once changes have propagated (this may take a few minutes)."
