@@ -1,9 +1,13 @@
 name: "Linting and Unit Testing"
 
-#  by default, runs when a PR activity type
-#  is `opened`, `synchronize`, or `reopened`
-# (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
-on: pull_request
+on:
+  #  by default, runs when a PR activity type
+  #  is `opened`, `synchronize`, or `reopened`
+  # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
+  pull_request: # empty object will use defaults
+  push:
+    branches:
+      - "main"
 
 # Allow the coverage reporter to write comments on GitHub PRs
 permissions:
@@ -13,9 +17,11 @@ permissions:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
-    # Create a GitHub Pages subpath for this PR
     env:
+      # For PRs, create a GitHub Pages subpath under pulls/
       PR_PATH: pull/${{ github.event.number }}/unit-test-coverage
+      # Otherwise we'll use main/
+      MAIN_PATH: main/unit-test-coverage
 
     steps:
       - name: Checkout
@@ -40,6 +46,7 @@ jobs:
         run: npm run test:unit:coverage
 
       - name: Report code coverage to PR in comment
+        if: github.ref != 'refs/heads/main'
         # https://github.com/marketplace/actions/code-coverage-report
         # Use a hash instead of version to support delete-old-comments field:
         # https://github.com/romeovs/lcov-reporter-action/issues/47#issuecomment-1362606540
@@ -49,6 +56,7 @@ jobs:
           delete-old-comments: true
 
       - name: Set coverage report GitHub Pages preview URL
+        if: github.ref != 'refs/heads/main'
         run: echo "BASE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
 
       - name: Deploy coverage report to GitHub Pages preview URL
@@ -57,15 +65,16 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./coverage
-          destination_dir: ${{ env.PR_PATH }}
+          destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
 
       - name: Report deployment success message to PR in comment
+        if: github.ref != 'refs/heads/main'
         # https://github.com/hasura/comment-progress
         uses: hasura/comment-progress@v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
-          id: deploy-preview
+          id: coverage-report
           recreate: true
           message: "A coverage report of ${{ github.event.after }} has been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nThe coverage report [can be viewed here](${{ env.BASE_URL }}) once changes have propagated (this may take a few minutes)."
