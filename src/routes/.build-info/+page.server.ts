@@ -3,6 +3,7 @@ import {
   VERCEL_GIT_REPO_OWNER,
   VERCEL_GIT_REPO_SLUG,
   VERCEL_GIT_COMMIT_SHA,
+  VERCEL_GIT_PULL_REQUEST_ID,
 } from "$env/static/private";
 
 export const load = () => ({
@@ -10,4 +11,5 @@ export const load = () => ({
   VERCEL_GIT_REPO_OWNER,
   VERCEL_GIT_REPO_SLUG,
   VERCEL_GIT_COMMIT_SHA,
+  VERCEL_GIT_PULL_REQUEST_ID,
 });

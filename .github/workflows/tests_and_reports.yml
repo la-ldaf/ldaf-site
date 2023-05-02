@@ -1,0 +1,150 @@
+name: "Test and Deploy Reports"
+
+on:
+  # Run on PRs; by default, runs when a PR activity type is `opened`, `synchronize`, or `reopened`
+  # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
+  pull_request: # empty object will use defaults
+  # Run on updates to `main` branch
+  push:
+    branches:
+      - "main"
+
+permissions:
+  # Allow us to commit to GitHub Pages
+  contents: write
+  # Allow us to write comments on PRs
+  pull-requests: write
+
+env:
+  # For PRs, create a GitHub Pages subpath under pulls/
+  PR_PATH: pull/${{ github.event.number }}
+  # Otherwise we'll use main/
+  MAIN_PATH: main
+  # Names for report paths on GitHub Pages
+  UNIT_PATH: unit-test-coverage
+  E2E_PATH: e2e-test-report
+
+jobs:
+  lint-and-unit-tests:
+    name: "ESLint, TypeScript Check, and Unit Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Prettier & ESLint
+        run: npm run lint
+
+      - name: svelte-check (diagnostic checks for unused CSS, Svelte A11y hints, and JS/TS errors)
+        run: npm run check
+
+      - name: Unit tests
+        run: npm run test:unit:coverage
+
+      - name: Report code coverage to PR in comment
+        if: github.ref != 'refs/heads/main'
+        # https://github.com/marketplace/actions/code-coverage-report
+        # Use a hash instead of version to support delete-old-comments field:
+        # https://github.com/romeovs/lcov-reporter-action/issues/47#issuecomment-1362606540
+        uses: romeovs/lcov-reporter-action@2a28ec3e25fb7eae9cb537e9141603486f810d1a
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          delete-old-comments: true
+
+      - name: Create artifact with report
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
+          path: coverage
+          retention-days: 1
+
+  end-to-end-tests:
+    name: "End-to-End Tests"
+    runs-on: ubuntu-latest
+    # Set a ridiculously long timeout to allow site to be built
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build site and run end-to-end tests
+        run: npm run test:e2e
+
+      - name: Create artifact with report
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.E2E_PATH }}
+          path: e2e-tests/report
+          retention-days: 1
+
+  deploy-reports-to-gh-pages:
+    name: "Deploy Reports to GitHub Pages"
+    # Wait for tests to complete before deploying.
+    needs: [lint-and-unit-tests, end-to-end-tests]
+    # We still want to upload reports regardless of whether tests failed.
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create directory to collect reports
+        run: mkdir pr-reports
+
+      - name: Download unit test report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
+          path: pr-reports/${{ env.UNIT_PATH }}
+
+      - name: Download end-to-end test report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.E2E_PATH }}
+          path: pr-reports/${{ env.E2E_PATH }}
+
+      - name: Set GitHub Pages preview URL for reports (for commenting)
+        if: github.ref != 'refs/heads/main'
+        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}" >> $GITHUB_ENV
+
+      - name: Deploy reports to GitHub Pages preview URL
+        # https://github.com/marketplace/actions/github-pages-action
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./pr-reports
+          destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
+
+      - name: Report deployment success message to PR in comment
+        if: github.ref != 'refs/heads/main'
+        # https://github.com/marketplace/actions/comment-progress
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: gh-pages-deploy
+          recreate: true
+          message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/${{ env.UNIT_PATH }}) and the [end-to-end test report](${{ env.PREVIEW_URL }}/${{ env.E2E_PATH }}) once changes have propagated (this may take a few minutes)."
