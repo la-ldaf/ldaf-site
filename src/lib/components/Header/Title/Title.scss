@@ -1,0 +1,55 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+.usa-header--extended {
+  .ldaf-logo__wide {
+    margin-top: auto;
+    align-items: center;
+    column-gap: 10px;
+    img {
+      max-width: 100px;
+    }
+    font-size: initial;
+  }
+
+  .ldaf-name__compact,
+  .ldaf-name__wide,
+  .ldaf-commissioner__wide {
+    color: $accent-light;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 5px;
+  }
+
+  .usa-logo .separator {
+    height: 65px;
+    border-left: 1px solid $accent-light;
+  }
+}
+
+.ldaf-agency-info {
+  display: flex;
+  column-gap: 10px;
+}
+
+@include at-media("desktop") {
+  .ldaf-logo__wide {
+    display: flex;
+  }
+
+  .ldaf-title__compact {
+    display: none;
+  }
+}
+
+@include at-media-max("desktop") {
+  .ldaf-logo__wide {
+    display: none;
+  }
+
+  .ldaf-title__compact a {
+    display: inline-block;
+  }
+}

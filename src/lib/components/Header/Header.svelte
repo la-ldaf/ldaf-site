@@ -1,14 +1,21 @@
 <script lang="ts">
+  import "./Header.scss";
+  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
 
-  import type { NavItemType } from "./Nav";
+  import type { NavItemType, NavLinkType } from "./Nav";
+  import type { SiteTitleType } from "./Title";
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
-  import Nav from "./Nav";
+  import Link from "$lib/components/Link";
   import Search from "$lib/components/Search";
+  import Title from "./Title";
+  import Nav from "./Nav";
 
   export let navItems: NavItemType[] = [];
+  export let siteTitle: SiteTitleType;
+  export let secondaryNavItems: NavLinkType[] = [];
 
   // Need to export this as a prop so we can reset it on route change.
   export let navMenuExpanded = false;
@@ -19,15 +26,9 @@
 
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
-<header class="usa-header usa-header--extended">
-  <div class="usa-navbar">
-    <div class="usa-logo" id="basic-logo">
-      <em class="usa-logo__text">
-        <!--TODO: Replace with content from CMS. -->
-        <a href="/" title="<Project title>"> &lt;Project title&gt; </a>
-      </em>
-    </div>
-
+<header class="ldaf-header usa-header usa-header--extended">
+  <div class="ldaf-nav usa-navbar">
+    <Title {siteTitle} />
     <!--TODO: Replace with content from CMS. -->
     <button type="button" class="usa-menu-btn" on:click={() => toggleNavMenu(true)}> Menu </button>
   </div>
@@ -39,17 +40,26 @@
         <Icon src={closeIcon} alt="Close" size={3} />
       </button>
 
+      <a class="ldaf-logo__compact" href="/">
+        <!-- TODO: Replace alt value with content from CMS. -->
+        <img src={ldafLogo} alt="Louisiana Department of Agriculture and Forestry Home" />
+      </a>
+      <div class="ldaf-commissioner__compact">
+        <span>{siteTitle.commissionerRow1}</span>
+        <span class="text-italic">{siteTitle.commissionerRow2}</span>
+      </div>
+
       <Nav items={navItems} />
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
-      <div class="usa-nav__secondary">
+      <div class="ldaf-nav__secondary usa-nav__secondary">
         <ul class="usa-nav__secondary-links">
-          <li class="usa-nav__secondary-item">
-            <a href="/news">Grants and funding</a>
-          </li>
-          <li class="usa-nav__secondary-item">
-            <a href="/documentation" class="usa-current">Licensing and permits</a>
-          </li>
+          {#each secondaryNavItems as item, i (item.id)}
+            {@const { name, link } = item}
+            <li class="usa-nav__secondary-item">
+              <Link href={link}>{name}</Link>
+            </li>
+          {/each}
         </ul>
 
         <section aria-label="Search component">

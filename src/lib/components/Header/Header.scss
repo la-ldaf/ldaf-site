@@ -1,0 +1,71 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+.ldaf-header {
+  background: linear-gradient(to right, transparent, $primary-darkest 30%),
+    url("../../assets/header-background.png");
+}
+
+.ldaf-header .ldaf-nav__secondary {
+  .usa-input {
+    border-radius: 5px 0 0 5px;
+  }
+
+  a {
+    color: $primary-light;
+  }
+}
+
+.ldaf-header.usa-header--extended .usa-nav__primary {
+  justify-content: center;
+}
+
+@include at-media("desktop") {
+  .ldaf-header .usa-nav {
+    border-top: 4px solid $accent-light;
+    background: white;
+  }
+
+  .ldaf-nav.usa-navbar {
+    height: 148px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .usa-logo {
+      max-width: 65%;
+    }
+  }
+
+  .ldaf-nav__secondary.usa-nav__secondary {
+    bottom: 5rem;
+
+    a {
+      color: $primary-lightest;
+    }
+  }
+
+  .ldaf-commissioner__compact,
+  .ldaf-logo__compact {
+    display: none;
+  }
+}
+
+@include at-media-max("desktop") {
+  .usa-header--extended .ldaf-nav.usa-navbar {
+    background: $primary-darkest;
+    border-bottom: none;
+  }
+
+  .ldaf-logo__compact {
+    display: inline-block;
+    max-width: 68px;
+  }
+
+  .usa-nav__inner .ldaf-agency-commissioner span {
+    margin-top: 5px;
+    display: inline-block;
+  }
+}
