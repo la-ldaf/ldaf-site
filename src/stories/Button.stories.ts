@@ -36,6 +36,10 @@ export const Primary: Story = {
   args: {},
 };
 
+export const Disabled: Story = {
+  args: { disabled: true },
+};
+
 export const Base: Story = {
   args: {
     variant: "base",
@@ -89,6 +93,16 @@ export const BigInverse: Story = {
 
 export const Unstyled: Story = {
   args: {
+    unstyled: true,
+  },
+};
+
+export const UnstyledInverse: Story = {
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
+  args: {
+    variant: "inverse",
     unstyled: true,
   },
 };
