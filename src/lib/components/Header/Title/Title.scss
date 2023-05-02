@@ -1,3 +1,7 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
 .usa-header--extended {
   .ldaf-logo__wide {
     margin-top: auto;
@@ -30,7 +34,7 @@
   column-gap: 10px;
 }
 
-@media all and (min-width: 64em) {
+@include at-media("desktop") {
   .ldaf-logo__wide {
     display: flex;
   }
@@ -40,7 +44,7 @@
   }
 }
 
-@media all and (max-width: 63.99em) {
+@include at-media-max("desktop") {
   .ldaf-logo__wide {
     display: none;
   }

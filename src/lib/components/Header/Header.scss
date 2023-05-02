@@ -1,5 +1,9 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
 .ldaf-header {
-  background: linear-gradient(to right, transparent, #00284d 30%),
+  background: linear-gradient(to right, transparent, $primary-darkest 30%),
     url("../../assets/header-background.png");
 }
 
@@ -17,7 +21,7 @@
   justify-content: center;
 }
 
-@media all and (min-width: 64em) {
+@include at-media("desktop") {
   .ldaf-header .usa-nav {
     border-top: 4px solid $accent-light;
     background: white;
@@ -49,7 +53,7 @@
   }
 }
 
-@media all and (max-width: 63.99em) {
+@include at-media-max("desktop") {
   .usa-header--extended .ldaf-nav.usa-navbar {
     background: $primary-darkest;
     border-bottom: none;

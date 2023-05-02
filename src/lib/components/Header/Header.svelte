@@ -8,9 +8,10 @@
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
+  import Link from "$lib/components/Link";
+  import Search from "$lib/components/Search";
   import Title from "./Title";
   import Nav from "./Nav";
-  import Search from "$lib/components/Search";
 
   export let navItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
@@ -55,7 +56,7 @@
           {#each secondaryNavItems as item, i (item.id)}
             {@const { name, link } = item}
             <li class="usa-nav__secondary-item">
-              <a href={link}>{name}</a>
+              <Link href={link}>{name}</Link>
             </li>
           {/each}
         </ul>
