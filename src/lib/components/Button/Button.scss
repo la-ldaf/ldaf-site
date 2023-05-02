@@ -193,6 +193,7 @@ $colors: (
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
+    box-shadow: none;
     background: none;
     color: map.get($colors, "disabled");
   }
