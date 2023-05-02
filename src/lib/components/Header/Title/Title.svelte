@@ -6,8 +6,9 @@
 </script>
 
 <div class="usa-logo ldaf-logo__wide" id="basic-logo">
-  <a href="/" title="<Project title>">
-    <img src={ldafLogo} alt="LDAF Logo" />
+  <a href="/">
+    <!-- TODO: Replace alt value with content from CMS. -->
+    <img src={ldafLogo} alt="Louisiana Department of Agriculture and Forestry Home" />
   </a>
   <div class="ldaf-agency-info">
     <div class="ldaf-name__wide">
@@ -23,7 +24,7 @@
 </div>
 
 <div class="usa-logo ldaf-title__compact">
-  <a href="/" title="<Project title>">
+  <a href="/">
     <div class="ldaf-name__compact">
       <span class="text-bold">{siteTitle.compactTitleRow1}</span>
       <span class="text-bold">{siteTitle.compactTitleRow2}</span>

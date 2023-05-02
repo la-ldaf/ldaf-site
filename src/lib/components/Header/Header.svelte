@@ -40,8 +40,9 @@
         <Icon src={closeIcon} alt="Close" size={3} />
       </button>
 
-      <a class="ldaf-logo__compact" href="/" title="<Project title>">
-        <img src={ldafLogo} alt="LDAF Logo" />
+      <a class="ldaf-logo__compact" href="/">
+        <!-- TODO: Replace alt value with content from CMS. -->
+        <img src={ldafLogo} alt="Louisiana Department of Agriculture and Forestry Home" />
       </a>
       <div class="ldaf-commissioner__compact">
         <span>{siteTitle.commissionerRow1}</span>
