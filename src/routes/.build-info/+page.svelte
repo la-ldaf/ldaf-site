@@ -16,6 +16,7 @@
   const githubPagesPullUrl = `https://${VERCEL_GIT_REPO_OWNER}.github.io/${VERCEL_GIT_REPO_SLUG}/pull/${VERCEL_GIT_PULL_REQUEST_ID}`;
   const unitCoverageUrl = `${githubPagesPullUrl}/unit-test-coverage`;
   const e2eReportUrl = `${githubPagesPullUrl}/e2e-test-report`;
+  const bundleVisualizerUrl = `${githubPagesPullUrl}/bundle-visualizer`;
 </script>
 
 <section class="usa-section">
@@ -43,6 +44,8 @@
         Link to unit test coverage report: <Link href={unitCoverageUrl}>{unitCoverageUrl}</Link>
         <br />
         Link to end-to-end test report: <Link href={e2eReportUrl}>{e2eReportUrl}</Link>
+        <br />
+        Link to bundle visualizer: <Link href={bundleVisualizerUrl}>{bundleVisualizerUrl}</Link>
       {:else}
         This preview is not associated with a pull request.
       {/if}

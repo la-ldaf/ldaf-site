@@ -18,7 +18,8 @@
     "format": "prettier --plugin-search-dir . --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic"
+    "chromatic": "chromatic",
+    "bundle-visualizer": "mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html"
   },
   "devDependencies": {
     "@playwright/test": "^1.33.0",
@@ -67,6 +68,7 @@
     "tslib": "^2.4.1",
     "typescript": "^5.0.4",
     "vite": "^4.3.3",
+    "vite-bundle-visualizer": "^0.6.0",
     "vite-imagetools": "^4.0.19",
     "vite-plugin-svelte-purgecss": "^0.0.3",
     "vitest": "^0.30.1"
