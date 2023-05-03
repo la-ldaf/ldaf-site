@@ -67,7 +67,7 @@
     "tslib": "^2.4.1",
     "typescript": "^5.0.4",
     "vite": "^4.3.3",
-    "vite-imagetools": "^4.0.19",
+    "vite-imagetools": "^5.0.0",
     "vite-plugin-svelte-purgecss": "^0.0.3",
     "vitest": "^0.30.1"
   },
