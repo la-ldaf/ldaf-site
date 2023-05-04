@@ -1,7 +1,7 @@
 <script lang="ts">
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
-  import { markdownDocument } from "./__test__/documents";
+  import { markdownDocument } from "./__tests__/documents";
   import { isDocument } from "./predicates";
 
   export let document: Document = markdownDocument.document;
