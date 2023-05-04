@@ -31,7 +31,8 @@ const isInsignificantTextNode = (node: Node) =>
   isTextNode(node) && isWhitespaceOrEmptyRegex.test(node.textContent ?? "");
 
 const isSignificantNode = (node: Node) =>
-  significantNodeTypes.includes(node.nodeType) && !isInsignificantTextNode(node);
+  (significantNodeTypes as readonly number[]).includes(node.nodeType) &&
+  !isInsignificantTextNode(node);
 
 // Svelte uses attributes starting with __ internally, so our tests will always fail unless we ignore them
 const isHiddenAttribute = ({ name }: Attr) => name.startsWith("__");
