@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>65/65</span>
+                <span class='fraction'>75/75</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">50% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">80% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>4/5</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>65/65</span>
+                <span class='fraction'>75/75</span>
             </div>
         
             
@@ -128,7 +128,27 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -194,16 +214,23 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;script lang="ts"&gt;
+  import "./Header.scss";
+  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
 &nbsp;
-  import type { NavItemType } from "./Nav";
+  import type { NavItemType, NavLinkType } from "./Nav";
+  import type { SiteTitleType } from "./Title";
 &nbsp;
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
-  import Nav from "./Nav";
+  import Link from "$lib/components/Link";
   import Search from "$lib/components/Search";
+  import Title from "./Title";
+  import Nav from "./Nav";
 &nbsp;
   export let navItems: NavItemType[] = [];
+  export let siteTitle: SiteTitleType;
+  export let secondaryNavItems: NavLinkType[] = [];
 &nbsp;
   // Need to export this as a prop so we can reset it on route change.
   export let navMenuExpanded = false;
@@ -214,15 +241,9 @@
 &nbsp;
 &lt;!-- TODO: Continue replacing parts of this file with components and content from the CMS. --&gt;
 &lt;!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic --&gt;
-&lt;header class="usa-header usa-header--extended"&gt;
-  &lt;div class="usa-navbar"&gt;
-    &lt;div class="usa-logo" id="basic-logo"&gt;
-      &lt;em class="usa-logo__text"&gt;
-        &lt;!--TODO: Replace with content from CMS. --&gt;
-        &lt;a href="/" title="&lt;Project title&gt;"&gt; &amp;lt;Project title&amp;gt; &lt;/a&gt;
-      &lt;/em&gt;
-    &lt;/div&gt;
-&nbsp;
+&lt;header class="ldaf-header usa-header usa-header--extended"&gt;
+  &lt;div class="ldaf-nav usa-navbar"&gt;
+    &lt;Title {siteTitle} /&gt;
     &lt;!--TODO: Replace with content from CMS. --&gt;
     &lt;button type="button" class="usa-menu-btn" on:click={() =&gt; toggleNavMenu(true)}&gt; Menu &lt;/button&gt;
   &lt;/div&gt;
@@ -234,17 +255,26 @@
         &lt;Icon src={closeIcon} alt="Close" size={3} /&gt;
       &lt;/button&gt;
 &nbsp;
+      &lt;a class="ldaf-logo__compact" href="/"&gt;
+        &lt;!-- TODO: Replace alt value with content from CMS. --&gt;
+        &lt;img src={ldafLogo} alt="Louisiana Department of Agriculture and Forestry Home" /&gt;
+      &lt;/a&gt;
+      &lt;div class="ldaf-commissioner__compact"&gt;
+        &lt;span&gt;{<span class="branch-0 cbranch-no" title="branch not covered" >siteTitle.commissionerRow1<span class="branch-0 cbranch-no" title="branch not covered" >}&lt;/span&gt;</span></span>
+        &lt;span class="text-italic"&gt;{<span class="branch-0 cbranch-no" title="branch not covered" >siteTitle.commissionerRow2<span class="branch-0 cbranch-no" title="branch not covered" >}&lt;/span&gt;</span></span>
+      &lt;/div&gt;
+&nbsp;
       &lt;Nav items={<span class="branch-0 cbranch-no" title="branch not covered" >navItems} /&gt;</span>
 &nbsp;
       &lt;!-- TODO: Extend &lt;Nav/&gt; to cover secondary nav or build out component with shared dependencies. --&gt;
-      &lt;div class="usa-nav__secondary"&gt;
+      &lt;div class="ldaf-nav__secondary usa-nav__secondary"&gt;
         &lt;ul class="usa-nav__secondary-links"&gt;
-          &lt;li class="usa-nav__secondary-item"&gt;
-            &lt;a href="/news"&gt;Grants and funding&lt;/a&gt;
-          &lt;/li&gt;
-          &lt;li class="usa-nav__secondary-item"&gt;
-            &lt;a href="/documentation" class="usa-current"&gt;Licensing and permits&lt;/a&gt;
-          &lt;/li&gt;
+          {#each secondaryNavItems as item, i (item.id)}
+            {@const { name, link } = item}
+            &lt;li class="usa-nav__secondary-item"&gt;
+              &lt;Link href={link}&gt;{name}&lt;/Link&gt;
+            &lt;/li&gt;
+          {/each}
         &lt;/ul&gt;
 &nbsp;
         &lt;section aria-label="Search component"&gt;
@@ -265,7 +295,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-02T22:09:41.290Z
+                at 2023-05-04T21:11:36.888Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
