@@ -14,3 +14,4 @@ build-storybook.log
 /.vercel
 /e2e-tests/report
 /e2e-tests/results
+/bundle-visualizer
