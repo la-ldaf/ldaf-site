@@ -1,3 +1,3 @@
-<div class="grid-container">
+<div class="usa-prose grid-container">
   <slot />
 </div>
