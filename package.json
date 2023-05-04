@@ -18,7 +18,7 @@
     "format": "prettier --plugin-search-dir . --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic",
+    "chromatic": "chromatic --zip",
     "bundle-visualizer": "node scripts/pre-build.js && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html"
   },
   "devDependencies": {
