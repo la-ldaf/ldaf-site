@@ -5,8 +5,10 @@
   "scripts": {
     "prepare": "svelte-kit sync",
     "dev": "vite dev",
-    "build": "node scripts/pre-build.js && vite build",
+    "prebuild": "node scripts/prebuild.js",
+    "build": "vite build",
     "preview": "vite preview",
+    "pretest": "node scripts/pretest.js",
     "test": "npm run lint && npm run check && npm run test:unit",
     "test:e2e": "playwright test",
     "test:e2e:ui": "npm run test:e2e -- --ui",
