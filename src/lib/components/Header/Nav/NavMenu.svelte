@@ -1,6 +1,6 @@
 <script lang="ts">
   import Link from "$lib/components/Link/Link.svelte";
-  import chunk from "$lib/util/chunk";
+  import chunk from "lodash/chunk";
   import classNames from "$lib/util/classNames";
   import { createEventDispatcher } from "svelte";
   import type { NavMenuProps, NavLinkType } from "./types";
