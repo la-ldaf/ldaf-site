@@ -2,9 +2,10 @@
   import type { NavItemType, NavLinkType } from "$lib/components/Header/Nav";
   import type { SiteTitleType } from "$lib/components/Header/Title";
 
-  import { navigating } from "$app/stores";
-  import { page } from "$app/stores";
+  import { browser } from "$app/environment";
+  import { navigating, page } from "$app/stores";
   import "../app.scss";
+  import { webVitals } from "$lib/vitals";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Footer from "$lib/components/landingPage/Footer.svelte";
   import Header from "$lib/components/Header";
@@ -12,6 +13,16 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
+
+  const analyticsID = import.meta.env.VERCEL_ANALYTICS_ID;
+
+  $: if (browser && analyticsID) {
+    webVitals({
+      path: $page.url.pathname,
+      params: $page.params,
+      analyticsID,
+    });
+  }
 
   export let data;
   const {
