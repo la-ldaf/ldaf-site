@@ -1,0 +1,24 @@
+{
+  "nodeType": "document",
+  "data": {},
+  "content": [
+    {
+      "nodeType": "paragraph",
+      "data": {},
+      "content": [
+        {
+          "nodeType": "text",
+          "value": "This text is ",
+          "data": {},
+          "marks": []
+        },
+        {
+          "nodeType": "text",
+          "value": "important",
+          "data": {},
+          "marks": [{ "type": "bold" }]
+        }
+      ]
+    }
+  ]
+}
