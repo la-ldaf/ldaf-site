@@ -1,3 +1,3 @@
-<div class="usa-prose grid-container">
+<div class="usa-section usa-prose grid-container">
   <slot />
 </div>
