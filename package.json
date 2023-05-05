@@ -21,7 +21,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "chromatic --zip",
-    "bundle-visualizer": "node scripts/pre-build.js && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html"
+    "bundle-visualizer": "npm run prebuild && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html"
   },
   "devDependencies": {
     "@contentful/rich-text-from-markdown": "^15.16.5",
