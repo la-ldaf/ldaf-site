@@ -30,6 +30,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      time: "09:00"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 10
     reviewers:
       - "la-ldaf/ad-hoc-engineers"
