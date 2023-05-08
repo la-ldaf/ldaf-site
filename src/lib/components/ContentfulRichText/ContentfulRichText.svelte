@@ -1,16 +1,10 @@
 <script lang="ts">
   import Node from "./nodes/Node.svelte";
-  import type { Document } from "@contentful/rich-text-types";
-  import { markdownDocument } from "./__tests__/documents";
-  import { isDocument } from "./predicates";
+  import type { TopLevelBlock } from "@contentful/rich-text-types";
 
-  export let document: Document = markdownDocument.document;
-
-  if (!isDocument(document)) {
-    throw new Error("document prop is not a document");
-  }
+  export let content: TopLevelBlock[];
 </script>
 
-{#each document.content as subNode}
+{#each content as subNode}
   <Node node={subNode} />
 {/each}
