@@ -75,7 +75,7 @@
     "typescript": "^5.0.4",
     "vite": "^4.3.5",
     "vite-bundle-visualizer": "^0.6.0",
-    "vite-imagetools": "^5.0.2",
+    "vite-imagetools": "^5.0.3",
     "vite-plugin-svelte-purgecss": "^0.0.3",
     "vitest": "^0.30.1"
   },
