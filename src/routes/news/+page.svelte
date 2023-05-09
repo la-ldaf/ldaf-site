@@ -107,10 +107,7 @@
           width={500}
           height={1000}
         />
-        <p slot="body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        {#if 2 > 0}
-          <p>testing</p>
-        {/if}
+        <p slot="body">Flag component body</p>
         <Button slot="footer">Visit Florida Keys</Button>
       </Card>
     </ul>

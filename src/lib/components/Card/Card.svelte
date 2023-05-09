@@ -28,7 +28,6 @@
         </slot>
       </div>
     {/if}
-    <!-- <slot /> -->
     {#if $$slots.image}
       <div class="usa-card__media">
         <div class="usa-card__img">
@@ -50,6 +49,7 @@
         </slot>
       </div>
     {/if}
+    <!-- <slot /> -->
     {#if $$slots.footer}
       <div class="usa-card__footer">
         <slot name="footer">

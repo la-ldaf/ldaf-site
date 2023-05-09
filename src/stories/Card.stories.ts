@@ -36,6 +36,17 @@ export const PrimaryCard: Story = {
   },
 };
 
+export const FlagOrientation: Story = {
+  args: {
+    header: "Primary Card",
+    body: "Body text",
+    footer: "Action or link",
+    variant: "flag",
+    isSecondary: false,
+    isTaskList: false,
+  },
+};
+
 export const SecondaryCard: Story = {
   args: {
     header: "Secondary Card",

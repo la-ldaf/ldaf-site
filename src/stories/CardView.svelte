@@ -10,34 +10,41 @@
   export let footer = "CTA Button";
   export let isSecondary = false;
   export let isTaskList = false;
-  // console.log($$slots);
 </script>
 
 <section class="usa-section">
   <div class="grid-container">
     <ul class="usa-card-group">
-      <Card {variant}>
+      <Card {variant} class="desktop:grid-col-6">
         <h2 class="usa-card__heading" slot="header">{header}</h2>
-        {#if !isSecondary && !isTaskList}
-          <Image
-            slot="image"
-            src="https://designsystem.digital.gov/img/introducing-uswds-2-0/built-to-grow--alt.jpg"
-            alt="A placeholder image"
-            width={40}
-            height={40}
-          />
-        {/if}
+        <div class="image-slot" slot="image">
+          {#if !isSecondary && !isTaskList}
+            <Image
+              slot="image"
+              src="https://designsystem.digital.gov/img/introducing-uswds-2-0/built-to-grow--alt.jpg"
+              alt="A placeholder image"
+              width={40}
+              height={40}
+            />
+          {/if}
+        </div>
         <p slot="body">
           {body}
         </p>
-        {#if !isTaskList}
-          <Button slot="footer">
-            <!-- {#if !isTaskList} -->
-            {footer}
-            <!-- {/if} -->
-          </Button>
-        {/if}
+        <div slot="footer">
+          {#if !isTaskList}
+            <Button>
+              {footer}
+            </Button>
+          {/if}
+        </div>
       </Card>
     </ul>
   </div>
 </section>
+
+<style>
+  .image-slot {
+    height: 100%;
+  }
+</style>
