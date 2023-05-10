@@ -31,8 +31,8 @@ export const PrimaryCard: Story = {
     header: "Primary Card",
     body: "Body text",
     footer: "Action or link",
-    isSecondary: false,
-    isTaskList: false,
+    showImage: true,
+    showFooter: true,
   },
 };
 
@@ -42,8 +42,8 @@ export const FlagOrientation: Story = {
     body: "Body text",
     footer: "Action or link",
     variant: "flag",
-    isSecondary: false,
-    isTaskList: false,
+    showImage: true,
+    showFooter: true,
   },
 };
 
@@ -52,8 +52,8 @@ export const SecondaryCard: Story = {
     header: "Secondary Card",
     body: "Secondary text",
     footer: "Action or link",
-    isSecondary: true,
-    isTaskList: false,
+    showImage: false,
+    showFooter: true,
   },
 };
 
@@ -62,7 +62,7 @@ export const TaskListCard: Story = {
     header: "Task List Card",
     body: "Task list text",
     footer: "Action or link",
-    isSecondary: false,
-    isTaskList: true,
+    showImage: false,
+    showFooter: false,
   },
 };

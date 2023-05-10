@@ -4,12 +4,19 @@
   import Image from "$lib/components/Image";
   import Button from "$lib/components/Button";
 
+  import sampleImage from "../uswds-sample.jpg";
+  import imageBlurhash, {
+    width as imageWidth,
+    height as imageHeight,
+    mean as imageMean,
+  } from "../uswds-sample.jpg?blurhash";
+
   export let variant: Variant = "primary";
   export let header = "Header";
   export let body = "Some body text";
   export let footer = "CTA Button";
-  export let isSecondary = false;
-  export let isTaskList = false;
+  export let showImage = true;
+  export let showFooter = true;
 </script>
 
 <section class="usa-section">
@@ -18,13 +25,14 @@
       <Card {variant} class="desktop:grid-col-6">
         <h2 class="usa-card__heading" slot="header">{header}</h2>
         <div class="image-slot" slot="image">
-          {#if !isSecondary && !isTaskList}
+          {#if showImage}
             <Image
-              slot="image"
-              src="https://designsystem.digital.gov/img/introducing-uswds-2-0/built-to-grow--alt.jpg"
+              src={sampleImage}
               alt="A placeholder image"
-              width={40}
-              height={40}
+              width={imageWidth}
+              height={imageHeight}
+              mean={imageMean}
+              blurhash={imageBlurhash}
             />
           {/if}
         </div>
@@ -32,7 +40,7 @@
           {body}
         </p>
         <div slot="footer">
-          {#if !isTaskList}
+          {#if showFooter}
             <Button>
               {footer}
             </Button>

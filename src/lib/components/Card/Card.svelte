@@ -11,7 +11,6 @@
     primary: "",
     flag: "usa-card--flag",
   };
-  // console.log($$slots);
   $: variantClass = variantClassesDict[variant];
 
   let className = "";
@@ -49,7 +48,6 @@
         </slot>
       </div>
     {/if}
-    <!-- <slot /> -->
     {#if $$slots.footer}
       <div class="usa-card__footer">
         <slot name="footer">
