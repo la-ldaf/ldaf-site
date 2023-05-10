@@ -2,11 +2,6 @@ import { describe, expect, it, vi, type Mock } from "vitest";
 import * as envVars from "$env/static/private";
 import contentfulFetch from "./fetch";
 
-global.fetch = vi.fn(async () => {
-  console.log("fetchin");
-  return await Promise.resolve(true);
-}) as Mock;
-
 vi.mock("$env/static/private");
 type EnvVarName = "VERCEL" | "CONTENTFUL_SPACE_ID" | "CONTENTFUL_DELIVERY_API_TOKEN";
 type EnvVars = Record<EnvVarName, string>;
