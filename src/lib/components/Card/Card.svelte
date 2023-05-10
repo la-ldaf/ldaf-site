@@ -8,7 +8,7 @@
   export let variant: Variant = "primary";
 
   const variantClassesDict: Record<Variant, string> = {
-    primary: "usa-card--flag",
+    primary: $$slots.image ? "usa-card--flag" : "",
     secondary: "",
   };
   $: variantClass = variantClassesDict[variant];
