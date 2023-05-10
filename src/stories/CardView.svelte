@@ -2,6 +2,8 @@
   import Card from "$lib/components/Card";
   import type { Variant } from "$lib/components/Card";
   import Image from "$lib/components/Image";
+  import Icon from "$lib/components/Icon";
+  import { url as arrow } from "$icons/arrow_forward";
   import Button from "$lib/components/Button";
 
   import sampleImage from "../uswds-sample.jpg";
@@ -17,6 +19,7 @@
   export let footer = "CTA Button";
   export let showImage = true;
   export let showFooter = true;
+  export let tasks: string[] = [];
 </script>
 
 <section class="usa-section">
@@ -28,7 +31,7 @@
           {#if showImage}
             <Image
               src={sampleImage}
-              alt="A placeholder image"
+              alt="Primary view placeholder"
               width={imageWidth}
               height={imageHeight}
               mean={imageMean}
@@ -38,7 +41,17 @@
         </div>
         <p slot="body">
           {body}
+          {#if tasks.length > 0}
+            <ul>
+              {#each tasks as task}
+                <li class="task-item">
+                  <Icon src={arrow} />{task}
+                </li>
+              {/each}
+            </ul>
+          {/if}
         </p>
+
         <div slot="footer">
           {#if showFooter}
             <Button>
@@ -52,6 +65,13 @@
 </section>
 
 <style>
+  ul {
+    padding-inline-start: 15px;
+  }
+  .task-item {
+    display: flex;
+    align-items: center;
+  }
   .image-slot {
     height: 100%;
   }

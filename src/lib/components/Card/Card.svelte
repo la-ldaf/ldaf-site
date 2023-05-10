@@ -8,8 +8,8 @@
   export let variant: Variant = "primary";
 
   const variantClassesDict: Record<Variant, string> = {
-    primary: "",
-    flag: "usa-card--flag",
+    primary: "usa-card--flag",
+    secondary: "",
   };
   $: variantClass = variantClassesDict[variant];
 

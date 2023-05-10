@@ -31,17 +31,7 @@ export const PrimaryCard: Story = {
     header: "Primary Card",
     body: "Body text",
     footer: "Action or link",
-    showImage: true,
-    showFooter: true,
-  },
-};
-
-export const FlagOrientation: Story = {
-  args: {
-    header: "Primary Card",
-    body: "Body text",
-    footer: "Action or link",
-    variant: "flag",
+    variant: "primary",
     showImage: true,
     showFooter: true,
   },
@@ -52,6 +42,7 @@ export const SecondaryCard: Story = {
     header: "Secondary Card",
     body: "Secondary text",
     footer: "Action or link",
+    variant: "secondary",
     showImage: false,
     showFooter: true,
   },
@@ -60,9 +51,11 @@ export const SecondaryCard: Story = {
 export const TaskListCard: Story = {
   args: {
     header: "Task List Card",
-    body: "Task list text",
+    body: "A list of tasks",
     footer: "Action or link",
+    variant: "secondary",
     showImage: false,
     showFooter: false,
+    tasks: ["task 1", "task 2", "task 3"],
   },
 };
