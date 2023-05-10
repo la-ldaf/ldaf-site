@@ -3,7 +3,8 @@
 declare global {
   namespace App {
     interface Error {
-      title: string;
+      // `message` is included by default
+      title?: string;
     }
     // interface Locals {}
     // interface PageData {}
