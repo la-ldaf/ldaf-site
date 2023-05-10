@@ -2,11 +2,11 @@
 
 ## Decision and Evaluation Criteria
 
-In constrast to the wide net our engineering team cast when considering potential front-end frameworks, the only design system option given heavy consideration was USWDS. Among the five [design principles](https://designsystem.digital.gov/design-principles/) detailed by USWDS, there's two that were given a higher degree of consideration in making and validating our decision to use it: continuity and accessibility.
+In contrast to the wide net our engineering team cast when considering potential front-end frameworks, the only design system option given heavy consideration was USWDS. Among the five [design principles](https://designsystem.digital.gov/design-principles/) detailed by USWDS, there's two that were given a higher degree of consideration in making and validating our decision to use it: continuity and accessibility.
 
 ### Continuity
 
-A reasonable analogy to make here is [Bootstrap](https://getbootstrap.com/). Much as Bootstrap was once the de facto CSS framework used by countless websites, USWDS has positioned itself as the go-to styling and design solution for federal government websites. Whereas Bootstrap was maligned over time for its relatively rigid appearance, resulting in a profliferation of visually homogenous sites, we consider that same characteristic less of a negative for USWDS. One USWDS design principle is to [promote continuity](https://designsystem.digital.gov/design-principles/#promote-continuity-2), detailed with the broader goal to "minimize disruption, and provide a consistent experience throughout services; over time; and across agencies, platforms, and devices." Using USWDS places LDAF's site within a visual identity many will already be implicitly familiar with via interactions on other modern US government websites.
+A reasonable analogy to make here is [Bootstrap](https://getbootstrap.com/). Much as Bootstrap was once the de facto CSS framework used by countless websites, USWDS has positioned itself as the go-to styling and design solution for federal government websites. Whereas Bootstrap was maligned over time for its relatively rigid appearance, resulting in a proliferation of visually homogenous sites, we consider that same characteristic less of a negative for USWDS. One USWDS design principle is to [promote continuity](https://designsystem.digital.gov/design-principles/#promote-continuity-2), detailed with the broader goal to "minimize disruption, and provide a consistent experience throughout services; over time; and across agencies, platforms, and devices." Using USWDS places LDAF's site within a visual identity many will already be implicitly familiar with via interactions on other modern US government websites.
 
 Another angle to view continuity is internally, as many of our engineers and designers have experience working with USWDS. Beginning to build with familiar tooling has a few notable advantages:
 
@@ -23,7 +23,7 @@ Lastly, while this isn't a direct design principle of USWDS, it's reached a poin
 
 ## Alternative Solutions
 
-While not really a truly different overall style solution, we chose to avoid the official compilation tool, [`uswds-compile`](https://github.com/uswds/uswds-compile). It's built with [gulp](https://gulpjs.com/), and rather than introduce another build tool into the mix, we chose to incorporate necessary compilation steps into our [vite](https://vitejs.dev/) config, the built-in bundling tool for SvelteKit.
+While not really a truly different overall style solution, we chose to avoid the official compilation tool, [`uswds-compile`](https://github.com/uswds/uswds-compile). It's built with [gulp](https://gulpjs.com/), and rather than introduce another build tool into the mix, we chose to incorporate necessary compilation steps into our [Vite](https://vitejs.dev/) config, the built-in bundling tool for SvelteKit.
 
 ## Potential Trade-offs
 
@@ -33,8 +33,8 @@ One initial stumbling block we hit when attempting to integrate USWDS into our c
 
 ## Global Styles vs Modularity
 
-Svelte's idiomatic preference for styling follows the trends of lots of modern web development, with the [standard approach](https://svelte.dev/docs#component-format-style) showing a preference towards component-level over global styles. This required a little bit of configuration to play nicely with vite.
+Svelte's idiomatic preference for styling follows the trends of lots of modern web development, with the [standard approach](https://svelte.dev/docs#component-format-style) showing a preference towards component-level over global styles. This required a little bit of configuration to play nicely with Vite.
 
-Another side effect of this approach is more friction in utilizing certain Sass features inside of component-level styles. A notable example is [`@extend`](https://sass-lang.com/documentation/at-rules/extend), which to use inside a component's individual `.scss` file requires importing USWDS' `uswds-core` module and [any relevant `usa-*` module](https://designsystem.digital.gov/components/packages/#included-packages-2) into the component CSS. While workable, it is nonethless a less ergonomic trade-off.
+Another side effect of this approach is more friction in utilizing certain Sass features inside of component-level styles. A notable example is [`@extend`](https://sass-lang.com/documentation/at-rules/extend), which to use inside a component's individual `.scss` file requires importing USWDS' `uswds-core` module and [any relevant `usa-*` module](https://designsystem.digital.gov/components/packages/#included-packages-2) into the component CSS. While workable, it is nonetheless a less ergonomic trade-off.
 
 Ultimately, we decided that the design of USWDS as a global set of styles makes sense given its intended usage, as well as its inception predating the spread of more modular CSS-in-JS approaches. With that in mind, the overall amount of configuration required to make it work for our purposes is relatively minimal.
