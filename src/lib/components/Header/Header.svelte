@@ -12,14 +12,16 @@
   import Search from "$lib/components/Search";
   import Title from "./Title";
   import Nav from "./Nav";
+  import { navigating } from "$app/stores";
 
   export let navItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
   export let secondaryNavItems: NavLinkType[] = [];
 
   // Need to export this as a prop so we can reset it on route change.
-  export let navMenuExpanded = false;
+  let navMenuExpanded = false;
   const toggleNavMenu = (show: boolean) => (navMenuExpanded = show);
+  $: if ($navigating) navMenuExpanded = false;
 
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
 </script>
