@@ -6,8 +6,8 @@ This plugin generates minified and inline-able versions of SVG icons contained i
 
 ```svelte
 <script lang="ts">
-  import { url } from "$icons/an-icon";
+  import { url as anIcon } from "$icons/an-icon";
 </script>
 
-<img src={url} />
+<img src={anIcon} />
 ```
