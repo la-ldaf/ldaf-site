@@ -8,9 +8,9 @@ export const load = (async ({ url }) => {
   const preview = false;
   const client = getContentfulClient({ preview });
   if (!client) return {};
-  const { PUBLIC_TEST_ENTRY_ID } = env;
-  if (!PUBLIC_TEST_ENTRY_ID) return {};
+  const { PUBLIC_CONTENTFUL_TEST_ENTRY_ID } = env;
+  if (!PUBLIC_CONTENTFUL_TEST_ENTRY_ID) return {};
   return {
-    entry: await client.getEntry<TestRichTextEntrySkeleton>(PUBLIC_TEST_ENTRY_ID),
+    entry: await client.getEntry<TestRichTextEntrySkeleton>(PUBLIC_CONTENTFUL_TEST_ENTRY_ID),
   };
 }) satisfies PageServerLoad;

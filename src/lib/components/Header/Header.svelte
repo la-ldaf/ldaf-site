@@ -1,5 +1,9 @@
 <script lang="ts">
   import "./Header.scss";
+  import {
+    PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID,
+    PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI,
+  } from "$env/static/public";
   import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
 
@@ -24,6 +28,10 @@
   $: if ($navigating) navMenuExpanded = false;
 
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
+
+  const loginLink = `https://be.contentful.com/oauth/authorize?response_type=token&client_id=${PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
+    PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI
+  )}&scope=content_management_manage`;
 </script>
 
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
@@ -55,6 +63,10 @@
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
       <div class="ldaf-nav__secondary usa-nav__secondary">
+        <div>
+          <a href={loginLink}>Login</a>
+        </div>
+
         <ul class="usa-nav__secondary-links">
           {#each secondaryNavItems as item, i (item.id)}
             {@const { name, link } = item}
