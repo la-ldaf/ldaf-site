@@ -15,13 +15,12 @@ const query = `
 }
 `;
 
-export async function load() {
-  const response = await contentfulFetch(query);
-  if (response && response.ok) {
-    const { data } = await response.json();
-    return data.testRichText.body.json;
+export async function load(): Promise<Document> {
+  const data = await contentfulFetch(query);
+  if (data) {
+    return data?.testRichText?.body?.json;
   } else {
-    const document: Document = markdownDocument.document;
+    const document = markdownDocument.document;
     if (!isDocument(document)) {
       throw error(500, {
         title: "We could not render this page.",

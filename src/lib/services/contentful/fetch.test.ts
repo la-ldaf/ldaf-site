@@ -17,7 +17,9 @@ const query = "{ some { graphql { query } } }";
 describe("Contentful Fetch", () => {
   beforeEach(() => {
     // Re-initialize fetch mock every time (since we're clearing it every time).
-    global.fetch = vi.fn(async () => Promise.resolve(true)) as Mock;
+    global.fetch = vi.fn(async () =>
+      Promise.resolve({ ok: true, json: () => ({ data: true }) })
+    ) as Mock;
   });
 
   afterEach(() => {
@@ -31,9 +33,9 @@ describe("Contentful Fetch", () => {
       CONTENTFUL_SPACE_ID: "",
       CONTENTFUL_DELIVERY_API_TOKEN: "",
     });
-    const response = await contentfulFetch(query);
+    const data = await contentfulFetch(query);
     expect(fetch).not.toHaveBeenCalled();
-    expect(response).toBe(false);
+    expect(data).toBe(false);
   });
 
   it("calls Contentful API if env vars are properly declared", async () => {
@@ -42,7 +44,7 @@ describe("Contentful Fetch", () => {
       CONTENTFUL_SPACE_ID: "SPACE_ID",
       CONTENTFUL_DELIVERY_API_TOKEN: "API_TOKEN",
     });
-    const response = await contentfulFetch(query);
+    const data = await contentfulFetch(query);
     expect(fetch).toHaveBeenCalledWith(
       "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
       {
@@ -54,6 +56,6 @@ describe("Contentful Fetch", () => {
         method: "POST",
       }
     );
-    expect(response).toBe(true);
+    expect(data).toBe(true);
   });
 });
