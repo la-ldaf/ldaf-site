@@ -4,6 +4,7 @@
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID,
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI,
   } from "$env/static/public";
+  import { page } from "$app/stores";
   import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
 
@@ -29,9 +30,9 @@
 
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
 
-  const loginLink = `https://be.contentful.com/oauth/authorize?response_type=token&client_id=${PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
+  $: loginLink = `https://be.contentful.com/oauth/authorize?response_type=token&client_id=${PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI
-  )}&scope=content_management_manage`;
+  )}&scope=content_management_manage&state=${encodeURIComponent($page.url.pathname)}`;
 </script>
 
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
