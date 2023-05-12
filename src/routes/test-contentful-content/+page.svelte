@@ -41,10 +41,9 @@
   }
 </script>
 
-<h1>{entry?.fields.title}</h1>
-
 {#if loading}
   <div>LOADING...</div>
 {:else}
+  <h1>{entry?.fields.title}</h1>
   <ContentfulRichText document={entry?.fields.body} />
 {/if}
