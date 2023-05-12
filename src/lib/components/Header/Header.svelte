@@ -67,7 +67,16 @@
       <div class="ldaf-nav__secondary usa-nav__secondary">
         <div>
           {#if $user}
-            <span>Welcome, {$user.name}!</span>
+            <span
+              >Welcome, {$user.name}!
+              <a
+                href="#"
+                on:click={(e) => {
+                  e.preventDefault();
+                  localStorage?.removeItem("ldaf-user");
+                }}>Logout</a
+              ></span
+            >
           {:else}
             <a href={loginLink}>Login</a>
           {/if}
