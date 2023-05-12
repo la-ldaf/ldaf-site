@@ -5,6 +5,7 @@
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI,
   } from "$env/static/public";
   import { page } from "$app/stores";
+  import { user } from "$lib/stores";
   import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
 
@@ -65,7 +66,11 @@
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
       <div class="ldaf-nav__secondary usa-nav__secondary">
         <div>
-          <a href={loginLink}>Login</a>
+          {#if $user}
+            <span>Welcome, {$user.name}!</span>
+          {:else}
+            <a href={loginLink}>Login</a>
+          {/if}
         </div>
 
         <ul class="usa-nav__secondary-links">
