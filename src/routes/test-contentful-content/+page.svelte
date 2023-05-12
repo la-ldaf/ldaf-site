@@ -3,13 +3,14 @@
   import type { TestRichTextEntrySkeleton } from "./types";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import { page } from "$app/stores";
-  import { user } from "$lib/stores";
-  import { getClient } from "$lib/contentful-client";
+  import { managementClient, user } from "$lib/stores";
   import { browser } from "$app/environment";
+  import type { Entry } from "contentful";
+  import type { Entry as ManagementEntry } from "contentful-management";
 
   export let data: PageData;
 
-  let entry = data.entry;
+  let entry: Entry<TestRichTextEntrySkeleton> | ManagementEntry | undefined = data.entry;
   let loading = false;
 
   const failLoading = (message: string) => {
@@ -21,9 +22,16 @@
     loading = true;
     if (!entry) return failLoading("cannot load preview of entry that doesn't exist");
     if (!$user) return failLoading("cannot load preview when not logged in");
-    const client = getClient({ token: $user.token, preview: true });
-    if (!client) return failLoading("failed to create contentful preview client");
-    const previewEntry = await client.getEntry<TestRichTextEntrySkeleton>(entry.sys.id);
+    if (!$managementClient) {
+      return failLoading("cannot load preview if management API client failed to initialize");
+    }
+    const {
+      items: [space],
+    } = await $managementClient.getSpaces();
+    const {
+      items: [environment],
+    } = await space.getEnvironments();
+    const previewEntry = await environment.getEntry(entry.sys.id);
     if (!previewEntry) return failLoading("failed to fetch preview entry");
     console.log("loaded preview entry!");
     loading = false;
