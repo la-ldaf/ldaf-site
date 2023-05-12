@@ -5,10 +5,7 @@
   import { goto } from "$app/navigation";
   import parseHashQuery from "$lib/util/parseHashQuery";
   import timeout from "$lib/util/timeout";
-  import {
-    createClient as createContentfulManagementClient,
-    type UserProps,
-  } from "contentful-management";
+  import { createClient as createContentfulManagementClient } from "contentful-management";
 
   const handleHash = async () => {
     if (!$page.url.hash) return;
