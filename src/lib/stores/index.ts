@@ -1,11 +1,22 @@
 import type { ClientAPI as ManagementClientAPI } from "contentful-management";
 
-import { writable } from "svelte/store";
+import { writable, type Writable } from "svelte/store";
+import { browser } from "$app/environment";
+import localStorageStore from "$lib/util/localStorageStore";
 
 type User = {
+  email: string;
   name: string;
   token: string;
+  avatarURL?: string;
 };
 
-export const user = writable<User>();
-export const managementClient = writable<ManagementClientAPI>();
+export let user: Writable<User>;
+if (browser) {
+  user = localStorageStore<User>("ldaf-user");
+}
+
+export let managementClient: Writable<ManagementClientAPI>;
+if (browser) {
+  managementClient = writable<ManagementClientAPI>();
+}

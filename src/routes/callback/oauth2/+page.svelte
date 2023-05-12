@@ -7,19 +7,28 @@
   import timeout from "$lib/util/timeout";
   import { createClient as createContentfulManagementClient } from "contentful-management";
 
+  let redirect: string | undefined = undefined;
+
   const handleHash = async () => {
     if (!$page.url.hash) return;
     const parsed = parseHashQuery($page.url.hash);
     if (!parsed) return;
     const { access_token: accessToken, state: encodedRedirect } = parsed;
-    const redirect = decodeURIComponent(encodedRedirect);
     if (!accessToken) return;
+    redirect = encodedRedirect && decodeURIComponent(encodedRedirect);
     managementClient.set(createContentfulManagementClient({ accessToken }));
     if (!$managementClient) return;
-    const { firstName, lastName } = await $managementClient.getCurrentUser();
-    user.set({ name: `${firstName} ${lastName}`, token: accessToken });
-    await timeout(2500);
-    await goto(redirect, { replaceState: true });
+    const { email, firstName, lastName, avatarUrl } = await $managementClient.getCurrentUser();
+    user.set({
+      email,
+      name: `${firstName} ${lastName}`,
+      token: accessToken,
+      avatarURL: avatarUrl,
+    });
+    if (redirect) {
+      await timeout(2500);
+      await goto(redirect, { replaceState: true });
+    }
   };
 
   if (browser) handleHash();
@@ -27,7 +36,9 @@
 
 {#if $user}
   <h1>Hello {$user.name}!</h1>
-  <p>Please wait to be redirected back to the previous page...</p>
+  {#if redirect}
+    <p>Please wait to be redirected back to the previous page...</p>
+  {/if}
 {:else}
   <h1>Hello unknown user!</h1>
 {/if}
