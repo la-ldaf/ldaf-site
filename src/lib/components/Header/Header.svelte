@@ -76,6 +76,7 @@
                 on:click={(e) => {
                   e.preventDefault();
                   localStorage?.removeItem("ldaf-user");
+                  user?.set(undefined);
                 }}>Logout</a
               ></span
             >

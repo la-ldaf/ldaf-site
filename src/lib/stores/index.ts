@@ -15,7 +15,7 @@ type User = {
   avatarURL?: string;
 };
 
-export let user: Writable<User> | undefined;
+export let user: Writable<User | undefined> | undefined;
 if (browser) {
   user = localStorageStore("ldaf-user");
 }
@@ -24,9 +24,9 @@ export let managementClient: Writable<ContentfulManagementClientAPI> | undefined
 if (browser) {
   let client: ContentfulManagementClientAPI;
   managementClient = writable();
-  user?.subscribe(({ token }) => {
-    if (!client) {
-      client = createContentfulManagementClient({ accessToken: token });
+  user?.subscribe((user) => {
+    if (!client && user) {
+      client = createContentfulManagementClient({ accessToken: user.token });
       managementClient?.set(client);
     }
   });
@@ -37,7 +37,7 @@ if (browser) {
   let client: ContentfulClientApi<undefined> | undefined;
   previewClient = writable();
   managementClient?.subscribe((manageClient) => {
-    if (!client) {
+    if (!client && manageClient) {
       manageClient
         .getSpaces()
         .then(({ items: [space] }) => space.getPreviewApiKeys())
