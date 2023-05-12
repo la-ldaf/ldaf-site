@@ -25,6 +25,7 @@
     if (!client) return failLoading("failed to create contentful preview client");
     const previewEntry = await client.getEntry<TestRichTextEntrySkeleton>(entry.sys.id);
     if (!previewEntry) return failLoading("failed to fetch preview entry");
+    console.log("loaded preview entry!");
     loading = false;
     entry = previewEntry;
   };
@@ -40,4 +41,8 @@
 
 <h1>{entry?.fields.title}</h1>
 
-<ContentfulRichText document={entry?.fields.body} />
+{#if loading}
+  <div>LOADING...</div>
+{:else}
+  <ContentfulRichText document={entry?.fields.body} />
+{/if}
