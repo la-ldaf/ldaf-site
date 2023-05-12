@@ -33,7 +33,9 @@
 
   $: loginLink = `https://be.contentful.com/oauth/authorize?response_type=token&client_id=${PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI
-  )}&scope=content_management_manage&state=${encodeURIComponent($page.url.pathname)}`;
+  )}&scope=content_management_manage&state=${encodeURIComponent(
+    $page.url.pathname + $page.url.search + $page.url.hash
+  )}`;
 </script>
 
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
