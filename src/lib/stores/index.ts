@@ -5,6 +5,8 @@ import {
   createClient as createContentfulManagementClient,
   type ClientAPI as ContentfulManagementClientAPI,
 } from "contentful-management";
+import type { ContentfulClientApi } from "contentful";
+import { getClient } from "$lib/contentful-client";
 
 type User = {
   email: string;
@@ -26,6 +28,25 @@ if (browser) {
     if (!client) {
       client = createContentfulManagementClient({ accessToken: token });
       managementClient?.set(client);
+    }
+  });
+}
+
+export let previewClient: Writable<ContentfulClientApi<undefined> | undefined> | undefined;
+if (browser) {
+  let client: ContentfulClientApi<undefined> | undefined;
+  previewClient = writable();
+  managementClient?.subscribe((manageClient) => {
+    if (!client) {
+      manageClient
+        .getSpaces()
+        .then(({ items: [space] }) => space.getPreviewApiKeys())
+        .then(({ items: [{ accessToken }] }) => {
+          if (!client) {
+            client = getClient({ token: accessToken, preview: true });
+            previewClient?.set(client);
+          }
+        });
     }
   });
 }

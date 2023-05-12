@@ -3,7 +3,7 @@
   import type { TestRichTextEntrySkeleton } from "./types";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import { page } from "$app/stores";
-  import { managementClient, user } from "$lib/stores";
+  import { user, previewClient } from "$lib/stores";
   import { browser } from "$app/environment";
   import type { Entry } from "contentful";
   import type { Entry as ManagementEntry } from "contentful-management";
@@ -22,23 +22,17 @@
     loading = true;
     if (!entry) return failLoading("cannot load preview of entry that doesn't exist");
     if (!$user) return failLoading("cannot load preview when not logged in");
-    if (!$managementClient) {
+    if (!$previewClient) {
       return failLoading("cannot load preview if management API client failed to initialize");
     }
-    const {
-      items: [space],
-    } = await $managementClient.getSpaces();
-    const {
-      items: [environment],
-    } = await space.getEnvironments();
-    const previewEntry = await environment.getEntry(entry.sys.id);
+    const previewEntry = await $previewClient.getEntry<TestRichTextEntrySkeleton>(entry.sys.id);
     if (!previewEntry) return failLoading("failed to fetch preview entry");
     console.log("loaded preview entry!");
     loading = false;
     entry = previewEntry;
   };
 
-  if (browser && $page.url.searchParams.has("preview")) {
+  $: if (browser && $page.url.searchParams.has("preview") && $previewClient) {
     if ($user) {
       loadPreviewEntry();
     } else {
