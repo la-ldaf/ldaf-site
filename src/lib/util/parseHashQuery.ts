@@ -1,4 +1,4 @@
-export default (hash: string) =>
+export default (hash: string): Record<string, string> =>
   Object.fromEntries(
     hash
       .substring(1)
