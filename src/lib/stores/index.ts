@@ -1,8 +1,10 @@
-import type { ClientAPI as ManagementClientAPI } from "contentful-management";
-
 import { writable, type Writable } from "svelte/store";
 import { browser } from "$app/environment";
 import localStorageStore from "$lib/util/localStorageStore";
+import {
+  createClient as createContentfulManagementClient,
+  type ClientAPI as ContentfulManagementClientAPI,
+} from "contentful-management";
 
 type User = {
   email: string;
@@ -11,12 +13,19 @@ type User = {
   avatarURL?: string;
 };
 
-export let user: Writable<User>;
+export let user: Writable<User> | undefined;
 if (browser) {
-  user = localStorageStore<User>("ldaf-user");
+  user = localStorageStore("ldaf-user");
 }
 
-export let managementClient: Writable<ManagementClientAPI>;
+export let managementClient: Writable<ContentfulManagementClientAPI> | undefined;
 if (browser) {
-  managementClient = writable<ManagementClientAPI>();
+  let client: ContentfulManagementClientAPI;
+  managementClient = writable();
+  user?.subscribe(({ token }) => {
+    if (!client) {
+      client = createContentfulManagementClient({ accessToken: token });
+      managementClient?.set(client);
+    }
+  });
 }
