@@ -1,6 +1,12 @@
 import contentfulFetch from "$lib/services/contentful";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
+import type {
+  DraftNavigationLink,
+  DraftNavigationMenu,
+  DraftNavigationMenuChildrenItem,
+} from "$lib/services/contentful/schema";
+import type { NavLinkType, NavMenuType } from "./types";
 
 export const loadMainNav = async () => {
   const query = `
@@ -33,35 +39,35 @@ export const loadMainNav = async () => {
     }
   }
   `;
-  // TODO: This whole block is riddled with TS errors due to incompatible types NavMenuType and DrafNavigationMenu
   const data = await contentfulFetch(query);
-  let nav;
   if (data) {
-    const items = data?.draftNavigationMenuCollection?.items[0]?.childrenCollection?.items;
-    if (items) {
-      nav = items.map((subMenu) => {
-        if (subMenu && "childrenCollection" in subMenu) {
-          const children = subMenu.childrenCollection?.items;
-          return {
-            id: subMenu.sys.id,
-            name: subMenu.text,
-            children:
-              children &&
-              children.map((child) => {
-                if (child && "link" in child) {
-                  return {
-                    id: child.sys.id,
-                    name: child.text,
-                    link: child.link,
-                  };
-                }
-              }),
-          };
-        }
+    const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
+    const mainMenuChildren = mainMenu?.childrenCollection
+      ?.items as DraftNavigationMenuChildrenItem[];
+    // Convert DraftNavigationMenuChildrenItem[] to NavItem[]
+    return mainMenuChildren.map((mainMenuChild): NavMenuType => {
+      // Treat all children of the main menu as submenus.
+      // TODO: Update this if we decide we want normal links as children.
+      const subMenu = mainMenuChild as DraftNavigationMenu;
+      const subMenuChildren = subMenu?.childrenCollection
+        ?.items as DraftNavigationMenuChildrenItem[];
+      const transformedSubMenuNavItems = subMenuChildren.map((subMenuChild): NavLinkType => {
+        const navLink = subMenuChild as DraftNavigationLink;
+        return {
+          id: navLink.sys.id,
+          name: navLink.text || undefined,
+          link: navLink.link || undefined,
+        };
       });
-    }
+      return {
+        id: subMenu.sys.id,
+        name: subMenu.text || undefined,
+        children: transformedSubMenuNavItems,
+      };
+    });
+  } else {
+    return mainNavTestContent;
   }
-  return nav ? nav : mainNavTestContent;
 };
 
 // TODO: Fetch from Contentful
