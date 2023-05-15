@@ -2,6 +2,8 @@ import "@testing-library/jest-dom";
 import { waitFor, render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
+// TODO: CardView is getting utilized here in addition to Storybook.
+//  When slots are better supported, we should update this test to handle it more cleanly.
 import CardView from "../../../stories/CardView.svelte";
 
 describe("Link", () => {
