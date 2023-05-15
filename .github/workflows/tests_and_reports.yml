@@ -56,7 +56,7 @@ jobs:
         # https://github.com/marketplace/actions/code-coverage-report
         # Use a hash instead of version to support delete-old-comments field:
         # https://github.com/romeovs/lcov-reporter-action/issues/47#issuecomment-1362606540
-        uses: romeovs/lcov-reporter-action@2a28ec3e25fb7eae9cb537e9141603486f810d1a
+        uses: romeovs/lcov-reporter-action@4cf015aa4afa87b78238301f1e3dc140ea0e1ec6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           delete-old-comments: true

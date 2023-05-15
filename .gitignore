@@ -15,3 +15,7 @@ build-storybook.log
 /e2e-tests/report
 /e2e-tests/results
 /bundle-visualizer
+
+# generated test files
+*.md.html
+*.md.json
