@@ -15,7 +15,6 @@ build-storybook.log
 /e2e-tests/report
 /e2e-tests/results
 /bundle-visualizer
-/src/lib/services/contentful/schema.ts
 
 # generated test files
 *.md.html
