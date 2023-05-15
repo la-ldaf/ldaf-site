@@ -19,20 +19,27 @@
   //  achieve visual parity with how it will look in actual usage.
   afterUpdate(() => {
     const mediaSection = document.querySelector<HTMLElement>(`.card-${id} .usa-card__media`);
-    const cardSections = [".usa-card__header", ".usa-card__body", ".usa-card__footer"];
+    const header = document.querySelector<HTMLElement>(`.card-${id} .usa-card__header`);
+    const body = document.querySelector<HTMLElement>(`.card-${id} .usa-card__body`);
+    const footer = document.querySelector<HTMLElement>(`.card-${id} .usa-card__footer`);
+    const cardSections = [header, body, footer];
 
-    if (!showImage) {
-      if (mediaSection) mediaSection.style.display = "none";
-      cardSections.forEach((section) => {
-        const element = document.querySelector<HTMLElement>(`.card-${id} ${section}`);
-        if (element) element.style.marginLeft = "0";
-      });
-    } else {
+    if (showImage) {
       if (mediaSection) mediaSection.style.display = "flex";
-      cardSections.forEach((section) => {
-        const element = document.querySelector<HTMLElement>(`.card-${id} ${section}`);
+      cardSections.forEach((element) => {
         if (element) element.style.marginLeft = "15rem";
       });
+    } else {
+      if (mediaSection) mediaSection.style.display = "none";
+      cardSections.forEach((element) => {
+        if (element) element.style.marginLeft = "0";
+      });
+    }
+
+    if (showFooter) {
+      if (footer) footer.style.display = "block";
+    } else {
+      if (footer) footer.style.display = "none";
     }
   });
 
