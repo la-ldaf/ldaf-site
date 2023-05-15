@@ -11,7 +11,7 @@
   <div class="usa-card__container">
     {#if $$slots.header}
       <div class="usa-card__header">
-        <!-- Use the apprioprate section heading element, likely <h2> or <h3>, based on page structure -->
+        <!-- Use the appropriate section heading element, likely <h2> or <h3>, based on page structure -->
         <slot name="header" />
       </div>
     {/if}
