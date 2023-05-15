@@ -26,7 +26,7 @@
   <div class="grid-container">
     <h3 class="site-preview-heading">Default Card Component</h3>
     <ul class="usa-card-group">
-      <Card class="tablet:grid-col-4">
+      <Card class="desktop:grid-col-6">
         <h2 class="usa-card__heading" slot="header">Heading</h2>
         <Image
           slot="image"
@@ -41,18 +41,37 @@
         <Button slot="footer">CTA Button</Button>
       </Card>
     </ul>
+    <h3 class="site-preview-heading">Multiple cards</h3>
+    <ul class="usa-card-group">
+      {#each Array(4) as card}
+        <Card class="desktop:grid-col-6">
+          <h2 class="usa-card__heading" slot="header">Heading</h2>
+          <Image
+            slot="image"
+            src={sampleImage}
+            {width}
+            {height}
+            {mean}
+            blurhash={imageBlurhash}
+            alt="A placeholder image"
+          />
+          <p slot="body">Some content for the body.</p>
+          <Button slot="footer">CTA Button</Button>
+        </Card>
+      {/each}
+    </ul>
     <h3 class="site-preview-heading">Card without image</h3>
     <ul class="usa-card-group">
       <Card class="desktop:grid-col-4">
-        <h2 class="usa-card__heading" slot="header">Image component flag</h2>
-        <p slot="body">Flag component body</p>
-        <Button slot="footer">Visit Florida Keys</Button>
+        <h2 class="usa-card__heading" slot="header">I'm a header</h2>
+        <p slot="body">Component body</p>
+        <Button slot="footer">Do something</Button>
       </Card>
     </ul>
     <h3 class="site-preview-heading">Task Card</h3>
     <ul class="usa-card-group">
       <Card class="desktop:grid-col-4">
-        <h2 class="usa-card__heading" slot="header">Image component flag</h2>
+        <h2 class="usa-card__heading" slot="header">List header</h2>
         <ul slot="body">
           Task List:
           <li class="task-item">

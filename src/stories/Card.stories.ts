@@ -17,7 +17,7 @@ const meta = {
   parameters: {
     design: {
       type: "figma",
-      url: "https://www.figma./file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?node-id=2196-4072&t=vo32NlfE5S0IJB6g-0",
+      url: "https://www.figma.com/file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?node-id=2196-4072&t=vo32NlfE5S0IJB6g-0",
     },
   },
 } satisfies Meta<Card>;
