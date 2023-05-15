@@ -1,19 +1,10 @@
 <script lang="ts">
   import "./Card.scss";
   import classNames from "$lib/util/classNames";
-  import type { Variant } from "./cardOptions";
-
-  export let variant: Variant = "primary";
-
-  const variantClassesDict: Record<Variant, string> = {
-    primary: $$slots.image ? "usa-card--flag" : "",
-    secondary: "",
-  };
-  $: variantClass = variantClassesDict[variant];
 
   let className = "";
   export { className as class };
-  $: classes = classNames("usa-card", variantClass, className);
+  $: classes = classNames("usa-card", $$slots.image ? "usa-card--flag" : null, className);
 </script>
 
 <li class={classes}>
