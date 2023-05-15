@@ -1,19 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
 
 import Card from "./CardView.svelte";
-import { variants } from "$lib/components/Card";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/svelte/writing-stories/introduction
 const meta = {
   title: "Components/Card",
   component: Card,
   tags: ["autodocs"],
-  argTypes: {
-    variant: {
-      control: { type: "select" },
-      options: variants,
-    },
-  },
   parameters: {
     design: {
       type: "figma",
@@ -31,7 +24,7 @@ export const PrimaryCard: Story = {
     header: "Primary Card",
     body: "Body text",
     footer: "Action or link",
-    variant: "primary",
+    id: "1",
     showImage: true,
     showFooter: true,
   },
@@ -42,7 +35,7 @@ export const SecondaryCard: Story = {
     header: "Secondary Card",
     body: "Secondary text",
     footer: "Action or link",
-    variant: "secondary",
+    id: "2",
     showImage: false,
     showFooter: true,
   },
@@ -53,7 +46,7 @@ export const TaskListCard: Story = {
     header: "Task List Card",
     body: "A list of tasks",
     footer: "Action or link",
-    variant: "secondary",
+    id: "3",
     showImage: false,
     showFooter: false,
     tasks: ["task 1", "task 2", "task 3"],
