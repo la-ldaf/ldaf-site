@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>78/78</span>
+                <span class='fraction'>101/101</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>78/78</span>
+                <span class='fraction'>101/101</span>
             </div>
         
             
@@ -141,7 +141,53 @@
 <a name='L76'></a><a href='#L76'>76</a>
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -220,8 +266,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;script lang="ts"&gt;
+  import { afterUpdate } from "svelte";
   import Card from "$lib/components/Card";
-  import type { Variant } from "$lib/components/Card";
   import Image from "$lib/components/Image";
   import Icon from "$lib/components/Icon";
   import { url as arrow } from "$icons/arrow_forward";
@@ -234,7 +280,30 @@
     mean as imageMean,
   } from "../uswds-sample.jpg?blurhash";
 &nbsp;
-  export let variant: Variant = "primary";
+  // Svelte doesn't current support conditional rendering of named slots. Rather than do the more
+  // verbose and convoluted approach of nesting other wrapper components for toggling named slots, this
+  // uses Web APIs make the necessary updates to ensure the Storybook renderings of the Card component
+  //  achieve visual parity with how it will look in actual usage.
+  afterUpdate(() =&gt; {
+    const mediaSection = document.querySelector&lt;HTMLElement&gt;(`.card-${id} .usa-card__media`);
+    const cardSections = [".usa-card__header", ".usa-card__body", ".usa-card__footer"];
+&nbsp;
+    if (!showImage) {
+      if (mediaSection) mediaSection.style.display = "none";
+      cardSections.forEach((section) =&gt; {
+        const element = document.querySelector&lt;HTMLElement&gt;(`.card-${id} ${section}`);
+        if (element) element.style.marginLeft = "0";
+      });
+    } else {
+      if (mediaSection) mediaSection.style.display = "flex";
+      cardSections.forEach((section) =&gt; {
+        const element = document.querySelector&lt;HTMLElement&gt;(`.card-${id} ${section}`);
+        if (element) element.style.marginLeft = "15rem";
+      });
+    }
+  });
+&nbsp;
+  export let id: string | undefined = undefined;
   export let header = "Header";
   export let body = "Some body text";
   export let footer = "CTA Button";
@@ -246,7 +315,7 @@
 &lt;section class="usa-section"&gt;
   &lt;div class="grid-container"&gt;
     &lt;ul class="usa-card-group"&gt;
-      &lt;Card {variant} class="desktop:grid-col-6"&gt;
+      &lt;Card class={`desktop:grid-col-6 card-${id}`}&gt;
         &lt;h2 class="usa-card__heading" slot="header"&gt;{header}&lt;/h2&gt;
         &lt;div class="image-slot" slot="image"&gt;
           {#if showImage}
@@ -304,7 +373,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-15T18:53:23.187Z
+                at 2023-05-15T22:12:49.873Z
             </div>
         <script src="../prettify.js"></script>
         <script>
