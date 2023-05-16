@@ -1,9 +1,8 @@
-import { VERCEL, CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 
 // Re-evaluate utils using env vars on each request to ensure tests can
 //   properly mock and overwrite them.
-const contentfulConnected = (): boolean =>
-  !!(VERCEL === "1" && CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
+const contentfulConnected = (): boolean => !!(CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
 
 const graphApiUrl = (): string =>
   `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`;
