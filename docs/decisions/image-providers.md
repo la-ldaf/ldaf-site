@@ -77,3 +77,9 @@ For all these reasons, it seems clear that Contentful is the better choice as a 
 - We're already using Vercel hosting
 - Images will be served from the same domain as the site
 - Images will be cached in the same edge CDN as the site (but with different cache rules to maximize image caching)
+
+## Decision
+
+**Use Imgix at build time only; use Vercel+Contentful at runtime**
+
+In order to keep costs to a minimum and reduce the number of services we depend on at runtime, we will use Imgix only in the backend at build/render time to generate blurhashes and background colors. Imgix will be able to be replaced with a custom backend service easily due to this architecture. At runtime, we will use Vercel and Contenful together to cache images as close to the edge as possible while being able to use the full Contentful image API. We will need to be careful in how we use Contentful and Vercel to minimize the number of source images from Vercel's perspective, so we will do the image resizing and format conversion in Vercel. This means we will need to provide a list of sizes to resize images to up-front. We will lose access to Imgix-only features at runtime, but we will have optimal image caching using Vercel's edge network and will serve images from the same domain as the site.
