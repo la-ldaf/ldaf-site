@@ -19,7 +19,7 @@ const graphApiOptions = () => ({
 // TODO: Setup type def for GraphQL query parameter.
 const contentfulFetch = async (query: string): Promise<false | Response> => {
   if (contentfulConnected()) {
-    return await fetch(graphApiUrl(), {
+    return fetch(graphApiUrl(), {
       ...graphApiOptions(),
       body: JSON.stringify({ query }),
     });
