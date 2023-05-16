@@ -8,7 +8,7 @@ import documentTestCases from "./__tests__/documents";
 describe("ContentfulRichText", () => {
   Object.entries(documentTestCases).forEach(([label, { document, expectedHTML }]) => {
     it(`renders ${label}`, async () => {
-      const { container } = render(ContentfulRichText, { content: document.content });
+      const { container } = render(ContentfulRichText, { document });
       expect(container?.firstChild?.childNodes).toMatchDOMNodes(expectedHTML);
     });
   });

@@ -3,7 +3,7 @@ import * as envVars from "$env/static/private";
 import contentfulFetch from "./fetch";
 
 vi.mock("$env/static/private");
-type EnvVarName = "VERCEL" | "CONTENTFUL_SPACE_ID" | "CONTENTFUL_DELIVERY_API_TOKEN";
+type EnvVarName = "CONTENTFUL_SPACE_ID" | "CONTENTFUL_DELIVERY_API_TOKEN";
 type EnvVars = Record<EnvVarName, string>;
 const setEnvVars = (vars: EnvVars) => {
   let key: keyof EnvVars;
@@ -29,7 +29,6 @@ describe("Contentful Fetch", () => {
 
   it("does not call Contentful API if env vars are not properly declared", async () => {
     setEnvVars({
-      VERCEL: "",
       CONTENTFUL_SPACE_ID: "",
       CONTENTFUL_DELIVERY_API_TOKEN: "",
     });
@@ -40,7 +39,6 @@ describe("Contentful Fetch", () => {
 
   it("calls Contentful API if env vars are properly declared", async () => {
     setEnvVars({
-      VERCEL: "1",
       CONTENTFUL_SPACE_ID: "SPACE_ID",
       CONTENTFUL_DELIVERY_API_TOKEN: "API_TOKEN",
     });
