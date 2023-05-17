@@ -30,7 +30,7 @@
     "@playwright/test": "^1.33.0",
     "@poppanator/sveltekit-svg": "^3.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
-    "@rollup/plugin-terser": "^0.4.1",
+    "@rollup/plugin-terser": "^0.4.2",
     "@rollup/plugin-typescript": "^11.1.1",
     "@storybook/addon-essentials": "^7.1.0-alpha.12",
     "@storybook/addon-interactions": "^7.1.0-alpha.12",
