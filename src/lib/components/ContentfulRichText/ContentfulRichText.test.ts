@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
-import "$lib/__tests__/extendExpect.ts";
+import "$lib/__tests__/extendExpect";
 import ContentfulRichText from "./ContentfulRichText.svelte";
 import documentTestCases from "./__tests__/documents";
 
