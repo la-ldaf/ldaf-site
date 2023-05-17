@@ -5,6 +5,10 @@ import contentfulFetch from "./fetch";
 vi.mock("$env/static/private");
 type EnvVarName = "CONTENTFUL_SPACE_ID" | "CONTENTFUL_DELIVERY_API_TOKEN";
 type EnvVars = Record<EnvVarName, string>;
+// This should be run at the top of each test case.
+// Otherwise the env vars will default to whatever you have in your .env file
+//   or the values from the previous test case (restoring mocks does not
+//   restore this.)
 const setEnvVars = (vars: EnvVars) => {
   let key: keyof EnvVars;
   for (key in vars) {
@@ -14,17 +18,13 @@ const setEnvVars = (vars: EnvVars) => {
 
 const query = "{ some { graphql { query } } }";
 
-describe("Contentful Fetch", () => {
-  beforeEach(() => {
-    // Re-initialize fetch mock every time (since we're clearing it every time).
-    global.fetch = vi.fn(async () =>
-      Promise.resolve({ ok: true, json: () => ({ data: true }) })
-    ) as Mock;
-  });
+global.fetch = vi.fn(async () =>
+  Promise.resolve({ ok: true, json: () => ({ data: true }) })
+) as Mock;
 
+describe("Contentful Fetch", () => {
   afterEach(() => {
-    // Clear mock history and reset implementations to empty functions.
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("does not call Contentful API if env vars are not properly declared", async () => {
