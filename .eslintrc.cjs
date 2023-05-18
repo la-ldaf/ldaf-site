@@ -16,6 +16,18 @@ module.exports = {
       files: ["*.svelte"],
       processor: "svelte3/svelte3",
     },
+    {
+      files: ["*.ts", "*.js"],
+      processor: "@graphql-eslint/graphql",
+    },
+    {
+      files: ["*.graphql"],
+      extends: "plugin:@graphql-eslint/operations-recommended",
+      parserOptions: {
+        schema: "./src/lib/services/contentful/schema.graphql",
+        operations: "./src/**/*.{ts,svelte,gql,graphql}",
+      },
+    },
   ],
   settings: {
     "svelte3/typescript": () => require("typescript"),
