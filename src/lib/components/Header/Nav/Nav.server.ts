@@ -1,3 +1,5 @@
+import gql from "graphql-tag";
+import { print as printQuery } from "graphql";
 import contentfulFetch from "$lib/services/contentful";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
@@ -9,26 +11,27 @@ import type {
 import type { NavLinkType, NavMenuType } from "./types";
 
 export const loadMainNav = async () => {
-  const query = `
-  {
-    draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
-      items {
-        text
-        childrenCollection {
-          items {
-            ... on DraftNavigationMenu {
-              sys {
-                id
-              }
-              text
-              childrenCollection {
-                items {
-                  ... on DraftNavigationLink {
-                    sys {
-                      id
+  const query = gql`
+    query Nav {
+      draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
+        items {
+          text
+          childrenCollection {
+            items {
+              ... on DraftNavigationMenu {
+                sys {
+                  id
+                }
+                text
+                childrenCollection {
+                  items {
+                    ... on DraftNavigationLink {
+                      sys {
+                        id
+                      }
+                      text
+                      link
                     }
-                    text
-                    link
                   }
                 }
               }
@@ -37,9 +40,8 @@ export const loadMainNav = async () => {
         }
       }
     }
-  }
   `;
-  const data = await contentfulFetch(query);
+  const data = await contentfulFetch(printQuery(query));
   if (data) {
     const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
     const mainMenuChildren = mainMenu?.childrenCollection
