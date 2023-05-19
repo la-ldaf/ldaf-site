@@ -52,6 +52,7 @@
     "autoprefixer": "^10.4.7",
     "blurhash": "^2.0.5",
     "chromatic": "^6.17.4",
+    "contentful": "^10.2.0",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-storybook": "^0.6.12",

@@ -41,8 +41,11 @@
   <main id="main-content">
     <slot />
   </main>
-  <Footer />
-  <Identifier />
+  <!-- <Footer /> -->
+  <footer class="usa-footer padding-top-7 padding-bottom-1 text-center">
+    ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved
+  </footer>
+  <!-- <Identifier /> -->
 </RootIntersectionObserver>
 
 <BlurhashRenderer />

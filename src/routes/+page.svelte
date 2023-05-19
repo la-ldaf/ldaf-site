@@ -1,13 +1,17 @@
 <script lang="ts">
-  import sampleImage from "../sample.jpg?quality=75&imagetools";
-  import sampleImageMobile from "../sample.jpg?quality=75&w=412&imagetools";
-  import sampleImageWebp from "../sample.jpg?webp&quality=75&imagetools";
-  import sampleImageWebpMobile from "../sample.jpg?webp&quality=75&w=412&imagetools";
-  import sampleImageBlurhash, {
-    width as sampleImageWidth,
-    height as sampleImageHeight,
-    mean as sampleImageMean,
-  } from "../sample.jpg?blurhash";
+  import "./page.scss";
+  import ContentfulRichText from "$lib/components/ContentfulRichText";
+  import underConstructionGif from "$lib/assets/under-construction.gif";
+  import landingImage from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&imagetools";
+  import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&w=412&imagetools";
+  import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&imagetools";
+  import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&w=412&imagetools";
+  import landingImageBlurhash, {
+    width as landingImageWidth,
+    height as landingImageHeight,
+    mean as landingImageMean,
+  } from "$lib/assets/commissioner-strain-with-farmer.jpg?blurhash";
+
   import GraphicList from "$lib/components/landingPage/GraphicList.svelte";
   import Hero from "$lib/components/landingPage/Hero.svelte";
   import Image, {
@@ -16,16 +20,20 @@
   } from "$lib/components/Image";
 
   const images = [
-    { format: "image/jpeg", size: "original", src: sampleImage },
-    { format: "image/jpeg", size: 412, src: sampleImageMobile },
-    { format: "image/webp", size: "original", src: sampleImageWebp },
-    { format: "image/webp", size: 412, src: sampleImageWebpMobile },
+    { format: "image/jpeg", size: "original", src: landingImage },
+    { format: "image/jpeg", size: 412, src: landingImageMobile },
+    { format: "image/webp", size: "original", src: landingImageWebP },
+    { format: "image/webp", size: 412, src: landingImageWebpMobile },
   ] satisfies FixedSetOfImages;
 
   const imageSources = generateSourcesFromFixedSetOfImages(images);
+
+  export let data;
+  console.log(Object.keys(data));
+  // console.log(JSON.stringify(data.content, null, 2));
 </script>
 
-<Hero />
+<!-- <Hero />
 <section class="grid-container usa-section">
   <div class="grid-row grid-gap">
     <div class="tablet:grid-col-4">
@@ -69,4 +77,34 @@
       mean={sampleImageMean}
     />
   </div>
+</section> -->
+
+<Image
+  class="main-image"
+  alt=""
+  src={landingImage}
+  sources={imageSources}
+  blurhash={landingImageBlurhash}
+  width={landingImageWidth}
+  height={landingImageHeight}
+  mean={landingImageMean}
+/>
+<section class="grid-container maxw-tablet">
+  <ContentfulRichText document={data.title} />
+  <div class="grid-row">
+    <img
+      class="grid-col-4 construction-sign"
+      alt="Under construction sign swinging in the wind"
+      src={underConstructionGif}
+    />
+    <div class="grid-col-8 padding-left-4">
+      <ContentfulRichText document={data.body} />
+    </div>
+  </div>
 </section>
+
+<style>
+  .construction-sign {
+    max-width: 175px;
+  }
+</style>
