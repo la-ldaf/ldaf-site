@@ -1,0 +1,15 @@
+overwrite: true
+schema:
+  - src/lib/services/contentful/schema.graphql
+documents:
+  - "src/**/*.ts"
+  - "!src/**/*.test.ts"
+  - "!src/**/*.d.ts"
+generates:
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      fileName: $queries
+      baseTypesPath: lib/services/contentful/schema.ts
+    plugins:
+      - typescript-operations

@@ -19,3 +19,6 @@ build-storybook.log
 # generated test files
 *.md.html
 *.md.json
+
+# generated type files
+*.generated.ts
