@@ -10,6 +10,7 @@ generates:
     preset: near-operation-file
     presetConfig:
       fileName: $queries
+      extension: .generated.d.ts
       baseTypesPath: lib/services/contentful/schema.ts
     plugins:
       - typescript-operations

@@ -20,5 +20,5 @@ build-storybook.log
 *.md.html
 *.md.json
 
-# generated type files
-*.generated.ts
+# generated files
+*.generated.*

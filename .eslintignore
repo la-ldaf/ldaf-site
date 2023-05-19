@@ -20,4 +20,4 @@ package-lock.json
 yarn.lock
 
 # generated type files
-*.generated.ts
+*.generated.*

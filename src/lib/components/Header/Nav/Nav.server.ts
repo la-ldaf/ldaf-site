@@ -9,6 +9,7 @@ import type {
   DraftNavigationMenuChildrenItem,
 } from "$lib/services/contentful/schema";
 import type { NavLinkType, NavMenuType } from "./types";
+import type { NavQuery } from "./$queries.generated";
 
 export const loadMainNav = async () => {
   const query = gql`
@@ -41,7 +42,7 @@ export const loadMainNav = async () => {
       }
     }
   `;
-  const data = await contentfulFetch(printQuery(query));
+  const data = await contentfulFetch<NavQuery>(printQuery(query));
   if (data) {
     const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
     const mainMenuChildren = mainMenu?.childrenCollection
