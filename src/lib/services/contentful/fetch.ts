@@ -1,5 +1,4 @@
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import type { Query } from "./schema";
 
 // Re-evaluate utils using env vars on each request to ensure tests can
 //   properly mock and overwrite them.
@@ -17,8 +16,7 @@ const graphApiOptions = () => ({
   },
 });
 
-// TODO: Setup type def for GraphQL query parameter.
-const contentfulFetch = async (query: string): Promise<false | Query> => {
+const contentfulFetch = async <T>(query: string): Promise<false | T> => {
   if (contentfulConnected()) {
     const response = await fetch(graphApiUrl(), {
       ...graphApiOptions(),
@@ -26,7 +24,7 @@ const contentfulFetch = async (query: string): Promise<false | Query> => {
     });
     if (response && response.ok) {
       const { data } = await response.json();
-      return data;
+      return data as T;
     }
   }
   return Promise.resolve(false);
