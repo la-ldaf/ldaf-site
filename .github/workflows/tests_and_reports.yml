@@ -182,3 +182,54 @@ jobs:
           id: gh-pages-deploy
           recreate: true
           message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/${{ env.UNIT_PATH }}), the [end-to-end test report](${{ env.PREVIEW_URL }}/${{ env.E2E_PATH }}), and the [bundle visualizer](${{ env.PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }}) once changes have propagated (this may take a few minutes)."
+
+  deploy-reports-to-vercel-meta-site:
+    name: "Deploy Reports to Vercel Meta Site"
+    # Wait for tests to complete before deploying.
+    needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer]
+    # We still want to upload reports regardless of whether tests failed.
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_META_SITE_PROJECT_ID }}
+      VERCEL_TOKEN: ${{secrets.VERCEL_META_SITE_DEPLOY_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Setup Vercel preview
+        run: vercel pull --yes --cwd .meta --environment=preview --token=${{env.VERCEL_TOKEN}}
+
+      - name: Download unit test report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
+          path: .meta/${{ env.UNIT_PATH }}
+
+      - name: Download end-to-end test report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.E2E_PATH }}
+          path: .meta/${{ env.E2E_PATH }}
+
+      - name: Download bundle visualizer artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
+          path: .meta/${{ env.BUNDLE_VISUALIZER_PATH }}
+
+      - name: Build Vercel preview
+        run: vercel build --cwd .meta --token=${{env.VERCEL_TOKEN}}
+
+      - name: Deploy Vercel preview
+        run: vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}}
