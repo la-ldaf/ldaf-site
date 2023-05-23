@@ -234,7 +234,7 @@ jobs:
 
       - name: Deploy Vercel preview
         run: |
-          url="$(vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}}"
+          url="$(vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}})"
           vercel alias --cwd .meta --token=${{env.VERCEL_TOKEN}} set "$url" ${{env.VERCEL_PREVIEW_URL}}
 
       - name: Report deployment success message to PR in comment
