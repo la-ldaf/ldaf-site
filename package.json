@@ -17,7 +17,6 @@
     "precheck": "node scripts/precheck.js && npm run gen-operations",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --compiler-warnings \"css-unused-selector:ignore\"",
     "check:watch": "npm run check -- --watch",
-    "prelint": "npm run gen-operations",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "storybook": "storybook dev -p 6006",
