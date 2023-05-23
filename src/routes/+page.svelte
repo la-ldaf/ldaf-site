@@ -52,9 +52,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .construction-sign {
-    max-width: 175px;
-  }
-</style>
