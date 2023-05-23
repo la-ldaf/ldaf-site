@@ -3,5 +3,5 @@
   "devCommand": null,
   "framework": null,
   "installCommand": null,
-  "cleanUrls": true
+  "trailingSlash": true
 }
