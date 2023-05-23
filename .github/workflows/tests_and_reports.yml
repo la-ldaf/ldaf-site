@@ -208,7 +208,7 @@ jobs:
         run: npm i -g vercel@latest
 
       - name: Setup Vercel preview
-        run: vercel pull --yes --cwd .meta --local-config .meta/vercel.json --environment=preview --token=${{env.VERCEL_TOKEN}}
+        run: vercel pull --yes --cwd .meta --environment=preview --token=${{env.VERCEL_TOKEN}}
 
       - name: Download unit test report artifact
         uses: actions/download-artifact@v3
@@ -229,7 +229,7 @@ jobs:
           path: .meta/${{ env.BUNDLE_VISUALIZER_PATH }}
 
       - name: Build Vercel preview
-        run: vercel build --cwd .meta --local-config .meta/vercel.json --token=${{env.VERCEL_TOKEN}}
+        run: vercel build --cwd .meta --token=${{env.VERCEL_TOKEN}}
 
       - name: Deploy Vercel preview
-        run: vercel deploy --cwd .meta --local-config .meta/vercel.json --prebuilt --token=${{env.VERCEL_TOKEN}}
+        run: vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}}
