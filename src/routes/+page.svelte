@@ -39,14 +39,16 @@
   height={landingImageHeight}
   mean={landingImageMean}
 />
-<section class="grid-container maxw-tablet">
+<section class="grid-container homepage-greeting maxw-tablet">
   <ContentfulRichText document={data.title} />
   <div class="grid-row">
-    <img
-      class="grid-col-4 construction-sign"
-      alt="Under construction sign swinging in the wind"
-      src={underConstructionGif}
-    />
+    <div class="grid-col-4 construction-sign-container">
+      <img
+        class="construction-sign"
+        alt="Under construction sign swinging in the wind"
+        src={underConstructionGif}
+      />
+    </div>
     <div class="grid-col-8 padding-left-4">
       <ContentfulRichText document={data.body} />
     </div>
