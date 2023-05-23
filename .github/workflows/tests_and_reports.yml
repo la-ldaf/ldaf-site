@@ -194,6 +194,7 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_META_SITE_PROJECT_ID }}
       VERCEL_TOKEN: ${{secrets.VERCEL_META_SITE_DEPLOY_TOKEN }}
+      VERCEL_PREVIEW_URL: meta-site-${{ github.event.after }}-ldaf.vercel.app
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -232,4 +233,18 @@ jobs:
         run: vercel build --cwd .meta --token=${{env.VERCEL_TOKEN}}
 
       - name: Deploy Vercel preview
-        run: vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}}
+        run: |
+          url="$(vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}}"
+          vercel alias --cwd .meta --token=${{env.VERCEL_TOKEN}} set "$url" ${{env.VERCEL_PREVIEW_URL}}
+
+      - name: Report deployment success message to PR in comment
+        if: github.ref != 'refs/heads/main'
+        # https://github.com/marketplace/actions/comment-progress
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: vercel-deploy
+          recreate: true
+          message: Reports for ${{ github.event.after }} have been deployed to Vercel:\n\n* [unit test coverage report](${{ env.VERCEL_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [end-to-end test report](${{ env.VERCEL_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [bundle visualizer](${{ env.VERCEL_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})"
