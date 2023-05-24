@@ -12,6 +12,7 @@
   import Search from "$lib/components/Search";
   import Title from "./Title";
   import Nav from "./Nav";
+  import User from "./User";
 
   export let navItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
@@ -53,6 +54,8 @@
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
       <div class="ldaf-nav__secondary usa-nav__secondary">
+        <User />
+
         <ul class="usa-nav__secondary-links">
           {#each secondaryNavItems as item, i (item.id)}
             {@const { name, link } = item}

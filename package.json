@@ -3,19 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prepare": "svelte-kit sync && npm run gen-operations",
+    "prepare": "svelte-kit sync",
     "predev": "npm run prebuild",
-    "dev": "concurrently --kill-others --names graphql,dev \"npm run gen-operations -- --watch\" \"vite dev\"",
-    "prebuild": "node scripts/prebuild.js && npm run gen-operations",
+    "dev": "npm run gen-operations-types && concurrently --passthrough-arguments --kill-others --names graphql,dev \"npm run gen-operations-types -- --watch\" \"vite dev {@}\" --",
+    "prebuild": "node scripts/prebuild.js && npm run gen-operations-types",
     "build": "vite build",
     "preview": "vite preview",
-    "pretest": "node scripts/pretest.js && npm run gen-operations",
-    "test": "concurrently --kill-others --raw \"npm run gen-operations -- --watch --silent\" \"npm run lint && npm run check && npm run test:unit\"",
+    "pretest": "node scripts/pretest.js && npm run gen-operations-types",
+    "test": "concurrently --kill-others --raw \"npm run gen-operations-types -- --watch --silent\" \"npm run lint && npm run check && npm run test:unit\"",
     "test:e2e": "playwright test",
     "test:e2e:ui": "npm run test:e2e -- --ui",
     "test:unit": "vitest",
     "test:unit:coverage": "vitest run --coverage",
-    "precheck": "node scripts/precheck.js && npm run gen-operations",
+    "precheck": "node scripts/precheck.js && npm run gen-operations-types",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --compiler-warnings \"css-unused-selector:ignore\"",
     "check:watch": "npm run check -- --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
@@ -23,8 +23,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "npm run prebuild && storybook build",
     "bundle-visualizer": "npm run prebuild && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html",
-    "gen-schema": "graphql-codegen --config codegen-schema.yml --require dotenv/config",
-    "gen-operations": "graphql-codegen --config codegen-operations.yml"
+    "gen-schema": "graphql-codegen --config codegen/schema.yml --require dotenv/config && npm run gen-schema-types",
+    "gen-schema-types": "graphql-codegen --config codegen/schema-types.yml",
+    "gen-operations-types": "graphql-codegen --config codegen/operations.yml"
   },
   "devDependencies": {
     "@contentful/rich-text-from-markdown": "^15.16.6",
@@ -93,9 +94,12 @@
   "dependencies": {
     "@contentful/rich-text-types": "^16.0.3",
     "@uswds/uswds": "^3.4.1",
+    "contentful-management": "^10.35.4",
+    "devalue": "^4.3.2",
     "fast-blurhash": "^1.1.2",
     "graphql": "^16.7.1",
     "graphql-tag": "^2.12.6",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "redis": "^4.6.7"
   }
 }

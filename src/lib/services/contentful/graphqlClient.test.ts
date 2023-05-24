@@ -1,13 +1,23 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
-import getClient, { type Client } from "./graphqlClient";
+import { print as printQuery } from "graphql/language/printer";
+import gql from "graphql-tag";
+import getClient, { type Client, clearClients } from "./graphqlClient";
 
-const query = "{ some { graphql { query } } }";
+const query = gql`
+  query Test($preview: Boolean = true) {
+    testRichText(id: "test", preview: $preview) {
+      title
+    }
+  }
+`;
 
 const sampleData = Symbol("sample return value");
 
 global.fetch = vi.fn(async () =>
   Promise.resolve({ ok: true, json: () => ({ data: sampleData }) })
 ) as Mock;
+
+afterEach(() => clearClients());
 
 describe("Contentful Fetch", () => {
   it("returns the same client if called with the same arguments", () => {
@@ -20,22 +30,49 @@ describe("Contentful Fetch", () => {
 
   describe("with an initialized client", () => {
     let client: Client;
-    beforeEach(() => (client = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" })));
+    beforeEach(
+      () =>
+        (client = getClient({ apiPrefix: "example.com", spaceID: "SPACE_ID", token: "API_TOKEN" }))
+    );
     afterEach(() => vi.clearAllMocks());
 
-    it("calls Contentful API if env vars are properly declared", async () => {
+    it("calls Contentful API", async () => {
       const data = await client.fetch(query);
-      expect(fetch).toHaveBeenCalledWith(
-        "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
-        {
-          body: `{"query":"${query}"}`,
-          headers: {
-            Authorization: "Bearer API_TOKEN",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-        }
-      );
+      expect(fetch).toHaveBeenCalledWith("example.com/SPACE_ID", {
+        body: JSON.stringify({ query: printQuery(query), variables: { preview: false } }),
+        headers: {
+          Authorization: "Bearer API_TOKEN",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      expect(data).toBe(sampleData);
+    });
+  });
+
+  describe("with an initialized preview client", () => {
+    let client: Client;
+    beforeEach(
+      () =>
+        (client = getClient({
+          apiPrefix: "example.com",
+          spaceID: "SPACE_ID",
+          token: "API_TOKEN",
+          preview: true,
+        }))
+    );
+    afterEach(() => vi.clearAllMocks());
+
+    it("calls Contentful API with preview variable", async () => {
+      const data = await client.fetch(query);
+      expect(fetch).toHaveBeenCalledWith("example.com/SPACE_ID", {
+        body: JSON.stringify({ query: printQuery(query), variables: { preview: true } }),
+        headers: {
+          Authorization: "Bearer API_TOKEN",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
       expect(data).toBe(sampleData);
     });
   });
