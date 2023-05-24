@@ -1,13 +1,12 @@
 import gql from "graphql-tag";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
+import { error } from "@sveltejs/kit";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
-import type { Document } from "@contentful/rich-text-types";
-import type { EntryQuery } from "./$queries.generated";
+import { isDocument } from "$lib/components/ContentfulRichText/predicates";
+import type { EntryQuery, EntryQueryVariables } from "./$queries.generated";
 
 const query = gql`
-  query Entry {
-    testRichText(id: "V7ibT9I8Vg99iKsDgLhsK") {
+  query Entry($preview: Boolean = false) {
+    testRichText(id: "5rnSyvGBYQcFj5orQd8aRN", preview: $preview) {
       title
       body {
         json
@@ -16,15 +15,28 @@ const query = gql`
   }
 `;
 
-export const load = async ({ fetch }) => {
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-    fetch,
-  });
-  const data = await client.fetch<EntryQuery>(query);
+export const load = async ({ locals: { contentfulClient } }) => {
+  if (!contentfulClient) {
+    return {
+      title: "Test Document",
+      document: markdownDocument.document,
+    };
+  }
+
+  const data = await contentfulClient.fetch<EntryQuery, EntryQueryVariables>(query);
+
+  const { testRichText } = data;
+  if (!testRichText) throw error(500, { message: "Failed to load entry" });
+
+  const title = testRichText.title;
+  if (!title) throw error(500, { message: "Entry title was missing" });
+
+  const document = testRichText.body?.json;
+  if (!isDocument(document)) throw error(500, { message: "Entry body was missing or misshapen" });
+
   return {
-    document:
-      (data?.testRichText?.body?.json as Document | undefined | null) ?? markdownDocument.document,
+    query: sanitizedQuery,
+    title,
+    document,
   };
 };

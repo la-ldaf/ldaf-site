@@ -3,14 +3,12 @@ import type { DraftNavigationLink } from "$lib/services/contentful/schema";
 
 import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import type { StubQuery } from "./$queries.generated";
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
-  query Stub {
-    draftNavigationLinkCollection(limit: 100) {
+  query Stub($preview: Boolean = true) {
+    draftNavigationLinkCollection(limit: 100, preview: $preview) {
       items {
         sys {
           id
@@ -22,19 +20,19 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ fetch, params }): Promise<DraftNavigationLink> => {
+export const load = (async ({
+  params,
+  locals: { contentfulClient },
+}): Promise<{ text: string }> => {
+  // TODO: create fallback fixture
+  if (!contentfulClient) throw error(404);
   const dynamicRoute = `/${params.dynamicRoute}`;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-    fetch,
-  });
-  const data = await client.fetch<StubQuery>(query);
+  const data = await contentfulClient.fetch<StubQuery>(query);
   if (data) {
     const navLinks = data?.draftNavigationLinkCollection?.items as DraftNavigationLink[];
     const matchedNavLink = navLinks.find((navLink) => navLink.link === dynamicRoute);
-    if (matchedNavLink) {
-      return matchedNavLink;
+    if (matchedNavLink && matchedNavLink.text) {
+      return { text: matchedNavLink.text };
     }
   }
   throw error(404);

@@ -41,4 +41,15 @@ module.exports = {
     es2017: true,
     node: true,
   },
+  rules: {
+    "no-undef": "off", // this is already checked by TypeScript and ESLint causes spurious errors with it on
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+  },
 };
