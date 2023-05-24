@@ -1,14 +1,11 @@
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 
 import type { TopTierCollectionQuery } from "./$queries.generated";
 
 const query = gql`
-  query TopTierCollection {
-    topTierCollection(limit: 10) {
+  query TopTierCollection($preview: Boolean = true) {
+    topTierCollection(limit: 10, preview: $preview) {
       items {
         pageMetadata {
           ... on PageMetadata {
@@ -23,30 +20,34 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params }) => {
+export const load = async ({ parent, params, locals: { contentfulClient, logger } }) => {
+  if (!contentfulClient) throw error(500); // TODO: offline fixtures
   const { pageMetadataMap } = await parent();
   const topTierSlug = params.topTierPage;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<TopTierCollectionQuery>(printQuery(query));
-  if (data) {
-    // TODO: Possibly account for possiblity that two Top Tier pages (erroneously) have the same slug
-    const matchedTopTier = data?.topTierCollection?.items?.find(
-      (topTier) => topTier?.pageMetadata?.slug === topTierSlug
-    );
-    const matchedTopTierId = matchedTopTier?.pageMetadata?.sys?.id;
-    if (matchedTopTierId) {
-      const pageMetadata = pageMetadataMap.get(matchedTopTierId);
-      if (pageMetadata) {
-        return { pageMetadata };
-      }
-    } else {
-      console.warn(
-        `A Top Tier entry with the slug "${topTierSlug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Top Tier entry is not.`
-      );
-    }
+  const data = await contentfulClient.fetch<TopTierCollectionQuery>(query);
+
+  if (!data) {
+    await logger.logError(new Error(`query returned no response`));
+    throw error(404);
   }
-  throw error(404);
+
+  // TODO: Possibly account for possiblity that two Top Tier pages (erroneously) have the same slug
+  const matchedTopTier = data?.topTierCollection?.items?.find(
+    (topTier) => topTier?.pageMetadata?.slug === topTierSlug
+  );
+
+  const matchedTopTierID = matchedTopTier?.pageMetadata?.sys?.id;
+
+  const notFoundMessage = `A Top Tier entry with the slug "${topTierSlug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Top Tier entry is not.`;
+
+  if (!matchedTopTierID) {
+    await logger.logError(new Error(notFoundMessage));
+    return;
+  }
+
+  const pageMetadata = pageMetadataMap.get(matchedTopTierID);
+
+  if (!pageMetadata) await logger.logError(new Error(notFoundMessage));
+
+  return { pageMetadata };
 };

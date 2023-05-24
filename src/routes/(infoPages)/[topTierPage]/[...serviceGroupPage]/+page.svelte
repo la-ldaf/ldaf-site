@@ -20,6 +20,9 @@
     contactInfoCollection,
     additionalResources,
   } = data);
+
+  const hasServiceEntries = serviceEntries && serviceEntries.length > 0;
+  const hasServiceGroups = serviceGroups && serviceGroups.length > 0;
 </script>
 
 {#if heroImage}
@@ -35,19 +38,23 @@
   <ContentfulRichText document={description?.json} />
 {/if}
 
-{#if serviceEntries.length > 0 || serviceGroups.length > 0}
+{#if hasServiceEntries || hasServiceGroups}
   <h2>{serviceListName}</h2>
-  {#if serviceEntries.length > 0}
-    <Accordion multiselectable>
-      {#each serviceEntries as item}
-        <AccordionItem title={item?.entryTitle} id={item.sys.id}>
+{/if}
+
+{#if hasServiceEntries}
+  <Accordion multiselectable>
+    {#each serviceEntries as item}
+      {#if item?.entryTitle && item?.sys?.id && item?.description?.json}
+        <AccordionItem title={item?.entryTitle} id={item?.sys?.id}>
           <ContentfulRichText document={item?.description?.json} />
         </AccordionItem>
-      {/each}
-    </Accordion>
-  {/if}
+      {/if}
+    {/each}
+  </Accordion>
 {/if}
-{#if serviceGroups.length > 0}
+
+{#if hasServiceGroups}
   <ul class="service-group-list">
     {#each serviceGroups as item}
       <Card class="service-group-card">

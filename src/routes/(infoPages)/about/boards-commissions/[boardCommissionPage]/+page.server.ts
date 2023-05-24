@@ -1,15 +1,11 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
-
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 
 import type { BoardsCommissionsCollectionQuery } from "./$queries.generated";
 
 const query = gql`
-  query BoardsCommissionsCollection {
-    boardsAndCommissionsCollection(limit: 100) {
+  query BoardsCommissionsCollection($preview: Boolean = false) {
+    boardsAndCommissionsCollection(limit: 100, preview: $preview) {
       items {
         pageMetadata {
           ... on PageMetadata {
@@ -24,36 +20,37 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params }) => {
-  const { pageMetadataMap } = await parent();
+export const load = async ({ parent, locals: { contentfulClient, logger }, params }) => {
+  // TODO: offline fixtures
+  if (!contentfulClient) throw error(500);
+
   const slug = params.boardCommissionPage;
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<BoardsCommissionsCollectionQuery>(printQuery(query));
-    if (data) {
-      const matchedBoardCommissionPage = data?.boardsAndCommissionsCollection?.items?.find(
-        (boardCommission) => boardCommission?.pageMetadata?.slug === slug
-      );
-      if (matchedBoardCommissionPage) {
-        const pageMetadataId = matchedBoardCommissionPage?.pageMetadata?.sys?.id;
-        if (pageMetadataId) {
-          const pageMetadata = pageMetadataMap.get(pageMetadataId);
-          if (pageMetadata) {
-            return {
-              boardCommissionPage: matchedBoardCommissionPage,
-              pageMetadata,
-            };
-          }
-        }
-      } else {
-        console.warn(
-          `A Board or Commission entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Board or Commission entry is not.`
-        );
+  const data = await contentfulClient.fetch<BoardsCommissionsCollectionQuery>(query);
+
+  if (!data) {
+    await logger.logError(new Error("Contentful client GraphQL fetch returned no data"));
+  }
+
+  const { pageMetadataMap } = await parent();
+  const matchedBoardCommissionPage = data?.boardsAndCommissionsCollection?.items?.find(
+    (boardCommission) => boardCommission?.pageMetadata?.slug === slug
+  );
+  if (matchedBoardCommissionPage) {
+    const pageMetadataId = matchedBoardCommissionPage?.pageMetadata?.sys?.id;
+    if (pageMetadataId) {
+      const pageMetadata = pageMetadataMap.get(pageMetadataId);
+      if (pageMetadata) {
+        return {
+          boardCommissionPage: matchedBoardCommissionPage,
+          pageMetadata,
+        };
       }
     }
+  } else {
+    await logger.logError(
+      new Error(
+        `A Board or Commission entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Board or Commission entry is not.`
+      )
+    );
   }
-  throw error(404);
 };

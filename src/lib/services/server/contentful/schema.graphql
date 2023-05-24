@@ -389,7 +389,7 @@ type BoardsAndCommissionsOverviewResources {
 }
 
 """
-Button or link to landing page with URL and description [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction)
+Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction)
 """
 type CallToAction implements Entry {
   callToActionDestination(locale: String): CallToActionCallToActionDestination
@@ -569,8 +569,9 @@ type CategoryLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   eventEntryCollection(limit: Int = 100, locale: String, order: [CategoryLinkingCollectionsEventEntryCollectionOrder], preview: Boolean, skip: Int = 0): EventEntryCollection
   imageWrapperCollection(limit: Int = 100, locale: String, order: [CategoryLinkingCollectionsImageWrapperCollectionOrder], preview: Boolean, skip: Int = 0): ImageWrapperCollection
+  newsItemContentCollection(limit: Int = 100, locale: String, order: [CategoryLinkingCollectionsNewsItemContentCollectionOrder], preview: Boolean, skip: Int = 0): NewsItemContentCollection
+  pressReleaseCollection(limit: Int = 100, locale: String, order: [CategoryLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
   promoBannerWithCtaCollection(limit: Int = 100, locale: String, order: [CategoryLinkingCollectionsPromoBannerWithCtaCollectionOrder], preview: Boolean, skip: Int = 0): PromoBannerWithCtaCollection
-  videoWrapperCollection(limit: Int = 100, locale: String, order: [CategoryLinkingCollectionsVideoWrapperCollectionOrder], preview: Boolean, skip: Int = 0): VideoWrapperCollection
 }
 
 enum CategoryLinkingCollectionsCategoryCollectionOrder {
@@ -637,6 +638,40 @@ enum CategoryLinkingCollectionsImageWrapperCollectionOrder {
   sys_publishedVersion_DESC
 }
 
+enum CategoryLinkingCollectionsNewsItemContentCollectionOrder {
+  byline_ASC
+  byline_DESC
+  newsInternalName_ASC
+  newsInternalName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum CategoryLinkingCollectionsPressReleaseCollectionOrder {
+  contactsHed_ASC
+  contactsHed_DESC
+  prTitle_ASC
+  prTitle_DESC
+  releaseDate_ASC
+  releaseDate_DESC
+  standardText_ASC
+  standardText_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 enum CategoryLinkingCollectionsPromoBannerWithCtaCollectionOrder {
   promoInternalName_ASC
   promoInternalName_DESC
@@ -648,27 +683,6 @@ enum CategoryLinkingCollectionsPromoBannerWithCtaCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
-}
-
-enum CategoryLinkingCollectionsVideoWrapperCollectionOrder {
-  internalTitle_ASC
-  internalTitle_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-  videoSlug_ASC
-  videoSlug_DESC
-  videoSubhead_ASC
-  videoSubhead_DESC
-  videoTitle_ASC
-  videoTitle_DESC
-  videoUrl_ASC
-  videoUrl_DESC
 }
 
 enum CategoryOrder {
@@ -694,6 +708,7 @@ type Contact implements Entry {
   email(locale: String): String
   entityName(locale: String): String
   linkedFrom(allowedLocales: [String]): ContactLinkingCollections
+  location(locale: String, preview: Boolean, where: ContentTypeLocationFilter): ContentTypeLocation
   phone(locale: String): String
   phoneExt(locale: String): String
   sys: Sys!
@@ -724,6 +739,8 @@ input ContactFilter {
   entityName_not: String
   entityName_not_contains: String
   entityName_not_in: [String]
+  location: cfContentTypeLocationNestedFilter
+  location_exists: Boolean
   phone: String
   phoneExt: String
   phoneExt_contains: String
@@ -744,7 +761,9 @@ input ContactFilter {
 type ContactLinkingCollections {
   boardsAndCommissionsCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsBoardsAndCommissionsCollectionOrder], preview: Boolean, skip: Int = 0): BoardsAndCommissionsCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  eventEntryCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsEventEntryCollectionOrder], preview: Boolean, skip: Int = 0): EventEntryCollection
   officePageCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsOfficePageCollectionOrder], preview: Boolean, skip: Int = 0): OfficePageCollection
+  pressReleaseCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
   serviceEntryCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsServiceEntryCollectionOrder], preview: Boolean, skip: Int = 0): ServiceEntryCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
 }
@@ -764,11 +783,51 @@ enum ContactLinkingCollectionsBoardsAndCommissionsCollectionOrder {
   title_DESC
 }
 
+enum ContactLinkingCollectionsEventEntryCollectionOrder {
+  eventDateAndTime_ASC
+  eventDateAndTime_DESC
+  eventDescription_ASC
+  eventDescription_DESC
+  inPersonOrOnline_ASC
+  inPersonOrOnline_DESC
+  internalName_ASC
+  internalName_DESC
+  shortTitle_ASC
+  shortTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 enum ContactLinkingCollectionsOfficePageCollectionOrder {
   pageTitle_ASC
   pageTitle_DESC
   subheading_ASC
   subheading_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum ContactLinkingCollectionsPressReleaseCollectionOrder {
+  contactsHed_ASC
+  contactsHed_DESC
+  prTitle_ASC
+  prTitle_DESC
+  releaseDate_ASC
+  releaseDate_DESC
+  standardText_ASC
+  standardText_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -900,8 +959,28 @@ input ContentTypeLocationFilter {
 }
 
 type ContentTypeLocationLinkingCollections {
+  contactCollection(limit: Int = 100, locale: String, order: [ContentTypeLocationLinkingCollectionsContactCollectionOrder], preview: Boolean, skip: Int = 0): ContactCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   officePageCollection(limit: Int = 100, locale: String, order: [ContentTypeLocationLinkingCollectionsOfficePageCollectionOrder], preview: Boolean, skip: Int = 0): OfficePageCollection
+}
+
+enum ContentTypeLocationLinkingCollectionsContactCollectionOrder {
+  email_ASC
+  email_DESC
+  entityName_ASC
+  entityName_DESC
+  phoneExt_ASC
+  phoneExt_DESC
+  phone_ASC
+  phone_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum ContentTypeLocationLinkingCollectionsOfficePageCollectionOrder {
@@ -1143,41 +1222,6 @@ enum DraftNavigationLinkLinkingCollectionsDraftNavigationMenuCollectionOrder {
   type_DESC
 }
 
-"""
-[See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLinkOrDraftNavigationMenu)
-"""
-type DraftNavigationLinkOrDraftNavigationMenu implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): DraftNavigationLinkOrDraftNavigationMenuLinkingCollections
-  sys: Sys!
-  text(locale: String): String
-}
-
-type DraftNavigationLinkOrDraftNavigationMenuCollection {
-  items: [DraftNavigationLinkOrDraftNavigationMenu]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input DraftNavigationLinkOrDraftNavigationMenuFilter {
-  AND: [DraftNavigationLinkOrDraftNavigationMenuFilter]
-  OR: [DraftNavigationLinkOrDraftNavigationMenuFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  sys: SysFilter
-  text: String
-  text_contains: String
-  text_exists: Boolean
-  text_in: [String]
-  text_not: String
-  text_not_contains: String
-  text_not_in: [String]
-}
-
-type DraftNavigationLinkOrDraftNavigationMenuLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
 enum DraftNavigationLinkOrder {
   link_ASC
   link_DESC
@@ -1197,7 +1241,7 @@ enum DraftNavigationLinkOrder {
 A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu)
 """
 type DraftNavigationMenu implements Entry {
-  childrenCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: DraftNavigationLinkOrDraftNavigationMenuFilter): DraftNavigationMenuChildrenCollection
+  childrenCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: DraftNavigationMenuChildrenFilter): DraftNavigationMenuChildrenCollection
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): DraftNavigationMenuLinkingCollections
   sys: Sys!
@@ -1212,6 +1256,20 @@ type DraftNavigationMenuChildrenCollection {
   total: Int!
 }
 
+input DraftNavigationMenuChildrenFilter {
+  AND: [DraftNavigationMenuChildrenFilter]
+  OR: [DraftNavigationMenuChildrenFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
+  text: String
+  text_contains: String
+  text_exists: Boolean
+  text_in: [String]
+  text_not: String
+  text_not_contains: String
+  text_not_in: [String]
+}
+
 union DraftNavigationMenuChildrenItem = DraftNavigationLink | DraftNavigationMenu
 
 type DraftNavigationMenuCollection {
@@ -1224,7 +1282,7 @@ type DraftNavigationMenuCollection {
 input DraftNavigationMenuFilter {
   AND: [DraftNavigationMenuFilter]
   OR: [DraftNavigationMenuFilter]
-  children: cfDraftNavigationLinkOrDraftNavigationMenuNestedFilter
+  children: cfchildrenMultiTypeNestedFilter
   childrenCollection_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   sys: SysFilter
@@ -1317,7 +1375,7 @@ type EventEntry implements Entry {
   eventCategoryCollection(limit: Int = 100, locale: String, order: [EventEntryEventCategoryCollectionOrder], preview: Boolean, skip: Int = 0, where: CategoryFilter): EventEntryEventCategoryCollection
   eventDateAndTime(locale: String): DateTime
   eventDescription(locale: String): String
-  eventDocumentsCollection(limit: Int = 100, locale: String, order: [EventEntryEventDocumentsCollectionOrder], preview: Boolean, skip: Int = 0, where: DocumentWrapperFilter): EventEntryEventDocumentsCollection
+  eventDocumentsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: EventEntryEventDocumentsFilter): EventEntryEventDocumentsCollection
   inPersonOrOnline(locale: String): String
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): EventEntryLinkingCollections
@@ -1355,24 +1413,20 @@ enum EventEntryEventCategoryCollectionOrder {
 }
 
 type EventEntryEventDocumentsCollection {
-  items: [DocumentWrapper]!
+  items: [EventEntryEventDocumentsItem]!
   limit: Int!
   skip: Int!
   total: Int!
 }
 
-enum EventEntryEventDocumentsCollectionOrder {
-  docWrapperName_ASC
-  docWrapperName_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
+input EventEntryEventDocumentsFilter {
+  AND: [EventEntryEventDocumentsFilter]
+  OR: [EventEntryEventDocumentsFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
 }
+
+union EventEntryEventDocumentsItem = Contact | DocumentWrapper
 
 input EventEntryFilter {
   AND: [EventEntryFilter]
@@ -1396,7 +1450,7 @@ input EventEntryFilter {
   eventDescription_not: String
   eventDescription_not_contains: String
   eventDescription_not_in: [String]
-  eventDocuments: cfDocumentWrapperNestedFilter
+  eventDocuments: cfeventDocumentsMultiTypeNestedFilter
   eventDocumentsCollection_exists: Boolean
   inPersonOrOnline: String
   inPersonOrOnline_contains: String
@@ -1424,6 +1478,26 @@ input EventEntryFilter {
 
 type EventEntryLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  pressReleaseCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
+}
+
+enum EventEntryLinkingCollectionsPressReleaseCollectionOrder {
+  contactsHed_ASC
+  contactsHed_DESC
+  prTitle_ASC
+  prTitle_DESC
+  releaseDate_ASC
+  releaseDate_DESC
+  standardText_ASC
+  standardText_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum EventEntryOrder {
@@ -1498,8 +1572,26 @@ input HeroImageFilter {
 
 type HeroImageLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  newsArticleCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsNewsArticleCollectionOrder], preview: Boolean, skip: Int = 0): NewsArticleCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   topTierCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsTopTierCollectionOrder], preview: Boolean, skip: Int = 0): TopTierCollection
+}
+
+enum HeroImageLinkingCollectionsNewsArticleCollectionOrder {
+  authorName_ASC
+  authorName_DESC
+  newsArticleSubhead_ASC
+  newsArticleSubhead_DESC
+  newsArticleTitle_ASC
+  newsArticleTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum HeroImageLinkingCollectionsServiceGroupCollectionOrder {
@@ -1561,12 +1653,12 @@ type Home implements Entry {
   alertMessage(locale: String): HomeAlertMessage
   alertTitle(locale: String): String
   contentfulMetadata: ContentfulMetadata!
-  featuredServiceCardsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: ServiceEntryOrServiceGroupFilter): HomeFeaturedServiceCardsCollection
+  featuredServiceCardsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: HomeFeaturedServiceCardsFilter): HomeFeaturedServiceCardsCollection
   heroVideo(locale: String, preview: Boolean, where: VideoWrapperFilter): VideoWrapper
   internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): HomeLinkingCollections
   metadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
-  popularResourcesListCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: ServiceEntryOrServiceGroupFilter): HomePopularResourcesListCollection
+  popularResourcesListCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: HomePopularResourcesListFilter): HomePopularResourcesListCollection
   promotionalCardsCollection(limit: Int = 100, locale: String, order: [HomePromotionalCardsCollectionOrder], preview: Boolean, skip: Int = 0, where: PromoBannerWithCtaFilter): HomePromotionalCardsCollection
   sys: Sys!
 }
@@ -1611,6 +1703,16 @@ type HomeFeaturedServiceCardsCollection {
   total: Int!
 }
 
+input HomeFeaturedServiceCardsFilter {
+  AND: [HomeFeaturedServiceCardsFilter]
+  OR: [HomeFeaturedServiceCardsFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  sys: SysFilter
+}
+
 union HomeFeaturedServiceCardsItem = ServiceEntry | ServiceGroup
 
 input HomeFilter {
@@ -1627,7 +1729,7 @@ input HomeFilter {
   alertTitle_not_contains: String
   alertTitle_not_in: [String]
   contentfulMetadata: ContentfulMetadataFilter
-  featuredServiceCards: cfServiceEntryOrServiceGroupNestedFilter
+  featuredServiceCards: cffeaturedServiceCardsMultiTypeNestedFilter
   featuredServiceCardsCollection_exists: Boolean
   heroVideo: cfVideoWrapperNestedFilter
   heroVideo_exists: Boolean
@@ -1640,7 +1742,7 @@ input HomeFilter {
   internalTitle_not_in: [String]
   metadata: cfPageMetadataNestedFilter
   metadata_exists: Boolean
-  popularResourcesList: cfServiceEntryOrServiceGroupNestedFilter
+  popularResourcesList: cfpopularResourcesListMultiTypeNestedFilter
   popularResourcesListCollection_exists: Boolean
   promotionalCards: cfPromoBannerWithCtaNestedFilter
   promotionalCardsCollection_exists: Boolean
@@ -1671,6 +1773,16 @@ type HomePopularResourcesListCollection {
   limit: Int!
   skip: Int!
   total: Int!
+}
+
+input HomePopularResourcesListFilter {
+  AND: [HomePopularResourcesListFilter]
+  OR: [HomePopularResourcesListFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  sys: SysFilter
 }
 
 union HomePopularResourcesListItem = ServiceEntry | ServiceGroup
@@ -2007,7 +2119,7 @@ type ListWithTitleParagraphOrListResources {
 Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu)
 """
 type Menu implements Entry {
-  childrenCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: MenuOrMenuItemOrTopTierFilter): MenuChildrenCollection
+  childrenCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: MenuChildrenFilter): MenuChildrenCollection
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): MenuLinkingCollections
   menuType(locale: String): String
@@ -2022,6 +2134,20 @@ type MenuChildrenCollection {
   total: Int!
 }
 
+input MenuChildrenFilter {
+  AND: [MenuChildrenFilter]
+  OR: [MenuChildrenFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
+  title: String
+  title_contains: String
+  title_exists: Boolean
+  title_in: [String]
+  title_not: String
+  title_not_contains: String
+  title_not_in: [String]
+}
+
 union MenuChildrenItem = Menu | MenuItem | TopTier
 
 type MenuCollection {
@@ -2034,7 +2160,7 @@ type MenuCollection {
 input MenuFilter {
   AND: [MenuFilter]
   OR: [MenuFilter]
-  children: cfMenuOrMenuItemOrTopTierNestedFilter
+  children: cfchildrenMultiTypeNestedFilter
   childrenCollection_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   menuType: String
@@ -2151,41 +2277,6 @@ enum MenuLinkingCollectionsMenuCollectionOrder {
   title_DESC
 }
 
-"""
-[See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuOrMenuItemOrTopTier)
-"""
-type MenuOrMenuItemOrTopTier implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): MenuOrMenuItemOrTopTierLinkingCollections
-  sys: Sys!
-  title(locale: String): String
-}
-
-type MenuOrMenuItemOrTopTierCollection {
-  items: [MenuOrMenuItemOrTopTier]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input MenuOrMenuItemOrTopTierFilter {
-  AND: [MenuOrMenuItemOrTopTierFilter]
-  OR: [MenuOrMenuItemOrTopTierFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  sys: SysFilter
-  title: String
-  title_contains: String
-  title_exists: Boolean
-  title_in: [String]
-  title_not: String
-  title_not_contains: String
-  title_not_in: [String]
-}
-
-type MenuOrMenuItemOrTopTierLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
 enum MenuOrder {
   menuType_ASC
   menuType_DESC
@@ -2199,6 +2290,211 @@ enum MenuOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
+}
+
+"""
+Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle)
+"""
+type NewsArticle implements Entry {
+  authorName(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): NewsArticleLinkingCollections
+  linkedNewsContent(locale: String, preview: Boolean): Entry
+  newsArticleSubhead(locale: String): String
+  newsArticleTitle(locale: String): String
+  newsHeroImage(locale: String, preview: Boolean, where: HeroImageFilter): HeroImage
+  newsItemBody(locale: String, preview: Boolean, where: NewsItemContentFilter): NewsItemContent
+  sys: Sys!
+}
+
+type NewsArticleCollection {
+  items: [NewsArticle]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input NewsArticleFilter {
+  AND: [NewsArticleFilter]
+  OR: [NewsArticleFilter]
+  authorName: String
+  authorName_contains: String
+  authorName_exists: Boolean
+  authorName_in: [String]
+  authorName_not: String
+  authorName_not_contains: String
+  authorName_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  linkedNewsContent_exists: Boolean
+  newsArticleSubhead: String
+  newsArticleSubhead_contains: String
+  newsArticleSubhead_exists: Boolean
+  newsArticleSubhead_in: [String]
+  newsArticleSubhead_not: String
+  newsArticleSubhead_not_contains: String
+  newsArticleSubhead_not_in: [String]
+  newsArticleTitle: String
+  newsArticleTitle_contains: String
+  newsArticleTitle_exists: Boolean
+  newsArticleTitle_in: [String]
+  newsArticleTitle_not: String
+  newsArticleTitle_not_contains: String
+  newsArticleTitle_not_in: [String]
+  newsHeroImage: cfHeroImageNestedFilter
+  newsHeroImage_exists: Boolean
+  newsItemBody: cfNewsItemContentNestedFilter
+  newsItemBody_exists: Boolean
+  sys: SysFilter
+}
+
+type NewsArticleLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum NewsArticleOrder {
+  authorName_ASC
+  authorName_DESC
+  newsArticleSubhead_ASC
+  newsArticleSubhead_DESC
+  newsArticleTitle_ASC
+  newsArticleTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent)
+"""
+type NewsItemContent implements Entry {
+  byline(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): NewsItemContentLinkingCollections
+  newsCategory(locale: String, preview: Boolean, where: CategoryFilter): Category
+  newsInternalName(locale: String): String
+  newsItemBody(locale: String): NewsItemContentNewsItemBody
+  sys: Sys!
+}
+
+type NewsItemContentCollection {
+  items: [NewsItemContent]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input NewsItemContentFilter {
+  AND: [NewsItemContentFilter]
+  OR: [NewsItemContentFilter]
+  byline: String
+  byline_contains: String
+  byline_exists: Boolean
+  byline_in: [String]
+  byline_not: String
+  byline_not_contains: String
+  byline_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  newsCategory: cfCategoryNestedFilter
+  newsCategory_exists: Boolean
+  newsInternalName: String
+  newsInternalName_contains: String
+  newsInternalName_exists: Boolean
+  newsInternalName_in: [String]
+  newsInternalName_not: String
+  newsInternalName_not_contains: String
+  newsInternalName_not_in: [String]
+  newsItemBody_contains: String
+  newsItemBody_exists: Boolean
+  newsItemBody_not_contains: String
+  sys: SysFilter
+}
+
+type NewsItemContentLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  newsArticleCollection(limit: Int = 100, locale: String, order: [NewsItemContentLinkingCollectionsNewsArticleCollectionOrder], preview: Boolean, skip: Int = 0): NewsArticleCollection
+  pressReleaseCollection(limit: Int = 100, locale: String, order: [NewsItemContentLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
+}
+
+enum NewsItemContentLinkingCollectionsNewsArticleCollectionOrder {
+  authorName_ASC
+  authorName_DESC
+  newsArticleSubhead_ASC
+  newsArticleSubhead_DESC
+  newsArticleTitle_ASC
+  newsArticleTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum NewsItemContentLinkingCollectionsPressReleaseCollectionOrder {
+  contactsHed_ASC
+  contactsHed_DESC
+  prTitle_ASC
+  prTitle_DESC
+  releaseDate_ASC
+  releaseDate_DESC
+  standardText_ASC
+  standardText_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type NewsItemContentNewsItemBody {
+  json: JSON!
+  links: NewsItemContentNewsItemBodyLinks!
+}
+
+type NewsItemContentNewsItemBodyAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type NewsItemContentNewsItemBodyEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type NewsItemContentNewsItemBodyLinks {
+  assets: NewsItemContentNewsItemBodyAssets!
+  entries: NewsItemContentNewsItemBodyEntries!
+  resources: NewsItemContentNewsItemBodyResources!
+}
+
+type NewsItemContentNewsItemBodyResources {
+  block: [ResourceLink!]!
+}
+
+enum NewsItemContentOrder {
+  byline_ASC
+  byline_DESC
+  newsInternalName_ASC
+  newsInternalName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 """
@@ -2434,6 +2730,7 @@ type PageMetadataLinkingCollections {
   menuItemCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsMenuItemCollectionOrder], preview: Boolean, skip: Int = 0): MenuItemCollection
   officePageCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsOfficePageCollectionOrder], preview: Boolean, skip: Int = 0): OfficePageCollection
   pageMetadataCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsPageMetadataCollectionOrder], preview: Boolean, skip: Int = 0): PageMetadataCollection
+  pressReleaseCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   topTierCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsTopTierCollectionOrder], preview: Boolean, skip: Int = 0): TopTierCollection
 }
@@ -2519,6 +2816,25 @@ enum PageMetadataLinkingCollectionsPageMetadataCollectionOrder {
   title_DESC
 }
 
+enum PageMetadataLinkingCollectionsPressReleaseCollectionOrder {
+  contactsHed_ASC
+  contactsHed_DESC
+  prTitle_ASC
+  prTitle_DESC
+  releaseDate_ASC
+  releaseDate_DESC
+  standardText_ASC
+  standardText_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 enum PageMetadataLinkingCollectionsServiceGroupCollectionOrder {
   serviceListName_ASC
   serviceListName_DESC
@@ -2570,6 +2886,177 @@ enum PageMetadataOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
+}
+
+"""
+Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease)
+"""
+type PressRelease implements Entry {
+  contactsHed(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  eventOrArticle(locale: String, preview: Boolean): PressReleaseEventOrArticle
+  linkedFrom(allowedLocales: [String]): PressReleaseLinkingCollections
+  prCategoryCollection(limit: Int = 100, locale: String, order: [PressReleasePrCategoryCollectionOrder], preview: Boolean, skip: Int = 0, where: CategoryFilter): PressReleasePrCategoryCollection
+  prContactsCollection(limit: Int = 100, locale: String, order: [PressReleasePrContactsCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): PressReleasePrContactsCollection
+  prMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
+  prTitle(locale: String): String
+  pressReleaseBody(locale: String): PressReleasePressReleaseBody
+  releaseDate(locale: String): DateTime
+  standardText(locale: String): String
+  sys: Sys!
+}
+
+type PressReleaseCollection {
+  items: [PressRelease]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+union PressReleaseEventOrArticle = EventEntry | NewsItemContent
+
+input PressReleaseFilter {
+  AND: [PressReleaseFilter]
+  OR: [PressReleaseFilter]
+  contactsHed: String
+  contactsHed_contains: String
+  contactsHed_exists: Boolean
+  contactsHed_in: [String]
+  contactsHed_not: String
+  contactsHed_not_contains: String
+  contactsHed_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  eventOrArticle_exists: Boolean
+  prCategory: cfCategoryNestedFilter
+  prCategoryCollection_exists: Boolean
+  prContacts: cfContactNestedFilter
+  prContactsCollection_exists: Boolean
+  prMetadata: cfPageMetadataNestedFilter
+  prMetadata_exists: Boolean
+  prTitle: String
+  prTitle_contains: String
+  prTitle_exists: Boolean
+  prTitle_in: [String]
+  prTitle_not: String
+  prTitle_not_contains: String
+  prTitle_not_in: [String]
+  pressReleaseBody_contains: String
+  pressReleaseBody_exists: Boolean
+  pressReleaseBody_not_contains: String
+  releaseDate: DateTime
+  releaseDate_exists: Boolean
+  releaseDate_gt: DateTime
+  releaseDate_gte: DateTime
+  releaseDate_in: [DateTime]
+  releaseDate_lt: DateTime
+  releaseDate_lte: DateTime
+  releaseDate_not: DateTime
+  releaseDate_not_in: [DateTime]
+  standardText: String
+  standardText_contains: String
+  standardText_exists: Boolean
+  standardText_in: [String]
+  standardText_not: String
+  standardText_not_contains: String
+  standardText_not_in: [String]
+  sys: SysFilter
+}
+
+type PressReleaseLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum PressReleaseOrder {
+  contactsHed_ASC
+  contactsHed_DESC
+  prTitle_ASC
+  prTitle_DESC
+  releaseDate_ASC
+  releaseDate_DESC
+  standardText_ASC
+  standardText_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type PressReleasePrCategoryCollection {
+  items: [Category]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum PressReleasePrCategoryCollectionOrder {
+  categoryDescription_ASC
+  categoryDescription_DESC
+  categoryName_ASC
+  categoryName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type PressReleasePrContactsCollection {
+  items: [Contact]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum PressReleasePrContactsCollectionOrder {
+  email_ASC
+  email_DESC
+  entityName_ASC
+  entityName_DESC
+  phoneExt_ASC
+  phoneExt_DESC
+  phone_ASC
+  phone_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type PressReleasePressReleaseBody {
+  json: JSON!
+  links: PressReleasePressReleaseBodyLinks!
+}
+
+type PressReleasePressReleaseBodyAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type PressReleasePressReleaseBodyEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type PressReleasePressReleaseBodyLinks {
+  assets: PressReleasePressReleaseBodyAssets!
+  entries: PressReleasePressReleaseBodyEntries!
+  resources: PressReleasePressReleaseBodyResources!
+}
+
+type PressReleasePressReleaseBodyResources {
+  block: [ResourceLink!]!
 }
 
 """
@@ -2689,8 +3176,6 @@ type Query {
   documentWrapperCollection(limit: Int = 100, locale: String, order: [DocumentWrapperOrder], preview: Boolean, skip: Int = 0, where: DocumentWrapperFilter): DocumentWrapperCollection
   draftNavigationLink(id: String!, locale: String, preview: Boolean): DraftNavigationLink
   draftNavigationLinkCollection(limit: Int = 100, locale: String, order: [DraftNavigationLinkOrder], preview: Boolean, skip: Int = 0, where: DraftNavigationLinkFilter): DraftNavigationLinkCollection
-  draftNavigationLinkOrDraftNavigationMenu(id: String!, locale: String, preview: Boolean): DraftNavigationLinkOrDraftNavigationMenu
-  draftNavigationLinkOrDraftNavigationMenuCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: DraftNavigationLinkOrDraftNavigationMenuFilter): DraftNavigationLinkOrDraftNavigationMenuCollection
   draftNavigationMenu(id: String!, locale: String, preview: Boolean): DraftNavigationMenu
   draftNavigationMenuCollection(limit: Int = 100, locale: String, order: [DraftNavigationMenuOrder], preview: Boolean, skip: Int = 0, where: DraftNavigationMenuFilter): DraftNavigationMenuCollection
   entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
@@ -2708,18 +3193,20 @@ type Query {
   menuCollection(limit: Int = 100, locale: String, order: [MenuOrder], preview: Boolean, skip: Int = 0, where: MenuFilter): MenuCollection
   menuItem(id: String!, locale: String, preview: Boolean): MenuItem
   menuItemCollection(limit: Int = 100, locale: String, order: [MenuItemOrder], preview: Boolean, skip: Int = 0, where: MenuItemFilter): MenuItemCollection
-  menuOrMenuItemOrTopTier(id: String!, locale: String, preview: Boolean): MenuOrMenuItemOrTopTier
-  menuOrMenuItemOrTopTierCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: MenuOrMenuItemOrTopTierFilter): MenuOrMenuItemOrTopTierCollection
+  newsArticle(id: String!, locale: String, preview: Boolean): NewsArticle
+  newsArticleCollection(limit: Int = 100, locale: String, order: [NewsArticleOrder], preview: Boolean, skip: Int = 0, where: NewsArticleFilter): NewsArticleCollection
+  newsItemContent(id: String!, locale: String, preview: Boolean): NewsItemContent
+  newsItemContentCollection(limit: Int = 100, locale: String, order: [NewsItemContentOrder], preview: Boolean, skip: Int = 0, where: NewsItemContentFilter): NewsItemContentCollection
   officePage(id: String!, locale: String, preview: Boolean): OfficePage
   officePageCollection(limit: Int = 100, locale: String, order: [OfficePageOrder], preview: Boolean, skip: Int = 0, where: OfficePageFilter): OfficePageCollection
   pageMetadata(id: String!, locale: String, preview: Boolean): PageMetadata
   pageMetadataCollection(limit: Int = 100, locale: String, order: [PageMetadataOrder], preview: Boolean, skip: Int = 0, where: PageMetadataFilter): PageMetadataCollection
+  pressRelease(id: String!, locale: String, preview: Boolean): PressRelease
+  pressReleaseCollection(limit: Int = 100, locale: String, order: [PressReleaseOrder], preview: Boolean, skip: Int = 0, where: PressReleaseFilter): PressReleaseCollection
   promoBannerWithCta(id: String!, locale: String, preview: Boolean): PromoBannerWithCta
   promoBannerWithCtaCollection(limit: Int = 100, locale: String, order: [PromoBannerWithCtaOrder], preview: Boolean, skip: Int = 0, where: PromoBannerWithCtaFilter): PromoBannerWithCtaCollection
   serviceEntry(id: String!, locale: String, preview: Boolean): ServiceEntry
   serviceEntryCollection(limit: Int = 100, locale: String, order: [ServiceEntryOrder], preview: Boolean, skip: Int = 0, where: ServiceEntryFilter): ServiceEntryCollection
-  serviceEntryOrServiceGroup(id: String!, locale: String, preview: Boolean): ServiceEntryOrServiceGroup
-  serviceEntryOrServiceGroupCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: ServiceEntryOrServiceGroupFilter): ServiceEntryOrServiceGroupCollection
   serviceGroup(id: String!, locale: String, preview: Boolean): ServiceGroup
   serviceGroupCollection(limit: Int = 100, locale: String, order: [ServiceGroupOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): ServiceGroupCollection
   testRichText(id: String!, locale: String, preview: Boolean): TestRichText
@@ -2741,7 +3228,7 @@ type ResourceSys {
 }
 
 """
-Service content that will show up as an accordion on a service group page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry)
+Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry)
 """
 type ServiceEntry implements Entry {
   contactInformationCollection(limit: Int = 100, locale: String, order: [ServiceEntryContactInformationCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): ServiceEntryContactInformationCollection
@@ -2871,63 +3358,6 @@ enum ServiceEntryLinkingCollectionsServiceGroupCollectionOrder {
   title_DESC
 }
 
-"""
-[See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntryOrServiceGroup)
-"""
-type ServiceEntryOrServiceGroup implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  description(locale: String): ServiceEntryOrServiceGroupDescription
-  linkedFrom(allowedLocales: [String]): ServiceEntryOrServiceGroupLinkingCollections
-  sys: Sys!
-}
-
-type ServiceEntryOrServiceGroupCollection {
-  items: [ServiceEntryOrServiceGroup]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-type ServiceEntryOrServiceGroupDescription {
-  json: JSON!
-  links: ServiceEntryOrServiceGroupDescriptionLinks!
-}
-
-type ServiceEntryOrServiceGroupDescriptionAssets {
-  block: [Asset]!
-  hyperlink: [Asset]!
-}
-
-type ServiceEntryOrServiceGroupDescriptionEntries {
-  block: [Entry]!
-  hyperlink: [Entry]!
-  inline: [Entry]!
-}
-
-type ServiceEntryOrServiceGroupDescriptionLinks {
-  assets: ServiceEntryOrServiceGroupDescriptionAssets!
-  entries: ServiceEntryOrServiceGroupDescriptionEntries!
-  resources: ServiceEntryOrServiceGroupDescriptionResources!
-}
-
-type ServiceEntryOrServiceGroupDescriptionResources {
-  block: [ResourceLink!]!
-}
-
-input ServiceEntryOrServiceGroupFilter {
-  AND: [ServiceEntryOrServiceGroupFilter]
-  OR: [ServiceEntryOrServiceGroupFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  description_contains: String
-  description_exists: Boolean
-  description_not_contains: String
-  sys: SysFilter
-}
-
-type ServiceEntryOrServiceGroupLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
 enum ServiceEntryOrder {
   entryTitle_ASC
   entryTitle_DESC
@@ -2972,7 +3402,7 @@ type ServiceGroup implements Entry {
   heroImage(locale: String, preview: Boolean, where: HeroImageFilter): HeroImage
   linkedFrom(allowedLocales: [String]): ServiceGroupLinkingCollections
   pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
-  serviceEntriesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: ServiceEntryOrServiceGroupFilter): ServiceGroupServiceEntriesCollection
+  serviceEntriesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: ServiceGroupServiceEntriesFilter): ServiceGroupServiceEntriesCollection
   serviceListName(locale: String): String
   subheading(locale: String): String
   sys: Sys!
@@ -3080,7 +3510,7 @@ input ServiceGroupFilter {
   heroImage_exists: Boolean
   pageMetadata: cfPageMetadataNestedFilter
   pageMetadata_exists: Boolean
-  serviceEntries: cfServiceEntryOrServiceGroupNestedFilter
+  serviceEntries: cfserviceEntriesMultiTypeNestedFilter
   serviceEntriesCollection_exists: Boolean
   serviceListName: String
   serviceListName_contains: String
@@ -3182,6 +3612,16 @@ type ServiceGroupServiceEntriesCollection {
   limit: Int!
   skip: Int!
   total: Int!
+}
+
+input ServiceGroupServiceEntriesFilter {
+  AND: [ServiceGroupServiceEntriesFilter]
+  OR: [ServiceGroupServiceEntriesFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  sys: SysFilter
 }
 
 union ServiceGroupServiceEntriesItem = ServiceEntry | ServiceGroup
@@ -3313,7 +3753,7 @@ enum TestRichTextOrder {
 }
 
 """
-Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
+Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
 """
 type TopTier implements Entry {
   contentfulMetadata: ContentfulMetadata!
@@ -3460,7 +3900,6 @@ type VideoWrapper implements Entry {
   internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): VideoWrapperLinkingCollections
   sys: Sys!
-  videoCategoryCollection(limit: Int = 100, locale: String, order: [VideoWrapperVideoCategoryCollectionOrder], preview: Boolean, skip: Int = 0, where: CategoryFilter): VideoWrapperVideoCategoryCollection
   videoLongerStory(locale: String): VideoWrapperVideoLongerStory
   videoSlug(locale: String): String
   videoSubhead(locale: String): String
@@ -3487,8 +3926,6 @@ input VideoWrapperFilter {
   internalTitle_not_contains: String
   internalTitle_not_in: [String]
   sys: SysFilter
-  videoCategory: cfCategoryNestedFilter
-  videoCategoryCollection_exists: Boolean
   videoLongerStory_contains: String
   videoLongerStory_exists: Boolean
   videoLongerStory_not_contains: String
@@ -3579,28 +4016,6 @@ enum VideoWrapperOrder {
   videoUrl_DESC
 }
 
-type VideoWrapperVideoCategoryCollection {
-  items: [Category]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-enum VideoWrapperVideoCategoryCollectionOrder {
-  categoryDescription_ASC
-  categoryDescription_DESC
-  categoryName_ASC
-  categoryName_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
 type VideoWrapperVideoLongerStory {
   json: JSON!
   links: VideoWrapperVideoLongerStoryLinks!
@@ -3688,6 +4103,7 @@ input cfContactNestedFilter {
   entityName_not: String
   entityName_not_contains: String
   entityName_not_in: [String]
+  location_exists: Boolean
   phone: String
   phoneExt: String
   phoneExt_contains: String
@@ -3754,43 +4170,6 @@ input cfContentTypeLocationNestedFilter {
   zip_not_in: [String]
 }
 
-input cfDocumentWrapperNestedFilter {
-  AND: [cfDocumentWrapperNestedFilter]
-  OR: [cfDocumentWrapperNestedFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  docWrapperName: String
-  docWrapperName_contains: String
-  docWrapperName_exists: Boolean
-  docWrapperName_in: [String]
-  docWrapperName_not: String
-  docWrapperName_not_contains: String
-  docWrapperName_not_in: [String]
-  documentCategoryCollection_exists: Boolean
-  documentDescription: String
-  documentDescription_contains: String
-  documentDescription_exists: Boolean
-  documentDescription_in: [String]
-  documentDescription_not: String
-  documentDescription_not_contains: String
-  documentDescription_not_in: [String]
-  sys: SysFilter
-  wrappedDocumentName_exists: Boolean
-}
-
-input cfDraftNavigationLinkOrDraftNavigationMenuNestedFilter {
-  AND: [cfDraftNavigationLinkOrDraftNavigationMenuNestedFilter]
-  OR: [cfDraftNavigationLinkOrDraftNavigationMenuNestedFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  sys: SysFilter
-  text: String
-  text_contains: String
-  text_exists: Boolean
-  text_in: [String]
-  text_not: String
-  text_not_contains: String
-  text_not_in: [String]
-}
-
 input cfHeroImageNestedFilter {
   AND: [cfHeroImageNestedFilter]
   OR: [cfHeroImageNestedFilter]
@@ -3843,18 +4222,29 @@ input cfImageWrapperNestedFilter {
   sys: SysFilter
 }
 
-input cfMenuOrMenuItemOrTopTierNestedFilter {
-  AND: [cfMenuOrMenuItemOrTopTierNestedFilter]
-  OR: [cfMenuOrMenuItemOrTopTierNestedFilter]
+input cfNewsItemContentNestedFilter {
+  AND: [cfNewsItemContentNestedFilter]
+  OR: [cfNewsItemContentNestedFilter]
+  byline: String
+  byline_contains: String
+  byline_exists: Boolean
+  byline_in: [String]
+  byline_not: String
+  byline_not_contains: String
+  byline_not_in: [String]
   contentfulMetadata: ContentfulMetadataFilter
+  newsCategory_exists: Boolean
+  newsInternalName: String
+  newsInternalName_contains: String
+  newsInternalName_exists: Boolean
+  newsInternalName_in: [String]
+  newsInternalName_not: String
+  newsInternalName_not_contains: String
+  newsInternalName_not_in: [String]
+  newsItemBody_contains: String
+  newsItemBody_exists: Boolean
+  newsItemBody_not_contains: String
   sys: SysFilter
-  title: String
-  title_contains: String
-  title_exists: Boolean
-  title_in: [String]
-  title_not: String
-  title_not_contains: String
-  title_not_in: [String]
 }
 
 input cfPageMetadataNestedFilter {
@@ -3921,16 +4311,6 @@ input cfPromoBannerWithCtaNestedFilter {
   sys: SysFilter
 }
 
-input cfServiceEntryOrServiceGroupNestedFilter {
-  AND: [cfServiceEntryOrServiceGroupNestedFilter]
-  OR: [cfServiceEntryOrServiceGroupNestedFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  description_contains: String
-  description_exists: Boolean
-  description_not_contains: String
-  sys: SysFilter
-}
-
 input cfServiceGroupNestedFilter {
   AND: [cfServiceGroupNestedFilter]
   OR: [cfServiceGroupNestedFilter]
@@ -3981,7 +4361,6 @@ input cfVideoWrapperNestedFilter {
   internalTitle_not_contains: String
   internalTitle_not_in: [String]
   sys: SysFilter
-  videoCategoryCollection_exists: Boolean
   videoLongerStory_contains: String
   videoLongerStory_exists: Boolean
   videoLongerStory_not_contains: String
@@ -4013,4 +4392,55 @@ input cfVideoWrapperNestedFilter {
   videoUrl_not: String
   videoUrl_not_contains: String
   videoUrl_not_in: [String]
+}
+
+input cfchildrenMultiTypeNestedFilter {
+  AND: [cfchildrenMultiTypeNestedFilter]
+  OR: [cfchildrenMultiTypeNestedFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
+  text: String
+  text_contains: String
+  text_exists: Boolean
+  text_in: [String]
+  text_not: String
+  text_not_contains: String
+  text_not_in: [String]
+}
+
+input cfeventDocumentsMultiTypeNestedFilter {
+  AND: [cfeventDocumentsMultiTypeNestedFilter]
+  OR: [cfeventDocumentsMultiTypeNestedFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
+}
+
+input cffeaturedServiceCardsMultiTypeNestedFilter {
+  AND: [cffeaturedServiceCardsMultiTypeNestedFilter]
+  OR: [cffeaturedServiceCardsMultiTypeNestedFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  sys: SysFilter
+}
+
+input cfpopularResourcesListMultiTypeNestedFilter {
+  AND: [cfpopularResourcesListMultiTypeNestedFilter]
+  OR: [cfpopularResourcesListMultiTypeNestedFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  sys: SysFilter
+}
+
+input cfserviceEntriesMultiTypeNestedFilter {
+  AND: [cfserviceEntriesMultiTypeNestedFilter]
+  OR: [cfserviceEntriesMultiTypeNestedFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  sys: SysFilter
 }

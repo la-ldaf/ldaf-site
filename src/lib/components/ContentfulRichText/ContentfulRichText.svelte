@@ -4,16 +4,21 @@
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
 
-  export let document: Document;
+  // We support "unknown" here because we always check if we've received a document type, and the
+  // type of the rich text JSON returned from Contentful (which is auto-generated based on the
+  // schema) is always "unknown"
+  export let document: Document | unknown;
 
-  if (!isDocument(document)) {
+  $: doc = document as Document;
+  $: if (!isDocument(doc)) {
     throw error(500, {
       title: "We could not render this page.",
-      message: "Contentful connection failed and fallback document does not match expected format.",
+      message:
+        "Provided document was in the incorrect format. Contentful may have returned bad data, or the Contentful connection may have failed and the fallback data was bad.",
     });
   }
 </script>
 
-{#each document.content as subNode (crypto.randomUUID())}
+{#each doc.content as subNode (crypto.randomUUID())}
   <Node node={subNode} />
 {/each}

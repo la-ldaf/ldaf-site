@@ -1,0 +1,15 @@
+node_modules
+.env*
+!.env.example
+.svelte-kit/output
+.svelte-kit/vercel-tmp
+.vercel
+storybook-static
+build-storybook.log
+coverage
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+bundle-visualizer
+lighthouse-reports
+e2e-tests/report
+e2e-tests/results

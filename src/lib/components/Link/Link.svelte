@@ -1,18 +1,18 @@
 <script lang="ts">
+  import type { HTMLAnchorAttributes } from "svelte/elements";
   import classNames from "$lib/util/classNames";
   import "./Link.scss";
 
   // Note: All props not mentioned below will be passed directly to the <a/> element via $$props, e.g. href and target.
-  interface $$Props extends Partial<HTMLAnchorElement> {
-    class?: string;
+  type $$Props = HTMLAnchorAttributes & {
     external?: boolean;
     alternate?: boolean;
-  }
+  };
 
   // this isn't necessary but will suppress vite-plugin-svelte a11y warnings
-  export let href = "";
+  export let href: string | null | undefined = undefined;
   // additional classes to add
-  let className = "";
+  let className: string | null | undefined = undefined;
   export { className as class };
   // render as an external link, with the "launch" icon rendered ::after
   export let external = false;
@@ -27,6 +27,6 @@
   );
 </script>
 
-<a {...$$restProps} {href} class={linkClassNames} rel={external ? "external" : null}>
+<a {...$$restProps} {href} class={linkClassNames} rel={external ? "external" : null} on:click>
   <slot />
 </a>

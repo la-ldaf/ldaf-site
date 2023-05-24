@@ -18,6 +18,7 @@
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
   import Logo from "./Logo";
+  import User from "./User";
 
   export let navItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
@@ -76,6 +77,7 @@
         class="ldaf-nav__secondary usa-nav__secondary"
         class:search-page={$page.url.pathname === "/search"}
       >
+        <User />
         <ul class="usa-nav__secondary-links">
           {#each secondaryNavItems as item, i (item.id)}
             {@const { name, link } = item}

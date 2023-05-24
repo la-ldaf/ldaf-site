@@ -5,13 +5,23 @@
 declare module "$env/static/private" {
   export const CONTENTFUL_DEFAULT_ENVIRONMENT: string;
   export const CONTENTFUL_DELIVERY_API_TOKEN: string;
+  export const CONTENTFUL_PREVIEW_API_TOKEN: string;
   export const CONTENTFUL_SPACE_ID: string;
+  export const CONTENTFUL_MANAGEMENT_API_ENDPOINT: string;
   export const VERCEL: string;
   export const VERCEL_ENV: string;
   export const VERCEL_GIT_REPO_OWNER: string;
   export const VERCEL_GIT_REPO_SLUG: string;
   export const VERCEL_GIT_COMMIT_SHA: string;
   export const VERCEL_GIT_PULL_REQUEST_ID: string;
+  export const LDAF_SLACK_WEBHOOK_URL: string;
+  export const KV_URL: string;
+}
+
+declare module "$env/static/public" {
+  export const PUBLIC_CONTENTFUL_OAUTH_ENDPOINT: string;
+  export const PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID: string;
+  export const PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI: string;
 }
 
 declare module "$env/static/public" {

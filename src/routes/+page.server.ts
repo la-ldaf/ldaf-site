@@ -1,18 +1,16 @@
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import { print as printQuery } from "graphql";
 import gql from "graphql-tag";
-import getContentfulClient from "$lib/services/contentful";
+import type { Document } from "@contentful/rich-text-types";
 import { homepageTestData } from "$lib/components/ContentfulRichText/__tests__/documents";
 import type { EntriesQuery } from "./$queries.generated";
 
 const query = gql`
-  query Entries {
-    titleEntry: testRichText(id: "5k6saMkIV7PHFhNDxmZiIG") {
+  query Entries($preview: Boolean = false) {
+    titleEntry: testRichText(id: "5k6saMkIV7PHFhNDxmZiIG", preview: $preview) {
       body {
         json
       }
     }
-    bodyEntry: testRichText(id: "1VCVunA3sIV5Ch1qGHEKZZ") {
+    bodyEntry: testRichText(id: "1VCVunA3sIV5Ch1qGHEKZZ", preview: $preview) {
       body {
         json
       }
@@ -21,23 +19,18 @@ const query = gql`
 `;
 
 // TODO: refactor to a reusable helper function that wraps contenfulClient
-export async function load() {
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-
-    const { titleEntry, bodyEntry } = await client.fetch<EntriesQuery>(printQuery(query));
-
-    return {
-      title: titleEntry?.body?.json,
-      body: bodyEntry?.body?.json,
-    };
-  } else {
+export const load = async ({ locals: { contentfulClient } }) => {
+  if (!contentfulClient) {
     return {
       title: homepageTestData.title.document,
       body: homepageTestData.body.document,
     };
   }
-}
+
+  const { titleEntry, bodyEntry } = await contentfulClient.fetch<EntriesQuery>(query);
+
+  return {
+    title: titleEntry?.body?.json as Document,
+    body: bodyEntry?.body?.json as Document,
+  };
+};
