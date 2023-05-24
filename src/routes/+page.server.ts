@@ -1,6 +1,10 @@
-import contentful from "contentful";
-import type { ContentfulClientApi } from "contentful";
+import contentful, { type ContentfulClientApi, type EntryFieldTypes } from "contentful";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+
+type EntrySkeleton = {
+  contentTypeId: "testRichText";
+  fields: { body: EntryFieldTypes.RichText };
+};
 
 // TODO: refactor to a reusable helper function that wraps contenfulClient
 export async function load() {
@@ -9,8 +13,8 @@ export async function load() {
     accessToken: CONTENTFUL_DELIVERY_API_TOKEN,
   });
 
-  const title = await contentfulClient.getEntry("5k6saMkIV7PHFhNDxmZiIG");
-  const body = await contentfulClient.getEntry("1VCVunA3sIV5Ch1qGHEKZZ");
+  const title = await contentfulClient.getEntry<EntrySkeleton>("5k6saMkIV7PHFhNDxmZiIG");
+  const body = await contentfulClient.getEntry<EntrySkeleton>("1VCVunA3sIV5Ch1qGHEKZZ");
 
   return {
     title: title.fields.body,
