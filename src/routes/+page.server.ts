@@ -1,7 +1,6 @@
 import contentful, { type ContentfulClientApi, type EntryFieldTypes } from "contentful";
 import { contentfulConnected } from "$lib/services/contentful";
-import homepageTestTitle from "$lib/components/ContentfulRichText/__tests__/documents/homepage-test-title.md.json";
-import homepageTestBody from "$lib/components/ContentfulRichText/__tests__/documents/homepage-test-body.md.json";
+import { homepageTestData } from "$lib/components/ContentfulRichText/__tests__/documents";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 
 type EntrySkeleton = {
@@ -26,8 +25,8 @@ export async function load() {
     };
   } else {
     return {
-      title: homepageTestTitle,
-      body: homepageTestBody,
+      title: homepageTestData.title.document,
+      body: homepageTestData.body.document,
     };
   }
 }
