@@ -1,32 +1,63 @@
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+type SpaceID = string;
+type Token = string;
+type APIPrefix = string;
 
-// Re-evaluate utils using env vars on each request to ensure tests can
-//   properly mock and overwrite them.
-const contentfulConnected = (): boolean => !!(CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
+const defaultAPIPrefix: APIPrefix = "https://graphql.contentful.com/content/v1/spaces";
 
-const graphApiUrl = (): string =>
-  `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`;
-
-const graphApiOptions = () => ({
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${CONTENTFUL_DELIVERY_API_TOKEN}`,
-  },
-});
-
-const contentfulFetch = async <T>(query: string): Promise<false | T> => {
-  if (contentfulConnected()) {
-    const response = await fetch(graphApiUrl(), {
-      ...graphApiOptions(),
-      body: JSON.stringify({ query }),
-    });
-    if (response && response.ok) {
-      const { data } = await response.json();
-      return data as T;
-    }
-  }
-  return Promise.resolve(false);
+type ClientOptions = {
+  spaceID: SpaceID;
+  token: Token;
+  apiPrefix?: APIPrefix;
 };
 
-export default contentfulFetch;
+const delim = "#" as const;
+
+type ClientKey = `${APIPrefix}${typeof delim}${SpaceID}${typeof delim}${Token}`;
+const getKeyFromOptions = ({
+  spaceID,
+  token,
+  apiPrefix = defaultAPIPrefix,
+}: ClientOptions): ClientKey => `${apiPrefix}${delim}${spaceID}${delim}${token}`;
+
+export type Client = {
+  options: ClientOptions;
+  key: ClientKey;
+  fetch: <T>(query: string) => Promise<T>;
+};
+
+const clients = new Map<ClientKey, Client>();
+
+const getClient = ({ spaceID, token, apiPrefix = defaultAPIPrefix }: ClientOptions): Client => {
+  const key = getKeyFromOptions({ spaceID, token });
+  const existingClient = clients.get(key);
+  if (existingClient) return existingClient;
+
+  const client = {
+    options: { spaceID, token, apiPrefix },
+    key,
+    async fetch<T>(query: string): Promise<T> {
+      const { spaceID, token, apiPrefix } = this.options;
+      const url = `${apiPrefix}/${spaceID}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ query }),
+      });
+      if (!response.ok) {
+        throw new Error(
+          `Got failed response with status code ${response.status} ${response.statusText}`
+        );
+      }
+      const { data } = await response.json();
+      if (!data) throw new Error("Got successful response with unexpected structure!");
+      return data as T;
+    },
+  };
+  clients.set(key, client);
+  return client;
+};
+
+export default getClient;

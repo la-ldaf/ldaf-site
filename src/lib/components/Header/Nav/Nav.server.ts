@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
-import contentfulFetch from "$lib/services/contentful";
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import getContentfulClient from "$lib/services/contentful";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
 import type {
@@ -42,7 +43,11 @@ export const loadMainNav = async () => {
       }
     }
   `;
-  const data = await contentfulFetch<NavQuery>(printQuery(query));
+  const client = getContentfulClient({
+    spaceID: CONTENTFUL_SPACE_ID,
+    token: CONTENTFUL_DELIVERY_API_TOKEN,
+  });
+  const data = await client.fetch<NavQuery>(printQuery(query));
   if (data) {
     const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
     const mainMenuChildren = mainMenu?.childrenCollection

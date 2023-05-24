@@ -1,59 +1,42 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
-import * as envVars from "$env/static/private";
-import contentfulFetch from "./fetch";
-
-vi.mock("$env/static/private");
-type EnvVarName = "CONTENTFUL_SPACE_ID" | "CONTENTFUL_DELIVERY_API_TOKEN";
-type EnvVars = Record<EnvVarName, string>;
-// This should be run at the top of each test case.
-// Otherwise the env vars will default to whatever you have in your .env file
-//   or the values from the previous test case (restoring mocks does not
-//   restore this.)
-const setEnvVars = (vars: EnvVars) => {
-  let key: keyof EnvVars;
-  for (key in vars) {
-    (envVars as EnvVars)[key] = vars[key];
-  }
-};
+import getClient, { type Client } from "./fetch";
 
 const query = "{ some { graphql { query } } }";
 
+const sampleData = Symbol("sample return value");
+
 global.fetch = vi.fn(async () =>
-  Promise.resolve({ ok: true, json: () => ({ data: true }) })
+  Promise.resolve({ ok: true, json: () => ({ data: sampleData }) })
 ) as Mock;
 
 describe("Contentful Fetch", () => {
-  afterEach(() => {
-    vi.clearAllMocks();
+  it("returns the same client if called with the same arguments", () => {
+    const client1 = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" });
+    const client2 = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" });
+    const client3 = getClient({ spaceID: "SPACE_ID", token: "DIFFERENT_TOKEN" });
+    expect(client1).toBe(client2);
+    expect(client2).not.toBe(client3);
   });
 
-  it("does not call Contentful API if env vars are not properly declared", async () => {
-    setEnvVars({
-      CONTENTFUL_SPACE_ID: "",
-      CONTENTFUL_DELIVERY_API_TOKEN: "",
-    });
-    const data = await contentfulFetch(query);
-    expect(fetch).not.toHaveBeenCalled();
-    expect(data).toBe(false);
-  });
+  describe("with an initialized client", () => {
+    let client: Client;
+    beforeEach(() => (client = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" })));
+    afterEach(() => vi.clearAllMocks());
 
-  it("calls Contentful API if env vars are properly declared", async () => {
-    setEnvVars({
-      CONTENTFUL_SPACE_ID: "SPACE_ID",
-      CONTENTFUL_DELIVERY_API_TOKEN: "API_TOKEN",
+    it("calls Contentful API if env vars are properly declared", async () => {
+      const data = await client.fetch(query);
+      expect(fetch).toHaveBeenCalledWith(
+        "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
+        {
+          body: `{"query":"${query}"}`,
+          headers: {
+            Authorization: "Bearer API_TOKEN",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+        }
+      );
+      expect(data).toBe(sampleData);
     });
-    const data = await contentfulFetch(query);
-    expect(fetch).toHaveBeenCalledWith(
-      "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
-      {
-        body: `{"query":"${query}"}`,
-        headers: {
-          Authorization: "Bearer API_TOKEN",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      }
-    );
-    expect(data).toBe(true);
   });
 });
