@@ -1,16 +1,108 @@
+<!DOCTYPE html>
 <html>
   <style>
     li {
       list-style-type: none;
     }
+    #pulls > ul {
+      padding: 0;
+    }
+    #pulls > ul > li {
+      margin-bottom: 20px;
+    }
+    #pulls > ul > li > h3 {
+      margin-bottom: 10px;
+    }
   </style>
   <body style="max-width: 600px">
-    <h1>LDAF Meta-Site PR Preview 🏗️</h1>
-    <p>This is a generated preview containing all reports for this branch:</p>
+    <h1 id="site-title">LDAF Meta-Site 🏗️</h1>
+    <h2 id="current-title">Reports for this Branch or Pull Request</h2>
+    <div id="current-pull-info"></div>
+    <p>The following are all the generated reports:</p>
     <ul>
       <li>📊 <a href="/unit-test-coverage">Unit Test Coverage Report</a></li>
       <li>🖥️ <a href="/e2e-test-report">End-to-End Test Report</a></li>
       <li>🧮 <a href="/bundle-visualizer">Bundle Visualizer</a></li>
     </ul>
+    <div id="main">
+      <h2>Main Branch</h2>
+      <p>
+        The production Meta-Site hosts all the reports for the <code>main</code> branch:
+        <a href="https://ldaf-meta.vercel.app/">ldaf-meta.vercel.app</a>
+      </p>
+    </div>
+    <h2>Open Pull Requests</h2>
+    <div id="pulls">Loading...</div>
   </body>
+  <script>
+    (async () => {
+      const siteTitleElement = document.getElementById("site-title");
+      const currentTitleElement = document.getElementById("current-title");
+      const currentPullInfo = document.getElementById("current-pull-info");
+      const mainContainer = document.getElementById("main");
+      const pullsContainer = document.getElementById("pulls");
+
+      // Determine whether we're looking at a PR or the main branch.
+      let current;
+      const { hostname } = window.location;
+      if (hostname === "ldaf-meta.vercel.app") {
+        // main branch, production deployment
+        current = "main";
+      } else {
+        const prRegex = /^meta-site-(\d+)-ldaf.vercel.app$/;
+        const prMatch = prRegex.exec(hostname);
+        if (prMatch && prMatch.length == 2) {
+          // PR, preview deployment
+          current = prMatch[1];
+        } // else not on a supported domain, `current` is undefined
+      }
+
+      if (current) {
+        if (current === "main") {
+          siteTitleElement.innerHTML = "LDAF Meta-Site 🏗️ <code>[Production]</code>";
+          currentTitleElement.innerHTML = "Reports for the Main Branch";
+          // Don't link to prod if we're on prod
+          mainContainer.remove();
+        } else {
+          siteTitleElement.innerHTML = "LDAF Meta-Site 🏗️ <code>[PR Preview]</code>";
+          currentTitleElement.innerHTML = `Reports for PR #${current}`;
+        }
+      }
+
+      try {
+        const response = await fetch(
+          "https://api.github.com/repos/la-ldaf/ldaf-site/pulls?state=open"
+        );
+        const data = await response.json();
+        let htmlString = "<ul class='prs'>";
+        for (let pr of data) {
+          const { html_url, number, title, user, draft } = pr;
+          if (current == number) {
+            // Give some more info on the current PR, at the top.
+            currentTitleElement.innerHTML = `<a href="${html_url}">PR #${number} - ${title}</a>`;
+            currentPullInfo.innerHTML = `
+              <span>✒️ by <a href="${user.html_url}">${user.login}</a></span>
+              <br/>
+              <span>${(draft && "📝 In Draft") || "👀 Ready for Review!"}</span>
+            `;
+            continue;
+          }
+          htmlString += `
+              <li>
+                <h3><a href="${html_url}">#${number} - ${title}</a></h3>
+                <span>✒️ by <a href="${user.html_url}">${user.login}</a></span>
+                <br/>
+                <span>${(draft && "📝 In Draft") || "👀 Ready for Review!"}</span>
+                <br/>
+                <span>🛠️ <a href="https://meta-site-${number}-ldaf.vercel.app">View reports</a>
+              </li>
+            `;
+        }
+        htmlString += "</ul>";
+        pullsContainer.innerHTML = htmlString;
+      } catch (error) {
+        pullsContainer.innerHTML = "Data could not be loaded; you may not be logged into GitHub.";
+      }
+    })();
+  </script>
 </html>

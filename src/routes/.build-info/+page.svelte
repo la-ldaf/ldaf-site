@@ -13,10 +13,10 @@
   const githubCommitUrl = `${githubBaseUrl}/commit/${VERCEL_GIT_COMMIT_SHA}`;
   const githubPullUrl = `${githubBaseUrl}/pull/${VERCEL_GIT_PULL_REQUEST_ID}`;
 
-  const githubPagesPullUrl = `https://${VERCEL_GIT_REPO_OWNER}.github.io/${VERCEL_GIT_REPO_SLUG}/pull/${VERCEL_GIT_PULL_REQUEST_ID}`;
-  const unitCoverageUrl = `${githubPagesPullUrl}/unit-test-coverage`;
-  const e2eReportUrl = `${githubPagesPullUrl}/e2e-test-report`;
-  const bundleVisualizerUrl = `${githubPagesPullUrl}/bundle-visualizer`;
+  const metaSiteUrl = `https://meta-site-${VERCEL_GIT_PULL_REQUEST_ID}-ldaf.vercel.app`;
+  const unitCoverageUrl = `${metaSiteUrl}/unit-test-coverage`;
+  const e2eReportUrl = `${metaSiteUrl}/e2e-test-report`;
+  const bundleVisualizerUrl = `${metaSiteUrl}/bundle-visualizer`;
 </script>
 
 <section class="usa-section">
@@ -28,6 +28,7 @@
         Could not output Vercel environment information.
       {/if}
     </p>
+
     <p>
       {#if VERCEL_GIT_REPO_OWNER && VERCEL_GIT_REPO_SLUG && VERCEL_GIT_COMMIT_SHA}
         Build commit SHA: <code>{VERCEL_GIT_COMMIT_SHA}</code>
@@ -37,18 +38,27 @@
         Could not output git information.
       {/if}
     </p>
-    <p>
-      {#if VERCEL_GIT_PULL_REQUEST_ID}
+
+    {#if VERCEL_GIT_PULL_REQUEST_ID}
+      <p>
         Link to PR in GitHub: <Link href={githubPullUrl}>{githubPullUrl}</Link>
-        <br />
-        Link to unit test coverage report: <Link href={unitCoverageUrl}>{unitCoverageUrl}</Link>
-        <br />
-        Link to end-to-end test report: <Link href={e2eReportUrl}>{e2eReportUrl}</Link>
-        <br />
-        Link to bundle visualizer: <Link href={bundleVisualizerUrl}>{bundleVisualizerUrl}</Link>
-      {:else}
-        This preview is not associated with a pull request.
-      {/if}
-    </p>
+      </p>
+      <p>
+        Link to meta-site for PR: <Link href={metaSiteUrl}>{metaSiteUrl}</Link>
+      </p>
+      <ul>
+        <li>
+          Link to unit test coverage report: <Link href={unitCoverageUrl}>{unitCoverageUrl}</Link>
+        </li>
+        <li>
+          Link to end-to-end test report: <Link href={e2eReportUrl}>{e2eReportUrl}</Link>
+        </li>
+        <li>
+          Link to bundle visualizer: <Link href={bundleVisualizerUrl}>{bundleVisualizerUrl}</Link>
+        </li>
+      </ul>
+    {:else}
+      <p>This preview is not associated with a pull request.</p>
+    {/if}
   </div>
 </section>
