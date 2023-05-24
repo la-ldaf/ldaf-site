@@ -194,7 +194,7 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_META_SITE_PROJECT_ID }}
       VERCEL_TOKEN: ${{secrets.VERCEL_META_SITE_DEPLOY_TOKEN }}
-      VERCEL_PREVIEW_URL: https://meta-site-${{ github.event.number }}-ldaf.vercel.app
+      VERCEL_PREVIEW_URL: meta-site-${{ github.event.number }}-ldaf.vercel.app
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -247,4 +247,4 @@ jobs:
           number: ${{ github.event.number }}
           id: vercel-deploy
           recreate: true
-          message: "Reports for ${{ github.event.after }} have been deployed to Vercel:\n\n* [unit test coverage report](${{ env.VERCEL_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [end-to-end test report](${{ env.VERCEL_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [bundle visualizer](${{ env.VERCEL_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})"
+          message: "Reports for ${{ github.event.after }} have been deployed to Vercel:\n\n* [unit test coverage report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [end-to-end test report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [bundle visualizer](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})"
