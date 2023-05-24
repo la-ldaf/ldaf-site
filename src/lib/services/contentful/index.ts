@@ -1,1 +1,1 @@
-export { default, type Client as ContentfulClient } from "./client";
+export { default, type Client as ContentfulClient } from "./graphqlClient";
