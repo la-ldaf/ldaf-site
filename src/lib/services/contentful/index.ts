@@ -1,1 +1,1 @@
-export { default, contentfulConnected } from "./fetch";
+export { default, type Client as ContentfulClient } from "./graphqlClient";
