@@ -24,8 +24,15 @@ export const load = async () => {
   });
   const data = await client.fetch<EntryQuery>(printQuery(query));
   if (data) {
-    return data?.testRichText?.body?.json;
+    const document = data?.testRichText?.body?.json as Document | undefined | null;
+    return {
+      query,
+      document: document || markdownDocument.document,
+    };
   } else {
-    return markdownDocument.document;
+    return {
+      query,
+      document: markdownDocument.document,
+    };
   }
-}
+};
