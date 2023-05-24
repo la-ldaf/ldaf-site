@@ -10,21 +10,16 @@ on:
       - "main"
 
 permissions:
-  # Allow us to commit to GitHub Pages
-  contents: write
+  contents: read
   # Allow us to write comments on PRs
   pull-requests: write
 
 env:
-  # For PRs, create a GitHub Pages subpath under pulls/
-  PR_PATH: pull/${{ github.event.number }}
-  # Otherwise we'll use main/
-  MAIN_PATH: main
-  # Names for report paths on GitHub Pages
+  # Names for report paths on Vercel Meta-Site
   UNIT_PATH: unit-test-coverage
   E2E_PATH: e2e-test-report
   BUNDLE_VISUALIZER_PATH: bundle-visualizer
-  # Alias this check so we can easily determine whether to post PR comments, deploy to Vercel production, etc.
+  # Just run this check once; used to determine whether to post PR comments, deploy to Vercel production, etc.
   IS_MAIN: ${{ github.ref == 'refs/heads/main' }}
 
 jobs:
@@ -128,65 +123,8 @@ jobs:
           path: bundle-visualizer
           retention-days: 1
 
-  deploy-reports-to-gh-pages:
-    name: "Deploy Reports to GitHub Pages"
-    # Wait for tests to complete before deploying.
-    needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer]
-    # We still want to upload reports regardless of whether tests failed.
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Create directory to collect reports
-        run: mkdir pr-reports
-
-      - name: Download unit test report artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
-          path: pr-reports/${{ env.UNIT_PATH }}
-
-      - name: Download end-to-end test report artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ github.event.after }}-${{ env.E2E_PATH }}
-          path: pr-reports/${{ env.E2E_PATH }}
-
-      - name: Download bundle visualizer artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
-          path: pr-reports/${{ env.BUNDLE_VISUALIZER_PATH }}
-
-      - name: Set GitHub Pages preview URL for reports (for commenting)
-        if: ${{ !fromJSON(env.IS_MAIN) }}
-        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}" >> $GITHUB_ENV
-
-      - name: Deploy reports to GitHub Pages preview URL
-        # https://github.com/marketplace/actions/github-pages-action
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./pr-reports
-          destination_dir: ${{ fromJSON(env.IS_MAIN) && env.MAIN_PATH || env.PR_PATH }}
-
-      - name: Report deployment success message to PR in comment
-        if: ${{ !fromJSON(env.IS_MAIN) }}
-        # https://github.com/marketplace/actions/comment-progress
-        uses: hasura/comment-progress@v2.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          number: ${{ github.event.number }}
-          id: gh-pages-deploy
-          recreate: true
-          message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/${{ env.UNIT_PATH }}), the [end-to-end test report](${{ env.PREVIEW_URL }}/${{ env.E2E_PATH }}), and the [bundle visualizer](${{ env.PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }}) once changes have propagated (this may take a few minutes)."
-
   deploy-reports-to-vercel-meta-site:
-    name: "Deploy Reports to Vercel Meta Site"
+    name: "Deploy Reports to Vercel Meta-Site"
     # Wait for tests to complete before deploying.
     needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer]
     # We still want to upload reports regardless of whether tests failed.
