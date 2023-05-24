@@ -36,6 +36,9 @@
       .querySelectorAll(".service-entry-CTA p > a")
       .forEach((linkEl) => linkEl.classList.add("usa-button"));
   });
+
+  const hasServiceEntries = childServiceEntries && childServiceEntries.length > 0;
+  const hasServiceGroups = childServiceGroups && childServiceGroups.length > 0;
 </script>
 
 {#if heroImage && heroImage?.imageSource?.url}
@@ -62,45 +65,47 @@
   />
 {/if}
 
-{#if childServiceEntries.length > 0 || childServiceGroups.length > 0}
+{#if hasServiceEntries || hasServiceGroups}
   <h2>{serviceListName}</h2>
 {/if}
 
-{#if childServiceEntries.length > 0}
-  <Accordion multiselectable bordered>
+{#if hasServiceEntries}
+  <Accordion multiselectable>
     {#each childServiceEntries as item}
-      <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-        <ContentfulRichText
-          document={item?.description?.json}
-          links={item?.description?.links}
-          blurhashes={item?.description?.blurhashes}
-        />
-        {#if item.serviceCtaCollection}
-          {#each item.serviceCtaCollection.items as ctaItem}
-            <span class="service-entry-CTA">
-              <ContentfulRichText
-                document={ctaItem?.callToActionDestination?.json}
-                links={ctaItem?.callToActionDestination?.links}
-              />
-            </span>
-          {/each}
-        {/if}
-
-        <!-- .filter is to make sure there aren't any null 
-             contact items(caused by contacts in a draft state) -->
-        {#if (item?.contactInformationCollection?.items?.filter((item) => !!item) || []).length > 0}
-          <ContactCard
-            address={undefined}
-            contacts={item.contactInformationCollection?.items}
-            class="margin-top-4"
+      {#if item?.entryTitle && item?.sys?.id && item?.description?.json}
+        <AccordionItem title={item?.entryTitle} id={item?.sys?.id}>
+          <ContentfulRichText
+            document={item?.description?.json}
+            links={item?.description?.links}
+            blurhashes={item?.description?.blurhashes}
           />
-        {/if}
-      </AccordionItem>
+          {#if item.serviceCtaCollection}
+            {#each item.serviceCtaCollection.items as ctaItem}
+              <span class="service-entry-CTA">
+                <ContentfulRichText
+                  document={ctaItem?.callToActionDestination?.json}
+                  links={ctaItem?.callToActionDestination?.links}
+                />
+              </span>
+            {/each}
+          {/if}
+
+          <!-- .filter is to make sure there aren't any null 
+             contact items(caused by contacts in a draft state) -->
+          {#if (item?.contactInformationCollection?.items?.filter((item) => !!item) || []).length > 0}
+            <ContactCard
+              address={undefined}
+              contacts={item.contactInformationCollection?.items}
+              class="margin-top-4"
+            />
+          {/if}
+        </AccordionItem>
+      {/if}
     {/each}
   </Accordion>
 {/if}
 
-{#if childServiceGroups.length > 0}
+{#if hasServiceGroups}
   <ul class="service-group-list">
     {#each childServiceGroups as item}
       <Card class="service-group-card">

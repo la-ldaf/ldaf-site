@@ -1,18 +1,21 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
-import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID } from "$env/static/private";
 import { day } from "$lib/constants/date";
-import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
 import type { EventQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
 
 const query = gql`
-  query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
+  query Event(
+    $dateStart: DateTime!
+    $dateEnd: DateTime!
+    $slug: String!
+    $preview: Boolean = false
+  ) {
     eventEntryCollection(
       limit: 1
       where: { eventDateAndTime_gte: $dateStart, eventDateAndTime_lt: $dateEnd, slug: $slug }
+      preview: $preview
     ) {
       items {
         sys {
@@ -60,9 +63,7 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params: { dateAndSlug }, parent }) => {
-  // TODO: think about timezones
-
+export const load = (async ({ params: { dateAndSlug }, parent, locals: { contentfulClient } }) => {
   // dateAndSlug should be constructed like 2023-08-10-some-slug
   const [_, dateString, slug] = dateAndSlug.match(/(\d{4}-\d{2}-\d{2})-([a-z1-9-]+)/) ?? [];
   if (!dateString || !slug) throw error(404);
@@ -70,18 +71,14 @@ export const load = (async ({ params: { dateAndSlug }, parent }) => {
   const dateStart = date.toISOString();
   const dateEnd = new Date(date.getTime() + 1 * day).toISOString();
   // TODO: example contents
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) throw error(404);
+  if (!contentfulClient) throw error(404);
   const baseBreadcrumbsPromise = loadBaseBreadcrumbs({ parent });
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
   const variables = {
     dateStart,
     dateEnd,
     slug,
   };
-  const eventDataPromise = client.fetch<EventQuery>(printQuery(query), {
+  const eventDataPromise = contentfulClient.fetch<EventQuery>(query, {
     variables,
   });
   const [baseBreadcrumbs, eventData] = await Promise.all([

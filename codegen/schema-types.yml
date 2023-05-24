@@ -1,0 +1,9 @@
+overwrite: true
+schema:
+  - src/lib/services/server/contentful/schema.graphql
+generates:
+  src/lib/services/server/contentful/schema.ts:
+    plugins:
+      - typescript
+    config:
+      defaultScalarType: "unknown"

@@ -16,7 +16,10 @@
   } from "./context";
   import type { SizeType } from "$lib/constants/images";
 
-  export let document: Document;
+  // We support "unknown" here because we always check if we've received a document type, and the
+  // type of the rich text JSON returned from Contentful (which is auto-generated based on the
+  // schema) is always "unknown"
+  export let document: Document | unknown;
 
   export let links: Links | undefined = undefined;
   $: pageMetadataMap = getContext<PageMetadataMap>(pageMetadataMapKey);
@@ -31,16 +34,16 @@
   export let imageSizeType: SizeType = "col-12";
   $: setContext<string>(imageSizeTypeKey, imageSizeType);
 
-  if (!isDocument(document)) {
+  $: doc = document as Document;
+  $: if (!isDocument(doc)) {
     throw error(500, {
       title: "We could not render this page.",
-      message: "Contentful connection failed and fallback document does not match expected format.",
+      message:
+        "Provided document was in the incorrect format. Contentful may have returned bad data, or the Contentful connection may have failed and the fallback data was bad.",
     });
   }
 </script>
 
-{#key document}
-  {#each document.content as subNode}
-    <Node node={subNode} />
-  {/each}
-{/key}
+{#each doc.content as subNode (subNode)}
+  <Node node={subNode} />
+{/each}

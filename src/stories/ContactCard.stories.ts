@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/svelte";
 
 import ContactCard from "$lib/components/ContactCard";
 
-import OfficePageTestContent from "../routes/(infoPages)/about/organization/[officePage]/__tests__/OfficePageTestContent";
+import officePageTestContent from "../routes/(infoPages)/about/organization/[officePage]/__tests__/officePageTestContent";
 
 const meta = {
   title: "Components/ContactCard",
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    address: OfficePageTestContent.mailingAddress,
-    contacts: OfficePageTestContent.contactsCollection.items,
+    address: officePageTestContent.mailingAddress,
+    contacts: officePageTestContent.contactsCollection.items,
   },
 };
