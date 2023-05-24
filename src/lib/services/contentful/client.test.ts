@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
-import getClient, { type Client } from "./fetch";
+import getClient, { type Client } from "./client";
 
 const query = "{ some { graphql { query } } }";
 

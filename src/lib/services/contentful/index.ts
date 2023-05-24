@@ -1,1 +1,1 @@
-export { default, type Client as ContentfulClient } from "./fetch";
+export { default, type Client as ContentfulClient } from "./client";
