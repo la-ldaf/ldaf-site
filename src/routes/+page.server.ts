@@ -1,4 +1,7 @@
 import contentful, { type ContentfulClientApi, type EntryFieldTypes } from "contentful";
+import { contentfulConnected } from "$lib/services/contentful";
+import homepageTestTitle from "$lib/components/ContentfulRichText/__tests__/documents/homepage-test-title.md.json";
+import homepageTestBody from "$lib/components/ContentfulRichText/__tests__/documents/homepage-test-body.md.json";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 
 type EntrySkeleton = {
@@ -8,16 +11,23 @@ type EntrySkeleton = {
 
 // TODO: refactor to a reusable helper function that wraps contenfulClient
 export async function load() {
-  const contentfulClient: ContentfulClientApi<undefined> = contentful.createClient({
-    space: CONTENTFUL_SPACE_ID,
-    accessToken: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
+  if (contentfulConnected()) {
+    const contentfulClient: ContentfulClientApi<undefined> = contentful.createClient({
+      space: CONTENTFUL_SPACE_ID,
+      accessToken: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
 
-  const title = await contentfulClient.getEntry<EntrySkeleton>("5k6saMkIV7PHFhNDxmZiIG");
-  const body = await contentfulClient.getEntry<EntrySkeleton>("1VCVunA3sIV5Ch1qGHEKZZ");
+    const title = await contentfulClient.getEntry<EntrySkeleton>("5k6saMkIV7PHFhNDxmZiIG");
+    const body = await contentfulClient.getEntry<EntrySkeleton>("1VCVunA3sIV5Ch1qGHEKZZ");
 
-  return {
-    title: title.fields.body,
-    body: body.fields.body,
-  };
+    return {
+      title: title.fields.body,
+      body: body.fields.body,
+    };
+  } else {
+    return {
+      title: homepageTestTitle,
+      body: homepageTestBody,
+    };
+  }
 }

@@ -2,7 +2,8 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 
 // Re-evaluate utils using env vars on each request to ensure tests can
 //   properly mock and overwrite them.
-const contentfulConnected = (): boolean => !!(CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
+export const contentfulConnected = (): boolean =>
+  !!(CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
 
 const graphApiUrl = (): string =>
   `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`;
