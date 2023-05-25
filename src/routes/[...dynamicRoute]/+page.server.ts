@@ -2,7 +2,6 @@ import type { PageServerLoad } from "./$types";
 import type { DraftNavigationLink } from "$lib/services/contentful/schema";
 
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
@@ -29,7 +28,7 @@ export const load = (async ({ params }): Promise<DraftNavigationLink> => {
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
-  const data = await client.fetch<StubQuery>(printQuery(query));
+  const data = await client.fetch<StubQuery>(query);
   if (data) {
     const navLinks = data?.draftNavigationLinkCollection?.items as DraftNavigationLink[];
     const matchedNavLink = navLinks.find((navLink) => navLink.link === dynamicRoute);
