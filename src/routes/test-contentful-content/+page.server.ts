@@ -37,8 +37,8 @@ export const load = async ({ url, cookies }) => {
   if (isPreview) {
     const accessToken = cookies.get("ldafUserToken");
     if (!accessToken) throw error(401, { message: "You must log in to preview content!" });
-    const managementClient = createManagementClient({ accessToken });
     try {
+      const managementClient = createManagementClient({ accessToken });
       await managementClient.getCurrentUser();
     } catch (err) {
       throw error(401, { message: "You must log in to preview content!" });
