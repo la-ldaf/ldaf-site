@@ -12,8 +12,8 @@ import type { NavLinkType, NavMenuType } from "./types";
 import type { MainNavQuery } from "./$queries.generated";
 
 const mainNavQuery = gql`
-  query MainNav {
-    draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
+  query MainNav($preview: Boolean = false) {
+    draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1, preview: $preview) {
       items {
         text
         childrenCollection {
