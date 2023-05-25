@@ -142,7 +142,7 @@ jobs:
         run: npm ci
 
       - name: Build Storybook
-        run: npm run build-storybook -- --docs
+        run: npm run build-storybook
 
       - name: Create artifact with built Storybook
         uses: actions/upload-artifact@v3
