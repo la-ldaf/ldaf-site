@@ -17,6 +17,7 @@
   const unitCoverageUrl = `${metaSiteUrl}/unit-test-coverage`;
   const e2eReportUrl = `${metaSiteUrl}/e2e-test-report`;
   const bundleVisualizerUrl = `${metaSiteUrl}/bundle-visualizer`;
+  const storybookUrl = `${metaSiteUrl}/storybook`;
 </script>
 
 <section class="usa-section">
@@ -55,6 +56,9 @@
         </li>
         <li>
           Link to bundle visualizer: <Link href={bundleVisualizerUrl}>{bundleVisualizerUrl}</Link>
+        </li>
+        <li>
+          Link to Storybok: <Link href={storybookUrl}>{storybookUrl}</Link>
         </li>
       </ul>
     {:else}
