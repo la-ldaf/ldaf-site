@@ -23,15 +23,16 @@ export const load = async () => {
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
   const data = await client.fetch<EntryQuery>(printQuery(query));
+  const { loc: _, ...sanitizedQuery } = query;
   if (data) {
     const document = data?.testRichText?.body?.json as Document | undefined | null;
     return {
-      query,
+      query: sanitizedQuery,
       document: document || markdownDocument.document,
     };
   } else {
     return {
-      query,
+      query: sanitizedQuery,
       document: markdownDocument.document,
     };
   }
