@@ -58,7 +58,7 @@
           Link to bundle visualizer: <Link href={bundleVisualizerUrl}>{bundleVisualizerUrl}</Link>
         </li>
         <li>
-          Link to Storybok: <Link href={storybookUrl}>{storybookUrl}</Link>
+          Link to Storybook: <Link href={storybookUrl}>{storybookUrl}</Link>
         </li>
       </ul>
     {:else}
