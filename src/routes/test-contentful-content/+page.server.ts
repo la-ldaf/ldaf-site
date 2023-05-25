@@ -17,12 +17,18 @@ const query = gql`
 `;
 
 export const load = async () => {
+  const { loc: _, ...sanitizedQuery } = query;
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+    return {
+      query: sanitizedQuery,
+      document: markdownDocument.document,
+    };
+  }
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
   const data = await client.fetch<EntryQuery>(query);
-  const { loc: _, ...sanitizedQuery } = query;
   if (data) {
     const document = data?.testRichText?.body?.json as Document | undefined | null;
     return {
