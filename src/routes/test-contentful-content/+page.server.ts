@@ -6,8 +6,8 @@ import type { Document } from "@contentful/rich-text-types";
 import type { EntryQuery } from "./$queries.generated";
 
 const query = gql`
-  query Entry {
-    testRichText(id: "V7ibT9I8Vg99iKsDgLhsK") {
+  query Entry($preview: Boolean = false) {
+    testRichText(id: "V7ibT9I8Vg99iKsDgLhsK", preview: $preview) {
       title
       body {
         json
