@@ -1,7 +1,4 @@
 <script lang="ts">
-  import type { NavItemType, NavLinkType } from "$lib/components/Header/Nav";
-  import type { SiteTitleType } from "$lib/components/Header/Title";
-
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
   import "../app.scss";
@@ -10,13 +7,10 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
+  import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
 
   export let data;
-  const {
-    navItems,
-    secondaryNavItems,
-    siteTitle,
-  }: { navItems: NavItemType[]; secondaryNavItems: NavLinkType[]; siteTitle: SiteTitleType } = data;
+  const { navItems, secondaryNavItems, siteTitle, previewAuthenticationError } = data;
 
   // Update the active nav item based on the current path.
   let activeNavItemIndex = -1;
@@ -36,15 +30,23 @@
   <Banner />
   <div class="usa-overlay" />
   <Header {navItems} {secondaryNavItems} {siteTitle} bind:navMenuExpanded />
-  <main id="main-content">
-    <slot />
-  </main>
-  <!-- TODO: reinstate <Footer /> once designed and implemented -->
-  <footer class="usa-footer padding-top-7 padding-bottom-1 text-center">
-    ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved
-  </footer>
-  <!-- TODO: reinstate <Identifier /> once designed and implemented -->
-  <!-- (or remove if encapsulated by footer) -->
+  {#if previewAuthenticationError}
+    <div class="usa-section usa-prose grid-container">
+      <h1>{previewAuthenticationError.code}</h1>
+      <p>{previewAuthenticationError.message}</p>
+      <p>(Do you need to <LoginLink>login</LoginLink>?)</p>
+    </div>
+  {:else}
+    <main id="main-content">
+      <slot />
+    </main>
+    <!-- TODO: reinstate <Footer /> once designed and implemented -->
+    <footer class="usa-footer padding-top-7 padding-bottom-1 text-center">
+      ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved
+    </footer>
+    <!-- TODO: reinstate <Identifier /> once designed and implemented -->
+    <!-- (or remove if encapsulated by footer) -->
+  {/if}
 </RootIntersectionObserver>
 
 <BlurhashRenderer />
