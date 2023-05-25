@@ -23,6 +23,7 @@
         on:click={(e) => {
           e.preventDefault();
           localStorage?.removeItem("ldaf-user");
+          document.cookie = "ldafUserToken=;";
           user?.set(undefined);
         }}>Logout</a
       ></span
