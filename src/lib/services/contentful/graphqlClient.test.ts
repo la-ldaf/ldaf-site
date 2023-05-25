@@ -1,7 +1,14 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
+import gql from "graphql-tag";
 import getClient, { type Client } from "./graphqlClient";
 
-const query = "{ some { graphql { query } } }";
+const query = gql`
+  query Test {
+    testRichText(id: "test") {
+      title
+    }
+  }
+`;
 
 const sampleData = Symbol("sample return value");
 
