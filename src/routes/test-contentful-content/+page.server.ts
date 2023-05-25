@@ -1,5 +1,4 @@
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
@@ -22,7 +21,7 @@ export const load = async () => {
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
-  const data = await client.fetch<EntryQuery>(printQuery(query));
+  const data = await client.fetch<EntryQuery>(query);
   const { loc: _, ...sanitizedQuery } = query;
   if (data) {
     const document = data?.testRichText?.body?.json as Document | undefined | null;
