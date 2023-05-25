@@ -124,6 +124,7 @@ jobs:
           retention-days: 1
 
   deploy-reports-to-vercel-meta-site:
+    # Guide: https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
     name: "Deploy Reports to Vercel Meta-Site"
     # Wait for tests to complete before deploying.
     needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer]
@@ -174,6 +175,7 @@ jobs:
 
       - name: Deploy to Vercel preview
         if: ${{ !fromJSON(env.IS_MAIN) }}
+        # Guide: https://vercel.com/guides/how-to-alias-a-preview-deployment-using-the-cli
         run: |
           url="$(vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}})"
           vercel alias --cwd .meta --scope ldaf --token=${{env.VERCEL_TOKEN}} set "$url" ${{env.VERCEL_PREVIEW_URL}}
