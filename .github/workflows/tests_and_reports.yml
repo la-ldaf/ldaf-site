@@ -125,7 +125,7 @@ jobs:
           retention-days: 1
 
   storybook:
-    name: "Storybook"
+    name: "Build Storybook"
     runs-on: "ubuntu-latest"
     timeout-minutes: 60
     steps:
@@ -142,7 +142,7 @@ jobs:
         run: npm ci
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: npm run build-storybook -- --docs
 
       - name: Create artifact with built Storybook
         uses: actions/upload-artifact@v3
@@ -228,4 +228,4 @@ jobs:
           number: ${{ github.event.number }}
           id: vercel-deploy
           recreate: true
-          message: "Reports for ${{ github.event.after }} have been [deployed to Vercel](https://${{env.VERCEL_PREVIEW_URL}}):\n\n* [unit test coverage report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [end-to-end test report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [bundle visualizer](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})\n* [Storybook](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.STORYBOOK_PATH }})"
+          message: "Reports for ${{ github.event.after }} have been [deployed to Vercel](https://${{env.VERCEL_PREVIEW_URL}}):\n\n* [Unit Test Coverage Report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [End-to-End Test Report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [Bundle Visualizer](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})\n* [Storybook](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.STORYBOOK_PATH }})"
