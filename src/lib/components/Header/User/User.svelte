@@ -10,7 +10,7 @@
 
   $: loginLink = `https://be.contentful.com/oauth/authorize?response_type=token&client_id=${PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI
-  )}&scope=content_management_manage&state=${encodeURIComponent(
+  )}&scope=content_management_read&state=${encodeURIComponent(
     $page.url.pathname + $page.url.search + $page.url.hash
   )}`;
 </script>
