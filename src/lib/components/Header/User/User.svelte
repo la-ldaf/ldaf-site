@@ -23,7 +23,7 @@
   };
   $: loginLink = `${baseURL}?${Object.entries(loginParams)
     .map(([key, value]) => `${key}=${value}`)
-    .join("&")}}`;
+    .join("&")}`;
 </script>
 
 <div class="user">
