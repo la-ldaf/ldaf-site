@@ -12,5 +12,7 @@ generates:
       fileName: $queries
       extension: .generated.d.ts
       baseTypesPath: lib/services/contentful/schema.ts
+    config:
+      defaultScalarType: "unknown"
     plugins:
       - typescript-operations

@@ -10,3 +10,5 @@ generates:
   src/lib/services/contentful/schema.ts:
     plugins:
       - typescript
+    config:
+      defaultScalarType: "unknown"
