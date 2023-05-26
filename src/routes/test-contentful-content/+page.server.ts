@@ -39,7 +39,8 @@ export const load = async ({ url, cookies }) => {
     if (!accessToken) throw error(401, { message: "You must log in to preview content!" });
     try {
       const managementClient = createManagementClient({ accessToken });
-      await managementClient.getCurrentUser();
+      const { activated } = await managementClient.getCurrentUser();
+      if (!activated) throw new Error();
     } catch (err) {
       throw error(401, { message: "You must log in to preview content!" });
     }
