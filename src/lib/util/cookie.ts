@@ -3,7 +3,8 @@ export const getCookieEntries = (): [string, string][] =>
     .split(";")
     .map((entry) => entry.split("=").map((keyOrVal) => keyOrVal.trim()) as [string, string]);
 export const getCookieMap = () => new Map(getCookieEntries());
-export const getCookie = (key: string) => getCookieMap().get(encodeURIComponent(key));
+export const getCookie = (key: string) =>
+  decodeURIComponent(getCookieMap().get(encodeURIComponent(key)));
 
 export type CookieOptions = {
   path?: "/";
