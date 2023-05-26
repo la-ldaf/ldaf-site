@@ -26,7 +26,6 @@
     user?.set({
       email,
       name: `${firstName} ${lastName}`,
-      token: accessToken,
       avatarURL: avatarUrl,
     });
 
