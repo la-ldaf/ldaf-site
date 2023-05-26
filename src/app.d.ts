@@ -9,6 +9,10 @@ declare global {
     interface Locals {
       preview?: boolean;
       contentfulToken?: string;
+      previewAuthenticationError?: {
+        code: number;
+        message: string;
+      };
     }
     // interface PageData {}
     // interface Platform {}
