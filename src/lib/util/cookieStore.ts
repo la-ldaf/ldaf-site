@@ -6,13 +6,13 @@ export default (key: string, options: CookieOptions): Writable<string | undefine
   if (!browser) throw new Error("cookieStore must be initialized in the browser");
   const cookieMap = getCookieMap();
   const storedValue = cookieMap.get(key);
-  console.log({ storedValue });
   const store = writable<string | undefined>(storedValue ?? undefined);
   store.subscribe((newValue) => {
-    console.log({ newValue });
     if (newValue) {
+      console.log("setting cookie", newValue);
       setCookie(key, newValue, options);
     } else {
+      console.log("deleting cookie");
       deleteCookie(key);
     }
   });

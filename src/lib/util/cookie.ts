@@ -3,8 +3,11 @@ export const getCookieEntries = (): [string, string][] =>
     .split(";")
     .map((entry) => entry.split("=").map((keyOrVal) => keyOrVal.trim()) as [string, string]);
 export const getCookieMap = () => new Map(getCookieEntries());
-export const getCookie = (key: string) =>
-  decodeURIComponent(getCookieMap().get(encodeURIComponent(key)));
+export const getCookie = (key: string): string | undefined => {
+  const val = getCookieMap().get(encodeURIComponent(key));
+  if (!val) return;
+  return decodeURIComponent(val);
+};
 
 export type CookieOptions = {
   path?: "/";
@@ -12,7 +15,6 @@ export type CookieOptions = {
 };
 
 export const setCookie = (key: string, val: string, options: CookieOptions = {}) => {
-  console.log({ key, val });
   const { path, maxAge } = {
     path: "/",
     maxAge: 100,
@@ -20,10 +22,12 @@ export const setCookie = (key: string, val: string, options: CookieOptions = {})
   };
   document.cookie = [
     `${encodeURIComponent(key)}=${encodeURIComponent(val)}`,
-    "Secure",
+    "secure",
+    "samesite=lax",
     `path=${path}`,
     `max-age=${maxAge}`,
   ].join("; ");
 };
 
-export const deleteCookie = (key: string) => (document.cookie = `${key}=;`);
+export const deleteCookie = (key: string) =>
+  (document.cookie = `${key}=; max-age=0; path=/; domain=`);
