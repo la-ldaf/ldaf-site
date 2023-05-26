@@ -5,8 +5,8 @@
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI,
   } from "$env/static/public";
   import { page } from "$app/stores";
-  import userToken from "$lib/stores/userToken";
   import userInfo from "$lib/stores/userInfo";
+  import logout from "$lib/actions/logout";
 
   $: loginLink = `https://be.contentful.com/oauth/authorize?response_type=token&client_id=${PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI
@@ -19,15 +19,7 @@
   {#if $userInfo}
     <span
       >Welcome, {$userInfo.name}!
-      <a
-        href="#"
-        on:click={(e) => {
-          e.preventDefault();
-          localStorage?.removeItem("ldaf-user");
-          document.cookie = "ldafUserToken=;";
-          userToken?.set(undefined);
-        }}>Logout</a
-      ></span
+      <a href="#" on:click={logout}>Logout</a></span
     >
   {:else}
     <a class="login-link" href={loginLink}>Login</a>
