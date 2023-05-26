@@ -33,6 +33,7 @@ export const load = async ({ fetch, url, cookies }) => {
   }
 
   const preview = url.searchParams.has("preview");
+  const previewAccessToken = preview && cookies.get("ldafUserToken");
 
   if (preview) {
     const accessToken = cookies.get("ldafUserToken");
@@ -48,7 +49,7 @@ export const load = async ({ fetch, url, cookies }) => {
 
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
-    token: preview ? CONTENTFUL_PREVIEW_API_TOKEN : CONTENTFUL_DELIVERY_API_TOKEN,
+    token: previewAccessToken ? previewAccessToken : CONTENTFUL_DELIVERY_API_TOKEN,
     preview,
     fetch,
   });
