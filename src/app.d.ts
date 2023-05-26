@@ -6,7 +6,10 @@ declare global {
       // `message` is included by default
       title?: string;
     }
-    // interface Locals {}
+    interface Locals {
+      preview?: boolean;
+      contentfulToken?: string;
+    }
     // interface PageData {}
     // interface Platform {}
   }

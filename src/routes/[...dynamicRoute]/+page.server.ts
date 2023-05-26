@@ -3,7 +3,7 @@ import type { DraftNavigationLink } from "$lib/services/contentful/schema";
 
 import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import { CONTENTFUL_SPACE_ID } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import type { StubQuery } from "./$queries.generated";
 
@@ -22,19 +22,26 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ fetch, params }): Promise<DraftNavigationLink> => {
+export const load = (async ({
+  fetch,
+  params,
+  locals: { contentfulToken, preview },
+}): Promise<{ text: string }> => {
+  // TODO: create fallback fixture
+  if (!CONTENTFUL_SPACE_ID || !contentfulToken) throw error(404);
   const dynamicRoute = `/${params.dynamicRoute}`;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
+    token: contentfulToken,
+    preview,
     fetch,
   });
   const data = await client.fetch<StubQuery>(query);
   if (data) {
     const navLinks = data?.draftNavigationLinkCollection?.items as DraftNavigationLink[];
     const matchedNavLink = navLinks.find((navLink) => navLink.link === dynamicRoute);
-    if (matchedNavLink) {
-      return matchedNavLink;
+    if (matchedNavLink && matchedNavLink.text) {
+      return { text: matchedNavLink.text };
     }
   }
   throw error(404);

@@ -5,8 +5,8 @@ import { deleteCookie, getCookieMap, setCookie, type CookieOptions } from "./coo
 export default (key: string, options: CookieOptions): Writable<string | undefined> => {
   if (!browser) throw new Error("cookieStore must be initialized in the browser");
   const cookieMap = getCookieMap();
-  const storedValue = cookieMap.get(key);
-  const store = writable<string | undefined>(storedValue ?? undefined);
+  const storedValue = cookieMap.get(key) ?? undefined;
+  const store = writable<string | undefined>(storedValue);
   store.subscribe((newValue) => {
     if (newValue) {
       console.log("setting cookie", newValue);

@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import { CONTENTFUL_SPACE_ID } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
@@ -42,11 +42,18 @@ const mainNavQuery = gql`
   }
 `;
 
-export const loadMainNav = async ({ fetch }: { fetch: typeof global.fetch }) => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return mainNavTestContent;
+export const loadMainNav = async ({
+  fetch,
+  locals: { contentfulToken, preview },
+}: {
+  fetch: typeof global.fetch;
+  locals: App.Locals;
+}) => {
+  if (!CONTENTFUL_SPACE_ID || !contentfulToken) return mainNavTestContent;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
+    token: contentfulToken,
+    preview,
     fetch,
   });
   const data = await client.fetch<MainNavQuery>(mainNavQuery);
