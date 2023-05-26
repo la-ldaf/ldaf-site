@@ -23,7 +23,7 @@ const query = gql`
   }
 `;
 
-export const load = async ({ url, cookies }) => {
+export const load = async ({ fetch, url, cookies }) => {
   const { loc: _, ...sanitizedQuery } = query;
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
     return {
@@ -32,9 +32,9 @@ export const load = async ({ url, cookies }) => {
     };
   }
 
-  const isPreview = url.searchParams.has("preview");
+  const preview = url.searchParams.has("preview");
 
-  if (isPreview) {
+  if (preview) {
     const accessToken = cookies.get("ldafUserToken");
     if (!accessToken) throw error(401, { message: "You must log in to preview content!" });
     try {
@@ -46,17 +46,12 @@ export const load = async ({ url, cookies }) => {
     }
   }
 
-  const clientOptions = {
+  const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
-  };
-
-  const client = isPreview
-    ? getContentfulClient({
-        ...clientOptions,
-        token: CONTENTFUL_PREVIEW_API_TOKEN,
-        preview: true,
-      })
-    : getContentfulClient({ ...clientOptions, token: CONTENTFUL_DELIVERY_API_TOKEN });
+    token: preview ? CONTENTFUL_PREVIEW_API_TOKEN : CONTENTFUL_DELIVERY_API_TOKEN,
+    preview,
+    fetch,
+  });
 
   const data = await client.fetch<EntryQuery>(query);
   if (data) {

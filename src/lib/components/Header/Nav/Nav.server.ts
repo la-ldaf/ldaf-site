@@ -42,11 +42,12 @@ const mainNavQuery = gql`
   }
 `;
 
-export const loadMainNav = async () => {
+export const loadMainNav = async ({ fetch }: { fetch: typeof global.fetch }) => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return mainNavTestContent;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
+    fetch,
   });
   const data = await client.fetch<MainNavQuery>(mainNavQuery);
   const mainMenu = data.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;

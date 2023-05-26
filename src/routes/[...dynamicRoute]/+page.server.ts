@@ -22,11 +22,12 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params }): Promise<DraftNavigationLink> => {
+export const load = (async ({ fetch, params }): Promise<DraftNavigationLink> => {
   const dynamicRoute = `/${params.dynamicRoute}`;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
+    fetch,
   });
   const data = await client.fetch<StubQuery>(query);
   if (data) {

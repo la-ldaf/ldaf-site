@@ -13,6 +13,7 @@ type ClientOptions = {
   token: Token;
   apiPrefix?: APIPrefix;
   preview?: Preview;
+  fetch?: typeof global.fetch;
 };
 
 const delim = "#" as const;
@@ -85,6 +86,7 @@ const getClient = ({
   token,
   apiPrefix = defaultAPIPrefix,
   preview = false,
+  fetch = global.fetch,
 }: ClientOptions): Client => {
   if (!spaceID) throw new Error("no space ID provided!");
   if (!token) throw new Error("no token provided!");
