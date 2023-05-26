@@ -23,8 +23,9 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --zip",
     "bundle-visualizer": "npm run prebuild && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html",
-    "gen-schema": "graphql-codegen --config codegen-schema.yml --require dotenv/config",
-    "gen-operations": "graphql-codegen --config codegen-operations.yml"
+    "gen-schema": "graphql-codegen --config codegen/schema.yml --require dotenv/config && npm run gen-schema-types",
+    "gen-schema-types": "graphql-codegen --config codegen/schema-types.yml",
+    "gen-operations-types": "graphql-codegen --config codegen/operations.yml"
   },
   "devDependencies": {
     "@contentful/rich-text-from-markdown": "^15.16.5",
