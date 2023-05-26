@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import managementClient from "$lib/stores/managementClient";
+  import userToken from "$lib/stores/userToken";
   import userInfo from "$lib/stores/userInfo";
   import parseHashQuery from "$lib/util/parseHashQuery";
   import timeout from "$lib/util/timeout";
@@ -17,10 +17,7 @@
     if (!accessToken) return goto("/", { replaceState: true });
     redirect = encodedRedirect && decodeURIComponent(encodedRedirect);
 
-    const { createClient: createManagementClient } = await import("contentful-management");
-
-    managementClient?.set(createManagementClient({ accessToken }));
-    if (!$managementClient) return goto("/", { replaceState: true });
+    userToken?.set(accessToken);
 
     if (redirect) {
       await timeout(2500);
