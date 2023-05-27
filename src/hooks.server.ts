@@ -69,7 +69,7 @@ const handleToken = (async ({ event, resolve }) => {
 
 const handleCSP = (async ({ event, resolve }) => {
   event.setHeaders({
-    "content-security-policy": "frame-ancestor 'self' https://app.contentful.com",
+    "Content-Security-Policy": "frame-ancestors 'self' https://app.contentful.com",
   });
   return resolve(event);
 }) satisfies Handle;
