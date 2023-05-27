@@ -16,7 +16,7 @@ export type CookieOptions = {
 };
 
 export const setCookie = (key: string, val: string, options: CookieOptions = {}) => {
-  const { path, maxAge } = {
+  const { path, maxAge, sameSite } = {
     path: "/",
     sameSite: "lax",
     maxAge: 100,
