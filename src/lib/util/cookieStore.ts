@@ -9,10 +9,8 @@ export default (key: string, options: CookieOptions): Writable<string | undefine
   const store = writable<string | undefined>(storedValue);
   store.subscribe((newValue) => {
     if (newValue) {
-      console.log("setting cookie", newValue);
       setCookie(key, newValue, options);
     } else {
-      console.log("deleting cookie");
       deleteCookie(key);
     }
   });
