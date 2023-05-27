@@ -47,13 +47,16 @@ const handleToken = (async ({ event, resolve }) => {
   );
 
   if (response.status === 401) {
-    event.locals.previewAuthenticationError = { code: 401, message: "Failed to authenticate" };
+    event.locals.previewAuthenticationError = {
+      code: 401,
+      message: "Failed to authenticate\n${await response.text()}",
+    };
     return resolve(event);
   }
   if (!response.ok) {
     event.locals.previewAuthenticationError = {
       code: 500,
-      message: `${response.status} error calling content service`,
+      message: `${response.status} error calling content service:\n${await response.text()}`,
     };
     return resolve(event);
   }

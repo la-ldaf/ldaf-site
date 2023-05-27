@@ -9,7 +9,6 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
-  import { error } from "@sveltejs/kit";
   import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
 
   export let data;
