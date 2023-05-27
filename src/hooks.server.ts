@@ -49,7 +49,7 @@ const handleToken = (async ({ event, resolve }) => {
   if (response.status === 401) {
     event.locals.previewAuthenticationError = {
       code: 401,
-      message: "Failed to authenticate\n${await response.text()}",
+      message: `Failed to authenticate\n${await response.text()}`,
     };
     return resolve(event);
   }
