@@ -67,4 +67,11 @@ const handleToken = (async ({ event, resolve }) => {
   return resolve(event);
 }) satisfies Handle;
 
-export const handle = sequence(handlePreload, handleToken);
+const handleCSP = (async ({ event, resolve }) => {
+  event.setHeaders({
+    "content-security-policy": "frame-ancestor 'self' https://app.contentful.com",
+  });
+  return resolve(event);
+}) satisfies Handle;
+
+export const handle = sequence(handlePreload, handleToken, handleCSP);
