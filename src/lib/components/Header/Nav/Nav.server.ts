@@ -8,7 +8,7 @@ import type {
   DraftNavigationMenu,
   DraftNavigationMenuChildrenItem,
 } from "$lib/services/contentful/schema";
-import type { NavLinkType, NavMenuType } from "./types";
+import type { NavItemType, NavLinkType, NavMenuType } from "./types";
 import type { MainNavQuery } from "./$queries.generated";
 
 const mainNavQuery = gql`
@@ -48,7 +48,7 @@ export const loadMainNav = async ({
 }: {
   fetch: typeof global.fetch;
   locals: App.Locals;
-}) => {
+}): Promise<NavMenuType[]> => {
   if (!CONTENTFUL_SPACE_ID || !contentfulToken) return mainNavTestContent;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,

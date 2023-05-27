@@ -1,7 +1,4 @@
 <script lang="ts">
-  import type { NavItemType, NavLinkType } from "$lib/components/Header/Nav";
-  import type { SiteTitleType } from "$lib/components/Header/Title";
-
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
   import "../app.scss";
@@ -12,13 +9,10 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
+  import { error } from "@sveltejs/kit";
 
   export let data;
-  const {
-    navItems,
-    secondaryNavItems,
-    siteTitle,
-  }: { navItems: NavItemType[]; secondaryNavItems: NavLinkType[]; siteTitle: SiteTitleType } = data;
+  const { navItems, secondaryNavItems, siteTitle, previewAuthenticationError } = data;
 
   // Update the active nav item based on the current path.
   let activeNavItemIndex = -1;
@@ -31,6 +25,10 @@
 
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
+
+  $: if (previewAuthenticationError) {
+    throw error(previewAuthenticationError.code, { message: previewAuthenticationError.message });
+  }
 </script>
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
@@ -38,9 +36,17 @@
   <Banner />
   <div class="usa-overlay" />
   <Header {navItems} {secondaryNavItems} {siteTitle} bind:navMenuExpanded />
-  <main id="main-content">
-    <slot />
-  </main>
+  {#if previewAuthenticationError}
+    <div class="usa-section usa-prose grid-container">
+      <h1>{previewAuthenticationError.code}</h1>
+      <p>{previewAuthenticationError.message}</p>
+      <p>(Do you need to <LoginLink>login</LoginLink>?)</p>
+    </div>
+  {:else}
+    <main id="main-content">
+      <slot />
+    </main>
+  {/if}
   <Footer />
   <Identifier />
 </RootIntersectionObserver>

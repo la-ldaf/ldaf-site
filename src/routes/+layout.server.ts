@@ -6,11 +6,8 @@ export const load = async (options) => {
   const {
     locals: { previewAuthenticationError },
   } = options;
-  if (previewAuthenticationError) {
-    const { code, message } = previewAuthenticationError;
-    /* throw error(code, { message }); */
-  }
   return {
+    previewAuthenticationError,
     siteTitle: loadSiteTitle(),
     secondaryNavItems: loadSecondaryNav(),
     navItems: await loadMainNav(options),
