@@ -5,6 +5,7 @@
   } from "$env/static/public";
   import { page } from "$app/stores";
 
+  const baseURL = "https://be.contentful.com/oauth/authorize";
   $: loginParams = {
     response_type: "token",
     scope: "content_management_read",
