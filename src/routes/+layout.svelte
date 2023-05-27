@@ -26,10 +26,6 @@
 
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
-
-  $: if (previewAuthenticationError) {
-    throw error(previewAuthenticationError.code, { message: previewAuthenticationError.message });
-  }
 </script>
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
