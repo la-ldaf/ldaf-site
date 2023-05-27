@@ -26,7 +26,6 @@ export const setCookie = (key: string, val: string, options: CookieOptions = {})
     `${encodeURIComponent(key)}=${encodeURIComponent(val)}`,
     "secure",
     `samesite=${sameSite}`,
-    "samesite=lax",
     `path=${path}`,
     `max-age=${maxAge}`,
   ].join("; ");
