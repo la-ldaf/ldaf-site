@@ -8,7 +8,7 @@ export const load = async (options) => {
   } = options;
   if (previewAuthenticationError) {
     const { code, message } = previewAuthenticationError;
-    throw error(code, { message });
+    /* throw error(code, { message }); */
   }
   return {
     siteTitle: loadSiteTitle(),
