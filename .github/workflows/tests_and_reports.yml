@@ -10,20 +10,17 @@ on:
       - "main"
 
 permissions:
-  # Allow us to commit to GitHub Pages
-  contents: write
+  contents: read
   # Allow us to write comments on PRs
   pull-requests: write
 
 env:
-  # For PRs, create a GitHub Pages subpath under pulls/
-  PR_PATH: pull/${{ github.event.number }}
-  # Otherwise we'll use main/
-  MAIN_PATH: main
-  # Names for report paths on GitHub Pages
+  # Names for report paths on Vercel Meta-Site
   UNIT_PATH: unit-test-coverage
   E2E_PATH: e2e-test-report
   BUNDLE_VISUALIZER_PATH: bundle-visualizer
+  # Just run this check once; used to determine whether to post PR comments, deploy to Vercel production, etc.
+  IS_MAIN: ${{ github.ref == 'refs/heads/main' }}
 
 jobs:
   lint-and-unit-tests:
@@ -52,7 +49,7 @@ jobs:
         run: npm run test:unit:coverage
 
       - name: Report code coverage to PR in comment
-        if: github.ref != 'refs/heads/main'
+        if: ${{ !fromJSON(env.IS_MAIN) }}
         # https://github.com/marketplace/actions/code-coverage-report
         # Use a hash instead of version to support delete-old-comments field:
         # https://github.com/romeovs/lcov-reporter-action/issues/47#issuecomment-1362606540
@@ -126,59 +123,75 @@ jobs:
           path: bundle-visualizer
           retention-days: 1
 
-  deploy-reports-to-gh-pages:
-    name: "Deploy Reports to GitHub Pages"
+  deploy-reports-to-vercel-meta-site:
+    # Guide: https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
+    name: "Deploy Reports to Vercel Meta-Site"
     # Wait for tests to complete before deploying.
     needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer]
     # We still want to upload reports regardless of whether tests failed.
     if: ${{ always() }}
     runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_META_SITE_PROJECT_ID }}
+      VERCEL_TOKEN: ${{secrets.VERCEL_META_SITE_DEPLOY_TOKEN }}
+      VERCEL_PREVIEW_URL: meta-site-${{ github.event.number }}-ldaf.vercel.app
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Create directory to collect reports
-        run: mkdir pr-reports
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Setup Vercel to build and deploy
+        run: vercel pull --yes --cwd .meta --environment=${{ fromJSON(env.IS_MAIN) && 'production' || 'preview' }} --token=${{env.VERCEL_TOKEN}}
 
       - name: Download unit test report artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
-          path: pr-reports/${{ env.UNIT_PATH }}
+          path: .meta/${{ env.UNIT_PATH }}
 
       - name: Download end-to-end test report artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
-          path: pr-reports/${{ env.E2E_PATH }}
+          path: .meta/${{ env.E2E_PATH }}
 
       - name: Download bundle visualizer artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
-          path: pr-reports/${{ env.BUNDLE_VISUALIZER_PATH }}
+          path: .meta/${{ env.BUNDLE_VISUALIZER_PATH }}
 
-      - name: Set GitHub Pages preview URL for reports (for commenting)
-        if: github.ref != 'refs/heads/main'
-        run: echo "PREVIEW_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ env.PR_PATH}}" >> $GITHUB_ENV
+      - name: Build for Vercel
+        run: vercel build --cwd .meta --token=${{env.VERCEL_TOKEN}} ${{ fromJSON(env.IS_MAIN) && '--prod'}}
 
-      - name: Deploy reports to GitHub Pages preview URL
-        # https://github.com/marketplace/actions/github-pages-action
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./pr-reports
-          destination_dir: ${{ github.ref == 'refs/heads/main' && env.MAIN_PATH || env.PR_PATH }}
+      - name: Deploy to Vercel preview
+        if: ${{ !fromJSON(env.IS_MAIN) }}
+        # Guide: https://vercel.com/guides/how-to-alias-a-preview-deployment-using-the-cli
+        run: |
+          url="$(vercel deploy --cwd .meta --prebuilt --token=${{env.VERCEL_TOKEN}})"
+          vercel alias --cwd .meta --scope ldaf --token=${{env.VERCEL_TOKEN}} set "$url" ${{env.VERCEL_PREVIEW_URL}}
+
+      - name: Deploy to Vercel production
+        if: ${{ fromJSON(env.IS_MAIN) }}
+        run: vercel deploy --cwd .meta --prebuilt --prod --token=${{env.VERCEL_TOKEN}}
 
       - name: Report deployment success message to PR in comment
-        if: github.ref != 'refs/heads/main'
+        if: ${{ !fromJSON(env.IS_MAIN) }}
         # https://github.com/marketplace/actions/comment-progress
         uses: hasura/comment-progress@v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
-          id: gh-pages-deploy
+          id: vercel-deploy
           recreate: true
-          message: "Reports for unit and end-to-end tests of ${{ github.event.after }} have been committed to the [`gh-pages` branch](https://github.com/${{ github.repository }}/tree/gh-pages/${{ env.PR_PATH }}).\n\nYou can view the [unit test coverage report](${{ env.PREVIEW_URL }}/${{ env.UNIT_PATH }}), the [end-to-end test report](${{ env.PREVIEW_URL }}/${{ env.E2E_PATH }}), and the [bundle visualizer](${{ env.PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }}) once changes have propagated (this may take a few minutes)."
+          message: "Reports for ${{ github.event.after }} have been [deployed to Vercel](https://${{env.VERCEL_PREVIEW_URL}}):\n\n* [unit test coverage report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [end-to-end test report](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [bundle visualizer](https://${{ env.VERCEL_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})"
