@@ -200,7 +200,7 @@ jobs:
 
   # Handle Storybook separately since it takes much longer to build and deploy.
   storybook:
-    name: "Build and deploy Storybook"
+    name: "Build and Deploy Storybook"
     runs-on: "ubuntu-latest"
     timeout-minutes: 60
     env:
