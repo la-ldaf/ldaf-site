@@ -14,10 +14,9 @@ const query = `
 `;
 
 export async function load(): Promise<Document> {
-  const response = await contentfulFetch(query);
-  if (response && response.ok) {
-    const { data } = await response.json();
-    return data.testRichText.body.json;
+  const data = await contentfulFetch(query);
+  if (data) {
+    return data?.testRichText?.body?.json;
   } else {
     return markdownDocument.document;
   }
