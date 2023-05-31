@@ -77,7 +77,7 @@
       }
 
       function scoreToHTML(label, score) {
-        return `${label}: <code style="color: ${scoreToColor(score)};">${score}</code>`;
+        return `${label}: <code style="color: ${scoreToColor(score)};">${score * 100}</code>`;
       }
 
       // https://developer.chrome.com/en/docs/lighthouse/performance/performance-scoring/#color-coding
