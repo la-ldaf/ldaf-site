@@ -154,7 +154,10 @@ jobs:
           npm run build
           npm run preview &
           sleep 5
-          lighthouse-batch --use-global --html --no-report --out lighthouse-reports/ --file .lighthouse/urls.txt
+          lighthouse-batch --use-global --html --out lighthouse-reports/ --file .lighthouse/urls.txt
+
+      - name: Copy landing page for reports summary
+        run: cp .lighthouse/index.html lighthouse-reports/index.html
 
       - name: Create artifact with Lighthouse reports
         uses: actions/upload-artifact@v3
