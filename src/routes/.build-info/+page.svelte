@@ -17,7 +17,7 @@
   const unitCoverageUrl = `${metaSiteUrl}/unit-test-coverage`;
   const e2eReportUrl = `${metaSiteUrl}/e2e-test-report`;
   const bundleVisualizerUrl = `${metaSiteUrl}/bundle-visualizer`;
-  const storybookUrl = `${metaSiteUrl}/storybook`;
+  const storybookUrl = `https://storybook-${VERCEL_GIT_PULL_REQUEST_ID}-ldaf.vercel.app`;
 </script>
 
 <section class="usa-section">
