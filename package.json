@@ -51,7 +51,7 @@
     "@vitest/coverage-c8": "^0.31.1",
     "autoprefixer": "^10.4.7",
     "blurhash": "^2.0.5",
-    "chromatic": "^6.17.4",
+    "chromatic": "^6.18.0",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-storybook": "^0.6.12",
