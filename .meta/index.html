@@ -19,11 +19,10 @@
     <h2 id="current-title">Reports for this Branch or Pull Request</h2>
     <div id="current-pull-info"></div>
     <p>The following are all the generated reports:</p>
-    <ul>
+    <ul id="current-reports-list">
       <li>📊 <a href="/unit-test-coverage">Unit Test Coverage Report</a></li>
       <li>🖥️ <a href="/e2e-test-report">End-to-End Test Report</a></li>
       <li>🧮 <a href="/bundle-visualizer">Bundle Visualizer</a></li>
-      <li>📖 <a href="/storybook">Storybook</a></li>
     </ul>
     <div id="main">
       <h2>Main Branch</h2>
@@ -39,7 +38,8 @@
     (async () => {
       const siteTitleElement = document.getElementById("site-title");
       const currentTitleElement = document.getElementById("current-title");
-      const currentPullInfo = document.getElementById("current-pull-info");
+      const currentPullInfoElement = document.getElementById("current-pull-info");
+      const currentReportsListElement = document.getElementById("current-reports-list");
       const mainContainer = document.getElementById("main");
       const pullsContainer = document.getElementById("pulls");
 
@@ -59,14 +59,20 @@
       }
 
       if (current) {
+        const storybookListItem = document.createElement("li");
         if (current === "main") {
           siteTitleElement.innerHTML = "LDAF Meta-Site 🏗️ <code>[Production]</code>";
           currentTitleElement.innerHTML = "Reports for the Main Branch";
+          storybookListItem.innerHTML =
+            '📖 <a href="https://ldaf-storybook.vercel.app/">Storybook</a>';
+          currentReportsListElement.appendChild(storybookListItem);
           // Don't link to prod if we're on prod
           mainContainer.remove();
         } else {
           siteTitleElement.innerHTML = "LDAF Meta-Site 🏗️ <code>[PR Preview]</code>";
           currentTitleElement.innerHTML = `Reports for PR #${current}`;
+          storybookListItem.innerHTML = `📖 <a href="https://storybook-${current}-ldaf.vercel.app">Storybook</a>`;
+          currentReportsListElement.appendChild(storybookListItem);
         }
       }
 
@@ -81,7 +87,7 @@
           if (current == number) {
             // Give some more info on the current PR, at the top.
             currentTitleElement.innerHTML = `<a href="${html_url}">PR #${number} - ${title}</a>`;
-            currentPullInfo.innerHTML = `
+            currentPullInfoElement.innerHTML = `
               <span>✒️ by <a href="${user.html_url}">${user.login}</a></span>
               <br/>
               <span>${(draft && "📝 In Draft") || "👀 Ready for Review!"}</span>
