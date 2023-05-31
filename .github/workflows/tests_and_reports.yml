@@ -154,7 +154,7 @@ jobs:
           npm run build
           npm run preview &
           sleep 5
-          lighthouse-batch --use-global --html --out lighthouse-reports/ --file .lighthouse/urls.txt
+          lighthouse-batch --use-global --html --out lighthouse-reports/ --file .lighthouse/urls.txt --params "--config-path=.lighthouse/config.js"
 
       - name: Copy landing page for reports summary
         run: cp .lighthouse/index.html lighthouse-reports/index.html
