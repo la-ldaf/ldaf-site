@@ -6,9 +6,7 @@
   import { page } from "$app/stores";
   import "../app.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
-  import Footer from "$lib/components/landingPage/Footer.svelte";
   import Header from "$lib/components/Header";
-  import Identifier from "$lib/components/landingPage/Identifier.svelte";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
@@ -41,8 +39,12 @@
   <main id="main-content">
     <slot />
   </main>
-  <Footer />
-  <Identifier />
+  <!-- TODO: reinstate <Footer /> once designed and implemented -->
+  <footer class="usa-footer padding-top-7 padding-bottom-1 text-center">
+    ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved
+  </footer>
+  <!-- TODO: reinstate <Identifier /> once designed and implemented -->
+  <!-- (or remove if encapsulated by footer) -->
 </RootIntersectionObserver>
 
 <BlurhashRenderer />

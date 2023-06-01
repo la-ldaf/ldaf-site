@@ -1,1 +1,1 @@
-export { default } from "./fetch";
+export { default, contentfulConnected } from "./fetch";
