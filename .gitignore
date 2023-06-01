@@ -15,6 +15,7 @@ build-storybook.log
 /e2e-tests/report
 /e2e-tests/results
 /bundle-visualizer
+/lighthouse-reports
 
 # generated test files
 *.md.html

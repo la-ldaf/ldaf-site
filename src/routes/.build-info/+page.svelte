@@ -17,6 +17,7 @@
   const unitCoverageUrl = `${metaSiteUrl}/unit-test-coverage`;
   const e2eReportUrl = `${metaSiteUrl}/e2e-test-report`;
   const bundleVisualizerUrl = `${metaSiteUrl}/bundle-visualizer`;
+  const lighthouseUrl = `${metaSiteUrl}/lighthouse`;
   const storybookUrl = `https://storybook-${VERCEL_GIT_PULL_REQUEST_ID}-ldaf.vercel.app`;
 </script>
 
@@ -56,6 +57,9 @@
         </li>
         <li>
           Link to bundle visualizer: <Link href={bundleVisualizerUrl}>{bundleVisualizerUrl}</Link>
+        </li>
+        <li>
+          Link to Lighthouse reports: <Link href={lighthouseUrl}>{lighthouseUrl}</Link>
         </li>
         <li>
           Link to Storybook: <Link href={storybookUrl}>{storybookUrl}</Link>

@@ -22,6 +22,7 @@ env:
   UNIT_PATH: unit-test-coverage
   E2E_PATH: e2e-test-report
   BUNDLE_VISUALIZER_PATH: bundle-visualizer
+  LIGHTHOUSE_PATH: lighthouse
   # Just run this check once; used to determine whether to post PR comments, deploy to Vercel production, etc.
   IS_MAIN: ${{ github.ref == 'refs/heads/main' }}
 
@@ -126,11 +127,51 @@ jobs:
           path: bundle-visualizer
           retention-days: 1
 
+  lighthouse:
+    name: "Lighthouse"
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install
+        run: |
+          npm ci
+          npm i -g lighthouse lighthouse-batch
+
+      - name: Generate Lighthouse reports
+        run: |
+          npm run build
+          npm run preview &
+          sleep 5
+          lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\""
+          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --preset=desktop"
+
+      - name: Copy landing page for reports summary
+        run: cp .lighthouse/index.html lighthouse-reports/index.html
+
+      - name: Create artifact with Lighthouse reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
+          path: lighthouse-reports
+          retention-days: 1
+
   deploy-reports-to-vercel-meta-site:
     # Guide: https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
     name: "Deploy Reports to Vercel Meta-Site"
     # Wait for tests to complete before deploying.
-    needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer]
+    needs: [lint-and-unit-tests, end-to-end-tests, bundle-visualizer, lighthouse]
     # We still want to upload reports regardless of whether tests failed.
     if: ${{ always() }}
     runs-on: ubuntu-latest
@@ -172,6 +213,12 @@ jobs:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
           path: .meta/${{ env.BUNDLE_VISUALIZER_PATH }}
 
+      - name: Download Lighthouse report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
+          path: .meta/${{ env.LIGHTHOUSE_PATH }}
+
       - name: Build for Vercel
         run: vercel build --cwd .meta --token=${{env.VERCEL_TOKEN}} ${{ fromJSON(env.IS_MAIN) && '--prod'}}
 
@@ -196,7 +243,7 @@ jobs:
           number: ${{ github.event.number }}
           id: vercel-deploy
           recreate: true
-          message: "Reports for ${{ github.event.after }} have been [deployed to Vercel](https://${{env.VERCEL_META_PREVIEW_URL}}):\n\n* [Unit Test Coverage Report](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [End-to-End Test Report](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [Bundle Visualizer](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})\n* [Storybook](https://${{ env.VERCEL_STORYBOOK_PREVIEW_URL }})"
+          message: "Reports for ${{ github.event.after }} have been [deployed to Vercel](https://${{env.VERCEL_META_PREVIEW_URL}}):\n\n* [Unit Test Coverage Report](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.UNIT_PATH }})\n* [End-to-End Test Report](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.E2E_PATH }})\n* [Bundle Visualizer](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.BUNDLE_VISUALIZER_PATH }})\n* [Lighthouse Reports](https://${{ env.VERCEL_META_PREVIEW_URL }}/${{ env.LIGHTHOUSE_PATH }})\n* [Storybook](https://${{ env.VERCEL_STORYBOOK_PREVIEW_URL }})"
 
   # Handle Storybook separately since it takes much longer to build and deploy.
   storybook:

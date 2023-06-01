@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        max-width: 600px;
+        background-color: #212121;
+        color: #fff;
+        font-family: sans-serif;
+      }
+      a {
+        color: lightskyblue;
+      }
+      a:visited {
+        color: #6d4b8d;
+      }
+      a:hover {
+        color: #fff;
+      }
+      ul {
+        padding: 0;
+      }
+      li {
+        list-style-type: none;
+      }
+      #route {
+        font-size: 22px;
+        margin-bottom: 5px;
+      }
+      #overall-score {
+        margin-top: 0px;
+        margin-bottom: 5px;
+      }
+      #overall-score code {
+        font-size: 20px;
+      }
+      #individual-scores {
+        margin-left: 20px;
+        line-height: 1.5;
+      }
+      #individual-scores code {
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>⛵️ Lighthouse Reports</h1>
+    <div id="mobile-reports"></div>
+    <div id="desktop-reports"></div>
+  </body>
+  <script>
+    (async () => {
+      // Unfortunately there's not a good way to run both desktop and mobile audits all at once.
+      const reportRuns = [
+        {
+          dir: "mobile",
+          title: "📱 Mobile Reports",
+          element: document.getElementById("mobile-reports"),
+        },
+        {
+          dir: "desktop",
+          title: "🖥️ Desktop Reports",
+          element: document.getElementById("desktop-reports"),
+        },
+      ];
+      for (let { dir, title, element } of reportRuns) {
+        const reportsResp = await fetch(`./${dir}/summary.json`);
+        let htmlString = `<h2>${title}</h2>`;
+        if (reportsResp.ok) {
+          const reports = await reportsResp.json();
+          htmlString += `<ul>`;
+          for (let report of reports) {
+            const { name, html, score, detail } = report;
+            // Transform name into something more readable.
+            const route = name.replace("localhost_4173", "").replace("_", "/");
+            const { performance, accessibility, "best-practices": bestPractices, seo } = detail;
+            htmlString += `
+          <li>
+            <h3 id="route"><code><a href="./${dir}/${html}">${route}</a></code></h2>
+            <h4 id="overall-score">${scoreToHTML("Overall Score", score)}</h3>
+            <div id="individual-scores">
+              ${scoreToHTML("Performance", performance)}<br/>
+              ${scoreToHTML("Accessibility", accessibility)}<br/>
+              ${scoreToHTML("Best Practices", bestPractices)}<br/>
+              ${scoreToHTML("SEO", seo)}
+            </div>
+          </li>
+        `;
+          }
+          htmlString += "</ul>";
+          element.innerHTML = htmlString;
+        } else {
+          htmlString += "<p>Failed to fetch report summary.</p>";
+          element.innerHTML = htmlString;
+        }
+      }
+
+      function scoreToHTML(label, score) {
+        return `${label}: <code style="color: ${scoreToColor(score)};">${score * 100}</code>`;
+      }
+
+      // https://developer.chrome.com/en/docs/lighthouse/performance/performance-scoring/#color-coding
+      function scoreToColor(score) {
+        if (score < 0.5) {
+          return "#f33";
+        } else if (score > 0.89) {
+          return "#0c6";
+        } else {
+          return "#fa3";
+        }
+      }
+    })();
+  </script>
+</html>
