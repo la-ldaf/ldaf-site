@@ -1,6 +1,5 @@
 <script lang="ts">
   import Link from "$lib/components/Link";
-  import type { Maybe } from "$lib/services/contentful/schema";
   import type SideNavItemType from "./SideNavItemType";
 
   export let id: string,
