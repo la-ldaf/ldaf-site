@@ -24,7 +24,7 @@
         list-style-type: none;
       }
       #route {
-        font-size: 28px;
+        font-size: 22px;
         margin-bottom: 5px;
       }
       #overall-score {
@@ -45,22 +45,39 @@
   </head>
   <body>
     <h1>⛵️ Lighthouse Reports</h1>
-    <div id="reports"></div>
+    <div id="mobile-reports"></div>
+    <div id="desktop-reports"></div>
   </body>
   <script>
     (async () => {
-      const reportsElement = document.getElementById("reports");
-      const reportsResp = await fetch("./summary.json");
-      if (reportsResp.ok) {
-        const reports = await reportsResp.json();
-        let htmlString = "<ul>";
-        for (let report of reports) {
-          const { name, html, score, detail } = report;
-          const { performance, accessibility, "best-practices": bestPractices, seo } = detail;
-          htmlString += `
+      // Unfortunately there's not a good way to run both desktop and mobile audits all at once.
+      const reportRuns = [
+        {
+          dir: "mobile",
+          title: "📱 Mobile Reports",
+          element: document.getElementById("mobile-reports"),
+        },
+        {
+          dir: "desktop",
+          title: "🖥️ Desktop Reports",
+          element: document.getElementById("desktop-reports"),
+        },
+      ];
+      for (let { dir, title, element } of reportRuns) {
+        const reportsResp = await fetch(`./${dir}/summary.json`);
+        let htmlString = `<h2>${title}</h2>`;
+        if (reportsResp.ok) {
+          const reports = await reportsResp.json();
+          htmlString += `<ul>`;
+          for (let report of reports) {
+            const { name, html, score, detail } = report;
+            // Transform name into something more readable.
+            const route = name.replace("localhost_4173", "").replace("_", "/");
+            const { performance, accessibility, "best-practices": bestPractices, seo } = detail;
+            htmlString += `
           <li>
-            <h2 id="route"><code><a href="./${html}">${name}</a></code></h2>
-            <h3 id="overall-score">${scoreToHTML("Overall Score", score)}</h3>
+            <h3 id="route"><code><a href="./${dir}/${html}">${route}</a></code></h2>
+            <h4 id="overall-score">${scoreToHTML("Overall Score", score)}</h3>
             <div id="individual-scores">
               ${scoreToHTML("Performance", performance)}<br/>
               ${scoreToHTML("Accessibility", accessibility)}<br/>
@@ -69,11 +86,13 @@
             </div>
           </li>
         `;
+          }
+          htmlString += "</ul>";
+          element.innerHTML = htmlString;
+        } else {
+          htmlString += "<p>Failed to fetch report summary.</p>";
+          element.innerHTML = htmlString;
         }
-        htmlString += "</ul>";
-        reportsElement.innerHTML = htmlString;
-      } else {
-        reportsElement.innerHTML = "Failed to fetch report summary.";
       }
 
       function scoreToHTML(label, score) {
