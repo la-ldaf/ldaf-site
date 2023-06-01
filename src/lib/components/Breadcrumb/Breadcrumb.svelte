@@ -1,3 +1,5 @@
+<!-- This is essentially a stubbed component for use on the Office Page. -->
+<!-- TODO: https://ldaf.atlassian.net/browse/LDAF-293 -->
 <script lang="ts">
   import Link from "$lib/components/Link";
   export let path: {

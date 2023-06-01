@@ -19,7 +19,30 @@
     />
     <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3">
-        <SideNav />
+        <SideNav
+          tree={[
+            { id: "0", title: "SideNav Link", link: "/", isCurrent: false },
+            {
+              id: "1",
+              title: "SideNav Link",
+              link: "/",
+              isCurrent: false,
+              children: [
+                { id: "0", title: "Child Link", link: "/", isCurrent: false },
+                { id: "1", title: "Child Link", link: "/", isCurrent: false },
+                { id: "2", title: "Child Link", link: "/", isCurrent: false },
+                { id: "3", title: "Child Link", link: "/", isCurrent: false },
+                { id: "4", title: "Child Link", link: "/", isCurrent: false },
+                { id: "5", title: officePageTitle || "", link: "/", isCurrent: true },
+              ],
+            },
+            { id: "2", title: "SideNav Link", link: "/", isCurrent: false },
+            { id: "3", title: "SideNav Link", link: "/", isCurrent: false },
+            { id: "4", title: "SideNav Link", link: "/", isCurrent: false },
+            { id: "5", title: "SideNav Link", link: "/", isCurrent: false },
+            { id: "6", title: "SideNav Link", link: "/", isCurrent: false },
+          ]}
+        />
       </div>
       <main class="desktop:grid-col-9 usa-prose" id="main-content">
         <h1>{officePageTitle}</h1>
