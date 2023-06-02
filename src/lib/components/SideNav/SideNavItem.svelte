@@ -2,8 +2,7 @@
   import Link from "$lib/components/Link";
   import type SideNavItemType from "./SideNavItemType";
 
-  export let id: string,
-    title: string,
+  export let title: string,
     link: string,
     isCurrent: boolean,
     children: SideNavItemType[] | undefined = undefined;
@@ -13,7 +12,7 @@
   <Link class={isCurrent ? "usa-current" : ""} href={link}>{title}</Link>
   {#if children}
     <ul class="usa-sidenav__sublist">
-      {#each children as child}
+      {#each children as { id, ...child } (id)}
         <svelte:self {...child} />
       {/each}
     </ul>

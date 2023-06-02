@@ -9,7 +9,7 @@
 <nav aria-label="Side navigation">
   <p><strong>In this section</strong></p>
   <ul class="usa-sidenav">
-    {#each tree as leaf}
+    {#each tree as { id, ...leaf } (id)}
       <SideNavItem {...leaf} />
     {/each}
   </ul>
