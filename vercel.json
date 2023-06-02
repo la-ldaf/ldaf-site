@@ -8,7 +8,7 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "content-security-policy",
+          "key": "Content-Security-Policy",
           "value": "frame-ancestors 'self' https://app.contentful.com"
         }
       ]

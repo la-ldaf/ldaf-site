@@ -12,22 +12,22 @@ export const getCookie = (key: string): string | undefined => {
 export type CookieOptions = {
   path?: string;
   maxAge?: number;
-  sameSite?: string;
+  sameSite?: "None" | "Lax";
 };
 
 export const setCookie = (key: string, val: string, options: CookieOptions = {}) => {
   const { path, maxAge, sameSite } = {
     path: "/",
-    sameSite: "lax",
+    sameSite: "Lax",
     maxAge: 100,
     ...options,
-  };
+  } as const;
   document.cookie = [
     `${encodeURIComponent(key)}=${encodeURIComponent(val)}`,
-    "secure",
-    `samesite=${sameSite}`,
-    `path=${path}`,
-    `max-age=${maxAge}`,
+    `Path=${path}`,
+    `Max-Age=${maxAge}`,
+    `SameSite=${sameSite}`,
+    "Secure",
   ].join("; ");
 };
 
