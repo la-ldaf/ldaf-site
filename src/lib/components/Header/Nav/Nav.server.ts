@@ -1,6 +1,4 @@
 import gql from "graphql-tag";
-import { CONTENTFUL_SPACE_ID } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
 import type {
@@ -8,7 +6,7 @@ import type {
   DraftNavigationMenu,
   DraftNavigationMenuChildrenItem,
 } from "$lib/services/contentful/schema";
-import type { NavItemType, NavLinkType, NavMenuType } from "./types";
+import type { NavLinkType, NavMenuType } from "./types";
 import type { MainNavQuery } from "./$queries.generated";
 
 const mainNavQuery = gql`
@@ -43,20 +41,12 @@ const mainNavQuery = gql`
 `;
 
 export const loadMainNav = async ({
-  fetch,
-  locals: { contentfulToken, preview },
+  locals: { contentfulClient },
 }: {
-  fetch: typeof global.fetch;
   locals: App.Locals;
 }): Promise<NavMenuType[]> => {
-  if (!CONTENTFUL_SPACE_ID || !contentfulToken) return mainNavTestContent;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: contentfulToken,
-    preview,
-    fetch,
-  });
-  const data = await client.fetch<MainNavQuery>(mainNavQuery);
+  if (!contentfulClient) return mainNavTestContent;
+  const data = await contentfulClient.fetch<MainNavQuery>(mainNavQuery);
   const mainMenu = data.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
   const mainMenuChildren = mainMenu?.childrenCollection?.items as DraftNavigationMenuChildrenItem[];
   // Convert DraftNavigationMenuChildrenItem[] to NavItem[]

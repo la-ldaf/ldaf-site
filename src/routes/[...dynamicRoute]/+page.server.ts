@@ -3,8 +3,6 @@ import type { DraftNavigationLink } from "$lib/services/contentful/schema";
 
 import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
-import { CONTENTFUL_SPACE_ID } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import type { StubQuery } from "./$queries.generated";
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
@@ -23,20 +21,13 @@ const query = gql`
 `;
 
 export const load = (async ({
-  fetch,
   params,
-  locals: { contentfulToken, preview },
+  locals: { contentfulClient },
 }): Promise<{ text: string }> => {
   // TODO: create fallback fixture
-  if (!CONTENTFUL_SPACE_ID || !contentfulToken) throw error(404);
+  if (!contentfulClient) throw error(404);
   const dynamicRoute = `/${params.dynamicRoute}`;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: contentfulToken,
-    preview,
-    fetch,
-  });
-  const data = await client.fetch<StubQuery>(query);
+  const data = await contentfulClient.fetch<StubQuery>(query);
   if (data) {
     const navLinks = data?.draftNavigationLinkCollection?.items as DraftNavigationLink[];
     const matchedNavLink = navLinks.find((navLink) => navLink.link === dynamicRoute);

@@ -17,9 +17,10 @@ const query = gql`
   }
 `;
 
-export const load = async ({ locals: { preview, contentfulToken }, fetch }) => {
+export const load = async ({ locals: { contentfulClient } }) => {
   const { loc: _, ...sanitizedQuery } = query;
-  if (!CONTENTFUL_SPACE_ID || !contentfulToken) {
+
+  if (!contentfulClient) {
     return {
       query: sanitizedQuery,
       title: "Test Document",
@@ -27,14 +28,7 @@ export const load = async ({ locals: { preview, contentfulToken }, fetch }) => {
     };
   }
 
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: contentfulToken,
-    preview,
-    fetch,
-  });
-
-  const data = await client.fetch<EntryQuery>(query);
+  const data = await contentfulClient.fetch<EntryQuery>(query);
 
   const { testRichText } = data;
   if (!testRichText) throw error(500, { message: "Failed to load entry" });

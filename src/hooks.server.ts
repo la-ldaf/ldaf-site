@@ -6,6 +6,7 @@ import {
 } from "$env/static/private";
 import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
+import getContentfulClient from "$lib/services/contentful";
 
 const handlePreload = (async ({ event, resolve }) =>
   resolve(event, {
@@ -20,8 +21,15 @@ const handleToken = (async ({ event, resolve }) => {
 
   const preview = event.url.searchParams.has("preview");
   if (!preview) {
-    event.locals.contentfulToken = CONTENTFUL_DELIVERY_API_TOKEN;
-    event.locals.preview = false;
+    event.locals.contentfulClient =
+      CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN
+        ? getContentfulClient({
+            spaceID: CONTENTFUL_SPACE_ID,
+            token: CONTENTFUL_DELIVERY_API_TOKEN,
+            preview: false,
+            fetch: event.fetch,
+          })
+        : undefined;
     return resolve(event);
   }
 
@@ -61,8 +69,15 @@ const handleToken = (async ({ event, resolve }) => {
     return resolve(event);
   }
 
-  event.locals.contentfulToken = CONTENTFUL_PREVIEW_API_TOKEN;
-  event.locals.preview = true;
+  event.locals.contentfulClient =
+    CONTENTFUL_SPACE_ID && CONTENTFUL_PREVIEW_API_TOKEN
+      ? getContentfulClient({
+          spaceID: CONTENTFUL_SPACE_ID,
+          token: CONTENTFUL_PREVIEW_API_TOKEN,
+          preview: true,
+          fetch: event.fetch,
+        })
+      : undefined;
 
   return resolve(event);
 }) satisfies Handle;

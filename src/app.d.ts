@@ -1,4 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import { ContentfulClient } from "./lib/services/contentful";
+
 // for information about these interfaces
 declare global {
   namespace App {
@@ -7,12 +10,11 @@ declare global {
       title?: string;
     }
     interface Locals {
-      preview?: boolean;
-      contentfulToken?: string;
       previewAuthenticationError?: {
         code: number;
         message: string;
       };
+      contentfulClient?: ContentfulClient;
     }
     // interface PageData {}
     // interface Platform {}
