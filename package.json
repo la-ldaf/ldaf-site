@@ -30,6 +30,7 @@
     "@contentful/rich-text-from-markdown": "^15.16.6",
     "@contentful/rich-text-html-renderer": "^16.0.5",
     "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/near-operation-file-preset": "^2.5.0",
     "@graphql-codegen/schema-ast": "^4.0.0",
     "@graphql-codegen/typescript": "^4.0.0",
     "@graphql-codegen/typescript-operations": "^4.0.0",
