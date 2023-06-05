@@ -1,61 +1,70 @@
 <script>
+  import "./search-page.scss";
   import { onMount } from "svelte";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
-  import { hits, searchBox, stats, refinementList, pagination } from "instantsearch.js/es/widgets";
-  import { hitTemplate } from "./searchHelpers";
+  import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
+  import { searchHitsTemplate } from "./searchHelpers";
 
-  import { ALGOLIA_APP_ID, ALGOLIA_API_KEY } from "$env/static/private";
-  const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+  const ALGOLIA_APP_ID = "9IIDYROXZ5";
+  const ALGOLIA_API_KEY = "0eac885faaa4c70dfc9dd8b6ab4ab10f";
 
   onMount(() => {
     const search = instantsearch({
-      appId: ALGOLIA_APP_ID,
-      apiKey: ALGOLIA_API_KEY,
-      searchClient: client,
-      indexName: "demo_media",
-      configure: {
+      indexName: "media-sample-data",
+      searchClient: algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY),
+    });
+    search.addWidgets([
+      configure({
         hitsPerPage: 3,
         attributesToSnippet: ["content:14"],
         snippetEllipsisText: " [...]",
-      },
-    });
-    search.addWidgets([
+      }),
       hits({
-        container: "#hits",
+        container: ".hits",
         templates: {
           empty: "No results found.",
           item(hit) {
-            return hitTemplate(hit);
+            return searchHitsTemplate(hit);
           },
         },
       }),
       searchBox({
-        container: "#searchbox",
+        container: ".searchbox",
         placeholder: "Search articles",
         autofocus: false,
+        cssClasses: {
+          // root: // the root element of the widget.
+          form: "usa-search", // the form element.
+          input: "usa-input", // the input element.
+          // reset: // the reset button element.
+          // resetIcon: // the reset button icon.
+          // loadingIndicator: // the loading indicator element.
+          // loadingIcon: // the loading indicator icon.
+          submit: "usa-button usa-search__submit", // the submit button element.
+          submitIcon: "usa-search__submit-icon", // the submit button icon.
+        },
       }),
       stats({
-        container: "#stats",
+        container: ".stats",
         templates: {
-          body(hit, { html }) {
-            return html` <span role="img" aria-label="emoji">⚡️</span>
-              <strong> ${hit.nbHits} </strong> results found
-              ${hit.query != "" ? `for <strong>"${hit.query}"</strong>` : ``} in
-              <strong>${hit.processingTimeMS}ms</strong>`;
+          text(data, { html }) {
+            let count = "";
+
+            if (data.hasManyResults) {
+              count += `${data.nbHits} results`;
+            } else if (data.hasOneResult) {
+              count += `1 result`;
+            } else {
+              count += `No result`;
+            }
+
+            return html`<strong>${count}${data.query ? ` for "${data.query}"` : ""}</strong>`;
           },
         },
       }),
-      // refinementList({
-      //   container: "#categories",
-      //   attribute: "categories",
-      //   // autoHideContainer: false,
-      //   templates: {
-      //     header: "Categories",
-      //   },
-      // }),
       pagination({
-        container: "#pagination",
+        container: ".pagination",
         showFirst: false,
         showLast: false,
         cssClasses: {
@@ -80,18 +89,12 @@
     ]);
     search.start();
   });
-
-  export let data;
+  // export let data;
 </script>
 
-{#if data}
-  <!-- <div class="left-panel">
-    <div id="categories" />
-  </div> -->
-  <div class="search-results">
-    <div id="searchbox" />
-    <div id="stats" />
-    <div id="hits" />
-    <div id="pagination" />
-  </div>
-{/if}
+<div class="search-results">
+  <div class="searchbox" />
+  <div class="stats" />
+  <div class="hits" />
+  <div class="pagination" />
+</div>
