@@ -18,3 +18,6 @@ src/lib/services/contentful/schema.graphql
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# generated type files
+*.generated.*

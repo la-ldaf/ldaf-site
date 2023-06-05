@@ -20,3 +20,6 @@ build-storybook.log
 # generated test files
 *.md.html
 *.md.json
+
+# generated files
+*.generated.*
