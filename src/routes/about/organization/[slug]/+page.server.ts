@@ -4,6 +4,7 @@ import { print as printQuery } from "graphql";
 
 import contentfulFetch from "$lib/services/contentful";
 import type { OfficePage } from "$lib/services/contentful/schema";
+import type { OfficePageQuery } from "./$queries.generated";
 
 const query = gql`
   query OfficePage {
@@ -41,7 +42,7 @@ const query = gql`
 
 export async function load({ params }): Promise<OfficePage> {
   const { slug } = params;
-  const data = await contentfulFetch(printQuery(query));
+  const data = await contentfulFetch<OfficePageQuery>(printQuery(query));
   if (data) {
     const officePages = data?.officePageCollection?.items as OfficePage[];
     const matchedOfficePage = officePages.find((officePage) => officePage.metadata?.slug === slug);
