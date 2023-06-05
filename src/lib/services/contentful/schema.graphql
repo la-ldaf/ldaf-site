@@ -93,6 +93,7 @@ type AssetLinkingCollections {
   documentWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): DocumentWrapperCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   heroImageCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): HeroImageCollection
+  imageWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ImageWrapperCollection
   testRichTextCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): TestRichTextCollection
 }
 
@@ -554,6 +555,8 @@ type CategoryLinkingCollections {
   categoryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): CategoryCollection
   documentWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): DocumentWrapperCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  eventEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryCollection
+  imageWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ImageWrapperCollection
   serviceEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryCollection
 }
 
@@ -842,6 +845,7 @@ input DocumentWrapperFilter {
 
 type DocumentWrapperLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  eventEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryCollection
   serviceEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryCollection
 }
 
@@ -1007,6 +1011,116 @@ input EntryFilter {
 }
 
 enum EntryOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry)
+"""
+type EventEntry implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  eventCategoryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryEventCategoryCollection
+  eventDateAndTime(locale: String): DateTime
+  eventDescription(locale: String): String
+  eventDocumentsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryEventDocumentsCollection
+  inPersonOrOnline(locale: String): String
+  internalName(locale: String): String
+  linkedFrom(allowedLocales: [String]): EventEntryLinkingCollections
+  shortTitle(locale: String): String
+  sys: Sys!
+}
+
+type EventEntryCollection {
+  items: [EventEntry]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type EventEntryEventCategoryCollection {
+  items: [Category]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type EventEntryEventDocumentsCollection {
+  items: [DocumentWrapper]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input EventEntryFilter {
+  AND: [EventEntryFilter]
+  OR: [EventEntryFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  eventCategory: cfCategoryNestedFilter
+  eventCategoryCollection_exists: Boolean
+  eventDateAndTime: DateTime
+  eventDateAndTime_exists: Boolean
+  eventDateAndTime_gt: DateTime
+  eventDateAndTime_gte: DateTime
+  eventDateAndTime_in: [DateTime]
+  eventDateAndTime_lt: DateTime
+  eventDateAndTime_lte: DateTime
+  eventDateAndTime_not: DateTime
+  eventDateAndTime_not_in: [DateTime]
+  eventDescription: String
+  eventDescription_contains: String
+  eventDescription_exists: Boolean
+  eventDescription_in: [String]
+  eventDescription_not: String
+  eventDescription_not_contains: String
+  eventDescription_not_in: [String]
+  eventDocuments: cfDocumentWrapperNestedFilter
+  eventDocumentsCollection_exists: Boolean
+  inPersonOrOnline: String
+  inPersonOrOnline_contains: String
+  inPersonOrOnline_exists: Boolean
+  inPersonOrOnline_in: [String]
+  inPersonOrOnline_not: String
+  inPersonOrOnline_not_contains: String
+  inPersonOrOnline_not_in: [String]
+  internalName: String
+  internalName_contains: String
+  internalName_exists: Boolean
+  internalName_in: [String]
+  internalName_not: String
+  internalName_not_contains: String
+  internalName_not_in: [String]
+  shortTitle: String
+  shortTitle_contains: String
+  shortTitle_exists: Boolean
+  shortTitle_in: [String]
+  shortTitle_not: String
+  shortTitle_not_contains: String
+  shortTitle_not_in: [String]
+  sys: SysFilter
+}
+
+type EventEntryLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum EventEntryOrder {
+  eventDateAndTime_ASC
+  eventDateAndTime_DESC
+  eventDescription_ASC
+  eventDescription_DESC
+  inPersonOrOnline_ASC
+  inPersonOrOnline_DESC
+  internalName_ASC
+  internalName_DESC
+  shortTitle_ASC
+  shortTitle_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1267,6 +1381,69 @@ input ImageTransformOptions {
 }
 
 """
+"wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper)
+"""
+type ImageWrapper implements Entry {
+  altText(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  imageCategory(locale: String, preview: Boolean): Category
+  internalTitle(locale: String): String
+  linkedFrom(allowedLocales: [String]): ImageWrapperLinkingCollections
+  linkedImage(locale: String, preview: Boolean): Asset
+  sys: Sys!
+}
+
+type ImageWrapperCollection {
+  items: [ImageWrapper]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input ImageWrapperFilter {
+  AND: [ImageWrapperFilter]
+  OR: [ImageWrapperFilter]
+  altText: String
+  altText_contains: String
+  altText_exists: Boolean
+  altText_in: [String]
+  altText_not: String
+  altText_not_contains: String
+  altText_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  imageCategory: cfCategoryNestedFilter
+  imageCategory_exists: Boolean
+  internalTitle: String
+  internalTitle_contains: String
+  internalTitle_exists: Boolean
+  internalTitle_in: [String]
+  internalTitle_not: String
+  internalTitle_not_contains: String
+  internalTitle_not_in: [String]
+  linkedImage_exists: Boolean
+  sys: SysFilter
+}
+
+type ImageWrapperLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum ImageWrapperOrder {
+  altText_ASC
+  altText_DESC
+  internalTitle_ASC
+  internalTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
@@ -1276,8 +1453,9 @@ Single paragraph or bulleted list with descriptive header  [See type definition]
 """
 type ListWithTitle implements Entry {
   contentfulMetadata: ContentfulMetadata!
+  dropdownChoices(locale: String): String
+  internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): ListWithTitleLinkingCollections
-  listTitle(locale: String): String
   paragraphOrList(locale: String): ListWithTitleParagraphOrList
   sys: Sys!
 }
@@ -1293,13 +1471,20 @@ input ListWithTitleFilter {
   AND: [ListWithTitleFilter]
   OR: [ListWithTitleFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  listTitle: String
-  listTitle_contains: String
-  listTitle_exists: Boolean
-  listTitle_in: [String]
-  listTitle_not: String
-  listTitle_not_contains: String
-  listTitle_not_in: [String]
+  dropdownChoices: String
+  dropdownChoices_contains: String
+  dropdownChoices_exists: Boolean
+  dropdownChoices_in: [String]
+  dropdownChoices_not: String
+  dropdownChoices_not_contains: String
+  dropdownChoices_not_in: [String]
+  internalTitle: String
+  internalTitle_contains: String
+  internalTitle_exists: Boolean
+  internalTitle_in: [String]
+  internalTitle_not: String
+  internalTitle_not_contains: String
+  internalTitle_not_in: [String]
   paragraphOrList_contains: String
   paragraphOrList_exists: Boolean
   paragraphOrList_not_contains: String
@@ -1312,8 +1497,10 @@ type ListWithTitleLinkingCollections {
 }
 
 enum ListWithTitleOrder {
-  listTitle_ASC
-  listTitle_DESC
+  dropdownChoices_ASC
+  dropdownChoices_DESC
+  internalTitle_ASC
+  internalTitle_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1848,10 +2035,14 @@ type Query {
   draftNavigationMenu(id: String!, locale: String, preview: Boolean): DraftNavigationMenu
   draftNavigationMenuCollection(limit: Int = 100, locale: String, order: [DraftNavigationMenuOrder], preview: Boolean, skip: Int = 0, where: DraftNavigationMenuFilter): DraftNavigationMenuCollection
   entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
+  eventEntry(id: String!, locale: String, preview: Boolean): EventEntry
+  eventEntryCollection(limit: Int = 100, locale: String, order: [EventEntryOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): EventEntryCollection
   headline(id: String!, locale: String, preview: Boolean): Headline
   headlineCollection(limit: Int = 100, locale: String, order: [HeadlineOrder], preview: Boolean, skip: Int = 0, where: HeadlineFilter): HeadlineCollection
   heroImage(id: String!, locale: String, preview: Boolean): HeroImage
   heroImageCollection(limit: Int = 100, locale: String, order: [HeroImageOrder], preview: Boolean, skip: Int = 0, where: HeroImageFilter): HeroImageCollection
+  imageWrapper(id: String!, locale: String, preview: Boolean): ImageWrapper
+  imageWrapperCollection(limit: Int = 100, locale: String, order: [ImageWrapperOrder], preview: Boolean, skip: Int = 0, where: ImageWrapperFilter): ImageWrapperCollection
   listWithTitle(id: String!, locale: String, preview: Boolean): ListWithTitle
   listWithTitleCollection(limit: Int = 100, locale: String, order: [ListWithTitleOrder], preview: Boolean, skip: Int = 0, where: ListWithTitleFilter): ListWithTitleCollection
   officePage(id: String!, locale: String, preview: Boolean): OfficePage
@@ -2629,13 +2820,20 @@ input cfListWithTitleNestedFilter {
   AND: [cfListWithTitleNestedFilter]
   OR: [cfListWithTitleNestedFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  listTitle: String
-  listTitle_contains: String
-  listTitle_exists: Boolean
-  listTitle_in: [String]
-  listTitle_not: String
-  listTitle_not_contains: String
-  listTitle_not_in: [String]
+  dropdownChoices: String
+  dropdownChoices_contains: String
+  dropdownChoices_exists: Boolean
+  dropdownChoices_in: [String]
+  dropdownChoices_not: String
+  dropdownChoices_not_contains: String
+  dropdownChoices_not_in: [String]
+  internalTitle: String
+  internalTitle_contains: String
+  internalTitle_exists: Boolean
+  internalTitle_in: [String]
+  internalTitle_not: String
+  internalTitle_not_contains: String
+  internalTitle_not_in: [String]
   paragraphOrList_contains: String
   paragraphOrList_exists: Boolean
   paragraphOrList_not_contains: String

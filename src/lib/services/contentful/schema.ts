@@ -12,11 +12,21 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
-  Dimension: { input: any; output: any; }
-  HexColor: { input: any; output: any; }
-  JSON: { input: any; output: any; }
-  Quality: { input: any; output: any; }
+  /**
+   * A date-time string at UTC, such as 2007-12-03T10:15:30Z,
+   *     compliant with the 'date-time' format outlined in section 5.6 of
+   *     the RFC 3339 profile of the ISO 8601 standard for representation
+   *     of dates and times using the Gregorian calendar.
+   */
+  DateTime: { input: unknown; output: unknown; }
+  /** The 'Dimension' type represents dimensions as whole numeric values between `1` and `4000`. */
+  Dimension: { input: unknown; output: unknown; }
+  /** The 'HexColor' type represents color in `rgb:ffffff` string format. */
+  HexColor: { input: unknown; output: unknown; }
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: { input: unknown; output: unknown; }
+  /** The 'Quality' type represents quality as whole numeric values between `1` and `100`. */
+  Quality: { input: unknown; output: unknown; }
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
@@ -172,6 +182,7 @@ export type AssetLinkingCollections = {
   documentWrapperCollection?: Maybe<DocumentWrapperCollection>;
   entryCollection?: Maybe<EntryCollection>;
   heroImageCollection?: Maybe<HeroImageCollection>;
+  imageWrapperCollection?: Maybe<ImageWrapperCollection>;
   testRichTextCollection?: Maybe<TestRichTextCollection>;
 };
 
@@ -193,6 +204,14 @@ export type AssetLinkingCollectionsEntryCollectionArgs = {
 
 
 export type AssetLinkingCollectionsHeroImageCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AssetLinkingCollectionsImageWrapperCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -884,6 +903,8 @@ export type CategoryLinkingCollections = {
   categoryCollection?: Maybe<CategoryCollection>;
   documentWrapperCollection?: Maybe<DocumentWrapperCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  eventEntryCollection?: Maybe<EventEntryCollection>;
+  imageWrapperCollection?: Maybe<ImageWrapperCollection>;
   serviceEntryCollection?: Maybe<ServiceEntryCollection>;
 };
 
@@ -905,6 +926,22 @@ export type CategoryLinkingCollectionsDocumentWrapperCollectionArgs = {
 
 
 export type CategoryLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CategoryLinkingCollectionsEventEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CategoryLinkingCollectionsImageWrapperCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1355,11 +1392,20 @@ export type DocumentWrapperFilter = {
 export type DocumentWrapperLinkingCollections = {
   __typename?: 'DocumentWrapperLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
+  eventEntryCollection?: Maybe<EventEntryCollection>;
   serviceEntryCollection?: Maybe<ServiceEntryCollection>;
 };
 
 
 export type DocumentWrapperLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type DocumentWrapperLinkingCollectionsEventEntryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1617,6 +1663,181 @@ export type EntryFilter = {
 };
 
 export enum EntryOrder {
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntry = Entry & {
+  __typename?: 'EventEntry';
+  contentfulMetadata: ContentfulMetadata;
+  eventCategoryCollection?: Maybe<EventEntryEventCategoryCollection>;
+  eventDateAndTime?: Maybe<Scalars['DateTime']['output']>;
+  eventDescription?: Maybe<Scalars['String']['output']>;
+  eventDocumentsCollection?: Maybe<EventEntryEventDocumentsCollection>;
+  inPersonOrOnline?: Maybe<Scalars['String']['output']>;
+  internalName?: Maybe<Scalars['String']['output']>;
+  linkedFrom?: Maybe<EventEntryLinkingCollections>;
+  shortTitle?: Maybe<Scalars['String']['output']>;
+  sys: Sys;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryEventCategoryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryEventDateAndTimeArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryEventDescriptionArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryEventDocumentsCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryInPersonOrOnlineArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryInternalNameArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryShortTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EventEntryCollection = {
+  __typename?: 'EventEntryCollection';
+  items: Array<Maybe<EventEntry>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type EventEntryEventCategoryCollection = {
+  __typename?: 'EventEntryEventCategoryCollection';
+  items: Array<Maybe<Category>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type EventEntryEventDocumentsCollection = {
+  __typename?: 'EventEntryEventDocumentsCollection';
+  items: Array<Maybe<DocumentWrapper>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type EventEntryFilter = {
+  AND?: InputMaybe<Array<InputMaybe<EventEntryFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<EventEntryFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  eventCategory?: InputMaybe<CfCategoryNestedFilter>;
+  eventCategoryCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventDateAndTime?: InputMaybe<Scalars['DateTime']['input']>;
+  eventDateAndTime_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventDateAndTime_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  eventDateAndTime_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  eventDateAndTime_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  eventDateAndTime_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  eventDateAndTime_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  eventDateAndTime_not?: InputMaybe<Scalars['DateTime']['input']>;
+  eventDateAndTime_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  eventDescription?: InputMaybe<Scalars['String']['input']>;
+  eventDescription_contains?: InputMaybe<Scalars['String']['input']>;
+  eventDescription_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  eventDescription_not?: InputMaybe<Scalars['String']['input']>;
+  eventDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eventDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  eventDocuments?: InputMaybe<CfDocumentWrapperNestedFilter>;
+  eventDocumentsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  inPersonOrOnline?: InputMaybe<Scalars['String']['input']>;
+  inPersonOrOnline_contains?: InputMaybe<Scalars['String']['input']>;
+  inPersonOrOnline_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  inPersonOrOnline_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  inPersonOrOnline_not?: InputMaybe<Scalars['String']['input']>;
+  inPersonOrOnline_not_contains?: InputMaybe<Scalars['String']['input']>;
+  inPersonOrOnline_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalName?: InputMaybe<Scalars['String']['input']>;
+  internalName_contains?: InputMaybe<Scalars['String']['input']>;
+  internalName_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  internalName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalName_not?: InputMaybe<Scalars['String']['input']>;
+  internalName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  internalName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  shortTitle?: InputMaybe<Scalars['String']['input']>;
+  shortTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  shortTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  shortTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  shortTitle_not?: InputMaybe<Scalars['String']['input']>;
+  shortTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  shortTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type EventEntryLinkingCollections = {
+  __typename?: 'EventEntryLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type EventEntryLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum EventEntryOrder {
+  EventDateAndTimeAsc = 'eventDateAndTime_ASC',
+  EventDateAndTimeDesc = 'eventDateAndTime_DESC',
+  EventDescriptionAsc = 'eventDescription_ASC',
+  EventDescriptionDesc = 'eventDescription_DESC',
+  InPersonOrOnlineAsc = 'inPersonOrOnline_ASC',
+  InPersonOrOnlineDesc = 'inPersonOrOnline_DESC',
+  InternalNameAsc = 'internalName_ASC',
+  InternalNameDesc = 'internalName_DESC',
+  ShortTitleAsc = 'shortTitle_ASC',
+  ShortTitleDesc = 'shortTitle_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -1901,26 +2122,137 @@ export type ImageTransformOptions = {
   width?: InputMaybe<Scalars['Dimension']['input']>;
 };
 
+/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+export type ImageWrapper = Entry & {
+  __typename?: 'ImageWrapper';
+  altText?: Maybe<Scalars['String']['output']>;
+  contentfulMetadata: ContentfulMetadata;
+  imageCategory?: Maybe<Category>;
+  internalTitle?: Maybe<Scalars['String']['output']>;
+  linkedFrom?: Maybe<ImageWrapperLinkingCollections>;
+  linkedImage?: Maybe<Asset>;
+  sys: Sys;
+};
+
+
+/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+export type ImageWrapperAltTextArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+export type ImageWrapperImageCategoryArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+export type ImageWrapperInternalTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+export type ImageWrapperLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+export type ImageWrapperLinkedImageArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ImageWrapperCollection = {
+  __typename?: 'ImageWrapperCollection';
+  items: Array<Maybe<ImageWrapper>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type ImageWrapperFilter = {
+  AND?: InputMaybe<Array<InputMaybe<ImageWrapperFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<ImageWrapperFilter>>>;
+  altText?: InputMaybe<Scalars['String']['input']>;
+  altText_contains?: InputMaybe<Scalars['String']['input']>;
+  altText_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  altText_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  altText_not?: InputMaybe<Scalars['String']['input']>;
+  altText_not_contains?: InputMaybe<Scalars['String']['input']>;
+  altText_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  imageCategory?: InputMaybe<CfCategoryNestedFilter>;
+  imageCategory_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  internalTitle?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  internalTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalTitle_not?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  linkedImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type ImageWrapperLinkingCollections = {
+  __typename?: 'ImageWrapperLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type ImageWrapperLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum ImageWrapperOrder {
+  AltTextAsc = 'altText_ASC',
+  AltTextDesc = 'altText_DESC',
+  InternalTitleAsc = 'internalTitle_ASC',
+  InternalTitleDesc = 'internalTitle_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
 /** Single paragraph or bulleted list with descriptive header  [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/listWithTitle) */
 export type ListWithTitle = Entry & {
   __typename?: 'ListWithTitle';
   contentfulMetadata: ContentfulMetadata;
+  dropdownChoices?: Maybe<Scalars['String']['output']>;
+  internalTitle?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<ListWithTitleLinkingCollections>;
-  listTitle?: Maybe<Scalars['String']['output']>;
   paragraphOrList?: Maybe<ListWithTitleParagraphOrList>;
   sys: Sys;
 };
 
 
 /** Single paragraph or bulleted list with descriptive header  [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/listWithTitle) */
-export type ListWithTitleLinkedFromArgs = {
-  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+export type ListWithTitleDropdownChoicesArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 /** Single paragraph or bulleted list with descriptive header  [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/listWithTitle) */
-export type ListWithTitleListTitleArgs = {
+export type ListWithTitleInternalTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Single paragraph or bulleted list with descriptive header  [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/listWithTitle) */
+export type ListWithTitleLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -1941,13 +2273,20 @@ export type ListWithTitleFilter = {
   AND?: InputMaybe<Array<InputMaybe<ListWithTitleFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<ListWithTitleFilter>>>;
   contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  listTitle?: InputMaybe<Scalars['String']['input']>;
-  listTitle_contains?: InputMaybe<Scalars['String']['input']>;
-  listTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  listTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  listTitle_not?: InputMaybe<Scalars['String']['input']>;
-  listTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
-  listTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  dropdownChoices?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_contains?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  dropdownChoices_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  dropdownChoices_not?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_not_contains?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalTitle?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  internalTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalTitle_not?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   paragraphOrList_contains?: InputMaybe<Scalars['String']['input']>;
   paragraphOrList_exists?: InputMaybe<Scalars['Boolean']['input']>;
   paragraphOrList_not_contains?: InputMaybe<Scalars['String']['input']>;
@@ -1977,8 +2316,10 @@ export type ListWithTitleLinkingCollectionsServiceEntryCollectionArgs = {
 };
 
 export enum ListWithTitleOrder {
-  ListTitleAsc = 'listTitle_ASC',
-  ListTitleDesc = 'listTitle_DESC',
+  DropdownChoicesAsc = 'dropdownChoices_ASC',
+  DropdownChoicesDesc = 'dropdownChoices_DESC',
+  InternalTitleAsc = 'internalTitle_ASC',
+  InternalTitleDesc = 'internalTitle_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -2774,10 +3115,14 @@ export type Query = {
   draftNavigationMenu?: Maybe<DraftNavigationMenu>;
   draftNavigationMenuCollection?: Maybe<DraftNavigationMenuCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  eventEntry?: Maybe<EventEntry>;
+  eventEntryCollection?: Maybe<EventEntryCollection>;
   headline?: Maybe<Headline>;
   headlineCollection?: Maybe<HeadlineCollection>;
   heroImage?: Maybe<HeroImage>;
   heroImageCollection?: Maybe<HeroImageCollection>;
+  imageWrapper?: Maybe<ImageWrapper>;
+  imageWrapperCollection?: Maybe<ImageWrapperCollection>;
   listWithTitle?: Maybe<ListWithTitle>;
   listWithTitleCollection?: Maybe<ListWithTitleCollection>;
   officePage?: Maybe<OfficePage>;
@@ -3004,6 +3349,23 @@ export type QueryEntryCollectionArgs = {
 };
 
 
+export type QueryEventEntryArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryEventEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<EventEntryOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EventEntryFilter>;
+};
+
+
 export type QueryHeadlineArgs = {
   id: Scalars['String']['input'];
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -3035,6 +3397,23 @@ export type QueryHeroImageCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<HeroImageFilter>;
+};
+
+
+export type QueryImageWrapperArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryImageWrapperCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ImageWrapperOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ImageWrapperFilter>;
 };
 
 
@@ -4309,13 +4688,20 @@ export type CfListWithTitleNestedFilter = {
   AND?: InputMaybe<Array<InputMaybe<CfListWithTitleNestedFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<CfListWithTitleNestedFilter>>>;
   contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  listTitle?: InputMaybe<Scalars['String']['input']>;
-  listTitle_contains?: InputMaybe<Scalars['String']['input']>;
-  listTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  listTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  listTitle_not?: InputMaybe<Scalars['String']['input']>;
-  listTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
-  listTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  dropdownChoices?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_contains?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  dropdownChoices_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  dropdownChoices_not?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_not_contains?: InputMaybe<Scalars['String']['input']>;
+  dropdownChoices_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalTitle?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  internalTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  internalTitle_not?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  internalTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   paragraphOrList_contains?: InputMaybe<Scalars['String']['input']>;
   paragraphOrList_exists?: InputMaybe<Scalars['Boolean']['input']>;
   paragraphOrList_not_contains?: InputMaybe<Scalars['String']['input']>;
