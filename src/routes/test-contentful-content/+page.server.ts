@@ -3,6 +3,7 @@ import { print as printQuery } from "graphql";
 import contentfulFetch from "$lib/services/contentful";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
 import type { Document } from "@contentful/rich-text-types";
+import type { EntryQuery } from "./$queries.generated";
 
 const query = gql`
   query Entry {
@@ -16,7 +17,7 @@ const query = gql`
 `;
 
 export async function load(): Promise<Document> {
-  const data = await contentfulFetch(printQuery(query));
+  const data = await contentfulFetch<EntryQuery>(printQuery(query));
   if (data) {
     return data?.testRichText?.body?.json;
   } else {
