@@ -1,5 +1,9 @@
-export function searchHitsTemplate(hit) {
-  console.log(hit);
+import type { Hit } from "instantsearch.js";
+
+export function searchHitsTemplate(hit: Hit) {
+  // Note: under the post-excerpt div, replaced hit._highlightResult.content.value with
+  // hit._snippetResult.content.value, which seems more concise. Could be subject to change.
+
   return `
     <div>
       <article>
@@ -16,5 +20,3 @@ export function searchHitsTemplate(hit) {
       </article>
     </div>`;
 }
-
-// Replaced  <!--${hit._snippetResult.content.value}--> with  ${hit._highlightResult.content.value}
