@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
+import gql from "graphql-tag";
 import getClient, { type Client } from "./graphqlClient";
 
 const query = gql`
