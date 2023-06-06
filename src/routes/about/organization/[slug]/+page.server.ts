@@ -2,7 +2,10 @@ import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
-import contentfulFetch from "$lib/services/contentful";
+import contentfulFetch, { contentfulConnected } from "$lib/services/contentful";
+import documentWithParagraphData from "$lib/components/ContentfulRichText/__tests__/documents";
+
+import type { PageServerLoad } from "./$types";
 import type { OfficePage } from "$lib/services/contentful/schema";
 import type { OfficePageQuery } from "./$queries.generated";
 
@@ -55,15 +58,69 @@ const query = gql`
   }
 `;
 
-export async function load({ params }): Promise<OfficePage> {
+export const load = (async ({ params }): Promise<OfficePage> => {
   const { slug } = params;
-  const data = await contentfulFetch<OfficePageQuery>(printQuery(query));
-  if (data) {
-    const officePages = data?.officePageCollection?.items as OfficePage[];
-    const matchedOfficePage = officePages.find((officePage) => officePage.metadata?.slug === slug);
-    if (matchedOfficePage) {
-      return matchedOfficePage;
+  if (contentfulConnected()) {
+    const data = await contentfulFetch<OfficePageQuery>(printQuery(query));
+    if (data) {
+      const officePages = data?.officePageCollection?.items as OfficePage[];
+      const matchedOfficePage = officePages.find(
+        (officePage) => officePage.metadata?.slug === slug
+      );
+      if (matchedOfficePage) {
+        return matchedOfficePage;
+      }
     }
+    throw error(404);
+  } else {
+    return {
+      sys: { id: "0", environmentId: "", spaceId: "" },
+      contentfulMetadata: { tags: [] },
+      pageTitle: "Sample Office Page",
+      subheading:
+        "This page is loaded with test data since a connection with Contentful could not be established",
+      description: {
+        json: documentWithParagraphData.documentWithParagraph.document,
+        links: {
+          assets: { block: [], hyperlink: [] },
+          entries: { block: [], hyperlink: [], inline: [] },
+        },
+      },
+      servicesAndPrograms: {
+        json: documentWithParagraphData.documentWithParagraph.document,
+        links: {
+          assets: { block: [], hyperlink: [] },
+          entries: { block: [], hyperlink: [], inline: [] },
+        },
+      },
+      mailingAddress: {
+        sys: {
+          id: "1",
+          environmentId: "",
+          spaceId: "",
+        },
+        contentfulMetadata: { tags: [] },
+        name: "Sample Office",
+        streetAddress1: "123 Main Street",
+        streetAddress2: "Suite 456",
+        city: "City",
+        state: "ST",
+        zip: "12345",
+      },
+      contactsCollection: {
+        limit: 100,
+        skip: 0,
+        total: 1,
+        items: [
+          {
+            sys: { id: "2", environmentId: "", spaceId: "" },
+            contentfulMetadata: { tags: [] },
+            entityName: "Contact Person",
+            phone: "1-123-456-7890",
+            email: "contact@example.com",
+          },
+        ],
+      },
+    };
   }
-  throw error(404);
-}
+}) satisfies PageServerLoad;
