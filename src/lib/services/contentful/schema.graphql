@@ -93,6 +93,7 @@ type AssetLinkingCollections {
   documentWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): DocumentWrapperCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   heroImageCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): HeroImageCollection
+  imageWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ImageWrapperCollection
   testRichTextCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): TestRichTextCollection
 }
 
@@ -124,14 +125,14 @@ Overview pages for Boards, Commissions, Councils, and Task Forces. [See type def
 """
 type BoardsAndCommissions implements Entry {
   additionalInformation(locale: String): BoardsAndCommissionsAdditionalInformation
-  contactBc(locale: String, preview: Boolean): ContactEntry
+  contactBc(locale: String, preview: Boolean): Entry
   contactUs(locale: String): BoardsAndCommissionsContactUs
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): BoardsAndCommissionsLinkingCollections
   meetings(locale: String): BoardsAndCommissionsMeetings
   membership(locale: String): BoardsAndCommissionsMembership
   overview(locale: String): BoardsAndCommissionsOverview
-  subHeadBc(locale: String, preview: Boolean): PageSubheader
+  subHeadBc(locale: String, preview: Boolean): Entry
   subheading(locale: String): String
   sys: Sys!
   title(locale: String): String
@@ -192,7 +193,6 @@ input BoardsAndCommissionsFilter {
   additionalInformation_contains: String
   additionalInformation_exists: Boolean
   additionalInformation_not_contains: String
-  contactBc: cfContactEntryNestedFilter
   contactBc_exists: Boolean
   contactUs_contains: String
   contactUs_exists: Boolean
@@ -207,7 +207,6 @@ input BoardsAndCommissionsFilter {
   overview_contains: String
   overview_exists: Boolean
   overview_not_contains: String
-  subHeadBc: cfPageSubheaderNestedFilter
   subHeadBc_exists: Boolean
   subheading: String
   subheading_contains: String
@@ -306,117 +305,6 @@ type BoardsAndCommissionsOverviewEntries {
 type BoardsAndCommissionsOverviewLinks {
   assets: BoardsAndCommissionsOverviewAssets!
   entries: BoardsAndCommissionsOverviewEntries!
-}
-
-"""
-Short summary of the page topic. Appears in the first paragraph [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/briefSummary)
-"""
-type BriefSummary implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): BriefSummaryLinkingCollections
-  summaryText(locale: String): String
-  sys: Sys!
-}
-
-type BriefSummaryCollection {
-  items: [BriefSummary]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input BriefSummaryFilter {
-  AND: [BriefSummaryFilter]
-  OR: [BriefSummaryFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  summaryText: String
-  summaryText_contains: String
-  summaryText_exists: Boolean
-  summaryText_in: [String]
-  summaryText_not: String
-  summaryText_not_contains: String
-  summaryText_not_in: [String]
-  sys: SysFilter
-}
-
-type BriefSummaryLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum BriefSummaryOrder {
-  summaryText_ASC
-  summaryText_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-a bulleted list of things [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/bulletedList)
-"""
-type BulletedList implements Entry {
-  bulletListContent(locale: String): BulletedListBulletListContent
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): BulletedListLinkingCollections
-  sys: Sys!
-}
-
-type BulletedListBulletListContent {
-  json: JSON!
-  links: BulletedListBulletListContentLinks!
-}
-
-type BulletedListBulletListContentAssets {
-  block: [Asset]!
-  hyperlink: [Asset]!
-}
-
-type BulletedListBulletListContentEntries {
-  block: [Entry]!
-  hyperlink: [Entry]!
-  inline: [Entry]!
-}
-
-type BulletedListBulletListContentLinks {
-  assets: BulletedListBulletListContentAssets!
-  entries: BulletedListBulletListContentEntries!
-}
-
-type BulletedListCollection {
-  items: [BulletedList]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input BulletedListFilter {
-  AND: [BulletedListFilter]
-  OR: [BulletedListFilter]
-  bulletListContent_contains: String
-  bulletListContent_exists: Boolean
-  bulletListContent_not_contains: String
-  contentfulMetadata: ContentfulMetadataFilter
-  sys: SysFilter
-}
-
-type BulletedListLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum BulletedListOrder {
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
 }
 
 """
@@ -554,6 +442,8 @@ type CategoryLinkingCollections {
   categoryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): CategoryCollection
   documentWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): DocumentWrapperCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  eventEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryCollection
+  imageWrapperCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ImageWrapperCollection
   serviceEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryCollection
 }
 
@@ -573,40 +463,27 @@ enum CategoryOrder {
 }
 
 """
-Contact information for any office, program, board or commission at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contactEntry)
+The name, phone number and email of any person, office or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact)
 """
-type ContactEntry implements Entry {
-  city(locale: String): String
+type Contact implements Entry {
   contentfulMetadata: ContentfulMetadata!
   email(locale: String): String
-  linkedFrom(allowedLocales: [String]): ContactEntryLinkingCollections
-  name(locale: String): String
-  nameAndNumberCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ContactEntryNameAndNumberCollection
-  phoneNumber(locale: String): String
-  state(locale: String): String
-  streetAddress(locale: String): String
-  suiteFloorEtc(locale: String): String
+  entityName(locale: String): String
+  linkedFrom(allowedLocales: [String]): ContactLinkingCollections
+  phone(locale: String): String
   sys: Sys!
-  zipCode(locale: String): String
 }
 
-type ContactEntryCollection {
-  items: [ContactEntry]!
+type ContactCollection {
+  items: [Contact]!
   limit: Int!
   skip: Int!
   total: Int!
 }
 
-input ContactEntryFilter {
-  AND: [ContactEntryFilter]
-  OR: [ContactEntryFilter]
-  city: String
-  city_contains: String
-  city_exists: Boolean
-  city_in: [String]
-  city_not: String
-  city_not_contains: String
-  city_not_in: [String]
+input ContactFilter {
+  AND: [ContactFilter]
+  OR: [ContactFilter]
   contentfulMetadata: ContentfulMetadataFilter
   email: String
   email_contains: String
@@ -615,83 +492,35 @@ input ContactEntryFilter {
   email_not: String
   email_not_contains: String
   email_not_in: [String]
-  name: String
-  nameAndNumber: cfPhoneNumberNestedFilter
-  nameAndNumberCollection_exists: Boolean
-  name_contains: String
-  name_exists: Boolean
-  name_in: [String]
-  name_not: String
-  name_not_contains: String
-  name_not_in: [String]
-  phoneNumber: String
-  phoneNumber_contains: String
-  phoneNumber_exists: Boolean
-  phoneNumber_in: [String]
-  phoneNumber_not: String
-  phoneNumber_not_contains: String
-  phoneNumber_not_in: [String]
-  state: String
-  state_contains: String
-  state_exists: Boolean
-  state_in: [String]
-  state_not: String
-  state_not_contains: String
-  state_not_in: [String]
-  streetAddress: String
-  streetAddress_contains: String
-  streetAddress_exists: Boolean
-  streetAddress_in: [String]
-  streetAddress_not: String
-  streetAddress_not_contains: String
-  streetAddress_not_in: [String]
-  suiteFloorEtc: String
-  suiteFloorEtc_contains: String
-  suiteFloorEtc_exists: Boolean
-  suiteFloorEtc_in: [String]
-  suiteFloorEtc_not: String
-  suiteFloorEtc_not_contains: String
-  suiteFloorEtc_not_in: [String]
+  entityName: String
+  entityName_contains: String
+  entityName_exists: Boolean
+  entityName_in: [String]
+  entityName_not: String
+  entityName_not_contains: String
+  entityName_not_in: [String]
+  phone: String
+  phone_contains: String
+  phone_exists: Boolean
+  phone_in: [String]
+  phone_not: String
+  phone_not_contains: String
+  phone_not_in: [String]
   sys: SysFilter
-  zipCode: String
-  zipCode_contains: String
-  zipCode_exists: Boolean
-  zipCode_in: [String]
-  zipCode_not: String
-  zipCode_not_contains: String
-  zipCode_not_in: [String]
 }
 
-type ContactEntryLinkingCollections {
-  boardsAndCommissionsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): BoardsAndCommissionsCollection
+type ContactLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   officePageCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): OfficePageCollection
-  serviceEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryCollection
-  serviceGroupCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceGroupCollection
 }
 
-type ContactEntryNameAndNumberCollection {
-  items: [PhoneNumber]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-enum ContactEntryOrder {
-  city_ASC
-  city_DESC
+enum ContactOrder {
   email_ASC
   email_DESC
-  name_ASC
-  name_DESC
-  phoneNumber_ASC
-  phoneNumber_DESC
-  state_ASC
-  state_DESC
-  streetAddress_ASC
-  streetAddress_DESC
-  suiteFloorEtc_ASC
-  suiteFloorEtc_DESC
+  entityName_ASC
+  entityName_DESC
+  phone_ASC
+  phone_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -700,8 +529,6 @@ enum ContactEntryOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
-  zipCode_ASC
-  zipCode_DESC
 }
 
 """
@@ -750,6 +577,105 @@ enum ContentBlockHeaderOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+"""
+A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location)
+"""
+type ContentTypeLocation implements Entry {
+  city(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): ContentTypeLocationLinkingCollections
+  name(locale: String): String
+  state(locale: String): String
+  streetAddress1(locale: String): String
+  streetAddress2(locale: String): String
+  sys: Sys!
+  zip(locale: String): String
+}
+
+type ContentTypeLocationCollection {
+  items: [ContentTypeLocation]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input ContentTypeLocationFilter {
+  AND: [ContentTypeLocationFilter]
+  OR: [ContentTypeLocationFilter]
+  city: String
+  city_contains: String
+  city_exists: Boolean
+  city_in: [String]
+  city_not: String
+  city_not_contains: String
+  city_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  name: String
+  name_contains: String
+  name_exists: Boolean
+  name_in: [String]
+  name_not: String
+  name_not_contains: String
+  name_not_in: [String]
+  state: String
+  state_contains: String
+  state_exists: Boolean
+  state_in: [String]
+  state_not: String
+  state_not_contains: String
+  state_not_in: [String]
+  streetAddress1: String
+  streetAddress1_contains: String
+  streetAddress1_exists: Boolean
+  streetAddress1_in: [String]
+  streetAddress1_not: String
+  streetAddress1_not_contains: String
+  streetAddress1_not_in: [String]
+  streetAddress2: String
+  streetAddress2_contains: String
+  streetAddress2_exists: Boolean
+  streetAddress2_in: [String]
+  streetAddress2_not: String
+  streetAddress2_not_contains: String
+  streetAddress2_not_in: [String]
+  sys: SysFilter
+  zip: String
+  zip_contains: String
+  zip_exists: Boolean
+  zip_in: [String]
+  zip_not: String
+  zip_not_contains: String
+  zip_not_in: [String]
+}
+
+type ContentTypeLocationLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  officePageCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): OfficePageCollection
+}
+
+enum ContentTypeLocationOrder {
+  city_ASC
+  city_DESC
+  name_ASC
+  name_DESC
+  state_ASC
+  state_DESC
+  streetAddress1_ASC
+  streetAddress1_DESC
+  streetAddress2_ASC
+  streetAddress2_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  zip_ASC
+  zip_DESC
 }
 
 type ContentfulMetadata {
@@ -842,6 +768,7 @@ input DocumentWrapperFilter {
 
 type DocumentWrapperLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  eventEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryCollection
   serviceEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryCollection
 }
 
@@ -1018,43 +945,105 @@ enum EntryOrder {
 }
 
 """
-Large (h1) headline on top of web page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/headline)
+Consistent format for adding events to the system [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry)
 """
-type Headline implements Entry {
+type EventEntry implements Entry {
   contentfulMetadata: ContentfulMetadata!
-  headlineText(locale: String): String
-  linkedFrom(allowedLocales: [String]): HeadlineLinkingCollections
+  eventCategoryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryEventCategoryCollection
+  eventDateAndTime(locale: String): DateTime
+  eventDescription(locale: String): String
+  eventDocumentsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventEntryEventDocumentsCollection
+  inPersonOrOnline(locale: String): String
+  internalName(locale: String): String
+  linkedFrom(allowedLocales: [String]): EventEntryLinkingCollections
+  shortTitle(locale: String): String
   sys: Sys!
 }
 
-type HeadlineCollection {
-  items: [Headline]!
+type EventEntryCollection {
+  items: [EventEntry]!
   limit: Int!
   skip: Int!
   total: Int!
 }
 
-input HeadlineFilter {
-  AND: [HeadlineFilter]
-  OR: [HeadlineFilter]
+type EventEntryEventCategoryCollection {
+  items: [Category]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type EventEntryEventDocumentsCollection {
+  items: [DocumentWrapper]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input EventEntryFilter {
+  AND: [EventEntryFilter]
+  OR: [EventEntryFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  headlineText: String
-  headlineText_contains: String
-  headlineText_exists: Boolean
-  headlineText_in: [String]
-  headlineText_not: String
-  headlineText_not_contains: String
-  headlineText_not_in: [String]
+  eventCategory: cfCategoryNestedFilter
+  eventCategoryCollection_exists: Boolean
+  eventDateAndTime: DateTime
+  eventDateAndTime_exists: Boolean
+  eventDateAndTime_gt: DateTime
+  eventDateAndTime_gte: DateTime
+  eventDateAndTime_in: [DateTime]
+  eventDateAndTime_lt: DateTime
+  eventDateAndTime_lte: DateTime
+  eventDateAndTime_not: DateTime
+  eventDateAndTime_not_in: [DateTime]
+  eventDescription: String
+  eventDescription_contains: String
+  eventDescription_exists: Boolean
+  eventDescription_in: [String]
+  eventDescription_not: String
+  eventDescription_not_contains: String
+  eventDescription_not_in: [String]
+  eventDocuments: cfDocumentWrapperNestedFilter
+  eventDocumentsCollection_exists: Boolean
+  inPersonOrOnline: String
+  inPersonOrOnline_contains: String
+  inPersonOrOnline_exists: Boolean
+  inPersonOrOnline_in: [String]
+  inPersonOrOnline_not: String
+  inPersonOrOnline_not_contains: String
+  inPersonOrOnline_not_in: [String]
+  internalName: String
+  internalName_contains: String
+  internalName_exists: Boolean
+  internalName_in: [String]
+  internalName_not: String
+  internalName_not_contains: String
+  internalName_not_in: [String]
+  shortTitle: String
+  shortTitle_contains: String
+  shortTitle_exists: Boolean
+  shortTitle_in: [String]
+  shortTitle_not: String
+  shortTitle_not_contains: String
+  shortTitle_not_in: [String]
   sys: SysFilter
 }
 
-type HeadlineLinkingCollections {
+type EventEntryLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
 }
 
-enum HeadlineOrder {
-  headlineText_ASC
-  headlineText_DESC
+enum EventEntryOrder {
+  eventDateAndTime_ASC
+  eventDateAndTime_DESC
+  eventDescription_ASC
+  eventDescription_DESC
+  inPersonOrOnline_ASC
+  inPersonOrOnline_DESC
+  internalName_ASC
+  internalName_DESC
+  shortTitle_ASC
+  shortTitle_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1267,6 +1256,69 @@ input ImageTransformOptions {
 }
 
 """
+"wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper)
+"""
+type ImageWrapper implements Entry {
+  altText(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  imageCategory(locale: String, preview: Boolean): Category
+  internalTitle(locale: String): String
+  linkedFrom(allowedLocales: [String]): ImageWrapperLinkingCollections
+  linkedImage(locale: String, preview: Boolean): Asset
+  sys: Sys!
+}
+
+type ImageWrapperCollection {
+  items: [ImageWrapper]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input ImageWrapperFilter {
+  AND: [ImageWrapperFilter]
+  OR: [ImageWrapperFilter]
+  altText: String
+  altText_contains: String
+  altText_exists: Boolean
+  altText_in: [String]
+  altText_not: String
+  altText_not_contains: String
+  altText_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  imageCategory: cfCategoryNestedFilter
+  imageCategory_exists: Boolean
+  internalTitle: String
+  internalTitle_contains: String
+  internalTitle_exists: Boolean
+  internalTitle_in: [String]
+  internalTitle_not: String
+  internalTitle_not_contains: String
+  internalTitle_not_in: [String]
+  linkedImage_exists: Boolean
+  sys: SysFilter
+}
+
+type ImageWrapperLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum ImageWrapperOrder {
+  altText_ASC
+  altText_DESC
+  internalTitle_ASC
+  internalTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
@@ -1276,8 +1328,9 @@ Single paragraph or bulleted list with descriptive header  [See type definition]
 """
 type ListWithTitle implements Entry {
   contentfulMetadata: ContentfulMetadata!
+  dropdownChoices(locale: String): String
+  internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): ListWithTitleLinkingCollections
-  listTitle(locale: String): String
   paragraphOrList(locale: String): ListWithTitleParagraphOrList
   sys: Sys!
 }
@@ -1293,13 +1346,20 @@ input ListWithTitleFilter {
   AND: [ListWithTitleFilter]
   OR: [ListWithTitleFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  listTitle: String
-  listTitle_contains: String
-  listTitle_exists: Boolean
-  listTitle_in: [String]
-  listTitle_not: String
-  listTitle_not_contains: String
-  listTitle_not_in: [String]
+  dropdownChoices: String
+  dropdownChoices_contains: String
+  dropdownChoices_exists: Boolean
+  dropdownChoices_in: [String]
+  dropdownChoices_not: String
+  dropdownChoices_not_contains: String
+  dropdownChoices_not_in: [String]
+  internalTitle: String
+  internalTitle_contains: String
+  internalTitle_exists: Boolean
+  internalTitle_in: [String]
+  internalTitle_not: String
+  internalTitle_not_contains: String
+  internalTitle_not_in: [String]
   paragraphOrList_contains: String
   paragraphOrList_exists: Boolean
   paragraphOrList_not_contains: String
@@ -1312,8 +1372,10 @@ type ListWithTitleLinkingCollections {
 }
 
 enum ListWithTitleOrder {
-  listTitle_ASC
-  listTitle_DESC
+  dropdownChoices_ASC
+  dropdownChoices_DESC
+  internalTitle_ASC
+  internalTitle_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1349,19 +1411,27 @@ type ListWithTitleParagraphOrListLinks {
 Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage)
 """
 type OfficePage implements Entry {
-  contactInfo(locale: String, preview: Boolean): ContactEntry
+  contactsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): OfficePageContactsCollection
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): OfficePageDescription
   linkedFrom(allowedLocales: [String]): OfficePageLinkingCollections
+  mailingAddress(locale: String, preview: Boolean): ContentTypeLocation
   metadata(locale: String, preview: Boolean): PageMetadata
-  officePageTitle(locale: String): String
+  pageTitle(locale: String): String
   servicesAndPrograms(locale: String): OfficePageServicesAndPrograms
-  subheader(locale: String): String
+  subheading(locale: String): String
   sys: Sys!
 }
 
 type OfficePageCollection {
   items: [OfficePage]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type OfficePageContactsCollection {
+  items: [Contact]!
   limit: Int!
   skip: Int!
   total: Int!
@@ -1391,31 +1461,33 @@ type OfficePageDescriptionLinks {
 input OfficePageFilter {
   AND: [OfficePageFilter]
   OR: [OfficePageFilter]
-  contactInfo: cfContactEntryNestedFilter
-  contactInfo_exists: Boolean
+  contacts: cfContactNestedFilter
+  contactsCollection_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   description_contains: String
   description_exists: Boolean
   description_not_contains: String
+  mailingAddress: cfContentTypeLocationNestedFilter
+  mailingAddress_exists: Boolean
   metadata: cfPageMetadataNestedFilter
   metadata_exists: Boolean
-  officePageTitle: String
-  officePageTitle_contains: String
-  officePageTitle_exists: Boolean
-  officePageTitle_in: [String]
-  officePageTitle_not: String
-  officePageTitle_not_contains: String
-  officePageTitle_not_in: [String]
+  pageTitle: String
+  pageTitle_contains: String
+  pageTitle_exists: Boolean
+  pageTitle_in: [String]
+  pageTitle_not: String
+  pageTitle_not_contains: String
+  pageTitle_not_in: [String]
   servicesAndPrograms_contains: String
   servicesAndPrograms_exists: Boolean
   servicesAndPrograms_not_contains: String
-  subheader: String
-  subheader_contains: String
-  subheader_exists: Boolean
-  subheader_in: [String]
-  subheader_not: String
-  subheader_not_contains: String
-  subheader_not_in: [String]
+  subheading: String
+  subheading_contains: String
+  subheading_exists: Boolean
+  subheading_in: [String]
+  subheading_not: String
+  subheading_not_contains: String
+  subheading_not_in: [String]
   sys: SysFilter
 }
 
@@ -1424,10 +1496,10 @@ type OfficePageLinkingCollections {
 }
 
 enum OfficePageOrder {
-  officePageTitle_ASC
-  officePageTitle_DESC
-  subheader_ASC
-  subheader_DESC
+  pageTitle_ASC
+  pageTitle_DESC
+  subheading_ASC
+  subheading_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1460,65 +1532,7 @@ type OfficePageServicesAndProgramsLinks {
 }
 
 """
-This is the name of the office, division, program, board or commission as it's listed in the org chart [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/organizationalSectionName)
-"""
-type OrganizationalSectionName implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): OrganizationalSectionNameLinkingCollections
-  officeEmail(locale: String): String
-  sectionName(locale: String): String
-  sys: Sys!
-}
-
-type OrganizationalSectionNameCollection {
-  items: [OrganizationalSectionName]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input OrganizationalSectionNameFilter {
-  AND: [OrganizationalSectionNameFilter]
-  OR: [OrganizationalSectionNameFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  officeEmail: String
-  officeEmail_contains: String
-  officeEmail_exists: Boolean
-  officeEmail_in: [String]
-  officeEmail_not: String
-  officeEmail_not_contains: String
-  officeEmail_not_in: [String]
-  sectionName: String
-  sectionName_contains: String
-  sectionName_exists: Boolean
-  sectionName_in: [String]
-  sectionName_not: String
-  sectionName_not_contains: String
-  sectionName_not_in: [String]
-  sys: SysFilter
-}
-
-type OrganizationalSectionNameLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum OrganizationalSectionNameOrder {
-  officeEmail_ASC
-  officeEmail_DESC
-  sectionName_ASC
-  sectionName_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-[See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata)
+Metadata about a page for setting the URL and for helping with SEO (search engine optimization). [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata)
 """
 type PageMetadata implements Entry {
   contentfulMetadata: ContentfulMetadata!
@@ -1526,7 +1540,6 @@ type PageMetadata implements Entry {
   linkedFrom(allowedLocales: [String]): PageMetadataLinkingCollections
   metaDescription(locale: String): String
   metaTitle(locale: String): String
-  pageTitle(locale: String): String
   slug(locale: String): String
   sys: Sys!
 }
@@ -1563,13 +1576,6 @@ input PageMetadataFilter {
   metaTitle_not: String
   metaTitle_not_contains: String
   metaTitle_not_in: [String]
-  pageTitle: String
-  pageTitle_contains: String
-  pageTitle_exists: Boolean
-  pageTitle_in: [String]
-  pageTitle_not: String
-  pageTitle_not_contains: String
-  pageTitle_not_in: [String]
   slug: String
   slug_contains: String
   slug_exists: Boolean
@@ -1590,225 +1596,8 @@ enum PageMetadataOrder {
   internalTitle_DESC
   metaTitle_ASC
   metaTitle_DESC
-  pageTitle_ASC
-  pageTitle_DESC
   slug_ASC
   slug_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-Headline for content sections within body of page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageSectionHeadline)
-"""
-type PageSectionHeadline implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  headlineText(locale: String): String
-  linkedFrom(allowedLocales: [String]): PageSectionHeadlineLinkingCollections
-  sys: Sys!
-}
-
-type PageSectionHeadlineCollection {
-  items: [PageSectionHeadline]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input PageSectionHeadlineFilter {
-  AND: [PageSectionHeadlineFilter]
-  OR: [PageSectionHeadlineFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  headlineText: String
-  headlineText_contains: String
-  headlineText_exists: Boolean
-  headlineText_in: [String]
-  headlineText_not: String
-  headlineText_not_contains: String
-  headlineText_not_in: [String]
-  sys: SysFilter
-}
-
-type PageSectionHeadlineLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum PageSectionHeadlineOrder {
-  headlineText_ASC
-  headlineText_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-Short, descriptive subheading beneath page title [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageSubheader)
-"""
-type PageSubheader implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): PageSubheaderLinkingCollections
-  subheadText(locale: String): String
-  sys: Sys!
-}
-
-type PageSubheaderCollection {
-  items: [PageSubheader]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input PageSubheaderFilter {
-  AND: [PageSubheaderFilter]
-  OR: [PageSubheaderFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  subheadText: String
-  subheadText_contains: String
-  subheadText_exists: Boolean
-  subheadText_in: [String]
-  subheadText_not: String
-  subheadText_not_contains: String
-  subheadText_not_in: [String]
-  sys: SysFilter
-}
-
-type PageSubheaderLinkingCollections {
-  boardsAndCommissionsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): BoardsAndCommissionsCollection
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  serviceEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryCollection
-}
-
-enum PageSubheaderOrder {
-  subheadText_ASC
-  subheadText_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-The phone number of any office, program, board, commission or individual at LDAF [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/phoneNumber)
-"""
-type PhoneNumber implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): PhoneNumberLinkingCollections
-  personWithPhoneNumber(locale: String): String
-  phoneNumber(locale: String): String
-  sys: Sys!
-}
-
-type PhoneNumberCollection {
-  items: [PhoneNumber]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input PhoneNumberFilter {
-  AND: [PhoneNumberFilter]
-  OR: [PhoneNumberFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  personWithPhoneNumber: String
-  personWithPhoneNumber_contains: String
-  personWithPhoneNumber_exists: Boolean
-  personWithPhoneNumber_in: [String]
-  personWithPhoneNumber_not: String
-  personWithPhoneNumber_not_contains: String
-  personWithPhoneNumber_not_in: [String]
-  phoneNumber: String
-  phoneNumber_contains: String
-  phoneNumber_exists: Boolean
-  phoneNumber_in: [String]
-  phoneNumber_not: String
-  phoneNumber_not_contains: String
-  phoneNumber_not_in: [String]
-  sys: SysFilter
-}
-
-type PhoneNumberLinkingCollections {
-  contactEntryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ContactEntryCollection
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum PhoneNumberOrder {
-  personWithPhoneNumber_ASC
-  personWithPhoneNumber_DESC
-  phoneNumber_ASC
-  phoneNumber_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-This is the official name of the LDAF program  as it's listed in the org chart [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/programName)
-"""
-type ProgramName implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): ProgramNameLinkingCollections
-  programEmail(locale: String): String
-  sectionName(locale: String): String
-  sys: Sys!
-}
-
-type ProgramNameCollection {
-  items: [ProgramName]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input ProgramNameFilter {
-  AND: [ProgramNameFilter]
-  OR: [ProgramNameFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  programEmail: String
-  programEmail_contains: String
-  programEmail_exists: Boolean
-  programEmail_in: [String]
-  programEmail_not: String
-  programEmail_not_contains: String
-  programEmail_not_in: [String]
-  sectionName: String
-  sectionName_contains: String
-  sectionName_exists: Boolean
-  sectionName_in: [String]
-  sectionName_not: String
-  sectionName_not_contains: String
-  sectionName_not_in: [String]
-  sys: SysFilter
-}
-
-type ProgramNameLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum ProgramNameOrder {
-  programEmail_ASC
-  programEmail_DESC
-  sectionName_ASC
-  sectionName_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1829,18 +1618,16 @@ type Query {
   assetCollection(limit: Int = 100, locale: String, order: [AssetOrder], preview: Boolean, skip: Int = 0, where: AssetFilter): AssetCollection
   boardsAndCommissions(id: String!, locale: String, preview: Boolean): BoardsAndCommissions
   boardsAndCommissionsCollection(limit: Int = 100, locale: String, order: [BoardsAndCommissionsOrder], preview: Boolean, skip: Int = 0, where: BoardsAndCommissionsFilter): BoardsAndCommissionsCollection
-  briefSummary(id: String!, locale: String, preview: Boolean): BriefSummary
-  briefSummaryCollection(limit: Int = 100, locale: String, order: [BriefSummaryOrder], preview: Boolean, skip: Int = 0, where: BriefSummaryFilter): BriefSummaryCollection
-  bulletedList(id: String!, locale: String, preview: Boolean): BulletedList
-  bulletedListCollection(limit: Int = 100, locale: String, order: [BulletedListOrder], preview: Boolean, skip: Int = 0, where: BulletedListFilter): BulletedListCollection
   callToAction(id: String!, locale: String, preview: Boolean): CallToAction
   callToActionCollection(limit: Int = 100, locale: String, order: [CallToActionOrder], preview: Boolean, skip: Int = 0, where: CallToActionFilter): CallToActionCollection
   category(id: String!, locale: String, preview: Boolean): Category
   categoryCollection(limit: Int = 100, locale: String, order: [CategoryOrder], preview: Boolean, skip: Int = 0, where: CategoryFilter): CategoryCollection
-  contactEntry(id: String!, locale: String, preview: Boolean): ContactEntry
-  contactEntryCollection(limit: Int = 100, locale: String, order: [ContactEntryOrder], preview: Boolean, skip: Int = 0, where: ContactEntryFilter): ContactEntryCollection
+  contact(id: String!, locale: String, preview: Boolean): Contact
+  contactCollection(limit: Int = 100, locale: String, order: [ContactOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): ContactCollection
   contentBlockHeader(id: String!, locale: String, preview: Boolean): ContentBlockHeader
   contentBlockHeaderCollection(limit: Int = 100, locale: String, order: [ContentBlockHeaderOrder], preview: Boolean, skip: Int = 0, where: ContentBlockHeaderFilter): ContentBlockHeaderCollection
+  contentTypeLocation(id: String!, locale: String, preview: Boolean): ContentTypeLocation
+  contentTypeLocationCollection(limit: Int = 100, locale: String, order: [ContentTypeLocationOrder], preview: Boolean, skip: Int = 0, where: ContentTypeLocationFilter): ContentTypeLocationCollection
   documentWrapper(id: String!, locale: String, preview: Boolean): DocumentWrapper
   documentWrapperCollection(limit: Int = 100, locale: String, order: [DocumentWrapperOrder], preview: Boolean, skip: Int = 0, where: DocumentWrapperFilter): DocumentWrapperCollection
   draftNavigationLink(id: String!, locale: String, preview: Boolean): DraftNavigationLink
@@ -1848,32 +1635,20 @@ type Query {
   draftNavigationMenu(id: String!, locale: String, preview: Boolean): DraftNavigationMenu
   draftNavigationMenuCollection(limit: Int = 100, locale: String, order: [DraftNavigationMenuOrder], preview: Boolean, skip: Int = 0, where: DraftNavigationMenuFilter): DraftNavigationMenuCollection
   entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
-  headline(id: String!, locale: String, preview: Boolean): Headline
-  headlineCollection(limit: Int = 100, locale: String, order: [HeadlineOrder], preview: Boolean, skip: Int = 0, where: HeadlineFilter): HeadlineCollection
+  eventEntry(id: String!, locale: String, preview: Boolean): EventEntry
+  eventEntryCollection(limit: Int = 100, locale: String, order: [EventEntryOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): EventEntryCollection
   heroImage(id: String!, locale: String, preview: Boolean): HeroImage
   heroImageCollection(limit: Int = 100, locale: String, order: [HeroImageOrder], preview: Boolean, skip: Int = 0, where: HeroImageFilter): HeroImageCollection
+  imageWrapper(id: String!, locale: String, preview: Boolean): ImageWrapper
+  imageWrapperCollection(limit: Int = 100, locale: String, order: [ImageWrapperOrder], preview: Boolean, skip: Int = 0, where: ImageWrapperFilter): ImageWrapperCollection
   listWithTitle(id: String!, locale: String, preview: Boolean): ListWithTitle
   listWithTitleCollection(limit: Int = 100, locale: String, order: [ListWithTitleOrder], preview: Boolean, skip: Int = 0, where: ListWithTitleFilter): ListWithTitleCollection
   officePage(id: String!, locale: String, preview: Boolean): OfficePage
   officePageCollection(limit: Int = 100, locale: String, order: [OfficePageOrder], preview: Boolean, skip: Int = 0, where: OfficePageFilter): OfficePageCollection
-  organizationalSectionName(id: String!, locale: String, preview: Boolean): OrganizationalSectionName
-  organizationalSectionNameCollection(limit: Int = 100, locale: String, order: [OrganizationalSectionNameOrder], preview: Boolean, skip: Int = 0, where: OrganizationalSectionNameFilter): OrganizationalSectionNameCollection
   pageMetadata(id: String!, locale: String, preview: Boolean): PageMetadata
   pageMetadataCollection(limit: Int = 100, locale: String, order: [PageMetadataOrder], preview: Boolean, skip: Int = 0, where: PageMetadataFilter): PageMetadataCollection
-  pageSectionHeadline(id: String!, locale: String, preview: Boolean): PageSectionHeadline
-  pageSectionHeadlineCollection(limit: Int = 100, locale: String, order: [PageSectionHeadlineOrder], preview: Boolean, skip: Int = 0, where: PageSectionHeadlineFilter): PageSectionHeadlineCollection
-  pageSubheader(id: String!, locale: String, preview: Boolean): PageSubheader
-  pageSubheaderCollection(limit: Int = 100, locale: String, order: [PageSubheaderOrder], preview: Boolean, skip: Int = 0, where: PageSubheaderFilter): PageSubheaderCollection
-  phoneNumber(id: String!, locale: String, preview: Boolean): PhoneNumber
-  phoneNumberCollection(limit: Int = 100, locale: String, order: [PhoneNumberOrder], preview: Boolean, skip: Int = 0, where: PhoneNumberFilter): PhoneNumberCollection
-  programName(id: String!, locale: String, preview: Boolean): ProgramName
-  programNameCollection(limit: Int = 100, locale: String, order: [ProgramNameOrder], preview: Boolean, skip: Int = 0, where: ProgramNameFilter): ProgramNameCollection
   serviceEntry(id: String!, locale: String, preview: Boolean): ServiceEntry
   serviceEntryCollection(limit: Int = 100, locale: String, order: [ServiceEntryOrder], preview: Boolean, skip: Int = 0, where: ServiceEntryFilter): ServiceEntryCollection
-  serviceEntryFieldLabel(id: String!, locale: String, preview: Boolean): ServiceEntryFieldLabel
-  serviceEntryFieldLabelCollection(limit: Int = 100, locale: String, order: [ServiceEntryFieldLabelOrder], preview: Boolean, skip: Int = 0, where: ServiceEntryFieldLabelFilter): ServiceEntryFieldLabelCollection
-  serviceEntryFieldSet(id: String!, locale: String, preview: Boolean): ServiceEntryFieldSet
-  serviceEntryFieldSetCollection(limit: Int = 100, locale: String, order: [ServiceEntryFieldSetOrder], preview: Boolean, skip: Int = 0, where: ServiceEntryFieldSetFilter): ServiceEntryFieldSetCollection
   serviceGroup(id: String!, locale: String, preview: Boolean): ServiceGroup
   serviceGroupCollection(limit: Int = 100, locale: String, order: [ServiceGroupOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): ServiceGroupCollection
   testRichText(id: String!, locale: String, preview: Boolean): TestRichText
@@ -1896,7 +1671,6 @@ type ServiceEntry implements Entry {
   serviceCategoryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryServiceCategoryCollection
   serviceCtaCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryServiceCtaCollection
   serviceDescriptionsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ServiceEntryServiceDescriptionsCollection
-  serviceSubhead(locale: String, preview: Boolean): PageSubheader
   subheading(locale: String): String
   sys: Sys!
 }
@@ -1930,7 +1704,7 @@ type ServiceEntryCollection {
 }
 
 type ServiceEntryContactInformationCollection {
-  items: [ContactEntry]!
+  items: [Entry]!
   limit: Int!
   skip: Int!
   total: Int!
@@ -1957,132 +1731,6 @@ type ServiceEntryDescriptionLinks {
   entries: ServiceEntryDescriptionEntries!
 }
 
-"""
-Describes the kind of information you are supplying in the accompanying service info field [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntryFieldLabel)
-"""
-type ServiceEntryFieldLabel implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  fieldLabel(locale: String): [String]
-  linkedFrom(allowedLocales: [String]): ServiceEntryFieldLabelLinkingCollections
-  sys: Sys!
-}
-
-type ServiceEntryFieldLabelCollection {
-  items: [ServiceEntryFieldLabel]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input ServiceEntryFieldLabelFilter {
-  AND: [ServiceEntryFieldLabelFilter]
-  OR: [ServiceEntryFieldLabelFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  fieldLabel_contains_all: [String]
-  fieldLabel_contains_none: [String]
-  fieldLabel_contains_some: [String]
-  fieldLabel_exists: Boolean
-  sys: SysFilter
-}
-
-type ServiceEntryFieldLabelLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum ServiceEntryFieldLabelOrder {
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-"""
-Labeled fields and rich text to describe requirements, steps etc in a service etry [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntryFieldSet)
-"""
-type ServiceEntryFieldSet implements Entry {
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): ServiceEntryFieldSetLinkingCollections
-  serviceEntryFieldName(locale: String): String
-  serviceFieldInput(locale: String): ServiceEntryFieldSetServiceFieldInput
-  serviceInfoType(locale: String): String
-  sys: Sys!
-}
-
-type ServiceEntryFieldSetCollection {
-  items: [ServiceEntryFieldSet]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-input ServiceEntryFieldSetFilter {
-  AND: [ServiceEntryFieldSetFilter]
-  OR: [ServiceEntryFieldSetFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  serviceEntryFieldName: String
-  serviceEntryFieldName_contains: String
-  serviceEntryFieldName_exists: Boolean
-  serviceEntryFieldName_in: [String]
-  serviceEntryFieldName_not: String
-  serviceEntryFieldName_not_contains: String
-  serviceEntryFieldName_not_in: [String]
-  serviceFieldInput_contains: String
-  serviceFieldInput_exists: Boolean
-  serviceFieldInput_not_contains: String
-  serviceInfoType: String
-  serviceInfoType_contains: String
-  serviceInfoType_exists: Boolean
-  serviceInfoType_in: [String]
-  serviceInfoType_not: String
-  serviceInfoType_not_contains: String
-  serviceInfoType_not_in: [String]
-  sys: SysFilter
-}
-
-type ServiceEntryFieldSetLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-}
-
-enum ServiceEntryFieldSetOrder {
-  serviceEntryFieldName_ASC
-  serviceEntryFieldName_DESC
-  serviceInfoType_ASC
-  serviceInfoType_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-type ServiceEntryFieldSetServiceFieldInput {
-  json: JSON!
-  links: ServiceEntryFieldSetServiceFieldInputLinks!
-}
-
-type ServiceEntryFieldSetServiceFieldInputAssets {
-  block: [Asset]!
-  hyperlink: [Asset]!
-}
-
-type ServiceEntryFieldSetServiceFieldInputEntries {
-  block: [Entry]!
-  hyperlink: [Entry]!
-  inline: [Entry]!
-}
-
-type ServiceEntryFieldSetServiceFieldInputLinks {
-  assets: ServiceEntryFieldSetServiceFieldInputAssets!
-  entries: ServiceEntryFieldSetServiceFieldInputEntries!
-}
-
 input ServiceEntryFilter {
   AND: [ServiceEntryFilter]
   OR: [ServiceEntryFilter]
@@ -2096,7 +1744,6 @@ input ServiceEntryFilter {
   applicationProcess_contains: String
   applicationProcess_exists: Boolean
   applicationProcess_not_contains: String
-  contactInformation: cfContactEntryNestedFilter
   contactInformationCollection_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   description_contains: String
@@ -2120,8 +1767,6 @@ input ServiceEntryFilter {
   serviceCtaCollection_exists: Boolean
   serviceDescriptions: cfListWithTitleNestedFilter
   serviceDescriptionsCollection_exists: Boolean
-  serviceSubhead: cfPageSubheaderNestedFilter
-  serviceSubhead_exists: Boolean
   subheading: String
   subheading_contains: String
   subheading_exists: Boolean
@@ -2248,7 +1893,7 @@ type ServiceGroupCollection {
 }
 
 type ServiceGroupContactInfoCollection {
-  items: [ContactEntry]!
+  items: [Entry]!
   limit: Int!
   skip: Int!
   total: Int!
@@ -2281,7 +1926,6 @@ input ServiceGroupFilter {
   additionalResources_contains: String
   additionalResources_exists: Boolean
   additionalResources_not_contains: String
-  contactInfo: cfContactEntryNestedFilter
   contactInfoCollection_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   description_contains: String
@@ -2538,16 +2182,9 @@ input cfCategoryNestedFilter {
   sys: SysFilter
 }
 
-input cfContactEntryNestedFilter {
-  AND: [cfContactEntryNestedFilter]
-  OR: [cfContactEntryNestedFilter]
-  city: String
-  city_contains: String
-  city_exists: Boolean
-  city_in: [String]
-  city_not: String
-  city_not_contains: String
-  city_not_in: [String]
+input cfContactNestedFilter {
+  AND: [cfContactNestedFilter]
+  OR: [cfContactNestedFilter]
   contentfulMetadata: ContentfulMetadataFilter
   email: String
   email_contains: String
@@ -2556,21 +2193,41 @@ input cfContactEntryNestedFilter {
   email_not: String
   email_not_contains: String
   email_not_in: [String]
+  entityName: String
+  entityName_contains: String
+  entityName_exists: Boolean
+  entityName_in: [String]
+  entityName_not: String
+  entityName_not_contains: String
+  entityName_not_in: [String]
+  phone: String
+  phone_contains: String
+  phone_exists: Boolean
+  phone_in: [String]
+  phone_not: String
+  phone_not_contains: String
+  phone_not_in: [String]
+  sys: SysFilter
+}
+
+input cfContentTypeLocationNestedFilter {
+  AND: [cfContentTypeLocationNestedFilter]
+  OR: [cfContentTypeLocationNestedFilter]
+  city: String
+  city_contains: String
+  city_exists: Boolean
+  city_in: [String]
+  city_not: String
+  city_not_contains: String
+  city_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
   name: String
-  nameAndNumberCollection_exists: Boolean
   name_contains: String
   name_exists: Boolean
   name_in: [String]
   name_not: String
   name_not_contains: String
   name_not_in: [String]
-  phoneNumber: String
-  phoneNumber_contains: String
-  phoneNumber_exists: Boolean
-  phoneNumber_in: [String]
-  phoneNumber_not: String
-  phoneNumber_not_contains: String
-  phoneNumber_not_in: [String]
   state: String
   state_contains: String
   state_exists: Boolean
@@ -2578,28 +2235,28 @@ input cfContactEntryNestedFilter {
   state_not: String
   state_not_contains: String
   state_not_in: [String]
-  streetAddress: String
-  streetAddress_contains: String
-  streetAddress_exists: Boolean
-  streetAddress_in: [String]
-  streetAddress_not: String
-  streetAddress_not_contains: String
-  streetAddress_not_in: [String]
-  suiteFloorEtc: String
-  suiteFloorEtc_contains: String
-  suiteFloorEtc_exists: Boolean
-  suiteFloorEtc_in: [String]
-  suiteFloorEtc_not: String
-  suiteFloorEtc_not_contains: String
-  suiteFloorEtc_not_in: [String]
+  streetAddress1: String
+  streetAddress1_contains: String
+  streetAddress1_exists: Boolean
+  streetAddress1_in: [String]
+  streetAddress1_not: String
+  streetAddress1_not_contains: String
+  streetAddress1_not_in: [String]
+  streetAddress2: String
+  streetAddress2_contains: String
+  streetAddress2_exists: Boolean
+  streetAddress2_in: [String]
+  streetAddress2_not: String
+  streetAddress2_not_contains: String
+  streetAddress2_not_in: [String]
   sys: SysFilter
-  zipCode: String
-  zipCode_contains: String
-  zipCode_exists: Boolean
-  zipCode_in: [String]
-  zipCode_not: String
-  zipCode_not_contains: String
-  zipCode_not_in: [String]
+  zip: String
+  zip_contains: String
+  zip_exists: Boolean
+  zip_in: [String]
+  zip_not: String
+  zip_not_contains: String
+  zip_not_in: [String]
 }
 
 input cfDocumentWrapperNestedFilter {
@@ -2629,13 +2286,20 @@ input cfListWithTitleNestedFilter {
   AND: [cfListWithTitleNestedFilter]
   OR: [cfListWithTitleNestedFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  listTitle: String
-  listTitle_contains: String
-  listTitle_exists: Boolean
-  listTitle_in: [String]
-  listTitle_not: String
-  listTitle_not_contains: String
-  listTitle_not_in: [String]
+  dropdownChoices: String
+  dropdownChoices_contains: String
+  dropdownChoices_exists: Boolean
+  dropdownChoices_in: [String]
+  dropdownChoices_not: String
+  dropdownChoices_not_contains: String
+  dropdownChoices_not_in: [String]
+  internalTitle: String
+  internalTitle_contains: String
+  internalTitle_exists: Boolean
+  internalTitle_in: [String]
+  internalTitle_not: String
+  internalTitle_not_contains: String
+  internalTitle_not_in: [String]
   paragraphOrList_contains: String
   paragraphOrList_exists: Boolean
   paragraphOrList_not_contains: String
@@ -2667,13 +2331,6 @@ input cfPageMetadataNestedFilter {
   metaTitle_not: String
   metaTitle_not_contains: String
   metaTitle_not_in: [String]
-  pageTitle: String
-  pageTitle_contains: String
-  pageTitle_exists: Boolean
-  pageTitle_in: [String]
-  pageTitle_not: String
-  pageTitle_not_contains: String
-  pageTitle_not_in: [String]
   slug: String
   slug_contains: String
   slug_exists: Boolean
@@ -2681,41 +2338,6 @@ input cfPageMetadataNestedFilter {
   slug_not: String
   slug_not_contains: String
   slug_not_in: [String]
-  sys: SysFilter
-}
-
-input cfPageSubheaderNestedFilter {
-  AND: [cfPageSubheaderNestedFilter]
-  OR: [cfPageSubheaderNestedFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  subheadText: String
-  subheadText_contains: String
-  subheadText_exists: Boolean
-  subheadText_in: [String]
-  subheadText_not: String
-  subheadText_not_contains: String
-  subheadText_not_in: [String]
-  sys: SysFilter
-}
-
-input cfPhoneNumberNestedFilter {
-  AND: [cfPhoneNumberNestedFilter]
-  OR: [cfPhoneNumberNestedFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  personWithPhoneNumber: String
-  personWithPhoneNumber_contains: String
-  personWithPhoneNumber_exists: Boolean
-  personWithPhoneNumber_in: [String]
-  personWithPhoneNumber_not: String
-  personWithPhoneNumber_not_contains: String
-  personWithPhoneNumber_not_in: [String]
-  phoneNumber: String
-  phoneNumber_contains: String
-  phoneNumber_exists: Boolean
-  phoneNumber_in: [String]
-  phoneNumber_not: String
-  phoneNumber_not_contains: String
-  phoneNumber_not_in: [String]
   sys: SysFilter
 }
 
@@ -2751,7 +2373,6 @@ input cfServiceEntryNestedFilter {
   serviceCategoryCollection_exists: Boolean
   serviceCtaCollection_exists: Boolean
   serviceDescriptionsCollection_exists: Boolean
-  serviceSubhead_exists: Boolean
   subheading: String
   subheading_contains: String
   subheading_exists: Boolean

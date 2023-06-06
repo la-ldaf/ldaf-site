@@ -10,29 +10,44 @@ const query = gql`
   query OfficePage {
     officePageCollection {
       items {
-        officePageTitle
-        subheader
+        sys {
+          id
+        }
+        pageTitle
+        subheading
         description {
           json
         }
         servicesAndPrograms {
           json
         }
-        contactInfo {
-          ... on ContactEntry {
+        mailingAddress {
+          ... on ContentTypeLocation {
             name
-            streetAddress
-            suiteFloorEtc
+            streetAddress1
+            streetAddress2
             city
             state
-            zipCode
-            phoneNumber
-            email
+            zip
+          }
+        }
+        contactsCollection {
+          items {
+            ... on Contact {
+              sys {
+                id
+              }
+              entityName
+              phone
+              email
+            }
           }
         }
         metadata {
           ... on PageMetadata {
             slug
+            metaTitle
+            metaDescription
           }
         }
       }
