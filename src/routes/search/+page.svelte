@@ -1,6 +1,8 @@
 <script>
   import "./search-page.scss";
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate } from "svelte";
+  import { page } from "$app/stores";
+  import { connectSearchBox } from "instantsearch.js/es/connectors";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
@@ -9,11 +11,67 @@
   const ALGOLIA_APP_ID = "9IIDYROXZ5";
   const ALGOLIA_API_KEY = "0eac885faaa4c70dfc9dd8b6ab4ab10f";
 
+  // console.log($page.url.searchParams);
+
   onMount(() => {
     const search = instantsearch({
-      indexName: "media-sample-data",
       searchClient: algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY),
+      indexName: "media-sample-data",
+      routing: true,
+      // routing: {
+      //   stateMapping: {
+      //     stateToRoute(uiState) {
+      //       console.log("stateToRoute");
+      //       console.log(uiState);
+      //     },
+      //     routeToState(routeState) {
+      //       console.log("routeToState");
+      //       console.log(routeState);
+      //     },
+      //   },
+      // },
     });
+
+    // Create a render function
+    // const renderSearchBox = (renderOptions, isFirstRender) => {
+    //   const { query, refine, clear, isSearchStalled, widgetParams } = renderOptions;
+
+    //   if (isFirstRender) {
+    //     const input = document.createElement("input");
+
+    //     const loadingIndicator = document.createElement("span");
+    //     loadingIndicator.textContent = "Loading...";
+
+    //     const button = document.createElement("button");
+    //     button.textContent = "X";
+
+    //     input.addEventListener("input", (event) => {
+    //       refine(event.target.value);
+    //     });
+
+    //     button.addEventListener("click", () => {
+    //       clear();
+    //     });
+
+    //     widgetParams.container.appendChild(input);
+    //     widgetParams.container.appendChild(loadingIndicator);
+    //     widgetParams.container.appendChild(button);
+    //   }
+
+    //   widgetParams.container.querySelector("input").value = query;
+    //   widgetParams.container.querySelector("span").hidden = !isSearchStalled;
+    // };
+
+    // create custom widget
+    // const customSearchBox = connectSearchBox(renderSearchBox);
+
+    // instantiate custom widget
+    // search.addWidgets([
+    //   customSearchBox({
+    //     container: document.querySelector(".searchbox"),
+    //   }),
+    // ]);
+
     search.addWidgets([
       configure({
         hitsPerPage: 3,
@@ -87,9 +145,14 @@
         },
       }),
     ]);
+
     search.start();
   });
-  // export let data;
+
+  // afterUpdate(() => {
+  //   document.querySelector(".ais-SearchBox-input").value = "test";
+  // });
+  export let data;
 </script>
 
 <div class="search-results">

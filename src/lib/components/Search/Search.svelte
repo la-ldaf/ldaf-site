@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  import { goto } from "$app/navigation";
   import { url as searchIcon } from "$icons/search--white";
   import Button from "$lib/components/Button";
   import classNames from "$lib/util/classNames";
@@ -25,6 +26,8 @@
   const onSubmit = (e: Event) => {
     e.preventDefault();
     dispatch("submit", { searchTerm });
+    const algoliaIndex = "media-sample-data";
+    goto(`/search/?${algoliaIndex}[query]=${encodeURI(searchTerm)}`);
   };
 </script>
 
