@@ -13,26 +13,28 @@ import type { NavLinkType, NavMenuType } from "./types";
 import type { NavQuery } from "./$queries.generated";
 
 export const loadMainNav = async () => {
-  const query = gql`
-    query Nav {
-      draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
-        items {
-          text
-          childrenCollection {
-            items {
-              ... on DraftNavigationMenu {
-                sys {
-                  id
-                }
-                text
-                childrenCollection {
-                  items {
-                    ... on DraftNavigationLink {
-                      sys {
-                        id
+  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
+    const query = gql`
+      query Nav {
+        draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
+          items {
+            text
+            childrenCollection {
+              items {
+                ... on DraftNavigationMenu {
+                  sys {
+                    id
+                  }
+                  text
+                  childrenCollection {
+                    items {
+                      ... on DraftNavigationLink {
+                        sys {
+                          id
+                        }
+                        text
+                        link
                       }
-                      text
-                      link
                     }
                   }
                 }
@@ -41,14 +43,12 @@ export const loadMainNav = async () => {
           }
         }
       }
-    }
-  `;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<NavQuery>(printQuery(query));
-  if (data) {
+    `;
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+    const data = await client.fetch<NavQuery>(printQuery(query));
     const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
     const mainMenuChildren = mainMenu?.childrenCollection
       ?.items as DraftNavigationMenuChildrenItem[];
