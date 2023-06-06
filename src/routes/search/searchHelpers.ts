@@ -1,6 +1,7 @@
-import type { Hit } from "instantsearch.js";
+// import type { Hit } from "@algolia/client-search";
+// import type { AlgoliaHit, HitHighlightResult } from "instantsearch.js";
 
-export function searchHitsTemplate(hit: Hit) {
+export function searchHitsTemplate(hit) {
   // Note: under the post-excerpt div, replaced hit._highlightResult.content.value with
   // hit._snippetResult.content.value, which seems more concise. Could be subject to change.
 

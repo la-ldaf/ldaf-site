@@ -1,6 +1,6 @@
 <script>
   import "./search-page.scss";
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount } from "svelte";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
