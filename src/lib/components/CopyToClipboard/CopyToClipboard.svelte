@@ -14,28 +14,28 @@
   type StatusDisplayMap = {
     [statusType in Status]: {
       icon: string;
-      parentClass: string;
-      messageDisplay: string;
+      buttonClass: string;
+      messageClass: string;
       messageContent: string;
     };
   };
   const statusDisplayMap: StatusDisplayMap = {
     pending: {
       icon: copyIcon,
-      parentClass: "",
-      messageDisplay: "display--none",
+      buttonClass: "",
+      messageClass: "display--none",
       messageContent: "",
     },
     success: {
       icon: successIcon,
-      parentClass: "copy-success-icon",
-      messageDisplay: "display--inline copy-success-message",
+      buttonClass: "copy-success-icon",
+      messageClass: "display--inline copy-success-message",
       messageContent: "Copied to clipboard!",
     },
     error: {
       icon: errorIcon,
-      parentClass: "copy-error-icon",
-      messageDisplay: "display--inline copy-error-message",
+      buttonClass: "copy-error-icon",
+      messageClass: "display--inline copy-error-message",
       messageContent: "Failed to copy to clipboard.",
     },
   };
@@ -54,9 +54,9 @@
   };
 </script>
 
-<Button class={statusDisplay.parentClass} unstyled={true} on:click={() => copyToClipboard(content)}>
+<Button class={statusDisplay.buttonClass} unstyled={true} on:click={() => copyToClipboard(content)}>
   <Icon src={statusDisplay.icon} title="Copy to clipboard" />
 </Button>
-<span class={statusDisplay.messageDisplay}>
+<span class={statusDisplay.messageClass}>
   {statusDisplay.messageContent}
 </span>
