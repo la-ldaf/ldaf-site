@@ -10,9 +10,13 @@ let logout: (() => void) | undefined;
 
 if (browser) {
   page.subscribe(($page) => {
-    const newSearchParams = new URLSearchParams($page.url.searchParams);
-    newSearchParams.delete("preview");
-    refreshURL = `${$page.url.pathname}${newSearchParams.toString()}${$page.url.hash}`;
+    if ($page && $page.url) {
+      const newSearchParams = new URLSearchParams($page.url.searchParams);
+      newSearchParams.delete("preview");
+      refreshURL = `${$page.url.pathname}${newSearchParams.toString()}${$page.url.hash}`;
+    } else {
+      refreshURL = undefined;
+    }
   });
 
   logout = () => {
