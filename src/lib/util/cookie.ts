@@ -33,12 +33,5 @@ export const setCookie = (key: string, val: string, options: CookieOptions = {})
 
 export const deleteCookie = (
   key: string,
-  { path, maxAge, sameSite }: CookieOptions = { path: "/", maxAge: 0, sameSite: "Lax" }
-) =>
-  (document.cookie = [
-    `${encodeURIComponent(key)}=`,
-    `Path=${path}`,
-    `Max-Age=${maxAge}`,
-    `SameSite=${sameSite}`,
-    "Secure",
-  ].join("; "));
+  options: CookieOptions = { path: "/", sameSite: "Lax" }
+) => setCookie(key, "", { ...options, maxAge: 0 });
