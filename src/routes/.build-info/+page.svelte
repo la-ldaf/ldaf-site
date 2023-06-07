@@ -21,8 +21,8 @@
   const storybookUrl = `https://storybook-${VERCEL_GIT_PULL_REQUEST_ID}-ldaf.vercel.app`;
 </script>
 
-<section class="usa-section">
-  <div class="grid-container">
+<div class="usa-section grid-container">
+  <main id="main-content">
     <p>
       {#if VERCEL_ENV}
         Vercel environment: <code>{VERCEL_ENV}</code>
@@ -68,5 +68,5 @@
     {:else}
       <p>This preview is not associated with a pull request.</p>
     {/if}
-  </div>
-</section>
+  </main>
+</div>
