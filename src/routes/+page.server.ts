@@ -1,6 +1,5 @@
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import gql from "graphql-tag";
-import getContentfulClient from "$lib/services/contentful";
+import type { Document } from "@contentful/rich-text-types";
 import { homepageTestData } from "$lib/components/ContentfulRichText/__tests__/documents";
 import type { EntriesQuery } from "./$queries.generated";
 
@@ -20,18 +19,13 @@ const query = gql`
 `;
 
 // TODO: refactor to a reusable helper function that wraps contenfulClient
-export async function load() {
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-
-    const { titleEntry, bodyEntry } = await client.fetch<EntriesQuery>(query);
+export const load = async ({ locals: { contentfulClient } }) => {
+  if (contentfulClient) {
+    const { titleEntry, bodyEntry } = await contentfulClient.fetch<EntriesQuery>(query);
 
     return {
-      title: titleEntry?.body?.json,
-      body: bodyEntry?.body?.json,
+      title: titleEntry?.body?.json as Document,
+      body: bodyEntry?.body?.json as Document,
     };
   } else {
     return {
@@ -39,4 +33,4 @@ export async function load() {
       body: homepageTestData.body.document,
     };
   }
-}
+};

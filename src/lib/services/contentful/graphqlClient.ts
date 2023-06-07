@@ -27,15 +27,20 @@ const getKeyFromOptions = ({
   preview = false,
 }: ClientOptions): ClientKey => `${apiPrefix}${delim}${spaceID}${delim}${token}${delim}${preview}`;
 
-type FetchOptions<T> = {
+type ClientFetchOptions<T, V extends Record<string, unknown>> = {
   predicate?: (data: unknown) => data is T;
-  variables?: Record<string, any>;
+  variables?: V;
 };
+
+type ClientFetch = <T, V extends Record<string, unknown> = Record<never, never>>(
+  query: DocumentNode,
+  options?: ClientFetchOptions<T, V>
+) => Promise<T>;
 
 export type Client = {
   options: ClientOptions;
   key: ClientKey;
-  fetch: <T>(query: DocumentNode, options?: FetchOptions<T>) => Promise<T>;
+  fetch: ClientFetch;
 };
 
 const clients = new Map<ClientKey, Client>();
@@ -70,6 +75,7 @@ class FailedResponseError extends GraphQLFetchError {
 }
 
 class UnexpectedStructureError extends GraphQLFetchError {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(public readonly query: DocumentNode, public readonly data: any) {
     const message = "Got successful response with unexpected data structure!";
     super(message, query);
@@ -98,9 +104,9 @@ const getClient = ({
   const client = {
     options: { spaceID, token, apiPrefix, preview },
     key,
-    async fetch<T>(
+    async fetch<T, V extends Record<string, unknown>>(
       query: DocumentNode,
-      { predicate, variables }: FetchOptions<T> = {}
+      { predicate, variables }: ClientFetchOptions<T, V> = {}
     ): Promise<T> {
       const { spaceID, token, apiPrefix } = this.options;
       const url = `${apiPrefix}/${spaceID}`;

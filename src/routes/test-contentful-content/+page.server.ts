@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
 import { isDocument } from "$lib/components/ContentfulRichText/predicates";
-import type { EntryQuery } from "./$queries.generated";
+import type { EntryQuery, EntryQueryVariables } from "./$queries.generated";
 
 const query = gql`
   query Entry($preview: Boolean = false) {
@@ -26,7 +26,7 @@ export const load = async ({ locals: { contentfulClient } }) => {
     };
   }
 
-  const data = await contentfulClient.fetch<EntryQuery>(query);
+  const data = await contentfulClient.fetch<EntryQuery, EntryQueryVariables>(query);
 
   const { testRichText } = data;
   if (!testRichText) throw error(500, { message: "Failed to load entry" });
