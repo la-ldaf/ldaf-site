@@ -2,16 +2,16 @@ import { browser } from "$app/environment";
 import { writable, type Writable } from "svelte/store";
 import { localStorageSupport } from "$lib/constants/support";
 
-export default <T>(key: string, initialValue?: T): Writable<T> => {
+export default <T>(key: string, initialValue?: T): Writable<T | undefined> => {
   if (!browser) throw new Error("localStorageStore must be initialized in the browser");
   if (!localStorageSupport) throw new Error("localStorageStore requires a working localStorage");
   const storedValue = localStorage.getItem(key);
   const init: T = storedValue === null ? initialValue : JSON.parse(storedValue);
-  const store = writable<T>(init);
+  const store = writable<T | undefined>(init);
   store.subscribe((newValue) => {
     if (newValue) {
       localStorage.setItem(key, JSON.stringify(newValue));
-    } else {
+    } else if (newValue === null) {
       localStorage.removeItem(key);
     }
   });

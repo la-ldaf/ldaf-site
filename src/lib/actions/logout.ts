@@ -1,6 +1,5 @@
 import { browser } from "$app/environment";
 import { page } from "$app/stores";
-import managementClient from "$lib/stores/managementClient";
 import userInfo from "$lib/stores/userInfo";
 import userToken from "$lib/stores/userToken";
 
@@ -20,9 +19,8 @@ if (browser) {
   });
 
   logout = () => {
-    userToken?.set(undefined);
-    userInfo?.set(undefined);
-    managementClient?.set(undefined);
+    userToken?.set(null);
+    userInfo?.set(null);
     if (refreshURL) {
       window.location.href = refreshURL;
     } else {

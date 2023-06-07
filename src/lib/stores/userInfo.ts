@@ -9,11 +9,12 @@ type UserInfo = {
   avatarURL?: string;
 };
 
-let userInfo: Writable<UserInfo | undefined> | undefined;
+let userInfo: Writable<UserInfo | undefined | null> | undefined;
 if (browser) {
   userInfo = localStorageStore("ldaf-user-info");
   managementClient?.subscribe(async (client) => {
-    if (!client) return userInfo?.set(undefined);
+    if (client === null) return userInfo?.set(null);
+    if (!client) return;
     const { email, firstName, lastName, avatarUrl } = await client.getCurrentUser();
     userInfo?.set({
       email,
