@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { HTMLAnchorAttributes } from "svelte/elements";
   import {
+    PUBLIC_CONTENTFUL_OAUTH_ENDPOINT,
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID,
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI,
   } from "$env/static/public";
@@ -8,7 +9,7 @@
 
   type $$Props = HTMLAnchorAttributes;
 
-  const baseURL = "https://be.contentful.com/oauth/authorize";
+  const baseURL = PUBLIC_CONTENTFUL_OAUTH_ENDPOINT;
   $: loginParams = {
     response_type: "token",
     scope: "content_management_read",
