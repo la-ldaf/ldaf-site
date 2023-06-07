@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
+import { print as printQuery } from "graphql/language/printer";
 import gql from "graphql-tag";
 import getClient, { type Client } from "./graphqlClient";
 
@@ -35,7 +36,7 @@ describe("Contentful Fetch", () => {
       expect(fetch).toHaveBeenCalledWith(
         "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
         {
-          body: `{"query":"${query}"}`,
+          body: JSON.stringify({ query: printQuery(query), variables: { preview: false } }),
           headers: {
             Authorization: "Bearer API_TOKEN",
             "Content-Type": "application/json",
