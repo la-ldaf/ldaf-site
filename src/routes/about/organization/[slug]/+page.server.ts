@@ -78,7 +78,7 @@ export const load = (async ({ params }): Promise<OfficePage> => {
       contentfulMetadata: { tags: [] },
       pageTitle: "Sample Office Page",
       subheading:
-        "This page is loaded with test data since a connection with Contentful could not be established",
+        "This page is loaded with test data since a connection with Contentful could not be established.",
       description: {
         json: documentWithParagraphData.documentWithParagraph.document,
         links: {
@@ -110,14 +110,21 @@ export const load = (async ({ params }): Promise<OfficePage> => {
       contactsCollection: {
         limit: 100,
         skip: 0,
-        total: 1,
+        total: 2,
         items: [
           {
             sys: { id: "2", environmentId: "", spaceId: "" },
             contentfulMetadata: { tags: [] },
-            entityName: "Contact Person",
+            entityName: "Contact Person 1",
             phone: "1-123-456-7890",
-            email: "contact@example.com",
+            email: "contact1@example.com",
+          },
+          {
+            sys: { id: "3", environmentId: "", spaceId: "" },
+            contentfulMetadata: { tags: [] },
+            entityName: "Contact Person 2",
+            phone: "1-123-456-7890",
+            email: "contact2@example.com",
           },
         ],
       },

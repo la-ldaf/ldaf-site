@@ -1,17 +1,15 @@
 <script lang="ts">
   import "./ContactInfo.scss";
+  import Section from "./ContactInfoSection.svelte";
+  import CopyToClipboard from "$lib/components/CopyToClipboard";
+  import classNames from "$lib/util/classNames";
 
   import type { Maybe, ContentTypeLocation, Contact } from "$lib/services/contentful/schema.js";
-
-  import Section from "./ContactInfoSection.svelte";
-  import classNames from "$lib/util/classNames";
 
   export let address: Maybe<ContentTypeLocation> | undefined;
   export let contacts: Maybe<Contact>[] | undefined;
 
   $: validContacts = contacts && contacts.filter((contact): contact is Contact => !!contact);
-  $: hasPhone = validContacts && validContacts.some((contact) => !!(contact && contact.phone));
-  $: hasEmail = validContacts && validContacts.some((contact) => !!(contact && contact.email));
 
   let className = "";
   export { className as class };
@@ -21,10 +19,11 @@
 <div class={classes}>
   <h2 class="margin-0 margin-bottom-1">Contact info</h2>
   {#if address}
+    <strong class="display-block margin-bottom-1">Mailing address</strong>
+    {@const { name, streetAddress1, streetAddress2, city, state, zip } = address}
     <Section>
-      <svelte:fragment slot="label">Mailing address</svelte:fragment>
+      <svelte:fragment slot="label">{name}</svelte:fragment>
       <svelte:fragment slot="info">
-        {@const { streetAddress1, streetAddress2, city, state, zip } = address}
         {streetAddress1}{streetAddress2 ? `, ${streetAddress2}` : ""}
         <br />
         {city}, {state}
@@ -32,32 +31,21 @@
       </svelte:fragment>
     </Section>
   {/if}
-  {#if validContacts && hasPhone}
-    <Section>
-      <svelte:fragment slot="label">Phone</svelte:fragment>
-      <svelte:fragment slot="info">
-        {#each validContacts as { sys, entityName, phone } (sys.id)}
+  {#if validContacts}
+    <strong class="display-block margin-bottom-1">Contact</strong>
+    {#each validContacts as { sys, entityName, phone, email } (sys.id)}
+      <Section>
+        <svelte:fragment slot="label">{entityName}</svelte:fragment>
+        <svelte:fragment slot="info">
           {#if phone}
-            <span class="font-sans-3xs">{entityName}</span>
-            <br />
-            {phone}
+            {phone} <br />
           {/if}
-        {/each}
-      </svelte:fragment>
-    </Section>
-  {/if}
-  {#if validContacts && hasEmail}
-    <Section>
-      <svelte:fragment slot="label">Email</svelte:fragment>
-      <svelte:fragment slot="info">
-        {#each validContacts as { sys, entityName, email } (sys.id)}
           {#if email}
-            <span class="font-sans-3xs">{entityName}</span>
-            <br />
-            {email}
+            <a href="mailto:{email}">{email}</a>
+            <CopyToClipboard content={email} />
           {/if}
-        {/each}
-      </svelte:fragment>
-    </Section>
+        </svelte:fragment>
+      </Section>
+    {/each}
   {/if}
 </div>
