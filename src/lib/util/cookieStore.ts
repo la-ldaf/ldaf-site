@@ -11,7 +11,7 @@ export default (key: string, options: CookieOptions): Writable<string | undefine
     if (newValue) {
       setCookie(key, newValue, options);
     } else if (newValue === null) {
-      deleteCookie(key);
+      deleteCookie(key, options);
     }
   });
   return store;
