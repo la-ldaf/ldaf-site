@@ -1,6 +1,7 @@
 <script lang="ts">
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
+  import { browser } from "$app/environment";
   import "../app.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Header from "$lib/components/Header";
@@ -8,6 +9,7 @@
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
   import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
+  import isInIframe from "$lib/util/isInIframe";
 
   export let data;
   const { navItems, secondaryNavItems, siteTitle, previewAuthenticationError } = data;
@@ -23,6 +25,16 @@
 
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
+
+  $: inIframe = browser && $page.url && isInIframe();
+
+  type ShowLoginLinkState = "uninitialized" | "sameWindow" | "newWindow";
+  let showLoginLink: ShowLoginLinkState = "uninitialized";
+  const getShowLoginLink = (browser: boolean, inIframe: boolean): ShowLoginLinkState => {
+    if (!browser) return "uninitialized";
+    return inIframe ? "newWindow" : "sameWindow";
+  };
+  $: showLoginLink = getShowLoginLink(browser, inIframe);
 </script>
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
@@ -34,7 +46,13 @@
     <div class="usa-section usa-prose grid-container">
       <h1>{previewAuthenticationError.code}</h1>
       <p>{previewAuthenticationError.message}</p>
-      <p>(Do you need to <LoginLink>login</LoginLink>?)</p>
+      {#if showLoginLink !== "uninitialized"}
+        <p>
+          (Do you need to <LoginLink target={showLoginLink === "newWindow" ? "_blank" : undefined}
+            >login</LoginLink
+          >?)
+        </p>
+      {/if}
     </div>
   {:else}
     <main id="main-content">
