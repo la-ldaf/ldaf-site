@@ -1,12 +1,8 @@
-@use "uswds-core" as * with (
-  $theme-show-notifications: false
-);
-
 .usa-button.copy-success-icon,
 .copy-success-message {
-  @include u-text("green-cool-30v");
+  color: $success;
 }
 .usa-button.copy-error-icon,
 .copy-error-message {
-  @include u-text("red-50v");
+  color: $error;
 }
