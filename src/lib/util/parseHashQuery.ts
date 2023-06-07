@@ -1,4 +1,4 @@
-export default (hash: string): Record<string, string | boolean> => {
+export default (hash: string): Record<string, string> => {
   const queryStart = hash.indexOf("?");
   if (!queryStart) return {};
   return Object.fromEntries(
@@ -6,6 +6,6 @@ export default (hash: string): Record<string, string | boolean> => {
       .substring(queryStart + 1)
       .split("&")
       .map((pair) => pair.split("="))
-      .map(([key, value]) => [key, value || true])
+      .map(([key, value]) => [key, value ?? ""])
   );
 };
