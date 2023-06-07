@@ -35,6 +35,7 @@
     return inIframe ? "newWindow" : "sameWindow";
   };
   $: showLoginLink = getShowLoginLink(browser, inIframe);
+  $: loginLinkProps = showLoginLink === "newWindow" ? { target: "_blank" } : {};
 </script>
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
@@ -48,9 +49,7 @@
       <p>{previewAuthenticationError.message}</p>
       {#if showLoginLink !== "uninitialized"}
         <p>
-          (Do you need to <LoginLink target={showLoginLink === "newWindow" ? "_blank" : undefined}
-            >login</LoginLink
-          >?)
+          (Do you need to <LoginLink {...loginLinkProps}>login</LoginLink>?)
         </p>
       {/if}
     </div>
