@@ -28,8 +28,9 @@
   $: if ($navigating) navMenuExpanded = false;
 
   beforeNavigate((navigation) => {
-    if (navigation.from?.url.searchParams.has("preview")) {
-      navigation.to?.url.searchParams.set("preview", "");
+    const previousPreviewValue = navigation.from?.url.searchParams.get("preview");
+    if (typeof previousPreviewValue === "string") {
+      navigation.to?.url.searchParams.set("preview", previousPreviewValue);
     }
   });
 
