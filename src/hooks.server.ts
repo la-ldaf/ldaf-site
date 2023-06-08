@@ -19,6 +19,31 @@ const handlePreload = (async ({ event, resolve }) =>
 const handleToken = (async ({ event, resolve }) => {
   const { fetch } = event;
 
+  const accessToken =
+    event.cookies.get("ldafUserToken") ??
+    event.request.headers.get("Authorization")?.match(/^Bearer ([^ ]+)$/)?.[1];
+
+  getCurrentUser: if (accessToken) {
+    const currentUserResponse = await fetch(`${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!currentUserResponse.ok) break getCurrentUser;
+    const {
+      email,
+      firstName,
+      lastName,
+      avatarUrl,
+    }: {
+      email: string;
+      firstName: string;
+      lastName: string;
+      avatarUrl: string;
+    } = await currentUserResponse.json();
+    event.locals.currentUser = { email, name: `${firstName} ${lastName}`, avatarURL: avatarUrl };
+  }
+
   const preview = event.url.searchParams.has("preview");
   if (!preview) {
     event.locals.contentfulClient =
@@ -27,15 +52,11 @@ const handleToken = (async ({ event, resolve }) => {
             spaceID: CONTENTFUL_SPACE_ID,
             token: CONTENTFUL_DELIVERY_API_TOKEN,
             preview: false,
-            fetch: event.fetch,
+            fetch,
           })
         : undefined;
     return resolve(event);
   }
-
-  const accessToken =
-    event.cookies.get("ldafUserToken") ??
-    event.request.headers.get("Authorization")?.match(/^Bearer ([^ ]+)$/)?.[1];
 
   if (!accessToken) {
     event.locals.previewAuthenticationError = {
@@ -75,7 +96,7 @@ const handleToken = (async ({ event, resolve }) => {
           spaceID: CONTENTFUL_SPACE_ID,
           token: CONTENTFUL_PREVIEW_API_TOKEN,
           preview: true,
-          fetch: event.fetch,
+          fetch,
         })
       : undefined;
 

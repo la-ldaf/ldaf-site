@@ -1,6 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import { ContentfulClient } from "./lib/services/contentful";
+import { CurrentUser } from "./lib/contexts/currentUser";
 
 // for information about these interfaces
 declare global {
@@ -14,6 +15,7 @@ declare global {
         code: number;
         message: string;
       };
+      currentUser?: CurrentUser;
       contentfulClient?: ContentfulClient;
     }
     // interface PageData {}

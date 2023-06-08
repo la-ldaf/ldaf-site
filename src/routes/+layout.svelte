@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { setContext } from "svelte";
   import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
   import { beforeNavigate } from "$app/navigation";
@@ -10,8 +11,12 @@
   import { BlurhashRenderer } from "$lib/components/Image";
   import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
   import isInIframe from "$lib/util/isInIframe";
+  import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
 
   export let data;
+
+  setContext<CurrentUser | undefined>(currentUserKey, data.currentUser);
+
   const { navItems, secondaryNavItems, siteTitle, previewAuthenticationError } = data;
 
   // Update the active nav item based on the current path.

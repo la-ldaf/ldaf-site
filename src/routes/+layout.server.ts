@@ -3,12 +3,13 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 
 export const load = async (options) => {
   const {
-    locals: { previewAuthenticationError },
+    locals: { previewAuthenticationError, currentUser },
   } = options;
   return {
     previewAuthenticationError,
     siteTitle: loadSiteTitle(),
     secondaryNavItems: loadSecondaryNav(),
     navItems: await loadMainNav(options),
+    currentUser,
   };
 };

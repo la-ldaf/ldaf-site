@@ -1,22 +1,22 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { getContext } from "svelte";
   import "./User.scss";
-  import userInfo from "$lib/stores/userInfo";
   import logout from "$lib/actions/logout";
   import { browser } from "$app/environment";
+  import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
 
-  let mounted = false;
-  onMount(() => (mounted = true));
+  const currentUser = getContext<CurrentUser | undefined>(currentUserKey);
 </script>
 
 <div class="user">
-  {#if $userInfo}
-    <span>Welcome, {$userInfo.name}!</span>
+  {#if currentUser}
+    <span>Welcome, {currentUser.name}!</span>
   {/if}
-  {#if browser && $userInfo}
+  {#if browser && currentUser}
     <a class="login-link" href="#logout" on:click={logout}>Logout</a>
-  {:else if browser && mounted}
+  {:else if browser}
     <LoginLink>Login</LoginLink>
   {/if}
 </div>
+l
