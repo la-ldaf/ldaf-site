@@ -3,11 +3,11 @@ import { page } from "$app/stores";
 import userInfo from "$lib/stores/userInfo";
 import userToken from "$lib/stores/userToken";
 
-let refreshURL: string | undefined = undefined;
-
 let logout: (() => void) | undefined;
 
 if (browser) {
+  let refreshURL: string | undefined = undefined;
+
   page.subscribe(($page) => {
     if ($page && $page.url) {
       const newSearchParams = new URLSearchParams($page.url.searchParams);
