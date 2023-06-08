@@ -1,3 +1,4 @@
+import { get } from "svelte/store";
 import { browser } from "$app/environment";
 import { page } from "$app/stores";
 import userInfo from "$lib/stores/userInfo";
@@ -6,26 +7,14 @@ import userToken from "$lib/stores/userToken";
 let logout: (() => void) | undefined;
 
 if (browser) {
-  let refreshURL: string | undefined = undefined;
-
-  page.subscribe(($page) => {
-    if ($page && $page.url) {
-      const newSearchParams = new URLSearchParams($page.url.searchParams);
-      newSearchParams.delete("preview");
-      refreshURL = `${$page.url.pathname}${newSearchParams.toString()}${$page.url.hash}`;
-    } else {
-      refreshURL = undefined;
-    }
-  });
-
   logout = () => {
     userToken?.set(null);
     userInfo?.set(null);
-    if (refreshURL) {
-      window.location.href = refreshURL;
-    } else {
-      window.location.reload();
-    }
+    const url = get(page)?.url;
+    if (!url) return window.location.reload();
+    const refreshURL = new URL(url);
+    refreshURL.searchParams.delete("preview");
+    window.location.href = refreshURL.toString();
   };
 }
 
