@@ -31,7 +31,7 @@
   $: lastPageURL = $page?.url;
   beforeNavigate(({ to }) => {
     const previousPreviewValue = lastPageURL?.searchParams.get("preview");
-    if (typeof previousPreviewValue === "string") {
+    if (typeof previousPreviewValue === "string" && to && !to.url.searchParams.has("preview")) {
       to?.url.searchParams.set("preview", previousPreviewValue);
     }
   });
