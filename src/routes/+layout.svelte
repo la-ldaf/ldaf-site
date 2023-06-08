@@ -28,7 +28,7 @@
 
   // This is a workaround for https://github.com/sveltejs/kit/issues/10122
   let lastPageURL: URL | undefined;
-  $: if ($page) lastPageURL = $page?.url;
+  $: lastPageURL = $page?.url;
   beforeNavigate(({ to }) => {
     const previousPreviewValue = lastPageURL?.searchParams.get("preview");
     if (typeof previousPreviewValue === "string") {
@@ -36,7 +36,7 @@
     }
   });
 
-  $: inIframe = browser && $page.url && isInIframe();
+  $: inIframe = browser && isInIframe();
 
   type ShowLoginLinkState = "uninitialized" | "sameWindow" | "newWindow";
   let showLoginLink: ShowLoginLinkState = "uninitialized";
