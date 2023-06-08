@@ -12,11 +12,8 @@
 <div class="user">
   {#if currentUser}
     <span>Welcome, {currentUser.name}!</span>
-  {/if}
-  {#if browser && currentUser}
     <a class="login-link" href="#logout" on:click={logout}>Logout</a>
-  {:else if browser}
+  {:else}
     <LoginLink>Login</LoginLink>
   {/if}
 </div>
-l
