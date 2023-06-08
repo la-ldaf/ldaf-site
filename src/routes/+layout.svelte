@@ -2,6 +2,7 @@
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
   import { browser } from "$app/environment";
+  import { beforeNavigate } from "$app/navigation";
   import "../app.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Header from "$lib/components/Header";
@@ -25,6 +26,12 @@
 
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
+
+  beforeNavigate((navigation) => {
+    if (navigation.from?.url.searchParams.has("preview")) {
+      navigation.to?.url.searchParams.set("preview", "");
+    }
+  });
 
   $: inIframe = browser && $page.url && isInIframe();
 
