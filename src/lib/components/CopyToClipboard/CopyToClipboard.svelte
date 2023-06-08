@@ -6,7 +6,8 @@
   import { url as successIcon } from "$icons/check_circle";
   import { url as errorIcon } from "$icons/error";
 
-  export let content: string;
+  export let contentToCopy: string;
+  export let successMessage: string = "";
 
   type Status = "pending" | "success" | "error";
   let status: Status = "pending";
@@ -30,7 +31,7 @@
       icon: successIcon,
       buttonClass: "copy-success-icon",
       messageClass: "display--inline copy-success-message",
-      messageContent: "Copied to clipboard!",
+      messageContent: successMessage ? successMessage : "Copied to clipboard!",
     },
     error: {
       icon: errorIcon,
@@ -50,13 +51,17 @@
       console.error("failed to copy: ", err);
       status = "error";
     }
-    //setTimeout(() => (status = "pending"), 3000);
+    setTimeout(() => (status = "pending"), 3000);
   };
 </script>
 
-<Button class={statusDisplay.buttonClass} unstyled={true} on:click={() => copyToClipboard(content)}>
+<Button
+  class={statusDisplay.buttonClass}
+  unstyled={true}
+  on:click={() => copyToClipboard(contentToCopy)}
+>
   <Icon src={statusDisplay.icon} title="Copy to clipboard" />
 </Button>
-<span class={statusDisplay.messageClass}>
+<div class="font-sans-3xs {statusDisplay.messageClass}">
   {statusDisplay.messageContent}
-</span>
+</div>

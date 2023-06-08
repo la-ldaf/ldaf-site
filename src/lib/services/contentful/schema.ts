@@ -810,6 +810,7 @@ export type Contact = Entry & {
   entityName?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<ContactLinkingCollections>;
   phone?: Maybe<Scalars['String']['output']>;
+  phoneExt?: Maybe<Scalars['String']['output']>;
   sys: Sys;
 };
 
@@ -834,6 +835,12 @@ export type ContactLinkedFromArgs = {
 
 /** The name, phone number and email of any person, office or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactPhoneArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The name, phone number and email of any person, office or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+export type ContactPhoneExtArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -864,6 +871,13 @@ export type ContactFilter = {
   entityName_not_contains?: InputMaybe<Scalars['String']['input']>;
   entityName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   phone?: InputMaybe<Scalars['String']['input']>;
+  phoneExt?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_contains?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  phoneExt_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  phoneExt_not?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_not_contains?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   phone_contains?: InputMaybe<Scalars['String']['input']>;
   phone_exists?: InputMaybe<Scalars['Boolean']['input']>;
   phone_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -900,6 +914,8 @@ export enum ContactOrder {
   EmailDesc = 'email_DESC',
   EntityNameAsc = 'entityName_ASC',
   EntityNameDesc = 'entityName_DESC',
+  PhoneExtAsc = 'phoneExt_ASC',
+  PhoneExtDesc = 'phoneExt_DESC',
   PhoneAsc = 'phone_ASC',
   PhoneDesc = 'phone_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
@@ -3626,6 +3642,13 @@ export type CfContactNestedFilter = {
   entityName_not_contains?: InputMaybe<Scalars['String']['input']>;
   entityName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   phone?: InputMaybe<Scalars['String']['input']>;
+  phoneExt?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_contains?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  phoneExt_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  phoneExt_not?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_not_contains?: InputMaybe<Scalars['String']['input']>;
+  phoneExt_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   phone_contains?: InputMaybe<Scalars['String']['input']>;
   phone_exists?: InputMaybe<Scalars['Boolean']['input']>;
   phone_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;

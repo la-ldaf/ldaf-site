@@ -471,6 +471,7 @@ type Contact implements Entry {
   entityName(locale: String): String
   linkedFrom(allowedLocales: [String]): ContactLinkingCollections
   phone(locale: String): String
+  phoneExt(locale: String): String
   sys: Sys!
 }
 
@@ -500,6 +501,13 @@ input ContactFilter {
   entityName_not_contains: String
   entityName_not_in: [String]
   phone: String
+  phoneExt: String
+  phoneExt_contains: String
+  phoneExt_exists: Boolean
+  phoneExt_in: [String]
+  phoneExt_not: String
+  phoneExt_not_contains: String
+  phoneExt_not_in: [String]
   phone_contains: String
   phone_exists: Boolean
   phone_in: [String]
@@ -519,6 +527,8 @@ enum ContactOrder {
   email_DESC
   entityName_ASC
   entityName_DESC
+  phoneExt_ASC
+  phoneExt_DESC
   phone_ASC
   phone_DESC
   sys_firstPublishedAt_ASC
@@ -2201,6 +2211,13 @@ input cfContactNestedFilter {
   entityName_not_contains: String
   entityName_not_in: [String]
   phone: String
+  phoneExt: String
+  phoneExt_contains: String
+  phoneExt_exists: Boolean
+  phoneExt_in: [String]
+  phoneExt_not: String
+  phoneExt_not_contains: String
+  phoneExt_not_in: [String]
   phone_contains: String
   phone_exists: Boolean
   phone_in: [String]

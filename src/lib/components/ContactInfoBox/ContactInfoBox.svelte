@@ -12,6 +12,8 @@
 
   $: validContacts = contacts && contacts.filter((contact): contact is Contact => !!contact);
 
+  const removePhoneFormatting = (phone: string): string => phone.replaceAll(/[^0-9]/g, "");
+
   let className = "";
   export { className as class };
   $: classes = classNames("border radius-md padding-2 maxw-mobile-lg", className);
@@ -34,16 +36,18 @@
   {/if}
   {#if validContacts}
     <strong class="display-block margin-bottom-1">Contact</strong>
-    {#each validContacts as { sys, entityName, phone, email } (sys.id)}
+    {#each validContacts as { sys, entityName, phone, phoneExt, email } (sys.id)}
       <Section>
         <svelte:fragment slot="label">{entityName}</svelte:fragment>
         <svelte:fragment slot="info">
           {#if phone}
-            <Link href="tel:{phone}">{phone}</Link><br />
+            <Link href="tel:+1{removePhoneFormatting(phone)}{phoneExt ? `;${phoneExt}` : ''}">
+              {phone}{phoneExt ? `, ext. ${phoneExt}` : ""}
+            </Link><br />
           {/if}
           {#if email}
             <Link href="mailto:{email}">{email}</Link>
-            <CopyToClipboard content={email} />
+            <CopyToClipboard contentToCopy={email} successMessage="Address copied to clipboard!" />
           {/if}
         </svelte:fragment>
       </Section>
