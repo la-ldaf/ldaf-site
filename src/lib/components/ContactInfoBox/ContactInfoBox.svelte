@@ -2,6 +2,7 @@
   import "./ContactInfo.scss";
   import Section from "./ContactInfoSection.svelte";
   import CopyToClipboard from "$lib/components/CopyToClipboard";
+  import Link from "$lib/components/Link";
   import classNames from "$lib/util/classNames";
 
   import type { Maybe, ContentTypeLocation, Contact } from "$lib/services/contentful/schema.js";
@@ -38,10 +39,10 @@
         <svelte:fragment slot="label">{entityName}</svelte:fragment>
         <svelte:fragment slot="info">
           {#if phone}
-            {phone} <br />
+            <Link href="tel:{phone}">{phone}</Link><br />
           {/if}
           {#if email}
-            <a href="mailto:{email}">{email}</a>
+            <Link href="mailto:{email}">{email}</Link>
             <CopyToClipboard content={email} />
           {/if}
         </svelte:fragment>
