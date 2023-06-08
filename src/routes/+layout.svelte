@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { navigating } from "$app/stores";
-  import { page } from "$app/stores";
+  import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
   import { beforeNavigate } from "$app/navigation";
   import "../app.scss";
@@ -27,10 +26,13 @@
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
 
-  beforeNavigate((navigation) => {
-    const previousPreviewValue = navigation.from?.url.searchParams.get("preview");
+  // This is a workaround for https://github.com/sveltejs/kit/issues/10122
+  let lastPageURL: URL | undefined;
+  $: if ($page) lastPageURL = $page?.url;
+  beforeNavigate(({ to }) => {
+    const previousPreviewValue = lastPageURL?.searchParams.get("preview");
     if (typeof previousPreviewValue === "string") {
-      navigation.to?.url.searchParams.set("preview", previousPreviewValue);
+      to?.url.searchParams.set("preview", previousPreviewValue);
     }
   });
 
