@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "svelte-kit sync && npm run gen-operations",
+    "predev": "npm run prebuild",
     "dev": "concurrently --kill-others --names graphql,dev \"npm run gen-operations -- --watch\" \"vite dev\"",
     "prebuild": "node scripts/prebuild.js && npm run gen-operations",
     "build": "vite build",
