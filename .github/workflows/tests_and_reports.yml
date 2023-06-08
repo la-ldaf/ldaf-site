@@ -63,6 +63,7 @@ jobs:
           delete-old-comments: true
 
       - name: Create artifact with report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
@@ -94,6 +95,7 @@ jobs:
         run: npm run test:e2e
 
       - name: Create artifact with report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
@@ -121,6 +123,7 @@ jobs:
         run: npm run bundle-visualizer
 
       - name: Create artifact with bundle visualizer
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
@@ -161,6 +164,7 @@ jobs:
         run: cp .lighthouse/index.html lighthouse-reports/index.html
 
       - name: Create artifact with Lighthouse reports
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
