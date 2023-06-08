@@ -97,7 +97,7 @@ const getClient = ({
   if (!spaceID) throw new Error("no space ID provided!");
   if (!token) throw new Error("no token provided!");
 
-  const key = getKeyFromOptions({ spaceID, token });
+  const key = getKeyFromOptions({ apiPrefix, spaceID, token });
   const existingClient = clients.get(key);
   if (existingClient) return existingClient;
 
@@ -129,5 +129,7 @@ const getClient = ({
 
   return client;
 };
+
+export const clearClients = () => clients.clear();
 
 export default getClient;
