@@ -7,7 +7,7 @@
   import { url as errorIcon } from "$icons/error";
 
   export let contentToCopy: string;
-  export let successMessage: string = "";
+  export let successMessage = "";
 
   type Status = "pending" | "success" | "error";
   let status: Status = "pending";
