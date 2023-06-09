@@ -36,6 +36,6 @@ describe("SideNav", () => {
     expect(childItem).toBeVisible();
     expect(childItem).toHaveAttribute("href", "/");
     expect(currentItem).toBeVisible();
-    expect(currentItem).toHaveAttribute("class", "usa-current");
+    expect(currentItem).toHaveAttribute("class", "usa-link usa-current");
   });
 });

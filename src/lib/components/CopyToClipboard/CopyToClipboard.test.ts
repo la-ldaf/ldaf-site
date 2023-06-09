@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 
 import CopyToClipboard from "./CopyToClipboard.svelte";
 
@@ -12,14 +13,14 @@ describe("CopyToClipboard", () => {
     render(CopyToClipboard);
     expect(screen.getByTitle("Copy to clipboard")).toBeVisible();
   });
-  it("copies provided content on click and displays provided success message", () => {
+  it("copies provided content on click and displays provided success message", async () => {
     render(CopyToClipboard, {
       props: {
         contentToCopy: "content to copy",
         successMessage: "success",
       },
     });
-    screen.getByRole("button").click();
+    await userEvent.click(screen.getByRole("button"));
     expect(writeText).toHaveBeenCalledWith("content to copy");
     expect(screen.getByText("success")).toBeVisible();
   });
