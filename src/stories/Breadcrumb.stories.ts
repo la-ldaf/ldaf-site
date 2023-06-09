@@ -18,7 +18,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default args can be found in the Link wrapper LinkView.svelte
 export const Default: Story = {
   args: {
     path: breadcrumbTestContent,
