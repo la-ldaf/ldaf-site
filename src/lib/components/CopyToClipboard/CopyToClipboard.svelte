@@ -18,6 +18,7 @@
       buttonClass: string;
       messageClass: string;
       messageContent: string;
+      ariaAlert: boolean;
     };
   };
   const statusDisplayMap: StatusDisplayMap = {
@@ -26,18 +27,21 @@
       buttonClass: "",
       messageClass: "display--none",
       messageContent: "",
+      ariaAlert: false,
     },
     success: {
       icon: successIcon,
       buttonClass: "copy-success-icon",
       messageClass: "display--inline copy-success-message",
       messageContent: successMessage ? successMessage : "Copied to clipboard!",
+      ariaAlert: true,
     },
     error: {
       icon: errorIcon,
       buttonClass: "copy-error-icon",
       messageClass: "display--inline copy-error-message",
       messageContent: "Failed to copy to clipboard.",
+      ariaAlert: true,
     },
   };
 
@@ -62,6 +66,9 @@
 >
   <Icon src={statusDisplay.icon} title="Copy to clipboard" />
 </Button>
-<div class="font-sans-3xs {statusDisplay.messageClass}">
+<div
+  class="font-sans-3xs {statusDisplay.messageClass}"
+  role={statusDisplay.ariaAlert ? "alert" : ""}
+>
   {statusDisplay.messageContent}
 </div>

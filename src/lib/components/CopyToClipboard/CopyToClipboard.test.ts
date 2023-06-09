@@ -22,6 +22,8 @@ describe("CopyToClipboard", () => {
     });
     await userEvent.click(screen.getByRole("button"));
     expect(writeText).toHaveBeenCalledWith("content to copy");
-    expect(screen.getByText("success")).toBeVisible();
+    const successMessage = screen.getByText("success");
+    expect(successMessage).toBeVisible();
+    expect(successMessage).toHaveAttribute("role", "alert");
   });
 });
