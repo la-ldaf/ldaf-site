@@ -1,5 +1,6 @@
 <script lang="ts">
   import "./Hero.scss";
+
   import heroImg from "@uswds/uswds/img/hero.jpg?quality=75&imagetools";
   import heroImgMobile from "@uswds/uswds/img/hero.jpg?quality=75&w=412&imagetools";
   import heroImgWebp from "@uswds/uswds/img/hero.jpg?webp&quality=75&imagetools";
@@ -36,17 +37,4 @@
     mean={heroImgMean}
     loading="eager"
   />
-  <div class="grid-container">
-    <div class="usa-hero__callout">
-      <h1 class="usa-hero__heading">
-        <span class="usa-hero__heading--alt">Hero callout:</span>Bring attention to a project
-        priority
-      </h1>
-      <p>
-        Support the callout with some short explanatory text. You don’t need more than a couple of
-        sentences.
-      </p>
-      <a class="usa-button" href="/">Call to action</a>
-    </div>
-  </div>
 </section>

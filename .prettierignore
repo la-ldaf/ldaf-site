@@ -12,8 +12,14 @@ node_modules
 /e2e-tests/report
 /e2e-tests/results
 /bundle-visualizer
+/lighthouse-reports
+/src/lib/services/contentful/schema.ts
+/src/lib/services/contentful/schema.graphql
 
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# generated files
+*.generated.*

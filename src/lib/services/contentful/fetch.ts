@@ -2,7 +2,8 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 
 // Re-evaluate utils using env vars on each request to ensure tests can
 //   properly mock and overwrite them.
-const contentfulConnected = (): boolean => !!(CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
+export const contentfulConnected = (): boolean =>
+  !!(CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN);
 
 const graphApiUrl = (): string =>
   `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`;
@@ -15,16 +16,18 @@ const graphApiOptions = () => ({
   },
 });
 
-// TODO: Setup type def for GraphQL query parameter.
-const contentfulFetch = async (query: string): Promise<false | Response> => {
+const contentfulFetch = async <T>(query: string): Promise<false | T> => {
   if (contentfulConnected()) {
-    return fetch(graphApiUrl(), {
+    const response = await fetch(graphApiUrl(), {
       ...graphApiOptions(),
       body: JSON.stringify({ query }),
     });
-  } else {
-    return Promise.resolve(false);
+    if (response && response.ok) {
+      const { data } = await response.json();
+      return data as T;
+    }
   }
+  return Promise.resolve(false);
 };
 
 export default contentfulFetch;
