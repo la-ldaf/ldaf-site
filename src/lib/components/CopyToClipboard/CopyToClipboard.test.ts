@@ -10,7 +10,7 @@ Object.assign(navigator, { clipboard: { writeText } });
 
 describe("CopyToClipboard", () => {
   it("renders", () => {
-    render(CopyToClipboard);
+    render(CopyToClipboard, { props: { contentToCopy: "content to copy" } });
     expect(screen.getByTitle("Copy to clipboard")).toBeVisible();
   });
   it("copies provided content on click and displays provided success message", async () => {
