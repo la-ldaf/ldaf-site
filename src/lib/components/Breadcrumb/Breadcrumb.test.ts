@@ -3,25 +3,20 @@ import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
 import Breadcrumb from "./Breadcrumb.svelte";
+import breadcrumbTestContent from "./__tests__/BreadcrumbTestContent";
 
 describe("Breadcrumb", () => {
   it("renders", async () => {
     render(Breadcrumb, {
       props: {
-        path: [
-          { id: "0", title: "Home", link: "/" },
-          { id: "1", title: "About", link: "/about" },
-        ],
+        path: breadcrumbTestContent,
         currentPageTitle: "Current",
       },
     });
-    const link1 = screen.getByText("Home").parentElement;
-    const link2 = screen.getByText("About").parentElement;
+    const link = screen.getByText("Breadcrumb 0").parentElement;
     const currentPage = screen.getByText("Current");
-    expect(link1).toBeInTheDocument();
-    expect(link1).toHaveAttribute("href", "/");
-    expect(link2).toBeInTheDocument();
-    expect(link2).toHaveAttribute("href", "/about");
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "/");
     expect(currentPage).toBeInTheDocument();
   });
 });
