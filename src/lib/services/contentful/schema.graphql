@@ -125,14 +125,12 @@ Overview pages for Boards, Commissions, Councils, and Task Forces. [See type def
 """
 type BoardsAndCommissions implements Entry {
   additionalInformation(locale: String): BoardsAndCommissionsAdditionalInformation
-  contactBc(locale: String, preview: Boolean): Entry
   contactUs(locale: String): BoardsAndCommissionsContactUs
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): BoardsAndCommissionsLinkingCollections
   meetings(locale: String): BoardsAndCommissionsMeetings
   membership(locale: String): BoardsAndCommissionsMembership
   overview(locale: String): BoardsAndCommissionsOverview
-  subHeadBc(locale: String, preview: Boolean): Entry
   subheading(locale: String): String
   sys: Sys!
   title(locale: String): String
@@ -193,7 +191,6 @@ input BoardsAndCommissionsFilter {
   additionalInformation_contains: String
   additionalInformation_exists: Boolean
   additionalInformation_not_contains: String
-  contactBc_exists: Boolean
   contactUs_contains: String
   contactUs_exists: Boolean
   contactUs_not_contains: String
@@ -207,7 +204,6 @@ input BoardsAndCommissionsFilter {
   overview_contains: String
   overview_exists: Boolean
   overview_not_contains: String
-  subHeadBc_exists: Boolean
   subheading: String
   subheading_contains: String
   subheading_exists: Boolean

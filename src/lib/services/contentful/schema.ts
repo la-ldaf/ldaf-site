@@ -243,14 +243,12 @@ export enum AssetOrder {
 export type BoardsAndCommissions = Entry & {
   __typename?: 'BoardsAndCommissions';
   additionalInformation?: Maybe<BoardsAndCommissionsAdditionalInformation>;
-  contactBc?: Maybe<Entry>;
   contactUs?: Maybe<BoardsAndCommissionsContactUs>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<BoardsAndCommissionsLinkingCollections>;
   meetings?: Maybe<BoardsAndCommissionsMeetings>;
   membership?: Maybe<BoardsAndCommissionsMembership>;
   overview?: Maybe<BoardsAndCommissionsOverview>;
-  subHeadBc?: Maybe<Entry>;
   subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
   title?: Maybe<Scalars['String']['output']>;
@@ -260,13 +258,6 @@ export type BoardsAndCommissions = Entry & {
 /** Overview pages for Boards, Commissions, Councils, and Task Forces. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/boardsAndCommissions) */
 export type BoardsAndCommissionsAdditionalInformationArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-/** Overview pages for Boards, Commissions, Councils, and Task Forces. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/boardsAndCommissions) */
-export type BoardsAndCommissionsContactBcArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -297,13 +288,6 @@ export type BoardsAndCommissionsMembershipArgs = {
 /** Overview pages for Boards, Commissions, Councils, and Task Forces. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/boardsAndCommissions) */
 export type BoardsAndCommissionsOverviewArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-/** Overview pages for Boards, Commissions, Councils, and Task Forces. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/boardsAndCommissions) */
-export type BoardsAndCommissionsSubHeadBcArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -382,7 +366,6 @@ export type BoardsAndCommissionsFilter = {
   additionalInformation_contains?: InputMaybe<Scalars['String']['input']>;
   additionalInformation_exists?: InputMaybe<Scalars['Boolean']['input']>;
   additionalInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
-  contactBc_exists?: InputMaybe<Scalars['Boolean']['input']>;
   contactUs_contains?: InputMaybe<Scalars['String']['input']>;
   contactUs_exists?: InputMaybe<Scalars['Boolean']['input']>;
   contactUs_not_contains?: InputMaybe<Scalars['String']['input']>;
@@ -396,7 +379,6 @@ export type BoardsAndCommissionsFilter = {
   overview_contains?: InputMaybe<Scalars['String']['input']>;
   overview_exists?: InputMaybe<Scalars['Boolean']['input']>;
   overview_not_contains?: InputMaybe<Scalars['String']['input']>;
-  subHeadBc_exists?: InputMaybe<Scalars['Boolean']['input']>;
   subheading?: InputMaybe<Scalars['String']['input']>;
   subheading_contains?: InputMaybe<Scalars['String']['input']>;
   subheading_exists?: InputMaybe<Scalars['Boolean']['input']>;
