@@ -12,6 +12,7 @@
   import Search from "$lib/components/Search";
   import Title from "./Title";
   import Nav from "./Nav";
+  import { page } from "$app/stores";
 
   export let navItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
@@ -52,7 +53,10 @@
       <Nav items={navItems} />
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
-      <div class="ldaf-nav__secondary usa-nav__secondary">
+      <div
+        class="ldaf-nav__secondary usa-nav__secondary"
+        class:search-page={$page.url.pathname === "/search"}
+      >
         <ul class="usa-nav__secondary-links">
           {#each secondaryNavItems as item, i (item.id)}
             {@const { name, link } = item}
@@ -62,13 +66,15 @@
           {/each}
         </ul>
 
-        <section aria-label="Search component">
-          <Search
-            size="small"
-            id="ldaf-header-search"
-            on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
-          />
-        </section>
+        {#if $page.url.pathname !== "/search"}
+          <section aria-label="Search component">
+            <Search
+              size="small"
+              id="ldaf-header-search"
+              on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
+            />
+          </section>
+        {/if}
       </div>
     </div>
   </nav>

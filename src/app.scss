@@ -4,3 +4,17 @@
   $theme-image-path: $theme-image-path,
   $theme-show-notifications: false
 );
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import "./search-page.scss";
   import { onMount } from "svelte";
   import algoliasearch from "algoliasearch";
@@ -8,13 +8,21 @@
 
   const ALGOLIA_APP_ID = "9IIDYROXZ5";
   const ALGOLIA_API_KEY = "0eac885faaa4c70dfc9dd8b6ab4ab10f";
-
   onMount(() => {
     const search = instantsearch({
       searchClient: algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY),
       // TODO: change this the "contentful" index when ready (name subject to change)
       indexName: "media-sample-data",
       routing: true,
+      searchFunction(helper) {
+        const searchUI = document.querySelectorAll(".stats, .hits, .pagination");
+
+        searchUI.forEach((element) => {
+          (element as HTMLElement).style.display = helper.state.query === "" ? "none" : "";
+        });
+
+        helper.search();
+      },
     });
 
     search.addWidgets([
@@ -34,8 +42,9 @@
       }),
       searchBox({
         container: ".searchbox",
-        placeholder: "Search articles",
+        placeholder: "Search LDAF",
         autofocus: false,
+        showReset: false,
         cssClasses: {
           // root: // the root element of the widget.
           form: "usa-search", // the form element.
@@ -68,14 +77,13 @@
       }),
       pagination({
         container: ".pagination",
-        showFirst: false,
-        showLast: false,
+        showFirst: true,
+        showLast: true,
         cssClasses: {
           root: "usa-pagination", // the root element of the widget.
           noRefinementRoot: "", // the root container without results.
           list: "usa-pagination__list", // the list of results.
           item: "", // the item in the list of results.
-          firstPageItem: "", // the first item.
           lastPageItem: "", // the last item.
           previousPageItem: "usa-pagination__link-text usa-pagination__previous-page", // the previous item.
           nextPageItem: "usa-pagination__link-text usa-pagination__next-page", // the next item.
