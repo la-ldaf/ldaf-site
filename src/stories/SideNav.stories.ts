@@ -7,6 +7,12 @@ const meta = {
   title: "Components/SideNav",
   component: SideNav,
   tags: ["autodocs"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/oGKbyCnCRRdNzLYbiags93/LDAF-Component-Library-USWDS-3.0.2?type=design&node-id=2196-25149&t=LKG4pYn1641ykJEl-4",
+    },
+  },
 } satisfies Meta<SideNav>;
 
 export default meta;
