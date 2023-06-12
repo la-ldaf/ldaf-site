@@ -3,8 +3,8 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import timeout from "$lib/util/timeout";
-  import type { ActionData } from "./$types";
-  export let form: ActionData;
+
+  export let form;
 
   let redirectPromise: Promise<void> | undefined;
   $: redirectURL = $page.url.searchParams.get("state");

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { ActionData } from "./$types";
   import { page } from "$app/stores";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import ContentfulLoginLink from "$lib/components/ContentfulLoginLink";
@@ -8,7 +7,7 @@
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
 
-  export let form: ActionData;
+  export let form;
   const currentUser = getContext<CurrentUser | undefined>(currentUserKey);
 
   let redirectPromise: Promise<void> | undefined;
