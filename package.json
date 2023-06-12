@@ -61,7 +61,7 @@
     "autoprefixer": "^10.4.7",
     "blurhash": "^2.0.5",
     "chromatic": "^6.18.2",
-    "concurrently": "^8.0.1",
+    "concurrently": "^8.2.0",
     "contentful": "^10.2.3",
     "dotenv": "^16.1.4",
     "eslint": "^8.42.0",
