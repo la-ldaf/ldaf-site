@@ -4,9 +4,10 @@ import {
   CONTENTFUL_DELIVERY_API_TOKEN,
   CONTENTFUL_PREVIEW_API_TOKEN,
 } from "$env/static/private";
-import type { Handle } from "@sveltejs/kit";
+import type { Handle, RequestEvent } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import getContentfulClient from "$lib/services/contentful";
+import getCurrentUser from "$lib/server/getCurrentUser";
 
 const handlePreload = (async ({ event, resolve }) =>
   resolve(event, {
@@ -16,32 +17,34 @@ const handlePreload = (async ({ event, resolve }) =>
       (type === "font" && !!path.match(/sourcesanspro-regular-webfont.[0-9a-z]{8}.woff2$/)),
   })) satisfies Handle;
 
+const isLogin = (event: RequestEvent) => {
+  const url = new URL(event.request.url);
+  if (url.pathname === "/login") return true;
+  return false;
+};
+
+const isLogout = (event: RequestEvent) => {
+  const url = new URL(event.request.url);
+  if (url.pathname === "/logout") return true;
+  return false;
+};
+
 const handleToken = (async ({ event, resolve }) => {
   const { fetch } = event;
+
+  // We don't want to try to authenticate using the current token if the request is trying to set a
+  // new token or get rid of the current one.
+  if (isLogin(event) || isLogout(event)) return resolve(event);
 
   const accessToken =
     event.cookies.get("ldafUserToken") ??
     event.request.headers.get("Authorization")?.match(/^Bearer ([^ ]+)$/)?.[1];
 
-  getCurrentUser: if (accessToken) {
-    const currentUserResponse = await fetch(`${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  if (accessToken) {
+    event.locals.currentUser = await getCurrentUser({
+      token: accessToken,
+      apiEndpoint: CONTENTFUL_MANAGEMENT_API_ENDPOINT,
     });
-    if (!currentUserResponse.ok) break getCurrentUser;
-    const {
-      email,
-      firstName,
-      lastName,
-      avatarUrl,
-    }: {
-      email: string;
-      firstName: string;
-      lastName: string;
-      avatarUrl: string;
-    } = await currentUserResponse.json();
-    event.locals.currentUser = { email, name: `${firstName} ${lastName}`, avatarURL: avatarUrl };
   }
 
   const preview = event.url.searchParams.has("preview");

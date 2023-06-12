@@ -9,9 +9,9 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
-  import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
   import isInIframe from "$lib/util/isInIframe";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
+  import LoginLink from "$lib/components/LoginLink";
 
   export let data;
 
@@ -32,25 +32,23 @@
   $: if ($navigating) navMenuExpanded = false;
 
   // This is a workaround for https://github.com/sveltejs/kit/issues/10122
-  let lastPageURL: URL | undefined;
-  $: lastPageURL = $page?.url;
+  let lastPageURL: URL | undefined, lastPageError: App.Error | null | undefined;
+  $: ({ url: lastPageURL, error: lastPageError } = $page || {});
   beforeNavigate(({ to }) => {
     const previousPreviewValue = lastPageURL?.searchParams.get("preview");
-    if (typeof previousPreviewValue === "string" && to && !to.url.searchParams.has("preview")) {
+    if (
+      typeof previousPreviewValue === "string" &&
+      to &&
+      !to?.url.searchParams.has("preview") &&
+      !lastPageError &&
+      !(to?.url.pathname === "/login" || to?.url.pathname === "/logout")
+    ) {
       to?.url.searchParams.set("preview", previousPreviewValue);
     }
   });
 
   $: inIframe = browser && isInIframe();
-
-  type ShowLoginLinkState = "uninitialized" | "sameWindow" | "newWindow";
-  let showLoginLink: ShowLoginLinkState = "uninitialized";
-  const getShowLoginLink = (browser: boolean, inIframe: boolean): ShowLoginLinkState => {
-    if (!browser) return "uninitialized";
-    return inIframe ? "newWindow" : "sameWindow";
-  };
-  $: showLoginLink = getShowLoginLink(browser, inIframe);
-  $: loginLinkProps = showLoginLink === "newWindow" ? { target: "_blank" } : {};
+  $: loginLinkProps = inIframe ? { target: "_blank" } : {};
 </script>
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
@@ -62,11 +60,10 @@
     <div class="usa-section usa-prose grid-container">
       <h1>{previewAuthenticationError.code}</h1>
       <p>{previewAuthenticationError.message}</p>
-      {#if showLoginLink !== "uninitialized"}
-        <p>
-          (Do you need to <LoginLink {...loginLinkProps}>login</LoginLink>?)
-        </p>
-      {/if}
+      <p>
+        <!-- The data-sveltekit-reload here shouldn't be necessary but I can't figure out a way to invalidate the previewAuthenticationError from the client side -->
+        (Do you need to <LoginLink data-sveltekit-reload {...loginLinkProps}>log in</LoginLink>?)
+      </p>
     </div>
   {:else}
     <main id="main-content">
