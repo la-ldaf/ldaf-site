@@ -5,11 +5,12 @@
   import parseHashQuery from "$lib/util/parseHashQuery";
   import timeout from "$lib/util/timeout";
   import { getContext } from "svelte";
+  import type { Writable } from "svelte/store";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import { error, type ActionResult } from "@sveltejs/kit";
   import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 
-  const currentUser = getContext<CurrentUser | undefined>(currentUserKey);
+  const currentUser = getContext<Writable<CurrentUser | undefined>>(currentUserKey);
 
   let redirect: string | undefined;
   let loginErrorMessage: string | undefined;
@@ -75,6 +76,7 @@
       });
     }
 
+    currentUser.set(body.data.currentUser);
     newUser = body.data.currentUser;
 
     if (redirect) {
@@ -86,19 +88,21 @@
   if (browser) handleHash();
 </script>
 
-{#if loginErrorMessage}
-  <p>Failed to log in!</p>
-  <p>{loginErrorMessage}</p>
-{:else if currentUser}
-  <p>Hello {currentUser.name}!</p>
-  <p>You are already logged in!</p>
-{:else if newUser}
-  <p>Hello {newUser.name}!</p>
-  <p>You are now logged in!</p>
-{/if}
+<div class="grid-container">
+  {#if loginErrorMessage}
+    <p>Failed to log in!</p>
+    <p>{loginErrorMessage}</p>
+  {:else if newUser}
+    <p>Hello {newUser.name}!</p>
+    <p>You are now logged in!</p>
+  {:else if $currentUser}
+    <p>Hello {$currentUser.name}!</p>
+    <p>You are already logged in!</p>
+  {/if}
 
-{#if redirect}
-  <p>Please wait to be redirected back to the previous page...</p>
-{:else}
-  <p>Logging in...</p>
-{/if}
+  {#if redirect}
+    <p>Please wait to be redirected back to the previous page...</p>
+  {:else}
+    <p>Logging in...</p>
+  {/if}
+</div>

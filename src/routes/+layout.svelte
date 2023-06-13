@@ -2,7 +2,7 @@
   import { setContext } from "svelte";
   import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
-  import { beforeNavigate } from "$app/navigation";
+  import { beforeNavigate, invalidateAll } from "$app/navigation";
   import "../app.scss";
   import Banner from "$lib/components/landingPage/Banner.svelte";
   import Header from "$lib/components/Header";
@@ -12,12 +12,16 @@
   import isInIframe from "$lib/util/isInIframe";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import LoginLink from "$lib/components/LoginLink";
+  import { writable, type Writable } from "svelte/store";
 
   export let data;
 
-  setContext<CurrentUser | undefined>(currentUserKey, data.currentUser);
+  $: console.log({ data });
 
-  const { navItems, secondaryNavItems, siteTitle, previewAuthenticationError } = data;
+  const currentUserStore = writable<CurrentUser | undefined>(data.currentUser);
+  $: setContext<Writable<CurrentUser | undefined>>(currentUserKey, currentUserStore);
+
+  $: ({ navItems, secondaryNavItems, siteTitle, previewAuthenticationError } = data);
 
   // Update the active nav item based on the current path.
   let activeNavItemIndex = -1;
@@ -41,9 +45,13 @@
       to &&
       !to?.url.searchParams.has("preview") &&
       !lastPageError &&
-      !(to?.url.pathname === "/login" || to?.url.pathname === "/logout")
+      !(to?.url.pathname === "/login" || to?.url.pathname === "/logout") &&
+      !to?.url.searchParams.has("logout")
     ) {
       to?.url.searchParams.set("preview", previousPreviewValue);
+    }
+    if (to?.url.searchParams.has("logout")) {
+      to?.url.searchParams.delete("logout");
     }
   });
 
@@ -62,7 +70,7 @@
       <p>{previewAuthenticationError.message}</p>
       <p>
         <!-- The data-sveltekit-reload here shouldn't be necessary but I can't figure out a way to invalidate the previewAuthenticationError from the client side -->
-        (Do you need to <LoginLink data-sveltekit-reload {...loginLinkProps}>log in</LoginLink>?)
+        (Do you need to <LoginLink {...loginLinkProps}>log in</LoginLink>?)
       </p>
     </div>
   {:else}

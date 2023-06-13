@@ -1,13 +1,16 @@
-import { get } from "svelte/store";
 import { browser } from "$app/environment";
-import { page } from "$app/stores";
 import { error } from "@sveltejs/kit";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
+import { goto } from "$app/navigation";
+import type { Writable } from "svelte/store";
+import type { CurrentUser } from "$lib/contexts/currentUser";
 
-let logout: (() => void) | undefined;
+let logout:
+  | (({ currentUser }: { currentUser: Writable<CurrentUser | undefined> }) => void)
+  | undefined;
 
 if (browser) {
-  logout = async () => {
+  logout = async ({ currentUser }: { currentUser: Writable<CurrentUser | undefined> }) => {
     const logoutResponse = await fetch("/logout", {
       method: "POST",
       headers: {
@@ -21,11 +24,11 @@ if (browser) {
         message: `Failed to log out: ${logoutResponse.status} ${logoutResponse.statusText}: ${errorMessage}`,
       });
     }
-    const url = get(page)?.url;
-    if (!url) return location.reload();
-    const refreshURL = new URL(url);
+    const refreshURL = new URL(location.toString());
     refreshURL.searchParams.delete("preview");
-    location.href = refreshURL.toString();
+    refreshURL.searchParams.append("logout", ""); // needed so the layout doesn't preserve the preview parameter
+    currentUser?.set(undefined);
+    await goto(refreshURL.toString(), { invalidateAll: true });
   };
 }
 

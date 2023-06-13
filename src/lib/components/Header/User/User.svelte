@@ -4,13 +4,14 @@
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import LoginLink from "$lib/components/LoginLink";
   import LogoutLink from "$lib/components/LogoutLink";
+  import type { Writable } from "svelte/store";
 
-  const currentUser = getContext<CurrentUser | undefined>(currentUserKey);
+  const currentUser = getContext<Writable<CurrentUser | undefined>>(currentUserKey);
 </script>
 
 <div class="user">
-  {#if currentUser}
-    <span>Welcome, {currentUser.name}!</span>
+  {#if $currentUser}
+    <span>Welcome, {$currentUser.name}!</span>
     <LogoutLink />
   {:else}
     <LoginLink />
