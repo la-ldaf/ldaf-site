@@ -26,7 +26,7 @@
       >[]
     | undefined;
 
-  $: validContacts = contacts && contacts.filter((contact): contact is Contact => !!contact);
+  $: validContacts = contacts?.filter((contact): contact is Contact => !!contact);
 
   const removePhoneFormatting = (phone: string): string => phone.replaceAll(/[^0-9]/g, "");
 
