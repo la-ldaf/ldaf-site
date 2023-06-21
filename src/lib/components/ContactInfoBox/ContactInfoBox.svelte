@@ -5,10 +5,26 @@
   import Link from "$lib/components/Link";
   import classNames from "$lib/util/classNames";
 
-  import type { Maybe, ContentTypeLocation, Contact } from "$lib/services/contentful/schema.js";
+  import type {
+    Maybe,
+    ContentTypeLocation,
+    Contact,
+    Sys,
+  } from "$lib/services/contentful/schema.js";
 
-  export let address: Maybe<ContentTypeLocation> | undefined;
-  export let contacts: Maybe<Contact>[] | undefined;
+  export let address:
+    | Maybe<
+        Pick<
+          ContentTypeLocation,
+          "name" | "streetAddress1" | "streetAddress2" | "city" | "state" | "zip"
+        >
+      >
+    | undefined;
+  export let contacts:
+    | Maybe<
+        Pick<Contact, "entityName" | "phone" | "phoneExt" | "email"> & { sys: Pick<Sys, "id"> }
+      >[]
+    | undefined;
 
   $: validContacts = contacts && contacts.filter((contact): contact is Contact => !!contact);
 

@@ -18,12 +18,6 @@ describe("ContactInfoBox", () => {
       render(ContactInfoBox, {
         props: {
           address: {
-            sys: {
-              id: "1",
-              environmentId: "",
-              spaceId: "",
-            },
-            contentfulMetadata: { tags: [] },
             name: "Sample Office",
             streetAddress1: "123 Main Street",
             city: "City",
@@ -41,12 +35,6 @@ describe("ContactInfoBox", () => {
     render(ContactInfoBox, {
       props: {
         address: {
-          sys: {
-            id: "1",
-            environmentId: "",
-            spaceId: "",
-          },
-          contentfulMetadata: { tags: [] },
           name: "Sample Office",
           streetAddress1: "123 Main Street",
           streetAddress2: "Suite 456",
@@ -65,8 +53,7 @@ describe("ContactInfoBox", () => {
         address: undefined,
         contacts: [
           {
-            sys: { id: "1", environmentId: "", spaceId: "" },
-            contentfulMetadata: { tags: [] },
+            sys: { id: "1" },
             entityName: "Contact Person",
             phone: "(123) 456-7890",
           },
@@ -84,8 +71,7 @@ describe("ContactInfoBox", () => {
         address: undefined,
         contacts: [
           {
-            sys: { id: "1", environmentId: "", spaceId: "" },
-            contentfulMetadata: { tags: [] },
+            sys: { id: "1" },
             entityName: "Contact Person",
             phone: "(123) 456-7890",
             phoneExt: "123",
@@ -103,8 +89,7 @@ describe("ContactInfoBox", () => {
         address: undefined,
         contacts: [
           {
-            sys: { id: "1", environmentId: "", spaceId: "" },
-            contentfulMetadata: { tags: [] },
+            sys: { id: "1" },
             entityName: "Contact Person",
             email: "contact@example.com",
           },

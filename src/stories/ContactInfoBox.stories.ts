@@ -15,12 +15,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     address: {
-      sys: {
-        id: "1",
-        environmentId: "",
-        spaceId: "",
-      },
-      contentfulMetadata: { tags: [] },
       name: "Sample Office",
       streetAddress1: "123 Main Street",
       streetAddress2: "Suite 456",
@@ -30,8 +24,7 @@ export const Default: Story = {
     },
     contacts: [
       {
-        sys: { id: "1", environmentId: "", spaceId: "" },
-        contentfulMetadata: { tags: [] },
+        sys: { id: "1" },
         entityName: "Contact Person",
         phone: "(123) 456-7890",
         phoneExt: "123",
