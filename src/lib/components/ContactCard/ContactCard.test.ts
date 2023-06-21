@@ -2,11 +2,11 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
-import ContactInfoBox from "./ContactInfoBox.svelte";
+import ContactCard from "./ContactCard.svelte";
 
-describe("ContactInfoBox", () => {
+describe("ContactCard", () => {
   it("renders", () => {
-    render(ContactInfoBox, {
+    render(ContactCard, {
       props: {
         address: undefined,
         contacts: undefined,
@@ -15,7 +15,7 @@ describe("ContactInfoBox", () => {
     expect(screen.getByText("Contact info")).toBeVisible();
   }),
     it("renders with mailing address", () => {
-      render(ContactInfoBox, {
+      render(ContactCard, {
         props: {
           address: {
             name: "Sample Office",
@@ -32,7 +32,7 @@ describe("ContactInfoBox", () => {
       expect(screen.getByText(/City, ST 12345/)).toBeVisible();
     });
   it("renders with mailing address with second address line", () => {
-    render(ContactInfoBox, {
+    render(ContactCard, {
       props: {
         address: {
           name: "Sample Office",
@@ -48,7 +48,7 @@ describe("ContactInfoBox", () => {
     expect(screen.getByText(/123 Main Street, Suite 456/)).toBeVisible();
   });
   it("renders with a contact phone number", () => {
-    render(ContactInfoBox, {
+    render(ContactCard, {
       props: {
         address: undefined,
         contacts: [
@@ -66,7 +66,7 @@ describe("ContactInfoBox", () => {
     expect(phoneLink).toHaveAttribute("href", "tel:+11234567890");
   });
   it("renders with a contact phone number with an extension", () => {
-    render(ContactInfoBox, {
+    render(ContactCard, {
       props: {
         address: undefined,
         contacts: [
@@ -84,7 +84,7 @@ describe("ContactInfoBox", () => {
     expect(phoneLink).toHaveAttribute("href", "tel:+11234567890;123");
   });
   it("renders with a contact email address", () => {
-    render(ContactInfoBox, {
+    render(ContactCard, {
       props: {
         address: undefined,
         contacts: [

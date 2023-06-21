@@ -1,6 +1,6 @@
 <script lang="ts">
-  import "./ContactInfo.scss";
-  import Section from "./ContactInfoSection.svelte";
+  import "./ContactCard.scss";
+  import Section from "./Section.svelte";
   import CopyToClipboard from "$lib/components/CopyToClipboard";
   import Link from "$lib/components/Link";
   import classNames from "$lib/util/classNames";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ContactInfoBox from "$lib/components/ContactInfoBox";
+  import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
 
   export let data;
@@ -26,9 +26,5 @@
 {/if}
 <div />
 {#if mailingAddress || contactsCollection}
-  <ContactInfoBox
-    address={mailingAddress}
-    contacts={contactsCollection?.items}
-    class="margin-top-6"
-  />
+  <ContactCard address={mailingAddress} contacts={contactsCollection?.items} class="margin-top-6" />
 {/if}
