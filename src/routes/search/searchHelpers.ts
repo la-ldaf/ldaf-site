@@ -9,7 +9,7 @@ type Result = ResultObj | ResultObj[];
 const maxDepth = 10;
 const getHighlightOrSnippetResultValue = (
   result: Result | undefined,
-  depth: number = 0
+  depth = 0
 ): string | undefined => {
   if (depth > maxDepth || result == undefined) return;
   if (Array.isArray(result)) {
