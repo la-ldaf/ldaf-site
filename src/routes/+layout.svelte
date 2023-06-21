@@ -1,6 +1,4 @@
 <script lang="ts">
-  import "./layout.scss";
-
   import type { NavItemType, NavLinkType } from "$lib/components/Header/Nav";
   import type { SiteTitleType } from "$lib/components/Header/Title";
 
