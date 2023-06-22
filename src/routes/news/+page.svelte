@@ -1,5 +1,6 @@
 <script>
   import Image from "$lib/components/Image";
+  import Alert from "$lib/components/Alert";
   import Icon from "$lib/components/Icon";
   import Card from "$lib/components/Card";
   import Button from "$lib/components/Button";
@@ -21,6 +22,16 @@
     <h2><a href="/">Go back home</a></h2>
   </div>
 </section>
+
+<Alert variant="info">Please follow these directions</Alert>
+<Alert variant="warning">Please follow these directions</Alert>
+<Alert variant="error">Please follow these directions</Alert>
+<Alert variant="success">Please follow these directions</Alert>
+
+<Alert variant="info" heading="Info">Please follow these directions</Alert>
+<Alert variant="warning" heading="Danger">Please follow these directions</Alert>
+<Alert variant="error" heading="Uh oh">Please follow these directions</Alert>
+<Alert variant="success" heading="Way to go!">Please follow these directions</Alert>
 
 <section class="usa-section">
   <div class="grid-container">
