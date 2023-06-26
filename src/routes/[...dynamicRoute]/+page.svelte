@@ -3,8 +3,8 @@
   $: ({ text } = data);
 </script>
 
-<section class="usa-section">
-  <div class="grid-container">
+<div class="usa-section grid-container">
+  <main id="main-content">
     This is a stub for the <strong>{text}</strong> page!
-  </div>
-</section>
+  </main>
+</div>

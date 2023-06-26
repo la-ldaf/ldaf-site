@@ -1,0 +1,10 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+.contact-info-section {
+  @include u-margin-bottom(1);
+  &:last-of-type {
+    @include u-margin-bottom(0);
+  }
+}
