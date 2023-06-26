@@ -2,7 +2,8 @@ import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
-import contentfulFetch, { contentfulConnected } from "$lib/services/contentful";
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import getContentfulClient from "$lib/services/contentful";
 import OfficePageTestContent from "./__tests__/OfficePageTestContent";
 
 import type { PageServerLoad } from "./$types";
@@ -60,16 +61,23 @@ const query = gql`
 
 export const load = (async ({ params }): Promise<OfficePage> => {
   const { slug } = params;
-  if (!contentfulConnected()) {
-    return OfficePageTestContent;
-  }
-  const data = await contentfulFetch<OfficePageQuery>(printQuery(query));
-  if (data) {
-    const officePages = data?.officePageCollection?.items as OfficePage[];
-    const matchedOfficePage = officePages.find((officePage) => officePage.metadata?.slug === slug);
-    if (matchedOfficePage) {
-      return matchedOfficePage;
+  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+    const data = await client.fetch<OfficePageQuery>(printQuery(query));
+    if (data) {
+      const officePages = data?.officePageCollection?.items as OfficePage[];
+      const matchedOfficePage = officePages.find(
+        (officePage) => officePage.metadata?.slug === slug
+      );
+      if (matchedOfficePage) {
+        return matchedOfficePage;
+      }
     }
+  } else {
+    return OfficePageTestContent;
   }
   throw error(404);
 }) satisfies PageServerLoad;
