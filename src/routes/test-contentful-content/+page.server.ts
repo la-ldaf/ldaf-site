@@ -23,16 +23,8 @@ export const load = async () => {
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
   const data = await client.fetch<EntryQuery>(printQuery(query));
-  if (data) {
-    const document = data?.testRichText?.body?.json as Document | undefined | null;
-    return {
-      query,
-      document: document || markdownDocument.document,
-    };
-  } else {
-    return {
-      query,
-      document: markdownDocument.document,
-    };
-  }
+  return {
+    document:
+      (data?.testRichText?.body?.json as Document | undefined | null) ?? markdownDocument.document,
+  };
 };
