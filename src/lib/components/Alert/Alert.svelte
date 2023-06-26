@@ -1,10 +1,12 @@
 <script lang="ts">
-  // import "./Alert.scss";
+  import "./Alert.scss";
   import classNames from "$lib/util/classNames";
   import type { Variant } from "./alertOptions";
   export let noIcon = false;
+  export let slim = false;
+  export let siteAlert = false;
   export let variant: Variant = "info";
-  export let heading = "";
+  export let heading: string = "";
 
   const elementRole = {
     error: "alert",
@@ -28,14 +30,15 @@
     "usa-alert",
     `usa-alert--${variant}`,
     noIcon ? "usa-alert--no-icon" : null,
-    heading ? null : "usa-alert--slim",
+    slim ? "usa-alert--slim" : null,
+    siteAlert ? "ldaf-alert--site-wide" : null,
     className
   );
 </script>
 
 <div class={classes} role={elementRole[variant]} aria-label={ariaLabel[variant]}>
   <div class="usa-alert__body">
-    {#if heading}
+    {#if heading && !slim}
       <h4 class="usa-alert__heading">
         {heading}
       </h4>
