@@ -22,6 +22,10 @@
           (element as HTMLElement).style.display = helper.state.query === "" ? "none" : "";
         });
 
+        if (helper.state.query === "") {
+          return;
+        }
+
         helper.search();
       },
     });
