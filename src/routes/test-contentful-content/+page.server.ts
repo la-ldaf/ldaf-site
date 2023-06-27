@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
-import contentfulFetch from "$lib/services/contentful";
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import getContentfulClient from "$lib/services/contentful";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
 import type { Document } from "@contentful/rich-text-types";
 import type { EntryQuery } from "./$queries.generated";
@@ -16,11 +17,14 @@ const query = gql`
   }
 `;
 
-export async function load(): Promise<Document> {
-  const data = await contentfulFetch<EntryQuery>(printQuery(query));
-  if (data) {
-    return data?.testRichText?.body?.json;
-  } else {
-    return markdownDocument.document;
-  }
-}
+export const load = async () => {
+  const client = getContentfulClient({
+    spaceID: CONTENTFUL_SPACE_ID,
+    token: CONTENTFUL_DELIVERY_API_TOKEN,
+  });
+  const data = await client.fetch<EntryQuery>(printQuery(query));
+  return {
+    document:
+      (data?.testRichText?.body?.json as Document | undefined | null) ?? markdownDocument.document,
+  };
+};

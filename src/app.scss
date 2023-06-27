@@ -1,5 +1,5 @@
 /* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
-@use "uswds" with (
+@use "uswds" as * with (
   $theme-font-path: $theme-font-path,
   $theme-image-path: $theme-image-path,
   $theme-show-notifications: false
@@ -13,4 +13,23 @@ body {
 footer.ldaf-footer--main {
   position: sticky;
   top: 100vh;
+}
+
+/* For some reason the border between the header and the rest of the page is
+    placed on the next sibling of the header, but only if it's a .usa-section
+    or <main>, presumably since those are full-width elements. Since there's no
+    comments or guidance around this, we'll override this rule and apply it to
+    the bottom of the header itself, which seems like a more sane approach.
+   USWDS Source:
+    https://github.com/uswds/uswds/blob/c397204e35a20cc31e9a2da9567cac8d0214264a/packages/usa-header/src/styles/_usa-header.scss#L58-L64
+*/
+@include at-media("desktop") {
+  .usa-header {
+    border-bottom: 1px solid $base-lighter;
+    // Override with no border on next sibling.
+    & + .usa-section,
+    & + main {
+      border-top: none;
+    }
+  }
 }
