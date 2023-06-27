@@ -68,7 +68,7 @@
     "eslint-plugin-svelte3": "^4.0.0",
     "glob": "^10.2.7",
     "graphql": "^16.7.0",
-    "instantsearch.js": "^4.56.0",
+    "instantsearch.js": "^4.56.3",
     "jsdom": "^22.1.0",
     "postcss": "^8.4.24",
     "postcss-load-config": "^4.0.1",

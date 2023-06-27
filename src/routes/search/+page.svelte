@@ -19,7 +19,8 @@
         const searchUI = document.querySelectorAll(".stats, .hits, .pagination");
 
         searchUI.forEach((element) => {
-          (element as HTMLElement).style.display = helper.state.query === "" ? "none" : "";
+          if (!(element instanceof HTMLElement)) return;
+          element.style.display = helper.state.query === "" ? "none" : "";
         });
 
         if (helper.state.query === "") {
@@ -39,9 +40,7 @@
         container: ".hits",
         templates: {
           empty: "No results found.",
-          item(hit) {
-            return searchHitsTemplate(hit);
-          },
+          item: searchHitsTemplate,
         },
       }),
       searchBox({

@@ -5,6 +5,7 @@
   import Button from "$lib/components/Button";
   import classNames from "$lib/util/classNames";
   import type { Size } from "./options";
+  import { browser } from "$app/environment";
 
   export let size: Size = "default";
 
@@ -24,6 +25,7 @@
 
   const onInput = () => dispatch("input", { searchTerm });
   const onSubmit = (e: Event) => {
+    if (!browser) return;
     e.preventDefault();
     dispatch("submit", { searchTerm });
     // TODO: update this to the LDAF index when ready.
