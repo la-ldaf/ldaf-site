@@ -28,8 +28,7 @@
 
     search.addWidgets([
       configure({
-        hitsPerPage: 3,
-        attributesToSnippet: ["content:14"],
+        hitsPerPage: 10,
         snippetEllipsisText: " [...]",
       }),
       hits({

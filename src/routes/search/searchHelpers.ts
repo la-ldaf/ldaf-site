@@ -15,7 +15,7 @@ export function searchHitsTemplate(hit) {
             </a>
           </h2>
           <div class="post-excerpt">
-            ${hit._snippetResult.content.value}
+            ${hit._highlightResult.content.value}
           </div>
         </div>
       </article>
