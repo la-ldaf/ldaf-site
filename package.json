@@ -21,7 +21,7 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "npm run prebuild && storybook build",
     "bundle-visualizer": "npm run prebuild && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html",
     "gen-schema": "graphql-codegen --config codegen-schema.yml --require dotenv/config",
     "gen-operations": "graphql-codegen --config codegen-operations.yml"
@@ -60,7 +60,6 @@
     "autoprefixer": "^10.4.7",
     "blurhash": "^2.0.5",
     "concurrently": "^8.2.0",
-    "contentful": "^10.2.4",
     "dotenv": "^16.3.1",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
