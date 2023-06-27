@@ -6,7 +6,7 @@
   export let slim = false;
   export let siteAlert = false;
   export let variant: Variant = "info";
-  export let heading: string = "";
+  export let heading = "";
 
   const elementRole = {
     error: "alert",

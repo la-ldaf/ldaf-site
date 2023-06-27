@@ -1,7 +1,5 @@
 <script>
   import Image from "$lib/components/Image";
-  import Alert from "$lib/components/Alert";
-  import Link from "$lib/components/Link";
   import Icon from "$lib/components/Icon";
   import Card from "$lib/components/Card";
   import Button from "$lib/components/Button";
