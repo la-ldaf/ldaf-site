@@ -7,11 +7,11 @@
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
   import { searchHitsTemplate } from "./searchHelpers";
 
-  const ALGOLIA_APP_ID = "9IIDYROXZ5";
-  const ALGOLIA_API_KEY = "0eac885faaa4c70dfc9dd8b6ab4ab10f";
+  import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY } from "$env/static/public";
+
   onMount(() => {
     const search = instantsearch({
-      searchClient: algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY),
+      searchClient: algoliasearch(PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY),
       // TODO: change this the "contentful" index when ready (name subject to change)
       indexName: "media-sample-data",
       routing: true,
