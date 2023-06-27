@@ -1,16 +1,17 @@
 <script lang="ts">
   import "./search-page.scss";
+  import LoadingSpinner from "$lib/components/LoadingSpinner";
   import { onMount } from "svelte";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
   import { searchHitsTemplate } from "./searchHelpers";
 
-  const ALGOLIA_APP_ID = "9IIDYROXZ5";
-  const ALGOLIA_API_KEY = "0eac885faaa4c70dfc9dd8b6ab4ab10f";
+  import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY } from "$env/static/public";
+
   onMount(() => {
     const search = instantsearch({
-      searchClient: algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY),
+      searchClient: algoliasearch(PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY),
       // TODO: change this the "contentful" index when ready (name subject to change)
       indexName: "media-sample-data",
       routing: true,
@@ -22,14 +23,17 @@
           element.style.display = helper.state.query === "" ? "none" : "";
         });
 
+        if (helper.state.query === "") {
+          return;
+        }
+
         helper.search();
       },
     });
 
     search.addWidgets([
       configure({
-        hitsPerPage: 3,
-        attributesToSnippet: ["content:14"],
+        hitsPerPage: 10,
         snippetEllipsisText: " [...]",
       }),
       hits({
@@ -60,14 +64,12 @@
         container: ".stats",
         templates: {
           text(data, { html }) {
-            let count = "";
+            let count = "No results";
 
             if (data.hasManyResults) {
-              count += `${data.nbHits} results`;
+              count = `${data.nbHits} results`;
             } else if (data.hasOneResult) {
-              count += `1 result`;
-            } else {
-              count += `No result`;
+              count = "1 result";
             }
 
             return html`<strong>${count}${data.query ? ` for "${data.query}"` : ""}</strong>`;
@@ -98,9 +100,16 @@
       }),
     ]);
 
+    loading = false;
     search.start();
   });
+
+  let loading = true;
 </script>
+
+{#if loading}
+  <LoadingSpinner />
+{/if}
 
 <div class="search-results">
   <div class="searchbox" />

@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
-import contentfulFetch from "$lib/services/contentful";
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import getContentfulClient from "$lib/services/contentful";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
 import type {
@@ -12,26 +13,28 @@ import type { NavLinkType, NavMenuType } from "./types";
 import type { NavQuery } from "./$queries.generated";
 
 export const loadMainNav = async () => {
-  const query = gql`
-    query Nav {
-      draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
-        items {
-          text
-          childrenCollection {
-            items {
-              ... on DraftNavigationMenu {
-                sys {
-                  id
-                }
-                text
-                childrenCollection {
-                  items {
-                    ... on DraftNavigationLink {
-                      sys {
-                        id
+  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
+    const query = gql`
+      query Nav {
+        draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
+          items {
+            text
+            childrenCollection {
+              items {
+                ... on DraftNavigationMenu {
+                  sys {
+                    id
+                  }
+                  text
+                  childrenCollection {
+                    items {
+                      ... on DraftNavigationLink {
+                        sys {
+                          id
+                        }
+                        text
+                        link
                       }
-                      text
-                      link
                     }
                   }
                 }
@@ -40,10 +43,12 @@ export const loadMainNav = async () => {
           }
         }
       }
-    }
-  `;
-  const data = await contentfulFetch<NavQuery>(printQuery(query));
-  if (data) {
+    `;
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+    const data = await client.fetch<NavQuery>(printQuery(query));
     const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
     const mainMenuChildren = mainMenu?.childrenCollection
       ?.items as DraftNavigationMenuChildrenItem[];

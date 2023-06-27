@@ -35,7 +35,7 @@ export const searchHitsTemplate: TemplateWithBindEvent<Hit<{ permalink?: string 
             </a>
           </h2>
           <div class="post-excerpt">
-            ${getHighlightOrSnippetResultValue(hit._snippetResult?.content)}
+            ${getHighlightOrSnippetResultValue(hit._highlightResult?.content)}
           </div>
         </div>
       </article>

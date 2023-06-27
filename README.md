@@ -31,12 +31,6 @@ To run Storybook locally:
 npm run storybook
 ```
 
-To deploy Storybook to chromatic (requires `CHROMATIC_PROJECT_TOKEN` be set in `.env`):
-
-```
-npm run chromatic
-```
-
 ## Vercel
 
 If you are a member of the LDAF team on Vercel, first set up the Vercel CLI:
