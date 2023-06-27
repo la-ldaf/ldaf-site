@@ -61,14 +61,12 @@
         container: ".stats",
         templates: {
           text(data, { html }) {
-            let count = "";
+            let count = "No results";
 
             if (data.hasManyResults) {
-              count += `${data.nbHits} results`;
+              count = `${data.nbHits} results`;
             } else if (data.hasOneResult) {
-              count += `1 result`;
-            } else {
-              count += `No result`;
+              count = "1 result";
             }
 
             return html`<strong>${count}${data.query ? ` for "${data.query}"` : ""}</strong>`;
