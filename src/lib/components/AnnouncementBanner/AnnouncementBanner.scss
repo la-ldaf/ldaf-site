@@ -1,0 +1,35 @@
+.usa-banner.ldaf-banner--announcement {
+  background: $primary-darkest;
+
+  .usa-banner__header-text,
+  .usa-banner__guidance {
+    color: white;
+  }
+
+  .usa-banner__button-text {
+    color: $primary-lighter;
+  }
+
+  .ldaf-logo {
+    filter: invert(1);
+  }
+
+  .usa-link {
+    padding-left: 0.25rem;
+    color: $primary-lighter;
+    display: flex;
+    align-items: center;
+  }
+
+  .ldaf-banner--announcement-text {
+    display: flex;
+    align-items: center;
+  }
+
+  .usa-icon {
+    // TODO: change this to `fill: $primary-lighter` once
+    // https://ldaf.atlassian.net/browse/LDAF-327 is done.
+    filter: brightness(0) saturate(100%) invert(58%) sepia(99%) saturate(396%) hue-rotate(185deg)
+      brightness(97%) contrast(105%);
+  }
+}

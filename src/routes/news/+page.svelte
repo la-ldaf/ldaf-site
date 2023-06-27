@@ -1,13 +1,15 @@
 <script>
+  import AnnouncementBanner from "$lib/components/AnnouncementBanner";
   import Image from "$lib/components/Image";
   import Icon from "$lib/components/Icon";
   import Card from "$lib/components/Card";
   import Button from "$lib/components/Button";
   import { url as arrow } from "$icons/arrow_forward";
-
   import sampleImage from "../../uswds-sample.jpg";
   import imageBlurhash, { width, height, mean } from "../../uswds-sample.jpg?blurhash";
 </script>
+
+<AnnouncementBanner />
 
 <section class="usa-section">
   <div class="grid-container">
