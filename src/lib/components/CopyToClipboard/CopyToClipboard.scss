@@ -1,0 +1,9 @@
+// TODO: Icon color does not change currently.
+.usa-button.copy-success-icon,
+.copy-success-message {
+  color: $success;
+}
+.usa-button.copy-error-icon,
+.copy-error-message {
+  color: $error;
+}
