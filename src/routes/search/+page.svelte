@@ -1,5 +1,6 @@
 <script lang="ts">
   import "./search-page.scss";
+  import LoadingSpinner from "$lib/components/LoadingSpinner";
   import { onMount } from "svelte";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
@@ -99,9 +100,16 @@
       }),
     ]);
 
+    loading = false;
     search.start();
   });
+
+  let loading = true;
 </script>
+
+{#if loading}
+  <LoadingSpinner />
+{/if}
 
 <div class="search-results">
   <div class="searchbox" />
