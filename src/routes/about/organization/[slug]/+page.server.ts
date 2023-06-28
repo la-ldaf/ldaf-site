@@ -1,17 +1,14 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import officePageTestContent from "./__tests__/OfficePageTestContent";
 
 import type { PageServerLoad } from "./$types";
-import type { OfficePage } from "$lib/services/contentful/schema";
-import type { OfficePageQuery } from "./$queries.generated";
+import type { OfficePageQuery, OfficePageQueryVariables } from "./$queries.generated";
 
 const query = gql`
-  query OfficePage {
-    officePageCollection {
+  query OfficePage($slug: String, $preview: Boolean = false) {
+    officePageCollection(preview: $preview, where: { metadata: { slug: $slug } }, limit: 1) {
       items {
         sys {
           id
@@ -58,22 +55,18 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ fetch, params }): Promise<OfficePage> => {
-  const { slug } = params;
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return officePageTestContent;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-    fetch,
+type OfficePage = NonNullable<OfficePageQuery["officePageCollection"]>["items"][number];
+
+export const load = (async ({
+  locals: { contentfulClient },
+  params: { slug },
+}): Promise<OfficePage> => {
+  if (!contentfulClient) return officePageTestContent;
+  const data = await contentfulClient.fetch<OfficePageQuery, OfficePageQueryVariables>(query, {
+    variables: { slug },
   });
-  const data = await client.fetch<OfficePageQuery>(query);
-  const officePages = data?.officePageCollection?.items;
-  if (!officePages) throw error(404);
-  const matchedOfficePage = officePages.find(
-    (officePage) => officePage?.pageMetadata?.slug === slug
-  );
-  // TODO: remove this type assertion and either use a predicate to assert "matchedOfficePage is
-  // OfficePage" or use the query type in the front-end and account for potentially missing data.
-  if (matchedOfficePage) return matchedOfficePage as OfficePage;
-  throw error(404);
+  if (!data) throw error(404);
+  const [officePage] = data?.officePageCollection?.items ?? [];
+  if (!officePage) throw error(404);
+  return officePage;
 }) satisfies PageServerLoad;
