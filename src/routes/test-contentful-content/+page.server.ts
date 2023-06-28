@@ -34,9 +34,5 @@ export const load = async ({ locals: { contentfulClient } }) => {
   const document = testRichText.body?.json;
   if (!isDocument(document)) throw error(500, { message: "Entry body was missing or misshapen" });
 
-  return {
-    query: sanitizedQuery,
-    title,
-    document,
-  };
+  return { title, document };
 };
