@@ -19,6 +19,11 @@ const meta = {
     slim: {
       control: { type: "boolean" },
     },
+    siteAlert: {
+      description:
+        "Note: this should only be `true` for alerts that are the `info` or `error` variant",
+      control: { type: "boolean" },
+    },
   },
   parameters: {
     design: {
