@@ -1,7 +1,7 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 
-import officePageTestContent from "./__tests__/OfficePageTestContent";
+import officePageTestContent from "./__tests__/officePageTestContent";
 
 import type { PageServerLoad } from "./$types";
 import type { OfficePageQuery, OfficePageQueryVariables } from "./$queries.generated";
@@ -55,18 +55,20 @@ const query = gql`
   }
 `;
 
-type OfficePage = NonNullable<OfficePageQuery["officePageCollection"]>["items"][number];
+type OfficePage = NonNullable<
+  NonNullable<OfficePageQuery["officePageCollection"]>["items"][number]
+>;
 
 export const load = (async ({
   locals: { contentfulClient },
   params: { slug },
-}): Promise<OfficePage> => {
-  if (!contentfulClient) return officePageTestContent;
+}): Promise<{ officePage: OfficePage }> => {
+  if (!contentfulClient) return { officePage: officePageTestContent };
   const data = await contentfulClient.fetch<OfficePageQuery, OfficePageQueryVariables>(query, {
     variables: { slug },
   });
   if (!data) throw error(404);
   const [officePage] = data?.officePageCollection?.items ?? [];
   if (!officePage) throw error(404);
-  return officePage;
+  return { officePage };
 }) satisfies PageServerLoad;
