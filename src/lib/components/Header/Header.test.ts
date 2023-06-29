@@ -1,8 +1,13 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
+import { mockStores } from "../../../util/mockStores";
 
 import Header from "./Header.svelte";
+
+// See src/util/mockStores.ts for details on why this is required.
+// This mock covers the Header's use of the $page store.
+mockStores();
 
 describe("Header", () => {
   it("renders", () => {
