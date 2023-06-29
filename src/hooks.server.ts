@@ -7,7 +7,7 @@ import {
 } from "$env/static/private";
 import type { Handle, MaybePromise, RequestEvent } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
-import { createClient as createRedisClient } from "redis";
+import { createClient as createRedisClient, type RedisClientType } from "redis";
 import getContentfulClient from "$lib/services/contentful";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 
@@ -53,9 +53,8 @@ const resolveWithStatus = async <T extends RequestEvent>(
 };
 
 // This function should _not_ throw an error! Instead, errors should be signaled to the front-end by
-// setting event.locals.previewAuthenticationError and _not_ setting
-// event.locals.contentfulClient. Throwing an error in a server hook leads to the generic plain-HTML
-// error page _not_ the root error layout in src/routes/+error.svelte.
+// setting event.locals.previewAuthenticationError. Throwing an error in a server hook leads to the
+// generic plain-HTML error page, _not_ the root error layout in src/routes/+error.svelte.
 //
 // Exported for tests.
 export const handleToken = (async ({ event, resolve }) => {
@@ -74,12 +73,24 @@ export const handleToken = (async ({ event, resolve }) => {
       : undefined;
 
   const useTLSForRedisConnection = !KV_URL.startsWith("redis://localhost");
-  event.locals.redisClient = KV_URL
-    ? createRedisClient({ url: KV_URL, socket: { tls: useTLSForRedisConnection } })
-    : undefined;
-  event.locals.redisClientConnectedPromise =
-    event.locals.redisClient?.connect() ?? Promise.reject("Redis client could not be initialized");
-  const { redisClient, redisClientConnectedPromise } = event.locals;
+
+  let cachedRedisClient: RedisClientType | undefined,
+    cachedRedisClientConnectedPromise: Promise<void> | undefined = undefined;
+  event.locals.getConnectedRedisClient = async (): Promise<RedisClientType> => {
+    if (!KV_URL) throw new Error("could not get redis client");
+    if (!cachedRedisClient) {
+      cachedRedisClient = createRedisClient({
+        url: KV_URL,
+        socket: { tls: useTLSForRedisConnection },
+      });
+    }
+    if (!cachedRedisClientConnectedPromise)
+      cachedRedisClientConnectedPromise = cachedRedisClient.connect();
+    await cachedRedisClientConnectedPromise;
+    return cachedRedisClient;
+  };
+
+  const { getConnectedRedisClient } = event.locals;
 
   const ldafUserToken =
     event.cookies.get("ldafUserToken") ??
@@ -89,17 +100,22 @@ export const handleToken = (async ({ event, resolve }) => {
 
   // We _always_ want to _try_ to load the user if an access token is provided because there is UI
   // that depends on event.locals.currentUser
-  setCurrentUser: if (ldafUserToken && redisClient) {
+  setCurrentUser: if (ldafUserToken) {
     try {
-      await redisClientConnectedPromise;
+      const redisClient = await getConnectedRedisClient();
       const json = await redisClient.get(`ldafUserInfoByToken:${ldafUserToken}`);
-      if (!json) break setCurrentUser;
+      if (json === null) {
+        event.cookies.delete("ldafUserToken");
+        break setCurrentUser;
+      }
       const parsed = JSON.parse(json);
       const { email, name, avatarURL } = parsed;
-      event.locals.currentUser = { email, name, avatarURL };
       ({ managementAPIToken } = parsed);
+      event.locals.currentUser = { email, name, avatarURL };
     } catch (err) {
       // TODO log and ignore this error
+      console.log("GOT ERROR REQUESTING FROM REDIS");
+      console.log({ err });
     }
   }
 
@@ -107,21 +123,24 @@ export const handleToken = (async ({ event, resolve }) => {
   // new token or get rid of the current one.
   if (isLogin(event) || isLogout(event)) return resolve(event);
 
+  const preview = event.url.searchParams.has("preview");
+  if (!preview) return resolve(event);
+
   const handleBadTokenAndGetMessage = async () => {
-    event.cookies.delete("ldafUserToken");
-    try {
-      await redisClientConnectedPromise;
-      await redisClient?.del(`ldafUserInfoByToken:${ldafUserToken}`);
-    } catch (err) {
-      // TODO log and ignore this error
+    if (event.locals.currentUser) event.locals.currentUser = undefined;
+    if (ldafUserToken) {
+      if (event.cookies.get("ldafUserToken")) event.cookies.delete("ldafUserToken");
+      try {
+        const redisClient = await getConnectedRedisClient();
+        await redisClient?.del(`ldafUserInfoByToken:${ldafUserToken}`);
+      } catch (err) {
+        // TODO log and ignore this error
+      }
     }
     return ldafUserToken
       ? "Token was invalid; you have been logged out. Please log in again to view preview content."
       : "You must log in to view preview content.";
   };
-
-  const preview = event.url.searchParams.has("preview");
-  if (!preview) return resolve(event);
 
   if (!event.locals.currentUser || !managementAPIToken) {
     const message = await handleBadTokenAndGetMessage();

@@ -12,17 +12,17 @@ export const actions = {
     if (typeof managementAPIToken !== "string") {
       throw error(400, { message: "token must be a string" });
     }
-    const { redisClient, redisClientConnectedPromise } = locals;
-    [locals.currentUser] = await Promise.all([
-      await getCurrentUser({
-        fetch,
-        token: managementAPIToken,
-        apiEndpoint: CONTENTFUL_MANAGEMENT_API_ENDPOINT,
-      }),
-      redisClientConnectedPromise,
-    ]);
-    if (!redisClient) throw error(500, { message: "could not connect to redis" });
+    const { getConnectedRedisClient } = locals;
     try {
+      const [redisClient, currentUser] = await Promise.all([
+        getConnectedRedisClient!(),
+        getCurrentUser({
+          fetch,
+          token: managementAPIToken,
+          apiEndpoint: CONTENTFUL_MANAGEMENT_API_ENDPOINT,
+        }),
+      ]);
+      locals.currentUser = currentUser;
       const ldafUserToken = crypto.randomUUID();
       await redisClient.set(
         `ldafUserInfoByToken:${ldafUserToken}`,
@@ -41,7 +41,11 @@ export const actions = {
       });
       return { success: true, currentUser: locals.currentUser };
     } catch (err) {
-      throw error(500, { message: "could not save token to redis" });
+      const message =
+        err && typeof err === "object" && "message" in err
+          ? `Could not save token: ${err.message}`
+          : `Could not save token: unknown error`;
+      throw error(500, { message });
     }
   },
 } satisfies Actions;
