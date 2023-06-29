@@ -18,8 +18,7 @@ declare global {
       };
       currentUser?: CurrentUser;
       contentfulClient?: ContentfulClient;
-      redisClient?: RedisClientType;
-      redisClientConnectedPromise?: Promise<void>;
+      getConnectedRedisClient?: () => Promise<RedisClientType>;
     }
     // interface PageData {}
     // interface Platform {}

@@ -1,242 +1,424 @@
-import type { Cookies, RequestEvent } from "@sveltejs/kit";
-import { vi, describe, expect, type Mock } from "vitest";
-import { handleToken } from "./hooks.server";
-import { CONTENTFUL_MANAGEMENT_API_ENDPOINT, CONTENTFUL_SPACE_ID } from "$env/static/private";
+import type { Cookies, Handle, RequestEvent } from "@sveltejs/kit";
+import {
+  vi,
+  expect,
+  it,
+  describe,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  type MockedObject,
+  type MockedFunction,
+} from "vitest";
 
-const getRequestEventCookies = (overrides: Partial<Cookies> = {}): Cookies => ({
-  get: vi.fn(),
+const env = {
+  CONTENTFUL_MANAGEMENT_API_ENDPOINT: "http://localhost/contentful",
+  CONTENTFUL_SPACE_ID: "SPACE_ID",
+  CONTENTFUL_DELIVERY_API_TOKEN: "DELIVERY_TOKEN",
+  CONTENTFUL_PREVIEW_API_TOKEN: "PREVIEW_TOKEN",
+  KV_URL: "redis://localhost/kv",
+};
+
+const {
+  CONTENTFUL_DELIVERY_API_TOKEN,
+  CONTENTFUL_PREVIEW_API_TOKEN,
+  CONTENTFUL_MANAGEMENT_API_ENDPOINT,
+  CONTENTFUL_SPACE_ID,
+  KV_URL,
+} = env;
+
+vi.doMock("$env/static/private", () => env);
+
+const mockedCookiesGet: MockedFunction<Cookies["get"]> = vi.fn(
+  (..._: Parameters<Cookies["get"]>) => undefined
+);
+
+const cookiesDefaults: MockedObject<Cookies> = {
+  get: mockedCookiesGet,
   getAll: vi.fn(),
   set: vi.fn(),
   delete: vi.fn(),
   serialize: vi.fn(),
+};
+
+const getRequestEventCookies = (
+  overrides: Partial<MockedObject<Cookies>> = {}
+): MockedObject<Cookies> => ({
+  ...cookiesDefaults,
   ...overrides,
 });
 
-const getRequestEvent = (overrides: Partial<RequestEvent> = {}): RequestEvent => ({
-  fetch: vi.fn(() => Promise.resolve(new Response())),
+const getRequestEventDefaults = () => ({
+  fetch: vi.fn(),
   getClientAddress: vi.fn(() => "127.0.0.1"),
   locals: {},
   params: {},
   platform: {},
-  request: overrides.request || new Request("http://localhost"),
+  request: new Request("http://localhost"),
   setHeaders: vi.fn(),
-  url: overrides.url || new URL("http://localhost"),
+  url: new URL("http://localhost"),
   isDataRequest: false,
-  ...overrides,
   route: {
     id: null,
-    ...overrides?.route,
   },
-  cookies: getRequestEventCookies(overrides?.cookies),
+  cookies: cookiesDefaults,
 });
 
-const getURLAndRequest = (url: string) => ({
-  url: new URL(url),
-  request: new Request(url),
-});
-
-const resolve = vi.fn(() => new Response("test body"));
-
-const redisClient = {
-  connect: vi.fn(() => Promise.resolve()),
-  get: vi.fn(),
-  del: vi.fn(),
+const getRequestEvent = (
+  overrides: Partial<MockedObject<RequestEvent> & { cookies: MockedObject<Cookies> }> = {}
+): MockedObject<RequestEvent> & { cookies: MockedObject<Cookies> } => {
+  const ret = {
+    ...getRequestEventDefaults(),
+    ...overrides,
+    cookies: getRequestEventCookies(overrides?.cookies),
+  };
+  return ret;
 };
 
-vi.doMock("redis", () => ({ createClient: vi.fn(() => redisClient) }));
+const getURLAndRequest = (url: string) => ({ url: new URL(url), request: new Request(url) });
 
-import { createClient as createRedisClient } from "redis";
+const fetch = vi.fn();
+
+import type { createClient as createRedisClientOriginal, RedisClientType } from "redis";
+
+const redisClient: MockedObject<Pick<RedisClientType, "connect" | "get" | "del">> = {
+  connect: vi.fn(async () => undefined),
+  get: vi.fn(async (..._: Parameters<RedisClientType["get"]>) => null),
+  del: vi.fn(async (..._: Parameters<RedisClientType["del"]>) => 0),
+};
+
+const createRedisClient: MockedFunction<typeof createRedisClientOriginal> = vi.fn(
+  (..._: Parameters<typeof createRedisClientOriginal>) => redisClient as unknown as RedisClientType
+);
+
+createRedisClient.mockImplementation(() => {
+  throw new Error("createRedisClientMockImplementation");
+});
+
+vi.doMock("redis", () => ({ createClient: createRedisClient }));
+
+const { handleToken } = await import("./hooks.server");
+
+type Resolve = Parameters<Handle>[0]["resolve"];
+
+type LocalTestContextWithoutResponse = {
+  fetch: MockedFunction<typeof globalThis.fetch>;
+  resolve: MockedFunction<Resolve>;
+  event: RequestEvent;
+  cookies: MockedObject<Cookies>;
+};
+
+type LocalTestContext = LocalTestContextWithoutResponse & {
+  response: Response;
+};
+
+const expectRedisToHaveBeenInitializedWith = (
+  ...expectedArgs: Parameters<typeof createRedisClientOriginal>
+) => {
+  expect(createRedisClient).toHaveBeenCalledOnceWith(...expectedArgs);
+  expect(redisClient.connect).toHaveBeenCalledOnceWith();
+};
+
+const testUser = {
+  email: "test@example.com",
+  name: "test example",
+  avatarURL: "http://example.com",
+  managementAPIToken: "MANAGEMENT_TOKEN",
+};
+
+const { managementAPIToken, ...testUserLocal } = testUser;
+
+const ldafUserToken = "LDAF_USER_TOKEN";
+
+const setupCookies = (
+  ctx: Partial<LocalTestContext>,
+  {
+    cookies: cookiesShorthand,
+    mocks,
+  }: { cookies?: Record<string, string>; mocks?: Partial<MockedObject<Cookies>> } = {}
+) => {
+  const actualMocks = cookiesShorthand
+    ? {
+        get: vi.fn((name: string) => cookiesShorthand[name] ?? mocks?.get?.(name)),
+        ...mocks,
+      }
+    : mocks;
+  ctx.cookies = getRequestEventCookies(actualMocks);
+};
+
+const setupRequestEvent = (ctx: Partial<LocalTestContext>, { url }: { url?: string } = {}) => {
+  ctx.event = getRequestEvent({
+    fetch,
+    cookies: ctx.cookies,
+    ...(url ? getURLAndRequest(url) : {}),
+  });
+};
+
+const setupCookiesAndEvent = (
+  ctx: LocalTestContextWithoutResponse,
+  {
+    cookies,
+    cookieMocks,
+    url,
+  }: {
+    cookies?: Record<string, string>;
+    cookieMocks?: Partial<MockedObject<Cookies>>;
+    url?: string;
+  }
+) => {
+  setupCookies(ctx, { cookies, mocks: cookieMocks });
+  setupRequestEvent(ctx, { url });
+};
+
+const mockRedisResponse = (value: string | null = JSON.stringify(testUser)) =>
+  redisClient.get.mockReturnValueOnce(Promise.resolve(value));
+
+const defaultContentfulResponse = new Response(
+  JSON.stringify({
+    name: "Default Contentful Space",
+  })
+);
+const mockContentfulSpaceResponse = (value: Response = defaultContentfulResponse) =>
+  fetch.mockReturnValueOnce(Promise.resolve(value));
+
+const itResolvesEvent = () =>
+  it<LocalTestContext>("resolves event", (ctx) =>
+    expect(ctx.resolve).toHaveBeenCalledOnceWith(ctx.event));
+
+const itRespondsWithStatus = (status: number) =>
+  it<LocalTestContext>(`responds with ${status}`, (ctx) =>
+    expect(ctx.response.status).toEqual(status));
+
+const itInitializesNormalContentfulClient = () =>
+  it<LocalTestContext>("initializes normal contentful client", (ctx) =>
+    expect(ctx.event.locals.contentfulClient).toMatchObject({
+      options: { preview: false, token: CONTENTFUL_DELIVERY_API_TOKEN },
+    }));
+
+const itInitializesPreviewContentfulClient = () =>
+  it<LocalTestContext>("initializes preview contentful client", (ctx) =>
+    expect(ctx.event.locals.contentfulClient).toMatchObject({
+      options: { preview: true, token: CONTENTFUL_PREVIEW_API_TOKEN },
+    }));
+
+const itDoesntCallContentful = () =>
+  it("doesn't call Contentful API", () => expect(fetch).not.toHaveBeenCalled());
+
+const itAuthorizesWithContentful = () =>
+  it("authorizes with Contentful", () =>
+    expect(fetch).toHaveBeenCalledOnceWith(
+      `${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/spaces/${CONTENTFUL_SPACE_ID}`,
+      {
+        headers: {
+          Authorization: `Bearer ${managementAPIToken}`,
+        },
+      }
+    ));
+
+const itDoesntHavePreviewAuthenticationError = () =>
+  it<LocalTestContext>("doesn't have preview authentication error", (ctx) =>
+    expect(ctx.event.locals.previewAuthenticationError).toBeUndefined());
+
+const itHasPreviewAuthenticationError = ({
+  code = 401,
+  message,
+}: { code?: number; message?: string | undefined } = {}) =>
+  it<LocalTestContext>("has preview authentication error", (ctx) =>
+    expect(ctx.event.locals.previewAuthenticationError).toMatchObject({
+      code,
+      ...(message ? { message } : {}),
+    }));
+
+const itHasCurrentUserLocal = () =>
+  it<LocalTestContext>("has current user local", (ctx) =>
+    expect(ctx.event.locals.currentUser).toEqual(testUserLocal));
+
+const itDoesntHaveCurrentUserLocal = () =>
+  it<LocalTestContext>("doesn't have current user local", (ctx) =>
+    expect(ctx.event.locals.currentUser).toBeUndefined());
+
+const itInitializesRedis = () =>
+  it("initializes redis", () =>
+    expectRedisToHaveBeenInitializedWith({ url: KV_URL, socket: { tls: false } }));
+
+const itDoesntInitializeRedis = () =>
+  it("doesn't initialize redis", () => expect(createRedisClient).not.toHaveBeenCalled());
+
+const itRequestsUserFromRedis = () =>
+  it("requests user from redis", () =>
+    expect(redisClient.get).toHaveBeenCalledOnceWith(`ldafUserInfoByToken:${ldafUserToken}`));
+
+const itDeletesRedisUser = () =>
+  it("deletes user record in redis", () =>
+    expect(redisClient.del).toHaveBeenCalledOnceWith(`ldafUserInfoByToken:${ldafUserToken}`));
+
+const itDeletesCookie = () =>
+  it<LocalTestContextWithoutResponse>("deletes cookie", ({ event }) =>
+    expect(event.cookies.delete).toHaveBeenCalledWith("ldafUserToken"));
+
+const itWorksNormally = () => {
+  itRespondsWithStatus(200);
+  itInitializesNormalContentfulClient();
+  itDoesntCallContentful();
+  itDoesntHavePreviewAuthenticationError();
+};
+
+const describeRequestFor = (
+  what: string,
+  setup: (initialContext: LocalTestContextWithoutResponse) => Response | Promise<Response>,
+  test: () => void | Promise<void>
+) => {
+  let initialContext: Partial<LocalTestContext>;
+  describe.only(`when requesting ${what}`, async () => {
+    beforeAll(async () => {
+      const resolve: MockedFunction<Resolve> = vi.fn(async (..._) => new Response("success!"));
+      initialContext = { resolve };
+      setupCookies(initialContext);
+      setupRequestEvent(initialContext);
+      initialContext.response = await setup(initialContext as LocalTestContextWithoutResponse);
+    });
+    beforeEach<LocalTestContext>((ctx) => {
+      Object.assign(ctx, initialContext);
+    });
+    afterAll(() => {
+      vi.restoreAllMocks();
+    });
+    itResolvesEvent();
+    await test();
+  });
+};
+
+const describeExemptPreviewRequests = (
+  getSetup: (url: string) => (ctx: LocalTestContextWithoutResponse) => void,
+  expectedBehavior: () => void
+) =>
+  describe("exempt preview requests", () => {
+    describeRequestFor("login page", getSetup("http://localhost/login?preview"), expectedBehavior);
+    describeRequestFor(
+      "logout page",
+      getSetup("http://localhost/logout?preview"),
+      expectedBehavior
+    );
+  });
 
 describe("handleToken", () => {
-  beforeEach(() => vi.restoreAllMocks());
-
   describe("with an unauthenticated user", () => {
-    it("does nothing for an unauthenticated user who is not trying to view preview content", async () => {
-      const event = getRequestEvent();
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(event.locals.contentfulClient).toMatchObject({
-        options: { preview: false },
-      });
+    const getSetup = (url?: string) => (ctx: LocalTestContextWithoutResponse) => {
+      setupRequestEvent(ctx, { url });
+      const { resolve, event } = ctx;
+      return handleToken({ resolve, event });
+    };
+
+    const expectedNormalBehavior = () => {
+      itWorksNormally();
+      itDoesntInitializeRedis();
+      itDoesntHaveCurrentUserLocal();
+    };
+
+    describeRequestFor("public content", getSetup(), expectedNormalBehavior);
+
+    describeRequestFor("preview content", getSetup("http://localhost?preview"), () => {
+      itRespondsWithStatus(401);
+      itInitializesNormalContentfulClient();
+      itDoesntCallContentful();
+      itHasPreviewAuthenticationError();
+      itDoesntInitializeRedis();
     });
 
-    it("does not allow unauthenticated users to view preview content", async () => {
-      const event = getRequestEvent(getURLAndRequest("http://localhost?preview"));
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(event.fetch).not.toHaveBeenCalled();
-      expect(event.locals).toMatchObject({
-        contentfulClient: {
-          options: { preview: false },
-        },
-        previewAuthenticationError: {
-          code: 401,
-          message: "You must log in to view preview content",
-        },
-      });
-    });
-
-    it("ignores login requests", async () => {
-      const event = getRequestEvent(getURLAndRequest("http://localhost/login?preview"));
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(event.fetch).not.toHaveBeenCalled();
-      expect(event.locals).toMatchObject({
-        contentfulClient: {
-          options: { preview: false },
-        },
-      });
-      expect(event.locals.currentUser).toBeUndefined();
-    });
-
-    it("ignores logout requests", async () => {
-      const event = getRequestEvent(getURLAndRequest("http://localhost/logout?preview"));
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(event.fetch).not.toHaveBeenCalled();
-      expect(event.locals).toMatchObject({
-        contentfulClient: {
-          options: { preview: false },
-        },
-      });
-    });
+    describeExemptPreviewRequests(getSetup, expectedNormalBehavior);
   });
 
   describe("with a successfully authenticated user", () => {
-    const testUser = {
-      email: "test@example.com",
-      name: "test example",
-      avatarURL: "http://example.com",
+    const getSetup = (url?: string) => (ctx: LocalTestContextWithoutResponse) => {
+      setupCookiesAndEvent(ctx, { cookies: { ldafUserToken }, url });
+      mockRedisResponse();
+      mockContentfulSpaceResponse();
+      const { resolve, event } = ctx;
+      return handleToken({ resolve, event });
     };
-    let fetch: Mock<Parameters<typeof window.fetch>, ReturnType<typeof window.fetch>>,
-      cookies: Cookies;
-    beforeEach(() => {
-      fetch = vi.fn();
-      fetch.mockReturnValueOnce(
-        Promise.resolve(
-          new Response(
-            JSON.stringify({
-              email: testUser.email,
-              firstName: testUser.name.split(" ")[0],
-              lastName: testUser.name.split(" ")[1],
-              avatarUrl: testUser.avatarURL,
-            })
-          )
-        )
-      );
-      fetch.mockReturnValueOnce(
-        Promise.resolve(
-          new Response(
-            JSON.stringify({
-              name: "Default Contentful Space",
-            })
-          )
-        )
-      );
-      cookies = getRequestEventCookies({
-        get: (key: string) => ({ ldafUserToken: "testToken" }[key]),
-      });
-    });
 
-    it("authenticates and gets user info", async () => {
-      const event = getRequestEvent({
-        fetch,
-        cookies,
-      });
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(event.fetch).toHaveBeenCalledOnce();
-      expect(event.fetch).toHaveBeenCalledWith(`${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`, {
-        headers: {
-          Authorization: `Bearer testToken`,
-        },
-      });
-      expect(event.locals).toMatchObject({
-        currentUser: testUser,
-        contentfulClient: {
-          options: { preview: false },
-        },
-      });
-    });
+    const expectedNormalBehavior = () => {
+      itWorksNormally();
+      itInitializesRedis();
+      itRequestsUserFromRedis();
+      itHasCurrentUserLocal();
+    };
 
-    it("loads preview client when user requests preview content", async () => {
-      const event = getRequestEvent({
-        ...getURLAndRequest("http://localhost?preview"),
-        fetch,
-        cookies,
-      });
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(fetch.mock.calls).toEqual([
-        [
-          `${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`,
-          { headers: { Authorization: `Bearer testToken` } },
-        ],
-        [
-          `${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/spaces/${CONTENTFUL_SPACE_ID}`,
-          { headers: { Authorization: `Bearer testToken` } },
-        ],
-      ]);
-      expect(event.locals).toMatchObject({
-        currentUser: testUser,
-        contentfulClient: {
-          options: { preview: true },
-        },
-      });
+    describeRequestFor("public content", getSetup(), expectedNormalBehavior);
+
+    describeExemptPreviewRequests(getSetup, expectedNormalBehavior);
+
+    describeRequestFor("preview content", getSetup("http://localhost?preview"), () => {
+      itRespondsWithStatus(200);
+      itInitializesPreviewContentfulClient();
+      itRequestsUserFromRedis();
+      itHasCurrentUserLocal();
+      itAuthorizesWithContentful();
     });
   });
 
-  describe("with an authenticated user with a bad token", () => {
-    let fetch: Mock<Parameters<typeof window.fetch>, ReturnType<typeof window.fetch>>,
-      cookies: Cookies;
-    beforeEach(() => {
-      fetch = vi.fn();
-      fetch.mockReturnValueOnce(
-        Promise.resolve(new Response("bad token", { status: 401, statusText: "Unauthorized" }))
+  describe("with a user with a token that doesn't exist in Redis", () => {
+    const getSetup = (url?: string) => (ctx: LocalTestContextWithoutResponse) => {
+      setupCookiesAndEvent(ctx, { cookies: { ldafUserToken }, url });
+      mockRedisResponse(null);
+      const { resolve, event } = ctx;
+      return handleToken({ resolve, event });
+    };
+
+    const expectedNormalBehavior = () => {
+      itWorksNormally();
+      itRequestsUserFromRedis();
+      itDeletesCookie();
+      itDoesntHaveCurrentUserLocal();
+      itDoesntCallContentful();
+    };
+
+    describeRequestFor("public content", getSetup(), expectedNormalBehavior);
+
+    describeExemptPreviewRequests(getSetup, expectedNormalBehavior);
+
+    describeRequestFor("preview content", getSetup("http://localhost?preview"), () => {
+      itRespondsWithStatus(401);
+      itInitializesRedis();
+      itInitializesNormalContentfulClient();
+      itDoesntCallContentful();
+      itHasPreviewAuthenticationError();
+      itDeletesCookie();
+      itDoesntHaveCurrentUserLocal();
+    });
+  });
+
+  describe("with a user with a token that exists in Redis but is not valid in Contentful", () => {
+    const getSetup = (url?: string) => (ctx: LocalTestContextWithoutResponse) => {
+      setupCookiesAndEvent(ctx, { cookies: { ldafUserToken }, url });
+      mockRedisResponse();
+      mockContentfulSpaceResponse(
+        new Response("401 Unauthorized", {
+          status: 401,
+        })
       );
-      cookies = getRequestEventCookies({
-        get: (key: string) => ({ ldafUserToken: "testToken" }[key]),
-      });
-    });
+      const { resolve, event } = ctx;
+      return handleToken({ resolve, event });
+    };
 
-    it("clears the cookie", async () => {
-      const event = getRequestEvent({
-        cookies,
-        fetch,
-      });
-      await handleToken({ resolve, event });
-      expect(resolve).toHaveBeenCalledOnce();
-      expect(resolve).toHaveBeenCalledWith(event);
-      expect(fetch.mock.calls).toEqual([
-        [
-          `${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`,
-          { headers: { Authorization: `Bearer testToken` } },
-        ],
-      ]);
-      expect(
-        (event.cookies.delete as Mock<Parameters<typeof event.cookies.delete>>).mock.calls
-      ).toEqual([["ldafUserToken"]]);
-    });
+    const expectedNormalBehavior = () => {
+      itWorksNormally();
+      itRequestsUserFromRedis();
+      itHasCurrentUserLocal();
+      itDoesntCallContentful();
+    };
 
-    it("returns a 401 if requesting preview content", async () => {
-      const event = getRequestEvent({
-        ...getURLAndRequest("http://localhost?preview"),
-        cookies,
-        fetch,
-      });
-      await handleToken({ resolve, event });
-      expect(event.locals).toMatchObject({
-        previewAuthenticationError: {
-          code: 401,
-          message: `Token was invalid; you have been logged out. Please log in again to view preview content.`,
-        },
-      });
+    describeRequestFor("public content", getSetup(), expectedNormalBehavior);
+
+    describeExemptPreviewRequests(getSetup, expectedNormalBehavior);
+
+    describeRequestFor("preview content", getSetup("http://localhost?preview"), () => {
+      itRespondsWithStatus(401);
+      itRequestsUserFromRedis();
+      itInitializesNormalContentfulClient();
+      itAuthorizesWithContentful();
+      itDeletesRedisUser();
+      itDeletesCookie();
     });
   });
 });
