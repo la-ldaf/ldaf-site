@@ -25,12 +25,13 @@
 
   const onInput = () => dispatch("input", { searchTerm });
   const onSubmit = (e: Event) => {
-    if (!browser) return;
     e.preventDefault();
     dispatch("submit", { searchTerm });
-    // TODO: update this to the LDAF index when ready.
-    const algoliaIndex = "media-sample-data";
-    goto(`/search/?${algoliaIndex}[query]=${encodeURI(searchTerm)}`);
+    if (browser) {
+      // TODO: update this to the LDAF index when ready.
+      const algoliaIndex = "media-sample-data";
+      goto(`/search/?${algoliaIndex}[query]=${encodeURI(searchTerm)}`);
+    }
   };
 </script>
 
