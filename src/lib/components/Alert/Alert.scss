@@ -1,0 +1,30 @@
+.ldaf-alert--site-wide.usa-alert--info,
+.ldaf-alert--site-wide.usa-alert--error {
+  border: none;
+}
+.ldaf-alert--site-wide.usa-alert--error {
+  background-color: $error-dark;
+
+  .usa-alert__body {
+    color: white;
+    background-color: $error-dark;
+
+    .usa-link {
+      color: white;
+      &:visited {
+        color: white;
+      }
+    }
+
+    &::before {
+      filter: invert(1);
+    }
+  }
+}
+
+.ldaf-alert--site-wide.usa-alert--info .usa-alert__body .usa-link {
+  color: $primary-light;
+  &:visited {
+    color: $primary-light;
+  }
+}
