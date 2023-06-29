@@ -3,4 +3,4 @@
   export let data;
 </script>
 
-<ContentfulRichText document={data} />
+<ContentfulRichText document={data.document} />

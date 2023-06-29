@@ -29,28 +29,30 @@
   export let data;
 </script>
 
-<Image
-  class="main-image"
-  alt=""
-  src={landingImage}
-  sources={imageSources}
-  blurhash={landingImageBlurhash}
-  width={landingImageWidth}
-  height={landingImageHeight}
-  mean={landingImageMean}
-/>
-<section class="grid-container homepage-greeting maxw-tablet">
-  <ContentfulRichText document={data.title} />
-  <div class="grid-row">
-    <div class="grid-col-4 construction-sign-container">
-      <img
-        class="construction-sign"
-        alt="Under construction sign swinging in the wind"
-        src={underConstructionGif}
-      />
+<main id="main-content">
+  <Image
+    class="main-image"
+    alt=""
+    src={landingImage}
+    sources={imageSources}
+    blurhash={landingImageBlurhash}
+    width={landingImageWidth}
+    height={landingImageHeight}
+    mean={landingImageMean}
+  />
+  <section class="grid-container homepage-greeting maxw-tablet">
+    <ContentfulRichText document={data.title} />
+    <div class="grid-row">
+      <div class="grid-col-4 construction-sign-container">
+        <img
+          class="construction-sign"
+          alt="Under construction sign swinging in the wind"
+          src={underConstructionGif}
+        />
+      </div>
+      <div class="grid-col-8 padding-left-4">
+        <ContentfulRichText document={data.body} />
+      </div>
     </div>
-    <div class="grid-col-8 padding-left-4">
-      <ContentfulRichText document={data.body} />
-    </div>
-  </div>
-</section>
+  </section>
+</main>

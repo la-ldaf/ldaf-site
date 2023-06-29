@@ -36,9 +36,7 @@
   <Banner />
   <div class="usa-overlay" />
   <Header {navItems} {secondaryNavItems} {siteTitle} bind:navMenuExpanded />
-  <main id="main-content">
-    <slot />
-  </main>
+  <slot />
   <!-- TODO: reinstate <Footer /> once designed and implemented -->
   <footer class="usa-footer padding-top-7 padding-bottom-1 text-center">
     ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved
