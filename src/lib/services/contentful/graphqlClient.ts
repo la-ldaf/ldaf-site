@@ -17,9 +17,9 @@ type ClientOptions = {
 };
 
 const delim = "#" as const;
+type Delim = typeof delim;
 
-type ClientKey =
-  `${APIPrefix}${typeof delim}${SpaceID}${typeof delim}${Token}${typeof delim}${Preview}`;
+type ClientKey = `${APIPrefix}${Delim}${SpaceID}${Delim}${Token}${Delim}${Preview}`;
 const getKeyFromOptions = ({
   spaceID,
   token,
