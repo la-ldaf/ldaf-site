@@ -3,8 +3,6 @@
 //   unavailable in CI and may also contain local dev machine system environment variables that
 //   we do not want to check in to git.
 declare module "$env/static/private" {
-  export const PUBLIC_ALGOLIA_APP_ID: string;
-  export const PUBLIC_ALGOLIA_API_KEY: string;
   export const CONTENTFUL_DELIVERY_API_TOKEN: string;
   export const CONTENTFUL_SPACE_ID: string;
   export const VERCEL: string;
@@ -15,11 +13,12 @@ declare module "$env/static/private" {
   export const VERCEL_GIT_PULL_REQUEST_ID: string;
 }
 
+declare module "$env/static/public" {
+  export const PUBLIC_ALGOLIA_APP_ID: string;
+  export const PUBLIC_ALGOLIA_API_KEY: string;
+}
 /*
 // Uncomment to declare other environment variable strategies.
-declare module "$env/static/public" {
-
-}
 declare module "$env/dynamic/private" {
   export const env: {
 
