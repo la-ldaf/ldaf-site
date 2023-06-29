@@ -29,73 +29,20 @@ const {
 
 vi.doMock("$env/static/private", () => env);
 
-const mockedCookiesGet: MockedFunction<Cookies["get"]> = vi.fn(
-  (..._: Parameters<Cookies["get"]>) => undefined
-);
-
-const cookiesDefaults: MockedObject<Cookies> = {
-  get: mockedCookiesGet,
-  getAll: vi.fn(),
-  set: vi.fn(),
-  delete: vi.fn(),
-  serialize: vi.fn(),
-};
-
-const getRequestEventCookies = (
-  overrides: Partial<MockedObject<Cookies>> = {}
-): MockedObject<Cookies> => ({
-  ...cookiesDefaults,
-  ...overrides,
-});
-
-const getRequestEventDefaults = () => ({
-  fetch: vi.fn(),
-  getClientAddress: vi.fn(() => "127.0.0.1"),
-  locals: {},
-  params: {},
-  platform: {},
-  request: new Request("http://localhost"),
-  setHeaders: vi.fn(),
-  url: new URL("http://localhost"),
-  isDataRequest: false,
-  route: {
-    id: null,
-  },
-  cookies: cookiesDefaults,
-});
-
-const getRequestEvent = (
-  overrides: Partial<MockedObject<RequestEvent> & { cookies: MockedObject<Cookies> }> = {}
-): MockedObject<RequestEvent> & { cookies: MockedObject<Cookies> } => {
-  const ret = {
-    ...getRequestEventDefaults(),
-    ...overrides,
-    cookies: getRequestEventCookies(overrides?.cookies),
-  };
-  return ret;
-};
-
-const getURLAndRequest = (url: string) => ({ url: new URL(url), request: new Request(url) });
-
 const fetch = vi.fn();
 
-import type { createClient as createRedisClientOriginal, RedisClientType } from "redis";
-
-const redisClient: MockedObject<Pick<RedisClientType, "connect" | "get" | "del">> = {
-  connect: vi.fn(async () => undefined),
-  get: vi.fn(async (..._: Parameters<RedisClientType["get"]>) => null),
-  del: vi.fn(async (..._: Parameters<RedisClientType["del"]>) => 0),
-};
-
-const createRedisClient: MockedFunction<typeof createRedisClientOriginal> = vi.fn(
-  (..._: Parameters<typeof createRedisClientOriginal>) => redisClient as unknown as RedisClientType
-);
-
-createRedisClient.mockImplementation(() => {
-  throw new Error("createRedisClientMockImplementation");
-});
+import {
+  client as redisClient,
+  createClient as createRedisClient,
+} from "$lib/__tests__/mocks/redis";
 
 vi.doMock("redis", () => ({ createClient: createRedisClient }));
+
+import {
+  getRequestEvent,
+  getRequestEventCookies,
+  getURLAndRequest,
+} from "$lib/__tests__/mocks/requestEvent";
 
 const { handleToken } = await import("./hooks.server");
 
@@ -113,7 +60,7 @@ type LocalTestContext = LocalTestContextWithoutResponse & {
 };
 
 const expectRedisToHaveBeenInitializedWith = (
-  ...expectedArgs: Parameters<typeof createRedisClientOriginal>
+  ...expectedArgs: Parameters<typeof createRedisClient>
 ) => {
   expect(createRedisClient).toHaveBeenCalledOnceWith(...expectedArgs);
   expect(redisClient.connect).toHaveBeenCalledOnceWith();
@@ -220,12 +167,12 @@ const itDoesntHavePreviewAuthenticationError = () =>
     expect(ctx.event.locals.previewAuthenticationError).toBeUndefined());
 
 const itHasPreviewAuthenticationError = ({
-  code = 401,
+  status = 401,
   message,
-}: { code?: number; message?: string | undefined } = {}) =>
+}: { status?: number; message?: string | undefined } = {}) =>
   it<LocalTestContext>("has preview authentication error", (ctx) =>
     expect(ctx.event.locals.previewAuthenticationError).toMatchObject({
-      code,
+      status,
       ...(message ? { message } : {}),
     }));
 
@@ -289,7 +236,7 @@ const describeRequestFor = (
 };
 
 const describeExemptPreviewRequests = (
-  getSetup: (url: string) => (ctx: LocalTestContextWithoutResponse) => void,
+  getSetup: (url: string) => (ctx: LocalTestContextWithoutResponse) => Response | Promise<Response>,
   expectedBehavior: () => void
 ) =>
   describe("exempt preview requests", () => {

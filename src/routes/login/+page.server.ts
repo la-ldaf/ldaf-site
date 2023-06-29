@@ -2,17 +2,27 @@ import { CONTENTFUL_MANAGEMENT_API_ENDPOINT } from "$env/static/private";
 import type { ServerUserInfo } from "$lib/server/types";
 import getCurrentUser from "$lib/server/getCurrentUser";
 import tokenDuration from "$lib/constants/tokenDuration";
-import { error } from "@sveltejs/kit";
+import { error, fail } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 
 export const actions = {
   default: async ({ request, locals, cookies, fetch }) => {
     const data = await request.formData();
+
+    if (cookies.get("ldafUserToken")) {
+      throw fail(400, { message: "You are already logged in!" });
+    }
+
     const managementAPIToken = data.get("token");
     if (typeof managementAPIToken !== "string") {
-      throw error(400, { message: "token must be a string" });
+      throw fail(400, { message: "token must be a string" });
     }
+
     const { getConnectedRedisClient } = locals;
+    if (!getConnectedRedisClient) {
+      throw error(500, { message: "Could not connect to Redis, client creator was not set" });
+    }
+
     try {
       const [redisClient, currentUser] = await Promise.all([
         getConnectedRedisClient!(),
@@ -42,10 +52,14 @@ export const actions = {
       return { success: true, currentUser: locals.currentUser };
     } catch (err) {
       const message =
-        err && typeof err === "object" && "message" in err
+        err && typeof err === "object" && "message" in err && typeof err.message === "string"
           ? `Could not save token: ${err.message}`
           : `Could not save token: unknown error`;
-      throw error(500, { message });
+      const status =
+        err && typeof err === "object" && "status" in err && typeof err.status === "number"
+          ? err.status
+          : 500;
+      throw fail(status, { message });
     }
   },
 } satisfies Actions;

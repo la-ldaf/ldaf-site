@@ -10,10 +10,11 @@ declare global {
     interface Error {
       // `message` is included by default
       title?: string;
+      status?: number;
     }
     interface Locals {
       previewAuthenticationError?: {
-        code: number;
+        status: number;
         message: string;
       };
       currentUser?: CurrentUser;

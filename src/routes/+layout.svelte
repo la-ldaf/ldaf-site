@@ -74,7 +74,7 @@
   <Header {navItems} {secondaryNavItems} {siteTitle} bind:navMenuExpanded />
   {#if previewAuthenticationError}
     <div class="usa-section usa-prose grid-container">
-      <h1>{previewAuthenticationError.code}</h1>
+      <h1>{previewAuthenticationError.status}</h1>
       <p>{previewAuthenticationError.message}</p>
       <p>
         (Do you need to <LoginLink {...loginLinkProps}>log in</LoginLink> or visit the

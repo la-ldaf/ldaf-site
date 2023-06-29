@@ -23,6 +23,7 @@ export default async ({
       message: `${currentUserResponse.status}${
         currentUserResponse.statusText ? ` ${currentUserResponse.statusText}` : ""
       }: ${errorMessage}`,
+      status: currentUserResponse.status,
     });
   }
   const {
