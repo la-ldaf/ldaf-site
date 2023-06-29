@@ -198,7 +198,7 @@ const nodeArrayToString = (nodeArray: Node[]) => nodeArray.map(nodeToString).joi
 export function toMatchDOMNodes<R>(
   this: {
     isNot: boolean;
-    utils: { diff: (a: string, b: string) => string };
+    utils: { diff: (a: string, b: string) => string | null };
   },
   received: R,
   expected: string | Node[] | HTMLElement | NodeList
