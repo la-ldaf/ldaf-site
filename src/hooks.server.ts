@@ -145,7 +145,7 @@ export const handleToken = (async ({ event, resolve }) => {
   if (!event.locals.currentUser || !managementAPIToken) {
     const message = await handleBadTokenAndGetMessage();
     event.locals.previewAuthenticationError = {
-      code: 401,
+      status: 401,
       message,
     };
     return resolveWithStatus(401, "Unauthorized", resolve, event);
@@ -167,7 +167,7 @@ export const handleToken = (async ({ event, resolve }) => {
   if (response.status === 401) {
     const message = await handleBadTokenAndGetMessage();
     event.locals.previewAuthenticationError = {
-      code: 401,
+      status: 401,
       message: `401 Unauthorized: ${message}`,
     };
     return resolveWithStatus(401, "Unauthorized", resolve, event);
@@ -176,7 +176,7 @@ export const handleToken = (async ({ event, resolve }) => {
   if (!response.ok) {
     const errorMessage = await getErrorMessageFromResponse(response);
     event.locals.previewAuthenticationError = {
-      code: response.status,
+      status: response.status,
       message: `${response.status}${
         response.statusText ? ` ${response.statusText}` : ""
       } error calling content service: ${errorMessage}`,
