@@ -1,7 +1,7 @@
 import type { Actions } from "./$types";
 
 export const actions = {
-  default: async ({ cookies, locals: { getConnectedRedisClient } }) => {
+  default: async ({ cookies, locals: { getConnectedRedisClient, logger } }) => {
     const userToken = cookies.get("ldafUserToken");
     if (!userToken) return { success: true };
     cookies.delete("ldafUserToken", { sameSite: "none", path: "/" });
@@ -10,7 +10,7 @@ export const actions = {
       const redisClient = await getConnectedRedisClient();
       await redisClient.del(`ldafUserInfoByToken:${userToken}`);
     } catch (err) {
-      // TODO log and ignore this error
+      logger.logError(err);
     }
     return { success: true };
   },

@@ -18,20 +18,25 @@ export const actions = {
       throw fail(400, { message: "token must be a string" });
     }
 
-    const { getConnectedRedisClient } = locals;
+    const { logger, getConnectedRedisClient } = locals;
     if (!getConnectedRedisClient) {
       throw error(500, { message: "Could not connect to Redis, client creator was not set" });
     }
 
     try {
       const [redisClient, currentUser] = await Promise.all([
-        getConnectedRedisClient!(),
+        getConnectedRedisClient?.(),
         getCurrentUser({
           fetch,
           token: managementAPIToken,
           apiEndpoint: CONTENTFUL_MANAGEMENT_API_ENDPOINT,
         }),
       ]);
+      if (!redisClient) {
+        const message = "Could not log in: Redis client failed to initialize";
+        logger.logMessage(message);
+        throw error(500, { message });
+      }
       locals.currentUser = currentUser;
       const ldafUserToken = crypto.randomUUID();
       await redisClient.set(

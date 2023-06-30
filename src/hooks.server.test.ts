@@ -43,6 +43,7 @@ import {
   getRequestEventCookies,
   getURLAndRequest,
 } from "$lib/__tests__/mocks/requestEvent";
+import { newLogger } from "$lib/server/logger";
 
 const { handleToken } = await import("./hooks.server");
 
@@ -98,6 +99,7 @@ const setupRequestEvent = (ctx: Partial<LocalTestContext>, { url }: { url?: stri
     fetch,
     cookies: ctx.cookies,
     ...(url ? getURLAndRequest(url) : {}),
+    locals: { logger: newLogger() },
   });
 };
 

@@ -38,8 +38,8 @@ const getRequestEventDefaults = () => ({
 
 export const getRequestEvent = <R extends RequestEvent>(
   overrides: Partial<MockedObject<R>> & {
-    cookies?: MockedObject<Cookies>;
-    locals?: MockedObject<Record<string, any>>;
+    cookies?: Partial<MockedObject<Cookies>>;
+    locals?: Partial<MockedObject<App.Locals>>;
   } = {}
 ): MockedObject<R> => {
   const ret = {
@@ -47,6 +47,7 @@ export const getRequestEvent = <R extends RequestEvent>(
     ...overrides,
     cookies: getRequestEventCookies(overrides?.cookies),
   };
+  ret.locals;
   return ret as unknown as MockedObject<R> & { cookies: MockedObject<Cookies> };
 };
 

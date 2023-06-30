@@ -2,6 +2,7 @@ import { getRequestEvent, getRequestEventCookies } from "$lib/__tests__/mocks/re
 import { vi, beforeAll, type MockedObject } from "vitest";
 import type { RequestEvent } from "./$types";
 import { client as redisClient } from "$lib/__tests__/mocks/redis";
+import { newLogger } from "$lib/__tests__/mocks/logger";
 
 const { actions } = await import("./+page.server");
 
@@ -16,6 +17,7 @@ const getEvent = ({ cookies = {} }: { cookies?: Record<string, string> } = {}) =
       id: "/logout",
     },
     locals: {
+      logger: newLogger(),
       getConnectedRedisClient: vi.fn(async () => redisClient),
     },
     cookies: getRequestEventCookies({

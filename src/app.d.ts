@@ -3,6 +3,7 @@
 import type { RedisClientType } from "redis";
 import type { ContentfulClient } from "./lib/services/contentful";
 import type { CurrentUser } from "./lib/contexts/currentUser";
+import type { Logger } from "./lib/server/logger";
 
 // for information about these interfaces
 declare global {
@@ -13,6 +14,7 @@ declare global {
       status?: number;
     }
     interface Locals {
+      logger: Logger;
       previewAuthenticationError?: {
         status: number;
         message: string;
