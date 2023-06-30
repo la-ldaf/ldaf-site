@@ -5,13 +5,30 @@ import {
   CONTENTFUL_PREVIEW_API_TOKEN,
   KV_URL,
 } from "$env/static/private";
-import type { Handle, MaybePromise, RequestEvent } from "@sveltejs/kit";
+import type { Handle, HandleServerError, MaybePromise, RequestEvent } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { createClient as createRedisClient, type RedisClientType } from "redis";
 import getContentfulClient from "$lib/services/contentful";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 import { newLogger } from "$lib/server/logger";
 import getErrorMessage from "$lib/util/getErrorMessage";
+import getErrorStatus from "$lib/util/getErrorStatus";
+import consoleErrorIfYouCan from "$lib/util/consoleErrorIfYouCan";
+
+export const handleError = (({ error, event }) => {
+  const message = getErrorMessage(error);
+  try {
+    const logger = event.locals.logger ?? newLogger();
+    logger.logError(error);
+  } catch (err) {
+    consoleErrorIfYouCan(`Error while trying to log unexpected error: ${getErrorMessage(err)}`);
+  }
+  const status = getErrorStatus(error);
+  return {
+    message: `Unexpected error: ${message}`,
+    ...(status ? { status } : {}),
+  };
+}) satisfies HandleServerError;
 
 export const handleSetupLogger = (async ({ event, resolve }) => {
   event.locals.logger = newLogger();
