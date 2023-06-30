@@ -95,8 +95,9 @@ const newContext = (): Context => ({ ...contextOptionsDefaults, PUBLIC: {} });
 
 export const newLogger = (): Logger => {
   const loggerInit: Partial<LoggerInternal> = {};
+
   // This type assertion is necessary to create the self-referential object without any other
-  // type issues
+  // type issues. This type assertion is only safe if the Object.assign call below is preserved!
   const logger = loggerInit as LoggerInternal;
 
   Object.assign(loggerInit, {
@@ -114,8 +115,8 @@ export const newLogger = (): Logger => {
     setContext: setupLoggerMethod<Logger, LoggerInternal, "setContext">(logger, setContext),
   } as const satisfies LoggerInternal);
   // --------^ the "satisfies" ensures at compile time that we actually filled out the type
-  // correctly in the Object.assign call. This makes the type assertion above safe to do, assuming
-  // we don't remove this Object.assign call.
+  // correctly in the Object.assign call. This makes the type assertion of "logger" above safe to
+  // do, assuming we don't remove this Object.assign call.
 
   return logger;
 };
