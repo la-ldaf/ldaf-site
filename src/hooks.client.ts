@@ -5,10 +5,13 @@ import getErrorStatus from "$lib/util/getErrorStatus";
 import type { HandleClientError } from "@sveltejs/kit";
 import { getContext } from "svelte";
 
-export const handleError = (({ error }) => {
+export const handleError = (({ error, event }) => {
   const message = getErrorMessage(error);
   try {
     const logger = getContext<PublicLogger>("logger") ?? newPublicLogger();
+    try {
+      logger.setPublicContext("url", event.url.toString());
+    } catch (_) {}
     logger.logError(error);
   } catch (err) {
     consoleErrorIfYouCan(`Error while trying to log unexpected error: ${getErrorMessage(err)}`);

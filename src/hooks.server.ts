@@ -19,6 +19,9 @@ export const handleError = (({ error, event }) => {
   const message = getErrorMessage(error);
   try {
     const logger = event.locals.logger ?? newLogger();
+    try {
+      logger.setPublicContext("url", event.url.toString());
+    } catch (_) {}
     logger.logError(error);
   } catch (err) {
     consoleErrorIfYouCan(`Error while trying to log unexpected error: ${getErrorMessage(err)}`);
