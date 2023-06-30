@@ -39,7 +39,7 @@
     "@poppanator/sveltekit-svg": "^3.0.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
-    "@rollup/plugin-typescript": "^11.1.1",
+    "@rollup/plugin-typescript": "^11.1.2",
     "@storybook/addon-essentials": "^7.1.0-alpha.12",
     "@storybook/addon-interactions": "^7.1.0-alpha.12",
     "@storybook/addon-links": "^7.1.0-alpha.12",
