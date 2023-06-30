@@ -9,8 +9,9 @@ export const toHaveBeenCalledOnceWith = function (
       stringify: (value: unknown, maxDepth?: number, options?: { maxLength?: number }) => string;
     };
   },
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   received: MockedFunction<(...args: any[]) => any>,
-  ...expected: any[]
+  ...expected: any[] /* eslint-enable @typescript-eslint/no-explicit-any */
 ) {
   const {
     isNot,

@@ -3,6 +3,7 @@ import { vi } from "vitest";
 import type { Navigation, Page } from "@sveltejs/kit";
 import type * as stores from "$app/stores";
 import { readable } from "svelte/store";
+import { newLogger, newPublicLogger } from "./mocks/logger";
 
 vi.mock("$app/stores", (): typeof stores => {
   const mockedStores = {
@@ -29,3 +30,6 @@ vi.mock("$app/stores", (): typeof stores => {
     updated: mockedStores.updated,
   };
 });
+
+vi.mock("$lib/logger", () => ({ newPublicLogger }));
+vi.mock("$lib/server/logger", () => ({ newLogger }));

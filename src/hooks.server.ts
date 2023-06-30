@@ -10,6 +10,14 @@ import { sequence } from "@sveltejs/kit/hooks";
 import { createClient as createRedisClient, type RedisClientType } from "redis";
 import getContentfulClient from "$lib/services/contentful";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
+import { newLogger } from "$lib/server/logger";
+import getErrorMessage from "$lib/util/getErrorMessage";
+
+export const handleSetupLogger = (async ({ event, resolve }) => {
+  event.locals.logger = newLogger();
+  event.locals.logger.setPublicContext("initialURL", event.url.toString());
+  return resolve(event);
+}) satisfies Handle;
 
 const handlePreload = (async ({ event, resolve }) =>
   resolve(event, {
@@ -58,7 +66,10 @@ const resolveWithStatus = async <T extends RequestEvent>(
 //
 // Exported for tests.
 export const handleToken = (async ({ event, resolve }) => {
-  const { fetch } = event;
+  const {
+    fetch,
+    locals: { logger },
+  } = event;
 
   // We _always_ want to initialize the contentful client first thing because without it we will
   // load sample data for the navigation menu, which is shown on the error page
@@ -84,9 +95,11 @@ export const handleToken = (async ({ event, resolve }) => {
         socket: { tls: useTLSForRedisConnection },
       });
     }
-    if (!cachedRedisClientConnectedPromise)
+    if (!cachedRedisClientConnectedPromise) {
       cachedRedisClientConnectedPromise = cachedRedisClient.connect();
+    }
     await cachedRedisClientConnectedPromise;
+    logger.setContext("redisConnected", true);
     return cachedRedisClient;
   };
 
@@ -101,8 +114,10 @@ export const handleToken = (async ({ event, resolve }) => {
   // We _always_ want to _try_ to load the user if an access token is provided because there is UI
   // that depends on event.locals.currentUser
   setCurrentUser: if (ldafUserToken) {
+    let redisClient: RedisClientType | undefined;
     try {
-      const redisClient = await getConnectedRedisClient();
+      redisClient = await getConnectedRedisClient();
+      if (!redisClient) break setCurrentUser;
       const json = await redisClient.get(`ldafUserInfoByToken:${ldafUserToken}`);
       if (json === null) {
         event.cookies.delete("ldafUserToken");
@@ -112,10 +127,11 @@ export const handleToken = (async ({ event, resolve }) => {
       const { email, name, avatarURL } = parsed;
       ({ managementAPIToken } = parsed);
       event.locals.currentUser = { email, name, avatarURL };
+      logger.setPublicContext("currentUser", event.locals.currentUser, {
+        errorIfAlreadyDefined: true,
+      });
     } catch (err) {
-      // TODO log and ignore this error
-      console.log("GOT ERROR REQUESTING FROM REDIS");
-      console.log({ err });
+      logger.logError(err);
     }
   }
 
@@ -126,6 +142,8 @@ export const handleToken = (async ({ event, resolve }) => {
   const preview = event.url.searchParams.has("preview");
   if (!preview) return resolve(event);
 
+  logger.setPublicContext("isPreview", true);
+
   const handleBadTokenAndGetMessage = async () => {
     if (event.locals.currentUser) event.locals.currentUser = undefined;
     if (ldafUserToken) {
@@ -134,7 +152,10 @@ export const handleToken = (async ({ event, resolve }) => {
         const redisClient = await getConnectedRedisClient();
         await redisClient?.del(`ldafUserInfoByToken:${ldafUserToken}`);
       } catch (err) {
-        // TODO log and ignore this error
+        const message = getErrorMessage(err);
+        logger.logMessage(
+          `Got the following error while trying to delete bad user token from Redis: ${message}`
+        );
       }
     }
     return ldafUserToken
@@ -181,6 +202,7 @@ export const handleToken = (async ({ event, resolve }) => {
         response.statusText ? ` ${response.statusText}` : ""
       } error calling content service: ${errorMessage}`,
     };
+    logger.logErrorResponse(response);
     return resolveWithStatus(response.status, response.statusText, resolve, event);
   }
 
@@ -204,4 +226,4 @@ const handleCSP = (async ({ event, resolve }) => {
   return resolve(event);
 }) satisfies Handle;
 
-export const handle = sequence(handlePreload, handleToken, handleCSP);
+export const handle = sequence(handleSetupLogger, handlePreload, handleToken, handleCSP);
