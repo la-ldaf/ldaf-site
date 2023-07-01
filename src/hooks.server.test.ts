@@ -216,7 +216,7 @@ const describeRequestFor = (
   test: () => void | Promise<void>
 ) => {
   let initialContext: Partial<LocalTestContext>;
-  describe.only(`when requesting ${what}`, async () => {
+  describe(`when requesting ${what}`, async () => {
     beforeAll(async () => {
       const resolve: MockedFunction<Resolve> = vi.fn(async (..._) => new Response("success!"));
       initialContext = { resolve };
