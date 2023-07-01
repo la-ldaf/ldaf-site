@@ -4,7 +4,7 @@ import getErrorStatus from "$lib/util/getErrorStatus";
 import type { WithSomeLoggerArg } from "./types";
 
 export const logMessage: WithSomeLoggerArg<"logMessage"> = async (logger, message, options) => {
-  const messageObj = logger.newMessage({ message, context: logger.context, ...options });
+  const messageObj = logger.newMessage({ message, logger.context, ...options });
   return logger.logRawMessage(messageObj);
 };
 
