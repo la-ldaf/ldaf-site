@@ -3,7 +3,6 @@ import type {
   PublicMessage,
   AnyMessage,
   Context,
-  NewMessage,
   WithLoggerArg,
   WithPublicLoggerArg,
 } from "./types";
