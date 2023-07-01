@@ -22,8 +22,6 @@
   setContext("logger", logger);
   logger.setPublicContext("initialURL", loggerContext.url);
 
-  if (browser) window.logger = logger;
-
   $: logger.setPublicContext("url", $page.url.toString());
 
   const currentUserStore = writable<CurrentUser | undefined>(data.currentUser);
