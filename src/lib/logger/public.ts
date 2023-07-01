@@ -7,7 +7,7 @@ import type {
   SetPublicContextOptions,
 } from "./types";
 import { logMessage, logError, logErrorResponse } from "./logMethods";
-import { newMessage, newPublicMessage } from "./logMessages";
+import { newPublicMessage } from "./logMessages";
 export type { PublicLogger, PublicContext, SetPublicContextOptions };
 
 // Regular setContext _only exists on the server_. On the client, _always_ use

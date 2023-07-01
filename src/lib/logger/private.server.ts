@@ -11,7 +11,7 @@ import type {
 import setupLoggerMethod from "./setupLoggerMethod";
 import { setContextOptions, setPublicContextOptions } from "./contextOptions";
 import { logMessage, logError, logErrorResponse } from "./logMethods";
-import { newMessage, renderMessageToPlainText, renderMessageToSlackMessage } from "./logMessages";
+import { newMessage, renderMessageToSlackMessage } from "./logMessages";
 import { dev } from "$app/environment";
 import logRawMessageInDevOrTests from "./logRawMessageInDevOrTests";
 export type { Logger, Context };
