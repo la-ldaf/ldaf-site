@@ -12,7 +12,9 @@ export type { PublicLogger, PublicContext, SetPublicContextOptions };
 
 // Regular setContext _only exists on the server_. On the client, _always_ use
 // setPublicContext. setPublicContext can also be used on the server to set context that will be
-// accessible by the client logger (so it must be serializable!).
+// accessible by the client logger (so it must be serializable!). Note that "public" means "public
+// to the browser session of the current user", so things like the current user data are safe to store
+// in public context because only that user will see them.
 const setPublicContext = <K extends keyof PublicContext>(
   logger: PublicLoggerInternal,
   key: K,
@@ -69,6 +71,14 @@ export const newPublicLogger = ({
       setPublicContext
     ),
   } as const satisfies PublicLoggerInternal);
+  // --------^ the "satisfies" ensures at compile time that we actually filled out the type
+  // correctly in the Object.assign call. This makes the type assertion of "logger" above safe to
+  // do, assuming we don't remove this Object.assign call.
 
   return logger;
 };
+
+// We do _not_ use a default export in the public logger. This is because we should be using the
+// logger from the Svelte context (or a new one that we just created). It doesn't make a difference
+// when running in the browser, but on the server (when rendering for initial load or for prerendering)
+// we would otherwise mix up logger context from different requests.
