@@ -14,7 +14,7 @@ import type { ServerUserInfo } from "$lib/server/types";
 import tokenDuration from "$lib/constants/tokenDuration";
 import type { CurrentUser } from "$lib/types";
 import type { Cookies } from "@sveltejs/kit";
-import { newLogger } from "$lib/__tests__/mocks/logger";
+import { newLogger } from "$lib/logger/private.server";
 
 const env = {
   CONTENTFUL_MANAGEMENT_API_ENDPOINT: "http://localhost/contentful",

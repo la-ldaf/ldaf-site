@@ -1,9 +1,11 @@
 import catchMeIfYouCan from "$lib/util/catchMeIfYouCan";
 import consoleErrorIfYouCan from "$lib/util/consoleErrorIfYouCan";
 
-export type OnlyVoidFunctions = {
+export type OnlyVoidFunctions<T extends object> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: ((...args: any[]) => void) | ((...args: any[]) => Promise<void>);
+  [K in keyof T]: T[K] extends ((...args: any[]) => void) | ((...args: any[]) => Promise<void>)
+    ? T[K]
+    : never;
 };
 
 // The only type assertions in this function are asserting that we are returning the correct type,
@@ -15,11 +17,16 @@ export type OnlyVoidFunctions = {
 // separate setupSyncMethod and setupAsyncMethod functions (not as easy as it sounds) or by
 // enforcing that every logger method is async, either one of which would allow us to stop
 // type-asserting the return type.
-export default <L extends OnlyVoidFunctions, LInternal extends L & object, K extends keyof L>(
+export default <
+    L extends object,
+    LInternal extends L,
+    K extends keyof M,
+    M extends OnlyVoidFunctions<LInternal> = OnlyVoidFunctions<LInternal>
+  >(
     logger: LInternal,
-    method: (...args: [LInternal, ...Parameters<L[K]>]) => ReturnType<L[K]>
+    method: (...args: [LInternal, ...Parameters<M[K]>]) => ReturnType<M[K]>
   ) =>
-  (...args: Parameters<L[K]>): ReturnType<L[K]> => {
+  (...args: Parameters<M[K]>): ReturnType<M[K]> => {
     try {
       try {
         const maybePromise = method(logger, ...args);
@@ -32,17 +39,17 @@ export default <L extends OnlyVoidFunctions, LInternal extends L & object, K ext
           "then" in maybePromise &&
           typeof maybePromise.then === "function"
         ) {
-          return Promise.resolve() as ReturnType<L[K]>;
+          return Promise.resolve() as ReturnType<M[K]>;
         }
-        return undefined as ReturnType<L[K]>;
+        return undefined as ReturnType<M[K]>;
       } catch (err) {
         console.error("Got the following error trying to send a log!", err);
-        return undefined as ReturnType<L[K]>;
+        return undefined as ReturnType<M[K]>;
       }
     } catch (_) {
       // We've exhausted all our options if we can't even log to the console. Nothing left to do,
       // and we can't re-throw the error because logger methods are frequently called in error
       // handlers.
-      return undefined as ReturnType<L[K]>;
+      return undefined as ReturnType<M[K]>;
     }
   };

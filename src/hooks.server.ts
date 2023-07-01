@@ -10,23 +10,27 @@ import { sequence } from "@sveltejs/kit/hooks";
 import { createClient as createRedisClient, type RedisClientType } from "redis";
 import getContentfulClient from "$lib/services/contentful";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
-import { newLogger } from "$lib/server/logger";
+import { newLogger } from "$lib/logger/private.server";
 import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorStatus from "$lib/util/getErrorStatus";
 import consoleErrorIfYouCan from "$lib/util/consoleErrorIfYouCan";
 
 export const handleError = (({ error, event }) => {
+  const logger = event.locals.logger ?? newLogger();
   const message = getErrorMessage(error);
-  try {
-    const logger = event.locals.logger ?? newLogger();
-    try {
-      logger.setPublicContext("url", event.url.toString());
-    } catch (_) {}
-    logger.logError(error);
-  } catch (err) {
-    consoleErrorIfYouCan(`Error while trying to log unexpected error: ${getErrorMessage(err)}`);
-  }
   const status = getErrorStatus(error);
+  (async () => {
+    try {
+      try {
+        logger.setPublicContext("url", event.url.toString());
+      } catch (_) {
+        // do nothing
+      }
+      await logger.logError(error);
+    } catch (err) {
+      consoleErrorIfYouCan(`Error while trying to log unexpected error: ${message}`);
+    }
+  })();
   return {
     message: `Unexpected error: ${message}`,
     ...(status ? { status } : {}),
@@ -34,8 +38,7 @@ export const handleError = (({ error, event }) => {
 }) satisfies HandleServerError;
 
 export const handleSetupLogger = (async ({ event, resolve }) => {
-  event.locals.logger = newLogger();
-  event.locals.logger.setPublicContext("initialURL", event.url.toString());
+  event.locals.logger = newLogger({ context: { PUBLIC: { url: event?.url?.toString() } } });
   return resolve(event);
 }) satisfies Handle;
 

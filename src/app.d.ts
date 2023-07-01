@@ -3,7 +3,7 @@
 import type { RedisClientType } from "redis";
 import type { ContentfulClient } from "./lib/services/contentful";
 import type { CurrentUser } from "./lib/contexts/currentUser";
-import type { Logger } from "./lib/server/logger";
+import type { Logger } from "./lib/logger/private.server";
 
 // for information about these interfaces
 declare global {
