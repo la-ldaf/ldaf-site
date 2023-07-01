@@ -11,8 +11,7 @@
     "./src/**/*.svelte",
     "./tests/**/*.js",
     "./tests/**/*.ts",
-    "./tests/**/*.svelte",
-    "../../../.emacs.d/autosaves/!Users!benaiahmischenko!dev!ldaf-site!migrate-preview-functionality!src!lib!__tests__!mocks!redis.ts~"
+    "./tests/**/*.svelte"
   ],
   "compilerOptions": {
     "allowJs": true,
