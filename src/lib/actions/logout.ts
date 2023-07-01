@@ -4,7 +4,7 @@ import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 import { goto } from "$app/navigation";
 import type { Writable } from "svelte/store";
 import type { CurrentUser } from "$lib/contexts/currentUser";
-import type { PublicLogger } from "$lib/logger";
+import type { PublicLogger } from "$lib/logger/public";
 
 let logout:
   | (({

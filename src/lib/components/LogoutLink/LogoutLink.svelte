@@ -5,7 +5,7 @@
   import { createEventDispatcher, getContext } from "svelte";
   import type { Writable } from "svelte/store";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
-  import type { PublicLogger } from "$lib/logger";
+  import type { PublicLogger } from "$lib/logger/public";
 
   const logger = getContext<PublicLogger>("logger");
   const currentUser = getContext<Writable<CurrentUser | undefined>>(currentUserKey);

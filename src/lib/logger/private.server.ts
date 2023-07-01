@@ -1,33 +1,26 @@
 import { LDAF_SLACK_WEBHOOK_URL } from "$env/static/private";
-import {
-  setPublicContextOptions,
-  type PublicContext,
-  type SetPublicContextOptions,
-} from "$lib/logger";
-import setupLoggerMethod from "$lib/logger/setupLoggerMethod";
-import getErrorMessage from "$lib/util/getErrorMessage";
-import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
-import type { Logger, Context, SetContextOptions } from "./types";
+import type {
+  PublicContext,
+  SetPublicContextOptions,
+  Logger,
+  LoggerInternal,
+  WithLoggerArg,
+  Context,
+  SetContextOptions,
+} from "./types";
+import setupLoggerMethod from "./setupLoggerMethod";
+import { setContextOptions, setPublicContextOptions } from "./contextOptions";
+import { logMessage, logError, logErrorResponse } from "./logMethods";
+import { newMessage, renderMessageToPlainText, renderMessageToSlackMessage } from "./logMessages";
+import { dev } from "$app/environment";
+import logRawMessageInDevOrTests from "./logRawMessageInDevOrTests";
 export type { Logger, Context };
-
-type LoggerInternal = Logger & {
-  context: Context;
-};
-
-type WithLoggerArg<K extends keyof Logger> = (
-  logger: LoggerInternal,
-  ...args: Parameters<Logger[K]>
-) => ReturnType<Logger[K]>;
-
-const contextOptionsDefaults: SetContextOptions = {
-  errorIfAlreadyDefined: false,
-};
 
 const setContext = <K extends keyof Context>(
   logger: LoggerInternal,
   key: K,
   value: Context[K],
-  options: SetContextOptions = contextOptionsDefaults
+  options: SetContextOptions = setContextOptions
 ) => {
   const { context } = logger;
   if (options.errorIfAlreadyDefined && context[key] !== undefined) {
@@ -53,47 +46,37 @@ const setPublicContext = <K extends keyof PublicContext>(
   publicContext[key] = value;
 };
 
-const logMessage: WithLoggerArg<"logMessage"> = async (_, message) => {
+const logRawMessage: WithLoggerArg<"logRawMessage"> = async (_, message) => {
+  if (dev) {
+    await logRawMessageInDevOrTests(_, message);
+    return;
+  }
+  const renderedToSlackMessage = renderMessageToSlackMessage(message);
   await fetch(LDAF_SLACK_WEBHOOK_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ text: message }),
+    body: JSON.stringify(renderedToSlackMessage),
   });
 };
 
-export const logError: WithLoggerArg<"logError"> = async (logger, error) => {
-  if (!error || (typeof error !== "object" && typeof error !== "string")) {
-    return logMessage(logger, "Uncaught error: unknown");
-  }
+type ContextInit = Partial<Omit<Context, "PUBLIC">> & { PUBLIC?: Partial<PublicContext> };
 
-  let message = getErrorMessage(error);
+const newContext = (contextInit: ContextInit): Context => ({
+  ...contextInit,
+  PUBLIC: { ...contextInit.PUBLIC },
+});
 
-  if (typeof error !== "object") return logMessage(logger, message);
-
-  if ("status" in error && (typeof error.status === "number" || typeof error.status === "string")) {
-    message = `${error.status}: ${message}`;
-  }
-
-  return logMessage(logger, `Uncaught error: ${message}`);
+export type LoggerInit = {
+  context?: Partial<Omit<Context, "PUBLIC"> & { PUBLIC: Partial<PublicContext> }>;
+  logRawMessage?: typeof logRawMessage;
 };
 
-export const logErrorResponse: WithLoggerArg<"logErrorResponse"> = async (logger, response) => {
-  const errorMessage = response.bodyUsed
-    ? "[body already used; can't retrieve any error message that may exist]"
-    : getErrorMessageFromResponse(response);
-  return logMessage(
-    logger,
-    `Uncaught error: ${response.status}${
-      response.statusText ? ` ${response.statusText}` : ""
-    }: ${errorMessage}`
-  );
-};
-
-const newContext = (): Context => ({ ...contextOptionsDefaults, PUBLIC: {} });
-
-export const newLogger = (): Logger => {
+export const newLogger = ({
+  logRawMessage: logRawMessageOverride = logRawMessage,
+  context: contextInit = {},
+}: LoggerInit = {}): Logger => {
   const loggerInit: Partial<LoggerInternal> = {};
 
   // This type assertion is necessary to create the self-referential object without any other
@@ -101,7 +84,12 @@ export const newLogger = (): Logger => {
   const logger = loggerInit as LoggerInternal;
 
   Object.assign(loggerInit, {
-    context: newContext(),
+    context: newContext(contextInit),
+    newMessage: (init) => newMessage(logger, init),
+    logRawMessage: setupLoggerMethod<Logger, LoggerInternal, "logRawMessage">(
+      logger,
+      logRawMessageOverride
+    ),
     logMessage: setupLoggerMethod<Logger, LoggerInternal, "logMessage">(logger, logMessage),
     logError: setupLoggerMethod<Logger, LoggerInternal, "logError">(logger, logError),
     logErrorResponse: setupLoggerMethod<Logger, LoggerInternal, "logErrorResponse">(
@@ -120,3 +108,9 @@ export const newLogger = (): Logger => {
 
   return logger;
 };
+
+// We do _not_ use a default export in the private logger. This is because we should normally be
+// using a logger with context specific to a single request (and is stored in the "locals" of the
+// RequestEvent). When that logger isn't present, something has gone very wrong but we can still log
+// by creating a new logger. The default export is thus avoided because it encourages using the
+// logger the wrong way in the happy path.

@@ -2,7 +2,7 @@ import { getRequestEvent, getRequestEventCookies } from "$lib/__tests__/mocks/re
 import { vi, beforeAll, type MockedObject } from "vitest";
 import type { RequestEvent } from "./$types";
 import { client as redisClient } from "$lib/__tests__/mocks/redis";
-import { newLogger } from "$lib/__tests__/mocks/logger";
+import { newLogger } from "$lib/logger/private.server";
 
 const { actions } = await import("./+page.server");
 

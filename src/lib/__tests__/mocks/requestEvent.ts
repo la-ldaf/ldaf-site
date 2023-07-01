@@ -1,5 +1,6 @@
 import { vi, type MockedObject, type MockedFunction } from "vitest";
 import type { Cookies, RequestEvent } from "@sveltejs/kit";
+import { newLogger } from "$lib/logger/private.server";
 
 const mockedCookiesGet: MockedFunction<Cookies["get"]> = vi.fn(
   (..._: Parameters<Cookies["get"]>) => undefined
@@ -23,7 +24,9 @@ export const getRequestEventCookies = (
 const getRequestEventDefaults = () => ({
   fetch: vi.fn(),
   getClientAddress: vi.fn(() => "127.0.0.1"),
-  locals: {},
+  locals: {
+    logger: newLogger(),
+  },
   params: {},
   platform: {},
   request: new Request("http://localhost"),

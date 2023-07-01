@@ -13,13 +13,16 @@
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import LoginLink from "$lib/components/LoginLink";
   import { writable, type Writable } from "svelte/store";
-  import { newPublicLogger } from "$lib/logger";
+  import { newPublicLogger } from "$lib/logger/public";
 
   export let data;
 
   const { loggerContext } = data;
-  const logger = newPublicLogger(loggerContext);
+  const logger = newPublicLogger({ context: loggerContext });
   setContext("logger", logger);
+  logger.setPublicContext("initialURL", loggerContext.url);
+
+  if (browser) window.logger = logger;
 
   $: logger.setPublicContext("url", $page.url.toString());
 
