@@ -11,22 +11,41 @@ global.fetch = vi.fn(async () =>
 
 describe("Contentful Fetch", () => {
   it("returns the same client if called with the same arguments", () => {
-    const client1 = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" });
-    const client2 = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" });
-    const client3 = getClient({ spaceID: "SPACE_ID", token: "DIFFERENT_TOKEN" });
+    const client1 = getClient({
+      spaceID: "SPACE_ID",
+      token: "API_TOKEN",
+      environment: "ENVIRONMENT",
+    });
+    const client2 = getClient({
+      spaceID: "SPACE_ID",
+      token: "API_TOKEN",
+      environment: "ENVIRONMENT",
+    });
+    const client3 = getClient({
+      spaceID: "SPACE_ID",
+      token: "DIFFERENT_TOKEN",
+      environment: "ENVIRONMENT",
+    });
     expect(client1).toBe(client2);
     expect(client2).not.toBe(client3);
   });
 
   describe("with an initialized client", () => {
     let client: Client;
-    beforeEach(() => (client = getClient({ spaceID: "SPACE_ID", token: "API_TOKEN" })));
+    beforeEach(
+      () =>
+        (client = getClient({
+          spaceID: "SPACE_ID",
+          token: "API_TOKEN",
+          environment: "ENVIRONMENT",
+        }))
+    );
     afterEach(() => vi.clearAllMocks());
 
     it("calls Contentful API if env vars are properly declared", async () => {
       const data = await client.fetch(query);
       expect(fetch).toHaveBeenCalledWith(
-        "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
+        "https://graphql.contentful.com/content/v1/spaces/SPACE_ID/environments/ENVIRONMENT",
         {
           body: `{"query":"${query}"}`,
           headers: {
