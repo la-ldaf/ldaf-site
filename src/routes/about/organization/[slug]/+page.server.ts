@@ -59,7 +59,7 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params }): Promise<OfficePage> => {
+export const load = (async ({ params }) => {
   const { slug } = params;
   if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
     const client = getContentfulClient({

@@ -4719,7 +4719,6 @@ export type ServiceEntryLinkingCollections = {
   entryCollection?: Maybe<EntryCollection>;
   homeCollection?: Maybe<HomeCollection>;
   serviceGroupCollection?: Maybe<ServiceGroupCollection>;
-  topTierCollection?: Maybe<TopTierCollection>;
 };
 
 
@@ -4748,15 +4747,6 @@ export type ServiceEntryLinkingCollectionsServiceGroupCollectionArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
-
-export type ServiceEntryLinkingCollectionsTopTierCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Array<InputMaybe<ServiceEntryLinkingCollectionsTopTierCollectionOrder>>>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-};
-
 export enum ServiceEntryLinkingCollectionsHomeCollectionOrder {
   AlertTitleAsc = 'alertTitle_ASC',
   AlertTitleDesc = 'alertTitle_DESC',
@@ -4775,21 +4765,6 @@ export enum ServiceEntryLinkingCollectionsHomeCollectionOrder {
 export enum ServiceEntryLinkingCollectionsServiceGroupCollectionOrder {
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
-  SubheadingAsc = 'subheading_ASC',
-  SubheadingDesc = 'subheading_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
-  TitleAsc = 'title_ASC',
-  TitleDesc = 'title_DESC'
-}
-
-export enum ServiceEntryLinkingCollectionsTopTierCollectionOrder {
   SubheadingAsc = 'subheading_ASC',
   SubheadingDesc = 'subheading_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
@@ -5475,9 +5450,10 @@ export type TopTierDescriptionArgs = {
 export type TopTierFeaturedServiceListCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<TopTierFeaturedServiceListCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ServiceEntryOrServiceGroupFilter>;
+  where?: InputMaybe<ServiceGroupFilter>;
 };
 
 
@@ -5563,13 +5539,28 @@ export type TopTierDescriptionResources = {
 
 export type TopTierFeaturedServiceListCollection = {
   __typename?: 'TopTierFeaturedServiceListCollection';
-  items: Array<Maybe<TopTierFeaturedServiceListItem>>;
+  items: Array<Maybe<ServiceGroup>>;
   limit: Scalars['Int']['output'];
   skip: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
-export type TopTierFeaturedServiceListItem = ServiceEntry | ServiceGroup;
+export enum TopTierFeaturedServiceListCollectionOrder {
+  ServiceListNameAsc = 'serviceListName_ASC',
+  ServiceListNameDesc = 'serviceListName_DESC',
+  SubheadingAsc = 'subheading_ASC',
+  SubheadingDesc = 'subheading_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
+}
 
 export type TopTierFilter = {
   AND?: InputMaybe<Array<InputMaybe<TopTierFilter>>>;
@@ -5578,7 +5569,7 @@ export type TopTierFilter = {
   description_contains?: InputMaybe<Scalars['String']['input']>;
   description_exists?: InputMaybe<Scalars['Boolean']['input']>;
   description_not_contains?: InputMaybe<Scalars['String']['input']>;
-  featuredServiceList?: InputMaybe<CfServiceEntryOrServiceGroupNestedFilter>;
+  featuredServiceList?: InputMaybe<CfServiceGroupNestedFilter>;
   featuredServiceListCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   heroImage?: InputMaybe<CfHeroImageNestedFilter>;
   heroImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6226,6 +6217,44 @@ export type CfServiceEntryOrServiceGroupNestedFilter = {
   subheading_not_contains?: InputMaybe<Scalars['String']['input']>;
   subheading_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
+};
+
+export type CfServiceGroupNestedFilter = {
+  AND?: InputMaybe<Array<InputMaybe<CfServiceGroupNestedFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<CfServiceGroupNestedFilter>>>;
+  additionalResources_contains?: InputMaybe<Scalars['String']['input']>;
+  additionalResources_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  additionalResources_not_contains?: InputMaybe<Scalars['String']['input']>;
+  contactInfoCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  description_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  heroImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  serviceEntriesCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  serviceListName?: InputMaybe<Scalars['String']['input']>;
+  serviceListName_contains?: InputMaybe<Scalars['String']['input']>;
+  serviceListName_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  serviceListName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  serviceListName_not?: InputMaybe<Scalars['String']['input']>;
+  serviceListName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  serviceListName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subheading?: InputMaybe<Scalars['String']['input']>;
+  subheading_contains?: InputMaybe<Scalars['String']['input']>;
+  subheading_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  subheading_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subheading_not?: InputMaybe<Scalars['String']['input']>;
+  subheading_not_contains?: InputMaybe<Scalars['String']['input']>;
+  subheading_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys?: InputMaybe<SysFilter>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  title_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type CfVideoWrapperNestedFilter = {
