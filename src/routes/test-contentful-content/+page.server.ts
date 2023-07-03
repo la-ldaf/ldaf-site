@@ -7,11 +7,32 @@ import type { Document } from "@contentful/rich-text-types";
 import type { EntryQuery } from "./$queries.generated";
 
 const query = gql`
+  fragment imageProps on Asset {
+    sys {
+      id
+    }
+    title
+    description
+    url
+    width
+    height
+  }
+
   query Entry {
     testRichText(id: "V7ibT9I8Vg99iKsDgLhsK") {
       title
       body {
         json
+        links {
+          assets {
+            block {
+              ...imageProps
+            }
+            hyperlink {
+              ...imageProps
+            }
+          }
+        }
       }
     }
   }
@@ -26,5 +47,6 @@ export const load = async () => {
   return {
     document:
       (data?.testRichText?.body?.json as Document | undefined | null) ?? markdownDocument.document,
+    links: data?.testRichText?.body?.links,
   };
 };

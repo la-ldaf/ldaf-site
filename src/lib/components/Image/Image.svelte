@@ -13,14 +13,12 @@
   export let src: string;
 
   // Tuple of [src, width]
-  const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
-    [
-      ...(widths ?? []).flatMap(([source, sourceWidth]) =>
-        !width || width >= sourceWidth ? [`${source} ${sourceWidth}w`] : []
-      ),
-      defaultSrc,
-    ].join(", ");
-
+  const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) => {
+    const widthStrings = (widths ?? []).flatMap(([source, sourceWidth]) =>
+      !width || width >= sourceWidth ? [`${source} ${sourceWidth}w`] : []
+    );
+    return [...widthStrings, defaultSrc].join(", ");
+  };
   export let sources: Sources = [];
 
   export let alt: string;
