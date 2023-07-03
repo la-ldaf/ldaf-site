@@ -1,4 +1,5 @@
 import { CONTENTFUL_DEFAULT_ENVIRONMENT } from "$env/static/private";
+import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 
 type SpaceID = string;
 type Environment = string;
@@ -59,8 +60,11 @@ const getClient = ({
         body: JSON.stringify({ query }),
       });
       if (!response.ok) {
+        const errorMessage = await getErrorMessageFromResponse(response);
         throw new Error(
-          `Got failed response with status code ${response.status} ${response.statusText}`
+          `Got failed response with status code ${response.status} ${response.statusText}${
+            errorMessage ? `\n${errorMessage}` : ""
+          }`
         );
       }
       const { data } = await response.json();
