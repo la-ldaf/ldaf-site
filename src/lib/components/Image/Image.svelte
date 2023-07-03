@@ -15,7 +15,6 @@
 
   export let src: string;
 
-  // Tuple of [src, width]
   const getSrcsetAttr = ([defaultSrc, ...widthsOrDPIStrings]: Srcset) => {
     const typeSet = new Set(widthsOrDPIStrings.map((w) => typeof w));
     if (typeSet.size > 1) {
