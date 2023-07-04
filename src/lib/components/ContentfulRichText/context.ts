@@ -4,12 +4,19 @@ export type { LinksContext };
 export const linksKey = Symbol("contentfulRichTextLinks");
 
 const getAssetLinksMap = (links: Links, key: "block" | "hyperlink") =>
-  new Map(links.assets[key]?.map((link) => [link.sys.id, link]));
+  new Map(links.assets[key]?.flatMap((link) => (link ? [[link.sys.id, link]] : [])));
 
 export const createLinksContext = (links: Links): LinksContext => ({
-  links,
-  linksMaps: {
+  links: {
+    assets: {
+      block: links.assets.block?.filter(Boolean),
+      hyperlink: links.assets.hyperlink?.filter(Boolean),
+    },
+  },
+  linksAssetsMaps: {
     block: getAssetLinksMap(links, "block"),
     hyperlink: getAssetLinksMap(links, "hyperlink"),
   },
 });
+
+export const blurhashesKey = Symbol("blurhashes");

@@ -18,7 +18,7 @@ import tableRow from "./TableRow.svelte";
 import tableHeaderCell from "./TableHeaderCell.svelte";
 import tableCell from "./TableCell.svelte";
 import embeddedAssetBlock from "./EmbeddedAssetBlock.svelte";
-import assetHyperlink from "../AssetHyperlink.svelte";
+import assetHyperlink from "./AssetHyperlink.svelte";
 
 const nodes: Record<string, typeof SvelteComponent> = {
   paragraph,

@@ -52,12 +52,14 @@ export const generateSourcesFromFixedSetOfImages = (
     },
     {}
   );
-  return formats.map((format) => ({
-    type: format,
-    srcset: getSortedUniqueSizes(byFormat[format])
-      .filter(({ size }) => size === "original" || sizes.includes(size))
-      .map(({ size, src }) => (size === "original" ? src : [src, size])) as Srcset,
-  }));
+  return formats
+    .filter((format) => byFormat[format])
+    .map((format) => ({
+      type: format,
+      srcset: getSortedUniqueSizes(byFormat[format])
+        .filter(({ size }) => size === "original" || sizes.includes(size))
+        .map(({ size, src }) => (size === "original" ? src : [src, size])) as Srcset,
+    }));
 };
 
 /* type ImageData = Record<never, never>;
