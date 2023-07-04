@@ -4,7 +4,7 @@ import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 import { CONTENTFUL_IMAGE_API_ENDPOINT, CONTENTFUL_SPACE_ID } from "$env/static/private";
 
-export const GET = async ({ params: { url: imageURL } }) => {
+export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: imageURL } }) => {
   let parsedImageURL: URL;
   try {
     parsedImageURL = new URL(decodeURIComponent(imageURL));
@@ -23,7 +23,13 @@ export const GET = async ({ params: { url: imageURL } }) => {
     );
   }
 
-  // TODO: check if the blurhash is in Redis already and return it from there if so
+  const redisClient = await getConnectedRedisClient();
+  const cachedBlurhash = await redisClient?.get(`ldafBlurhashByURL:${imageURL}`);
+  if (cachedBlurhash) {
+    return new Response(cachedBlurhash, {
+      headers: { "Content-Type": "text/plain", "Cache-Control": "max-age=31536000" },
+    });
+  }
 
   parsedImageURL.searchParams.set("q", "25");
   parsedImageURL.searchParams.set("w", "100");
@@ -62,7 +68,7 @@ export const GET = async ({ params: { url: imageURL } }) => {
     );
   }
 
-  // TODO: cache the blurhash to Redis
+  await redisClient?.set(`ldafBlurhashByURL:${imageURL}`, blurhash);
 
   return new Response(blurhash, {
     headers: { "Content-Type": "text/plain", "Cache-Control": "max-age=31536000" }, // cache for one year
