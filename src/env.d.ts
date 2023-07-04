@@ -13,6 +13,7 @@ declare module "$env/static/private" {
   export const VERCEL_GIT_REPO_SLUG: string;
   export const VERCEL_GIT_COMMIT_SHA: string;
   export const VERCEL_GIT_PULL_REQUEST_ID: string;
+  export const KV_URL: string;
 }
 
 declare module "$env/static/public" {
