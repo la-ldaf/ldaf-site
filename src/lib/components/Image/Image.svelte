@@ -13,13 +13,29 @@
   export let src: string;
 
   // Tuple of [src, width]
-  const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
-    [
-      ...(widths ?? []).flatMap(([source, sourceWidth]) =>
-        !width || width >= sourceWidth ? [`${source} ${sourceWidth}w`] : []
+  const getSrcsetAttr = ([defaultSrc, ...widthsOrDPIStrings]: Srcset) => {
+    const typeSet = new Set(widthsOrDPIStrings.map((w) => typeof w));
+    if (typeSet.size > 1) {
+      throw new Error(
+        "srcset attribute must include either width or DPI annotations, but not both"
+      );
+    }
+    const isWidths = typeSet.has("number");
+    const withFilteredWidths = isWidths
+      ? widthsOrDPIStrings.filter(([_, w]) => (width ?? 0) > w)
+      : widthsOrDPIStrings;
+    return [
+      ...withFilteredWidths.map(
+        ([source, sourceWidthOrDPIString]) =>
+          `${source} ${
+            typeof sourceWidthOrDPIString === "string"
+              ? sourceWidthOrDPIString
+              : `${sourceWidthOrDPIString}w`
+          }`
       ),
       defaultSrc,
     ].join(", ");
+  };
 
   export let sources: Sources = [];
 
