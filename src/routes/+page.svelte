@@ -33,6 +33,7 @@
   <Image
     class="main-image"
     alt=""
+    loading="eager"
     src={landingImage}
     sources={imageSources}
     blurhash={landingImageBlurhash}
