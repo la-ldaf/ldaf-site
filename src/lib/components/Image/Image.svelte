@@ -22,7 +22,8 @@
     }
     const isWidths = typeSet.has("number");
     const withFilteredWidths = isWidths
-      ? widthsOrDPIStrings.filter(([_, w]) => (width ?? 0) > w)
+      ? // we're smarter than typescript here, it doesn't know how sets work
+        widthsOrDPIStrings.filter(([_, w]) => (width ?? 0) > (w as number))
       : widthsOrDPIStrings;
     return [
       ...withFilteredWidths.map(
