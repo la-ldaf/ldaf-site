@@ -5,7 +5,7 @@ const getURL = (url: string, format?: string, size?: number) =>
   `${url}?${Object.entries({
     fm: format,
     w: size,
-    q: 85,
+    q: quality,
   })
     .filter(([_, val]) => Boolean(val))
     .map((x) => x.join("="))
@@ -13,7 +13,7 @@ const getURL = (url: string, format?: string, size?: number) =>
 
 export const getSources = (url: string): Sources =>
   formats.map((format) => {
-    const shortFormat = format.slice("image/".length);
+    const shortFormat = format.slice("image/".length).replace(/^jpeg$/, "jpg");
     return {
       srcset: [
         getURL(url, shortFormat),

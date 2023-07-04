@@ -99,6 +99,7 @@
     "fast-blurhash": "^1.1.2",
     "graphql": "^16.7.1",
     "graphql-tag": "^2.12.6",
+    "jpeg-js": "^0.4.4",
     "lodash": "^4.17.21"
   }
 }
