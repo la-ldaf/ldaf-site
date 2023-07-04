@@ -40,6 +40,7 @@
     width={landingImageWidth}
     height={landingImageHeight}
     mean={landingImageMean}
+    style="object-position: 0 25%"
   />
   <section class="grid-container homepage-greeting maxw-tablet">
     <ContentfulRichText document={data.title} />
