@@ -1,11 +1,17 @@
 <script lang="ts">
   import "./Header.scss";
   import { url as closeIcon } from "$icons/close";
+  import headerBg from "$lib/assets/header-background-optimized.jpg";
+  import headerBgBlurhash, {
+    width as headerBgWidth,
+    height as headerBgHeight,
+  } from "$lib/assets/header-background-optimized.jpg?blurhash";
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
   import Search from "$lib/components/Search";
+  import Image from "$lib/components/Image";
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
   import Logo from "./Logo";
@@ -24,6 +30,14 @@
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="ldaf-header usa-header usa-header--extended">
+  <Image
+    class="ldaf-header-bg-img"
+    src={headerBg}
+    blurhash={headerBgBlurhash}
+    alt=""
+    width={headerBgWidth}
+    height={headerBgHeight}
+  />
   <div class="ldaf-nav usa-navbar">
     <Title {siteTitle} />
     <!--TODO: Replace with content from CMS. -->

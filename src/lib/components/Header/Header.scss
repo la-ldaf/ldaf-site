@@ -3,8 +3,15 @@
 );
 
 .ldaf-header {
-  background: linear-gradient(to right, transparent, $primary-darkest 30%),
-    url("../../assets/header-background-optimized.jpg");
+  position: relative;
+  background: linear-gradient(to right, transparent, $primary-darkest 30%);
+}
+
+.ldaf-header .ldaf-header-bg-img {
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  z-index: -1;
 }
 
 .ldaf-header .ldaf-nav__secondary {
