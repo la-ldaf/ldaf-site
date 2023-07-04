@@ -16,8 +16,8 @@ export type RenderableHyperlink = RenderableBlock;
 
 export type Links = {
   assets: {
-    hyperlink?: RenderableHyperlink[];
-    block?: RenderableBlock[];
+    hyperlink?: (RenderableHyperlink | null)[];
+    block?: (RenderableBlock | null)[];
   };
 };
 
@@ -25,7 +25,7 @@ export type LinksMap<T extends RenderableBlock | RenderableHyperlink> = Map<stri
 
 export type LinksContext = {
   links: Links;
-  linksMaps: {
+  linksAssetsMaps: {
     block: LinksMap<RenderableBlock>;
     hyperlink: LinksMap<RenderableHyperlink>;
   };
