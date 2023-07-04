@@ -50,7 +50,7 @@ export const load = async ({ fetch }) => {
         .filter((item) => !!item)
         .flatMap(async (item) => {
           if (!item?.sys?.id || !item?.url) return [];
-          const blurhashResponse = await fetch(`/api/blurhash/${encodeURIComponent(item.url)}`);
+          const blurhashResponse = await fetch(`/api/v1/blurhash/${encodeURIComponent(item.url)}`);
           if (!blurhashResponse.ok) return [];
           return [item.sys.id, await blurhashResponse.text()];
         }) ?? []
