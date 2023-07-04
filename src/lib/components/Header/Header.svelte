@@ -1,17 +1,14 @@
 <script lang="ts">
   import "./Header.scss";
-  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as closeIcon } from "$icons/close";
-
-  import type { NavItemType, NavLinkType } from "./Nav";
-  import type { SiteTitleType } from "./Title";
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
   import Search from "$lib/components/Search";
-  import Title from "./Title";
-  import Nav from "./Nav";
+  import Title, { type SiteTitleType } from "./Title";
+  import Nav, { type NavItemType, type NavLinkType } from "./Nav";
+  import Logo from "./Logo";
 
   export let navItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
@@ -42,7 +39,7 @@
 
       <a class="ldaf-logo__compact" href="/">
         <!-- TODO: Replace alt value with content from CMS. -->
-        <img src={ldafLogo} alt="Louisiana Department of Agriculture and Forestry Home" />
+        <Logo />
       </a>
       <div class="ldaf-commissioner__compact">
         <span>{siteTitle.commissionerRow1}</span>
