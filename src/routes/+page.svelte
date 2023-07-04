@@ -2,29 +2,27 @@
   import "./page.scss";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import underConstructionGif from "$lib/assets/under-construction.gif";
-  import landingImage from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&imagetools";
-  import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&w=412&imagetools";
-  import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&imagetools";
-  import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&w=412&imagetools";
+  import landingImage from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=85&imagetools";
+  import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=85&w=412&imagetools";
+  import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?format=webp&quality=85&imagetools";
+  import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?format=webp&quality=85&w=412&imagetools";
+  import landingImageAvif from "$lib/assets/commissioner-strain-with-farmer.jpg?format=avif&quality=85&imagetools";
+  import landingImageAvifMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?format=avif&quality=85&w=412&imagetools";
   import landingImageBlurhash, {
     width as landingImageWidth,
     height as landingImageHeight,
     mean as landingImageMean,
   } from "$lib/assets/commissioner-strain-with-farmer.jpg?blurhash";
 
-  import Image, {
-    generateSourcesFromFixedSetOfImages,
-    type FixedSetOfImages,
-  } from "$lib/components/Image";
+  import Image from "$lib/components/Image";
 
-  const images = [
-    { format: "image/jpeg", size: "original", src: landingImage },
-    { format: "image/jpeg", size: 412, src: landingImageMobile },
-    { format: "image/webp", size: "original", src: landingImageWebP },
-    { format: "image/webp", size: 412, src: landingImageWebpMobile },
-  ] satisfies FixedSetOfImages;
+  import type { Source } from "$lib/components/Image";
 
-  const imageSources = generateSourcesFromFixedSetOfImages(images);
+  const imageSources: Source[] = [
+    { type: "image/avif", srcset: [landingImageAvif, [landingImageAvifMobile, 412]] },
+    { type: "image/webp", srcset: [landingImageWebP, [landingImageWebpMobile, 412]] },
+    { type: "image/jpeg", srcset: [landingImage, [landingImageMobile, 412]] },
+  ];
 
   export let data;
 </script>

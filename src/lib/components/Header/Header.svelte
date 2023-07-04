@@ -1,11 +1,13 @@
 <script lang="ts">
   import "./Header.scss";
   import { url as closeIcon } from "$icons/close";
-  import headerBg from "$lib/assets/header-background-optimized.jpg";
+  import headerBg from "$lib/assets/header-background-optimized.jpg?quality=85&imagetools";
   import headerBgBlurhash, {
     width as headerBgWidth,
     height as headerBgHeight,
   } from "$lib/assets/header-background-optimized.jpg?blurhash";
+  import headerBgWebp from "$lib/assets/header-background-optimized.jpg?quality=85&format=webp&imagetools";
+  import headerBgAvif from "$lib/assets/header-background-optimized.jpg?quality=85&format=avif&imagetools";
 
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
@@ -33,6 +35,11 @@
   <Image
     class="ldaf-header-bg-img"
     src={headerBg}
+    sources={[
+      { type: "image/avif", srcset: [headerBgAvif] },
+      { type: "image/webp", srcset: [headerBgWebp] },
+      { type: "image/jpeg", srcset: [headerBg] },
+    ]}
     blurhash={headerBgBlurhash}
     alt=""
     width={headerBgWidth}
