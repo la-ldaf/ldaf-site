@@ -2230,7 +2230,7 @@ type OfficePage implements Entry {
   description(locale: String): OfficePageDescription
   linkedFrom(allowedLocales: [String]): OfficePageLinkingCollections
   mailingAddress(locale: String, preview: Boolean, where: ContentTypeLocationFilter): ContentTypeLocation
-  metadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
+  pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
   pageTitle(locale: String): String
   servicesAndPrograms(locale: String): OfficePageServicesAndPrograms
   subheading(locale: String): String
@@ -2307,8 +2307,8 @@ input OfficePageFilter {
   description_not_contains: String
   mailingAddress: cfContentTypeLocationNestedFilter
   mailingAddress_exists: Boolean
-  metadata: cfPageMetadataNestedFilter
-  metadata_exists: Boolean
+  pageMetadata: cfPageMetadataNestedFilter
+  pageMetadata_exists: Boolean
   pageTitle: String
   pageTitle_contains: String
   pageTitle_exists: Boolean
@@ -3382,7 +3382,7 @@ type TopTier implements Entry {
   featuredServiceListCollection(limit: Int = 100, locale: String, order: [TopTierFeaturedServiceListCollectionOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): TopTierFeaturedServiceListCollection
   heroImage(locale: String, preview: Boolean, where: HeroImageFilter): HeroImage
   linkedFrom(allowedLocales: [String]): TopTierLinkingCollections
-  metadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
+  pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
   subheading(locale: String): String
   sys: Sys!
   title(locale: String): String
@@ -3457,8 +3457,8 @@ input TopTierFilter {
   featuredServiceListCollection_exists: Boolean
   heroImage: cfHeroImageNestedFilter
   heroImage_exists: Boolean
-  metadata: cfPageMetadataNestedFilter
-  metadata_exists: Boolean
+  pageMetadata: cfPageMetadataNestedFilter
+  pageMetadata_exists: Boolean
   subheading: String
   subheading_contains: String
   subheading_exists: Boolean

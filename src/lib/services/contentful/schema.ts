@@ -3266,7 +3266,7 @@ export type OfficePage = Entry & {
   description?: Maybe<OfficePageDescription>;
   linkedFrom?: Maybe<OfficePageLinkingCollections>;
   mailingAddress?: Maybe<ContentTypeLocation>;
-  metadata?: Maybe<PageMetadata>;
+  pageMetadata?: Maybe<PageMetadata>;
   pageTitle?: Maybe<Scalars['String']['output']>;
   servicesAndPrograms?: Maybe<OfficePageServicesAndPrograms>;
   subheading?: Maybe<Scalars['String']['output']>;
@@ -3306,7 +3306,7 @@ export type OfficePageMailingAddressArgs = {
 
 
 /** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
-export type OfficePageMetadataArgs = {
+export type OfficePagePageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<PageMetadataFilter>;
@@ -3407,8 +3407,8 @@ export type OfficePageFilter = {
   description_not_contains?: InputMaybe<Scalars['String']['input']>;
   mailingAddress?: InputMaybe<CfContentTypeLocationNestedFilter>;
   mailingAddress_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  metadata?: InputMaybe<CfPageMetadataNestedFilter>;
-  metadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  pageMetadata?: InputMaybe<CfPageMetadataNestedFilter>;
+  pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
   pageTitle?: InputMaybe<Scalars['String']['input']>;
   pageTitle_contains?: InputMaybe<Scalars['String']['input']>;
   pageTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5432,7 +5432,7 @@ export type TopTier = Entry & {
   featuredServiceListCollection?: Maybe<TopTierFeaturedServiceListCollection>;
   heroImage?: Maybe<HeroImage>;
   linkedFrom?: Maybe<TopTierLinkingCollections>;
-  metadata?: Maybe<PageMetadata>;
+  pageMetadata?: Maybe<PageMetadata>;
   subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
   title?: Maybe<Scalars['String']['output']>;
@@ -5472,7 +5472,7 @@ export type TopTierLinkedFromArgs = {
 
 
 /** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
-export type TopTierMetadataArgs = {
+export type TopTierPageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<PageMetadataFilter>;
@@ -5573,8 +5573,8 @@ export type TopTierFilter = {
   featuredServiceListCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   heroImage?: InputMaybe<CfHeroImageNestedFilter>;
   heroImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  metadata?: InputMaybe<CfPageMetadataNestedFilter>;
-  metadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  pageMetadata?: InputMaybe<CfPageMetadataNestedFilter>;
+  pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
   subheading?: InputMaybe<Scalars['String']['input']>;
   subheading_contains?: InputMaybe<Scalars['String']['input']>;
   subheading_exists?: InputMaybe<Scalars['Boolean']['input']>;

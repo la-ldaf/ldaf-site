@@ -10,7 +10,7 @@ const query = gql`
   query TopTierCollection {
     topTierCollection(limit: 10) {
       items {
-        metadata {
+        pageMetadata {
           ... on PageMetadata {
             sys {
               id
@@ -34,9 +34,9 @@ export const load = async ({ parent, params }) => {
   if (data) {
     // TODO: Possibly account for possiblity that two Top Tier pages (erroneously) have the same slug
     const matchedTopTier = data?.topTierCollection?.items?.find(
-      (topTier) => topTier?.metadata?.slug === topTierSlug
+      (topTier) => topTier?.pageMetadata?.slug === topTierSlug
     );
-    const matchedTopTierId = matchedTopTier?.metadata?.sys?.id;
+    const matchedTopTierId = matchedTopTier?.pageMetadata?.sys?.id;
     if (matchedTopTierId) {
       const pageMetadata = pageMetadataMap.get(matchedTopTierId);
       if (pageMetadata) {

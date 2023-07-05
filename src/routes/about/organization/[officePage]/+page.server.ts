@@ -45,7 +45,7 @@ const query = gql`
             }
           }
         }
-        metadata {
+        pageMetadata {
           ... on PageMetadata {
             sys {
               id
@@ -69,10 +69,10 @@ export const load = async ({ parent, params }) => {
     const data = await client.fetch<OfficePageQuery>(printQuery(query));
     if (data) {
       const matchedOfficePage = data?.officePageCollection?.items?.find(
-        (officePage) => officePage?.metadata?.slug === slug
+        (officePage) => officePage?.pageMetadata?.slug === slug
       );
       if (matchedOfficePage) {
-        const pageMetadataId = matchedOfficePage?.metadata?.sys?.id;
+        const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
         if (pageMetadataId) {
           const pageMetadata = pageMetadataMap.get(pageMetadataId);
           if (pageMetadata) {
