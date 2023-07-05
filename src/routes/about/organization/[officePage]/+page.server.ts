@@ -6,8 +6,6 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 import OfficePageTestContent from "./__tests__/OfficePageTestContent";
 
-import type { PageServerLoad } from "./$types";
-import type { OfficePage } from "$lib/services/contentful/schema";
 import type { OfficePageQuery } from "./$queries.generated";
 
 const query = gql`
@@ -49,9 +47,10 @@ const query = gql`
         }
         metadata {
           ... on PageMetadata {
+            sys {
+              id
+            }
             slug
-            metaTitle
-            metaDescription
           }
         }
       }
@@ -59,8 +58,9 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params }) => {
-  const { slug } = params;
+export const load = async ({ parent, params }) => {
+  const { pageMetadataMap } = await parent();
+  const slug = params.officePage;
   if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
@@ -68,16 +68,24 @@ export const load = (async ({ params }) => {
     });
     const data = await client.fetch<OfficePageQuery>(printQuery(query));
     if (data) {
-      const officePages = data?.officePageCollection?.items as OfficePage[];
-      const matchedOfficePage = officePages.find(
-        (officePage) => officePage.metadata?.slug === slug
+      const matchedOfficePage = data?.officePageCollection?.items?.find(
+        (officePage) => officePage?.metadata?.slug === slug
       );
       if (matchedOfficePage) {
-        return matchedOfficePage;
+        const pageMetadataId = matchedOfficePage?.metadata?.sys?.id;
+        if (pageMetadataId) {
+          const pageMetadata = pageMetadataMap.get(pageMetadataId);
+          if (pageMetadata) {
+            return {
+              officePage: matchedOfficePage,
+              pageMetadata,
+            };
+          }
+        }
       }
     }
   } else {
-    return OfficePageTestContent;
+    return { officePage: OfficePageTestContent, pageMetadata: {} };
   }
   throw error(404);
-}) satisfies PageServerLoad;
+};

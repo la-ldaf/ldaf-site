@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
+
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 

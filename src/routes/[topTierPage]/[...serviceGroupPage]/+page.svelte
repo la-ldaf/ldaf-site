@@ -5,6 +5,7 @@
 
 <div class="usa-section grid-container">
   <main id="main-content">
-    This is a stub for the <strong>{pageMetadata?.title}</strong> Service Group page!
+    <h1>{pageMetadata?.title}</h1>
+    <p>This is a stub for a Service Group page!</p>
   </main>
 </div>
