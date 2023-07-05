@@ -1,3 +1,4 @@
+import type { OfficePage } from "$lib/services/contentful/schema";
 import documentWithParagraphData from "$lib/components/ContentfulRichText/__tests__/documents";
 
 export default {
@@ -11,6 +12,7 @@ export default {
     links: {
       assets: { block: [], hyperlink: [] },
       entries: { block: [], hyperlink: [], inline: [] },
+      resources: { block: [] },
     },
   },
   servicesAndPrograms: {
@@ -18,6 +20,7 @@ export default {
     links: {
       assets: { block: [], hyperlink: [] },
       entries: { block: [], hyperlink: [], inline: [] },
+      resources: { block: [] },
     },
   },
   mailingAddress: {
@@ -56,4 +59,4 @@ export default {
       },
     ],
   },
-};
+} satisfies OfficePage;

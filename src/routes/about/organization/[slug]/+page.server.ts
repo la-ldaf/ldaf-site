@@ -4,7 +4,7 @@ import { print as printQuery } from "graphql";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
-import OfficePageTestContent from "./__tests__/OfficePageTestContent";
+import officePageTestContent from "./__tests__/OfficePageTestContent";
 
 import type { PageServerLoad } from "./$types";
 import type { OfficePage } from "$lib/services/contentful/schema";
@@ -61,23 +61,19 @@ const query = gql`
 
 export const load = (async ({ params }): Promise<OfficePage> => {
   const { slug } = params;
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<OfficePageQuery>(printQuery(query));
-    if (data) {
-      const officePages = data?.officePageCollection?.items as OfficePage[];
-      const matchedOfficePage = officePages.find(
-        (officePage) => officePage.pageMetadata?.slug === slug
-      );
-      if (matchedOfficePage) {
-        return matchedOfficePage;
-      }
-    }
-  } else {
-    return OfficePageTestContent;
-  }
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return officePageTestContent;
+  const client = getContentfulClient({
+    spaceID: CONTENTFUL_SPACE_ID,
+    token: CONTENTFUL_DELIVERY_API_TOKEN,
+  });
+  const data = await client.fetch<OfficePageQuery>(printQuery(query));
+  const officePages = data?.officePageCollection?.items;
+  if (!officePages) throw error(404);
+  const matchedOfficePage = officePages.find(
+    (officePage) => officePage?.pageMetadata?.slug === slug
+  );
+  // TODO: remove this type assertion and either use a predicate to assert "matchedOfficePage is
+  // OfficePage" or use the query type in the front-end and account for potentially missing data.
+  if (matchedOfficePage) return matchedOfficePage as OfficePage;
   throw error(404);
 }) satisfies PageServerLoad;
