@@ -47,7 +47,7 @@ const query = gql`
             }
           }
         }
-        metadata {
+        pageMetadata {
           ... on PageMetadata {
             slug
             metaTitle
@@ -70,7 +70,7 @@ export const load = (async ({ params }): Promise<OfficePage> => {
     if (data) {
       const officePages = data?.officePageCollection?.items as OfficePage[];
       const matchedOfficePage = officePages.find(
-        (officePage) => officePage.metadata?.slug === slug
+        (officePage) => officePage.pageMetadata?.slug === slug
       );
       if (matchedOfficePage) {
         return matchedOfficePage;
