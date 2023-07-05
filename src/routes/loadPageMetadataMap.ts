@@ -91,7 +91,6 @@ export const loadPageMetadataMap = async () => {
       });
       // construct full URLs for each page using their parent, and warn on pages if we can't resolve their path
       // TODO: We may want to consider completely invalidating these entries instead, removing them from the map.
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [...pageMetadataMap].forEach(([_, page]) => {
         page.url = constructFullPathFromMap(page);
         if (!page.url) {
