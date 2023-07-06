@@ -4,7 +4,7 @@ import { print as printQuery } from "graphql";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
-import OfficePageTestContent from "./__tests__/OfficePageTestContent";
+import officePageTestContent from "./__tests__/OfficePageTestContent";
 
 import type { OfficePageQuery } from "./$queries.generated";
 
@@ -61,31 +61,30 @@ const query = gql`
 export const load = async ({ parent, params }) => {
   const { pageMetadataMap } = await parent();
   const slug = params.officePage;
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<OfficePageQuery>(printQuery(query));
-    if (data) {
-      const matchedOfficePage = data?.officePageCollection?.items?.find(
-        (officePage) => officePage?.pageMetadata?.slug === slug
-      );
-      if (matchedOfficePage) {
-        const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
-        if (pageMetadataId) {
-          const pageMetadata = pageMetadataMap.get(pageMetadataId);
-          if (pageMetadata) {
-            return {
-              officePage: matchedOfficePage,
-              pageMetadata,
-            };
-          }
-        }
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+    return { officePage: officePageTestContent, pageMetadata: {} };
+  }
+  const client = getContentfulClient({
+    spaceID: CONTENTFUL_SPACE_ID,
+    token: CONTENTFUL_DELIVERY_API_TOKEN,
+  });
+  const data = await client.fetch<OfficePageQuery>(printQuery(query));
+  const officePages = data?.officePageCollection?.items;
+  if (!officePages) throw error(404);
+  const matchedOfficePage = officePages.find(
+    (officePage) => officePage?.pageMetadata?.slug === slug
+  );
+  if (matchedOfficePage) {
+    const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
+    if (pageMetadataId) {
+      const pageMetadata = pageMetadataMap.get(pageMetadataId);
+      if (pageMetadata) {
+        return {
+          officePage: matchedOfficePage,
+          pageMetadata,
+        };
       }
     }
-  } else {
-    return { officePage: OfficePageTestContent, pageMetadata: {} };
   }
   throw error(404);
 };
