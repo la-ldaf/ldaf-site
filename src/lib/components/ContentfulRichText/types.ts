@@ -9,8 +9,11 @@ export const renderableBlockOptionalKeys = [
   "height",
 ] as const satisfies readonly (keyof Asset)[];
 
-export type RenderableBlock = { sys: Pick<Asset["sys"], "id"> } & Pick<Asset, "url"> &
-  Partial<Pick<Asset, "contentType" | "title" | "description" | "width" | "height">>;
+export type RenderableBlock = { sys: Pick<Asset["sys"], "id"> } & Pick<
+  Asset,
+  (typeof renderableBlockRequiredKeys)[number]
+> &
+  Partial<Pick<Asset, (typeof renderableBlockOptionalKeys)[number]>>;
 
 export type RenderableHyperlink = RenderableBlock;
 

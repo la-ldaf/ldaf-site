@@ -1,5 +1,5 @@
 import type { Srcset, Sources, Format, FixedImage, FixedSetOfImages } from "./types";
-import { sizes as imageSizes, formats as imageFormatStrings } from "$lib/constants/images.json";
+import { sizes as imageSizes, formats as imageFormatStrings } from "$lib/constants/images";
 
 const imageFormats = imageFormatStrings.every((str) => str.startsWith("image/"))
   ? (imageFormatStrings as `image/${string}`[])
