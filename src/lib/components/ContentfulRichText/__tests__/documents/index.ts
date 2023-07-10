@@ -1,4 +1,5 @@
 import type { Document } from "@contentful/rich-text-types";
+import type { Links } from "./types";
 
 import documentWithParagraphData from "./document-with-paragraph.json";
 import documentWithParagraphExpected from "./document-with-paragraph.expected.html?raw";
@@ -9,26 +10,34 @@ import markdownDocumentExpected from "./markdown-document.md.html?raw";
 import homepageTestTitle from "./homepage-test-title.md.json";
 import homepageTestBody from "./homepage-test-body.md.json";
 
-export const documentWithParagraph = {
+type Case = { document: Document; links: Links; expectedHTML: string };
+
+export const documentWithParagraph: Case = {
   document: documentWithParagraphData as Document,
+  links: { assets: { hyperlink: [], block: [] } },
   expectedHTML: documentWithParagraphExpected,
 };
 
-export const markdownDocument = {
-  document: markdownDocumentData as Document,
+export const markdownDocument: Case = {
+  document: markdownDocumentData.document as Document,
+  links: markdownDocumentData.links,
   expectedHTML: markdownDocumentExpected,
 };
 
 export const homepageTestData = {
   title: {
-    document: homepageTestTitle as Document,
+    document: homepageTestTitle.document as Document,
+    links: homepageTestTitle.links,
   },
   body: {
-    document: homepageTestBody as Document,
+    document: homepageTestBody.document as Document,
+    links: homepageTestBody.links,
   },
 };
 
-export default {
+const cases: Record<string, Case> = {
   documentWithParagraph,
   markdownDocument,
 };
+
+export default cases;
