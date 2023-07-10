@@ -8,18 +8,16 @@ import { getContext } from "svelte";
 export const handleError = (async ({ error, event }) => {
   const logger = getContext<PublicLogger>("logger") ?? newPublicLogger();
   const message = getErrorMessage(error);
-  async () => {
+  try {
     try {
-      try {
-        logger.setPublicContext("url", event.url.toString());
-      } catch (_) {
-        // do nothing
-      }
-      await logger.logError(error);
-    } catch (err) {
-      consoleErrorIfYouCan(`Error while trying to log unexpected error: ${message}`);
+      logger.setPublicContext("url", event.url.toString());
+    } catch (_) {
+      // do nothing
     }
-  };
+    await logger.logError(error);
+  } catch (err) {
+    consoleErrorIfYouCan(`Error while trying to log unexpected error: ${message}`);
+  }
   const status = getErrorStatus(error);
   return {
     message: `Unexpected error: ${message}`,
