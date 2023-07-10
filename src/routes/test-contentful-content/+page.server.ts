@@ -7,7 +7,7 @@ import type { Document } from "@contentful/rich-text-types";
 import type { EntryQuery } from "./$queries.generated";
 
 const query = gql`
-  fragment imageProps on Asset {
+  fragment ImageProps on Asset {
     sys {
       id
     }
@@ -26,10 +26,10 @@ const query = gql`
         links {
           assets {
             block {
-              ...imageProps
+              ...ImageProps
             }
             hyperlink {
-              ...imageProps
+              ...ImageProps
             }
           }
         }
