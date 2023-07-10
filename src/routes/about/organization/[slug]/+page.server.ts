@@ -8,7 +8,7 @@ import type { OfficePageQuery, OfficePageQueryVariables } from "./$queries.gener
 
 const query = gql`
   query OfficePage($slug: String, $preview: Boolean = false) {
-    officePageCollection(preview: $preview, where: { metadata: { slug: $slug } }, limit: 1) {
+    officePageCollection(preview: $preview, where: { pageMetadata: { slug: $slug } }, limit: 1) {
       items {
         sys {
           id
