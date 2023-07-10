@@ -10,7 +10,14 @@
     color: $primary-lighter;
   }
 
-  .ldaf-logo {
+  .usa-banner__inner {
+    width: fit-content;
+  }
+
+  .banner-icon {
+    height: auto;
+    // TODO: switch to fill: $black once the Icon component supports recoloring
+    // (see https://ldaf.atlassian.net/browse/LDAF-327)
     filter: invert(1);
   }
 
@@ -24,6 +31,7 @@
   .ldaf-banner--announcement-text {
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
   .usa-icon {
