@@ -5,6 +5,7 @@
   import Image from "$lib/components/Image/Image.svelte";
   import { linksKey, blurhashesKey, type LinksContext } from "../context";
   import { getSources } from "$lib/imageServices/contentful";
+  import Link from "$lib/components/Link/Link.svelte";
 
   export let node: NodeType;
 
@@ -22,15 +23,26 @@
     throw new Error(`the asset ${assetID} was found in the context but did not have a source URL`);
   }
 
+  const isImage = link.contentType?.startsWith("image/");
+
   const blurhashes = getContext<Record<string, string> | undefined>(blurhashesKey);
   const blurhash = blurhashes?.[assetID];
 </script>
 
-<Image
-  src={url}
-  sources={getSources(url)}
-  alt={link.description ?? "Unknown image"}
-  width={link.width ?? undefined}
-  height={link.height ?? undefined}
-  {blurhash}
-/>
+{#if isImage}
+  <Image
+    src={url}
+    sources={getSources(url)}
+    alt={link.description ?? "Unknown image"}
+    width={link.width ?? undefined}
+    height={link.height ?? undefined}
+    {blurhash}
+  />
+{:else}
+  <p>
+    <Link href={url}>{link.title}</Link><br />
+    {#if link.description}
+      <em>{link.description}</em>
+    {/if}
+  </p>
+{/if}

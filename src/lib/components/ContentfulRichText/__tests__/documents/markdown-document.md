@@ -117,8 +117,8 @@ Inline `code`
 
 ## Image
 
-[regular link](/abc)
-
 ![sample image](sample.jpg)
+
+![sample pdf](sample.pdf)
 
 <!-- prettier-ignore-end -->

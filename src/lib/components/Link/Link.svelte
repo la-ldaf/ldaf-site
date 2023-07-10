@@ -1,16 +1,17 @@
 <script lang="ts">
+  import type { HTMLAnchorAttributes } from "svelte/elements";
   import classNames from "$lib/util/classNames";
   import "./Link.scss";
 
   // Note: All props not mentioned below will be passed directly to the <a/> element via $$props, e.g. href and target.
-  interface $$Props extends Partial<HTMLAnchorElement> {
+  type $$Props = HTMLAnchorAttributes & {
     class?: string;
     external?: boolean;
     alternate?: boolean;
-  }
+  };
 
   // this isn't necessary but will suppress vite-plugin-svelte a11y warnings
-  export let href = "";
+  export let href: string | null | undefined = "";
   // additional classes to add
   let className = "";
   export { className as class };

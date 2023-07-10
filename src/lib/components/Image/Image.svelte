@@ -76,7 +76,9 @@
     explicitLazyLoadingType
   );
 
-  if (!width || !height) warn("image width or height was missing!");
+  if (!width || !height) {
+    warn("image width or height was missing!");
+  }
 
   $: decoding = loading === "lazy" ? ("async" as const) : ("auto" as const);
 
