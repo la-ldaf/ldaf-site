@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { HTMLAnchorAttributes } from "svelte";
+  import type { HTMLAnchorAttributes } from "svelte/elements";
   import classNames from "$lib/util/classNames";
   import "./Link.scss";
 

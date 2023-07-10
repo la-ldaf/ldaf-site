@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { HTMLAnchorAttributes } from "svelte/elements";
   import type { Writable } from "svelte/store";
   import type { PublicLogger } from "$lib/logger/public";
 
   import { page } from "$app/stores";
   import logout from "$lib/actions/logout";
-  import { createEventDispatcher, getContext } from "svelte";
+  import { createEventDispatcher, getContext, type ComponentProps } from "svelte";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
   import Link from "$lib/components/Link";
 
@@ -14,7 +13,7 @@
 
   const dispatch = createEventDispatcher();
 
-  type $$Props = Omit<HTMLAnchorAttributes, "href">;
+  type $$Props = Omit<ComponentProps<Link>, "href">;
 
   $: encodedState = encodeURIComponent($page.url.pathname + $page.url.search + $page.url.hash);
   $: logoutLinkLocation = `/logout?state=${encodedState}`;
