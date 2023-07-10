@@ -15,22 +15,20 @@ import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorStatus from "$lib/util/getErrorStatus";
 import consoleErrorIfYouCan from "$lib/util/consoleErrorIfYouCan";
 
-export const handleError = (({ error, event }) => {
+export const handleError = (async ({ error, event }) => {
   const logger = event.locals.logger ?? newLogger();
   const message = getErrorMessage(error);
   const status = getErrorStatus(error);
-  (async () => {
+  try {
     try {
-      try {
-        logger.setPublicContext("url", event.url.toString());
-      } catch (_) {
-        // do nothing
-      }
-      await logger.logError(error);
-    } catch (err) {
-      consoleErrorIfYouCan(`Error while trying to log unexpected error: ${message}`);
+      logger.setPublicContext("url", event.url.toString());
+    } catch (_) {
+      // do nothing
     }
-  })();
+    await logger.logError(error);
+  } catch (err) {
+    consoleErrorIfYouCan(`Error while trying to log unexpected error: ${message}`);
+  }
   return {
     message: `Unexpected error: ${message}`,
     ...(status ? { status } : {}),
