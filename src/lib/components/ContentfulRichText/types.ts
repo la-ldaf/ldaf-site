@@ -1,8 +1,10 @@
 import type { Asset } from "$lib/services/contentful/schema";
 
-export const renderableBlockRequiredKeys = ["url"] as const satisfies readonly (keyof Asset)[];
-export const renderableBlockOptionalKeys = [
+export const renderableBlockRequiredKeys = [
+  "url",
   "contentType",
+] as const satisfies readonly (keyof Asset)[];
+export const renderableBlockOptionalKeys = [
   "title",
   "description",
   "width",
