@@ -1,17 +1,21 @@
 <script lang="ts">
+  import type { ComponentProps } from "svelte";
   import { afterNavigate, invalidate } from "$app/navigation";
   import { page } from "$app/stores";
-  import { createEventDispatcher } from "svelte";
-  import type { HTMLAnchorAttributes } from "svelte/elements";
+  import Link from "$lib/components/Link";
 
-  const dispatch = createEventDispatcher();
+  type $$Props = Omit<ComponentProps<Link>, "href">;
 
-  type $$Props = Omit<HTMLAnchorAttributes, "href">;
+  $: existingState = $page.url.searchParams.get("state");
+  $: params = existingState
+    ? { state: encodeURIComponent(existingState) }
+    : { state: encodeURIComponent($page.url.pathname + $page.url.search + $page.url.hash) };
 
-  $: encodedState = encodeURIComponent($page.url.pathname + $page.url.search + $page.url.hash);
-  $: loginLinkLocation = `/login?state=${encodedState}`;
+  $: loginLinkLocation = `/login?${Object.entries(params)
+    .map(([k, v]) => `${k}=${v}`)
+    .join("&")}`;
 
   afterNavigate(({ from }) => from && invalidate("app:previewAuthenticationError"));
 </script>
 
-<a href={loginLinkLocation} on:click={() => dispatch("click")} {...$$props}><slot>Login</slot></a>
+<Link href={loginLinkLocation} on:click {...$$props}><slot>Login</slot></Link>

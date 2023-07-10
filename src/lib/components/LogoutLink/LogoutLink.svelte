@@ -1,11 +1,13 @@
 <script lang="ts">
   import type { HTMLAnchorAttributes } from "svelte/elements";
+  import type { Writable } from "svelte/store";
+  import type { PublicLogger } from "$lib/logger/public";
+
   import { page } from "$app/stores";
   import logout from "$lib/actions/logout";
   import { createEventDispatcher, getContext } from "svelte";
-  import type { Writable } from "svelte/store";
   import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
-  import type { PublicLogger } from "$lib/logger/public";
+  import Link from "$lib/components/Link";
 
   const logger = getContext<PublicLogger>("logger");
   const currentUser = getContext<Writable<CurrentUser | undefined>>(currentUserKey);
@@ -18,12 +20,12 @@
   $: logoutLinkLocation = `/logout?state=${encodedState}`;
 </script>
 
-<a
+<Link
   href={logoutLinkLocation}
   on:click={(e) => {
-    dispatch("click", e);
-    e.preventDefault();
-    logout && logout({ currentUser, fetch, logger });
+    e.preventDefault(); // we can't use on:click|preventDefault with custom elements
+    if (!dispatch("click", e, { cancelable: true }) || !logout) return;
+    logout({ currentUser, fetch, logger });
   }}
-  {...$$props}><slot>Logout</slot></a
+  {...$$props}><slot>Logout</slot></Link
 >

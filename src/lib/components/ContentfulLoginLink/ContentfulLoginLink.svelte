@@ -1,13 +1,15 @@
 <script lang="ts">
-  import type { HTMLAnchorAttributes } from "svelte/elements";
+  import type { ComponentProps } from "svelte";
   import {
     PUBLIC_CONTENTFUL_OAUTH_ENDPOINT,
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID,
     PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI,
   } from "$env/static/public";
   import { page } from "$app/stores";
+  import Link from "$lib/components/Link";
+  import classNames from "$lib/util/classNames";
 
-  type $$Props = HTMLAnchorAttributes;
+  type $$Props = Omit<ComponentProps<Link>, "href">;
 
   const baseURL = PUBLIC_CONTENTFUL_OAUTH_ENDPOINT;
 
@@ -26,11 +28,14 @@
   $: loginLink = `${baseURL}?${Object.entries(loginParams)
     .map(([key, value]) => `${key}=${value}`)
     .join("&")}`;
+
+  let className = "";
+  export { className as class };
 </script>
 
-<a class="login-link" href={loginLink} {...$$props}>
+<Link class={classNames("login-link", className)} href={loginLink} {...$$restProps}>
   <slot>Login</slot>
-</a>
+</Link>
 
 <style>
   .login-link {
