@@ -11,6 +11,7 @@ const query = gql`
     sys {
       id
     }
+    contentType
     title
     description
     url

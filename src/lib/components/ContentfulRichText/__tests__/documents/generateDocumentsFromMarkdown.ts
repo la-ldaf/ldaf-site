@@ -40,12 +40,22 @@ const printDocument = (document: Document, links: Links) =>
         if (!asset) throw new Error(`asset ${assetID} not found`);
         // TODO: figure out a better way of doing this that doesn't couple this generation code with
         // the Image component
-        return `\
-<div role="img" aria-label="${asset.description}" class="ldaf-img ldaf-img__container">
-  <picture>
-    <img class="ldaf-img__img ldaf-img__loading" width="1280" height="720" border="0" alt="" loading="lazy" decoding="async" />
-  </picture>
-</div>`;
+        if (asset.contentType.startsWith("image/")) {
+          return `
+            <div role="img" aria-label="${asset.description}" class="ldaf-img ldaf-img__container">
+              <picture>
+                <img class="ldaf-img__img ldaf-img__loading" width="1280" height="720" border="0" alt="" loading="lazy" decoding="async" />
+              </picture>
+            </div>
+          `;
+        }
+
+        return `
+          <p>
+            <a href="${asset.url}" class="usa-link">${asset.title}</a><br />
+            <em>${asset.description}</em>
+          </p>
+        `;
       },
     },
     renderMark: {
