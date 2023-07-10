@@ -1,3 +1,7 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
 .usa-banner.ldaf-banner--announcement {
   background: $primary-darkest;
 
@@ -16,8 +20,8 @@
 
   .banner-icon {
     height: auto;
-    // TODO: switch to fill: $black once the Icon component supports recoloring
-    // (see https://ldaf.atlassian.net/browse/LDAF-327)
+    // TODO: switch to fill: $base-ink once the Icon component
+    // supports recoloring (see https://ldaf.atlassian.net/browse/LDAF-327)
     filter: invert(1);
   }
 
@@ -28,16 +32,33 @@
     align-items: center;
   }
 
-  .ldaf-banner--announcement-text {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .usa-icon {
     // TODO: change this to `fill: $primary-lighter` once
     // https://ldaf.atlassian.net/browse/LDAF-327 is done.
     filter: brightness(0) saturate(100%) invert(58%) sepia(99%) saturate(396%) hue-rotate(185deg)
       brightness(97%) contrast(105%);
+  }
+}
+
+@include at-media("mobile-lg") {
+  .ldaf-banner--announcement-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@include at-media-max("mobile-lg") {
+  .usa-banner.ldaf-banner--announcement .usa-link {
+    padding-left: 0;
+  }
+
+  .usa-banner__inner {
+    margin-left: 0;
+  }
+
+  .ldaf-banner--announcement-text {
+    text-align: left;
+    margin-left: 0;
   }
 }
