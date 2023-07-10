@@ -90,20 +90,14 @@
 
   let intersecting = false;
 
+  $: showSources =
+    loading === "eager" ||
+    (browser && (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting));
+
   const withNoSrcProp = {};
   let srcProps = withNoSrcProp;
   $: withSrcProp = { src };
-  $: if (!src) {
-    srcProps = withNoSrcProp;
-  } else if (loading === "eager") {
-    srcProps = withSrcProp;
-  } else if (!browser) {
-    srcProps = withNoSrcProp;
-  } else if (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting) {
-    srcProps = withSrcProp;
-  } else {
-    srcProps = withNoSrcProp;
-  }
+  $: srcProps = src && showSources ? withSrcProp : withNoSrcProp;
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-img__loaded"
@@ -148,9 +142,11 @@
       </noscript>
     {/if}
     <picture>
-      {#each sources as { media, type, srcset }}
-        <source {media} {type} srcset={getSrcsetAttr(srcset)} />
-      {/each}
+      {#if showSources}
+        {#each sources as { media, type, srcset }}
+          <source {media} {type} srcset={getSrcsetAttr(srcset)} />
+        {/each}
+      {/if}
       <img
         {...imgProps}
         alt=""
