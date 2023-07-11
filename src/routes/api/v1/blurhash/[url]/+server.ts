@@ -34,7 +34,8 @@ export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: 
   parsedImageURL.searchParams.set("q", "25");
   parsedImageURL.searchParams.set("w", "100");
   parsedImageURL.searchParams.set("fm", "jpg");
-  const imageResponse = await fetch(parsedImageURL, { headers: { "Content-Type": "image/jpeg" } });
+
+  const imageResponse = await fetch(parsedImageURL, { headers: { Accept: "image/jpeg" } });
   if (!imageResponse.ok) {
     const errorMessage = await getErrorMessageFromResponse(imageResponse);
     return new Response(
@@ -43,6 +44,18 @@ export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: 
           message: `Received a ${
             imageResponse.status
           } error response when requesting image from ${parsedImageURL.toString()} to convert to blurhash: ${errorMessage}`,
+        },
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  const contentType = imageResponse.headers.get("Content-Type");
+  if (contentType !== "image/jpeg") {
+    return new Response(
+      JSON.stringify({
+        error: {
+          message: `Received a response with the content type ${contentType}, expected image/jpeg`,
         },
       }),
       { status: 400, headers: { "Content-Type": "application/json" } }
