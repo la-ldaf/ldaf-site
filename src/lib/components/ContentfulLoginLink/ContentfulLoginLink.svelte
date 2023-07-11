@@ -29,7 +29,7 @@
     .map(([key, value]) => `${key}=${value}`)
     .join("&")}`;
 
-  let className = "";
+  let className: string | null | undefined = undefined;
   export { className as class };
 </script>
 
