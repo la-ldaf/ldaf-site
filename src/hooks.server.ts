@@ -14,6 +14,7 @@ import { newLogger } from "$lib/logger/private.server";
 import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorStatus from "$lib/util/getErrorStatus";
 import consoleErrorIfYouCan from "$lib/util/consoleErrorIfYouCan";
+import { createConnectedRedisClient } from "$lib/services/redis";
 
 export const handleError = (async ({ error, event }) => {
   const logger = event.locals.logger ?? newLogger();
@@ -47,6 +48,27 @@ const handlePreload = (async ({ event, resolve }) =>
       type === "css" ||
       (type === "font" && !!path.match(/sourcesanspro-regular-webfont.[0-9a-z]{8}.woff2$/)),
   })) satisfies Handle;
+
+const handleSetupRedisClient = (async ({ event, resolve }) => {
+  // we intentionally don't await this promise here, so that other things can happen while redis is
+  // initializing. Anything that needs redis can await the promise by calling
+  // event.locals.getConnectedRedisClient() and awaiting the result. If nothing awaits the promise
+  // then we never wait on redis connecting first.
+  const redisClientPromise = !KV_URL
+    ? Promise.reject(new Error("could not get redis client"))
+    : createConnectedRedisClient({ url: KV_URL, useTLS: !KV_URL.startsWith("redis://localhost") });
+
+  // So we don't get unhandled promise rejection warnings if nothing awaits the promise
+  redisClientPromise.catch((err) => event.locals.logger.logError(err));
+
+  event.locals.getConnectedRedisClient = async () => {
+    const client = await redisClientPromise;
+    event.locals.logger.setContext("redisConnected", true);
+    return client;
+  };
+
+  return resolve(event);
+}) satisfies Handle;
 
 const isLogin = (event: RequestEvent) => {
   const url = new URL(event.request.url);
@@ -103,26 +125,6 @@ export const handleToken = (async ({ event, resolve }) => {
           fetch,
         })
       : undefined;
-
-  const useTLSForRedisConnection = !KV_URL.startsWith("redis://localhost");
-
-  let cachedRedisClient: RedisClientType | undefined,
-    cachedRedisClientConnectedPromise: Promise<void> | undefined = undefined;
-  event.locals.getConnectedRedisClient = async (): Promise<RedisClientType> => {
-    if (!KV_URL) throw new Error("could not get redis client");
-    if (!cachedRedisClient) {
-      cachedRedisClient = createRedisClient({
-        url: KV_URL,
-        socket: { tls: useTLSForRedisConnection },
-      });
-    }
-    if (!cachedRedisClientConnectedPromise) {
-      cachedRedisClientConnectedPromise = cachedRedisClient.connect();
-    }
-    await cachedRedisClientConnectedPromise;
-    logger.setContext("redisConnected", true);
-    return cachedRedisClient;
-  };
 
   const { getConnectedRedisClient } = event.locals;
 
@@ -247,4 +249,10 @@ const handleCSP = (async ({ event, resolve }) => {
   return resolve(event);
 }) satisfies Handle;
 
-export const handle = sequence(handleSetupLogger, handlePreload, handleToken, handleCSP);
+export const handle = sequence(
+  handleSetupLogger,
+  handleSetupRedisClient,
+  handlePreload,
+  handleToken,
+  handleCSP
+);
