@@ -136,9 +136,8 @@ export const handleToken = (async ({ event, resolve }) => {
   // We _always_ want to _try_ to load the user if an access token is provided because there is UI
   // that depends on event.locals.currentUser
   setCurrentUser: if (ldafUserToken) {
-    let redisClient: RedisClientType | undefined;
     try {
-      redisClient = await getConnectedRedisClient();
+      const redisClient = await getConnectedRedisClient();
       if (!redisClient) break setCurrentUser;
       const json = await redisClient.get(`ldafUserInfoByToken:${ldafUserToken}`);
       if (json === null) {
