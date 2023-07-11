@@ -62,11 +62,10 @@ export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: 
     );
   }
 
-  let blurhash: string, width: number, height: number;
+  let blurhash: string;
   try {
     const buffer = await imageResponse.arrayBuffer();
-    let data: Uint8Array;
-    ({ width, height, data } = jpeg.decode(buffer, { useTArray: true }));
+    const { width, height, data } = jpeg.decode(buffer, { useTArray: true });
     blurhash = encode(new Uint8ClampedArray(data), width, height, 4, 4);
   } catch (err) {
     return new Response(
