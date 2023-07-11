@@ -14,9 +14,7 @@ const cookiesDefaults: MockedObject<Cookies> = {
   serialize: vi.fn(),
 };
 
-export const getRequestEventCookies = (
-  overrides: Partial<MockedObject<Cookies>> = {}
-): MockedObject<Cookies> => ({
+export const getRequestEventCookies = (overrides: Partial<Cookies> = {}): Cookies => ({
   ...cookiesDefaults,
   ...overrides,
 });
@@ -39,19 +37,20 @@ const getRequestEventDefaults = () => ({
   cookies: cookiesDefaults,
 });
 
+type Overrides<R> = Partial<Omit<R, "cookies" | "locals">> & {
+  cookies?: Partial<Cookies>;
+  locals?: Partial<App.Locals>;
+};
+
 export const getRequestEvent = <R extends RequestEvent>(
-  overrides: Partial<MockedObject<R>> & {
-    cookies?: Partial<MockedObject<Cookies>>;
-    locals?: Partial<MockedObject<App.Locals>>;
-  } = {}
+  overrides: Overrides<R> = {}
 ): MockedObject<R> => {
   const ret = {
     ...getRequestEventDefaults(),
     ...overrides,
     cookies: getRequestEventCookies(overrides?.cookies),
   };
-  ret.locals;
-  return ret as unknown as MockedObject<R> & { cookies: MockedObject<Cookies> };
+  return ret as unknown as MockedObject<R>;
 };
 
 export const getURLAndRequest = (url: string) => ({ url: new URL(url), request: new Request(url) });

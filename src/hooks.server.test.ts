@@ -49,10 +49,10 @@ const { handleToken } = await import("./hooks.server");
 type Resolve = Parameters<Handle>[0]["resolve"];
 
 type LocalTestContextWithoutResponse = {
-  fetch: MockedFunction<typeof globalThis.fetch>;
-  resolve: MockedFunction<Resolve>;
+  fetch: MockedFunction<typeof globalThis.fetch> | typeof globalThis.fetch;
+  resolve: MockedFunction<Resolve> | Resolve;
   event: RequestEvent;
-  cookies: MockedObject<Cookies>;
+  cookies: MockedObject<Cookies> | Cookies;
 };
 
 type LocalTestContext = LocalTestContextWithoutResponse & {

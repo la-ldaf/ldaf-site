@@ -20,13 +20,10 @@ export const actions = {
     }
 
     const { logger, getConnectedRedisClient } = locals;
-    if (!getConnectedRedisClient) {
-      throw error(500, { message: "Could not connect to Redis, client creator was not set" });
-    }
 
     try {
       const [redisClient, currentUser] = await Promise.all([
-        getConnectedRedisClient?.(),
+        getConnectedRedisClient(),
         getCurrentUser({
           fetch,
           token: managementAPIToken,
@@ -57,13 +54,12 @@ export const actions = {
       });
       return { success: true, currentUser: locals.currentUser };
     } catch (err) {
-      console.log({ err });
       const message = `Could not save token: ${getErrorMessage(err) ?? "unknown error"}`;
       const status =
         err && typeof err === "object" && "status" in err && typeof err.status === "number"
           ? err.status
           : 500;
-      return fail(status, { success: false, message });
+      throw error(status, { message });
     }
   },
 } satisfies Actions;

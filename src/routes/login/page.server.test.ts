@@ -1,18 +1,9 @@
-import {
-  vi,
-  expect,
-  it,
-  describe,
-  beforeAll,
-  type MockedFunction,
-  type MockedObject,
-} from "vitest";
+import { vi, expect, it, describe, beforeAll, type MockedFunction } from "vitest";
 import type { RequestEvent } from "./$types";
 import { client as redisClient } from "$lib/__tests__/mocks/redis";
 import { getRequestEvent, getRequestEventCookies } from "$lib/__tests__/mocks/requestEvent";
 import type { ServerUserInfo } from "$lib/server/types";
 import tokenDuration from "$lib/constants/tokenDuration";
-import type { CurrentUser } from "$lib/types";
 import type { Cookies } from "@sveltejs/kit";
 import { newLogger } from "$lib/logger/private.server";
 
@@ -50,18 +41,21 @@ const testUserContentfulResponse = {
 const randomUUID = "4d196bda-c147-43bf-89ad-2f0249f14c56";
 vi.stubGlobal("crypto", { randomUUID: () => randomUUID });
 
+const fetch: MockedFunction<typeof globalThis.fetch> = vi.fn((..._) => {
+  throw new Error("unexpected fetch!");
+});
+const _fetch = fetch;
+
 const getEvent = ({
   body = {},
-  fetch = vi.fn((..._) => {
-    throw new Error("unexpected fetch!");
-  }),
+  fetch = _fetch,
   cookies,
 }: {
   body?: Record<string, string | Blob>;
-  fetch?: MockedFunction<typeof globalThis.fetch>;
-  cookies?: MockedObject<Cookies>;
-} = {}): MockedObject<RequestEvent> =>
-  getRequestEvent<MockedObject<RequestEvent>>({
+  fetch?: typeof globalThis.fetch;
+  cookies?: Cookies;
+} = {}): RequestEvent =>
+  getRequestEvent<RequestEvent>({
     request: new Request("http://localhost/login", {
       method: "POST",
       body: formDataWith(body),
@@ -77,34 +71,30 @@ const getEvent = ({
     cookies,
   });
 
-const isErrorStatus = (err: unknown, status: number) => {
-  if (
-    !err ||
-    typeof err !== "object" ||
-    !("status" in err) ||
-    typeof err.status !== "number" ||
-    err.status !== status
-  ) {
-    return false;
+const getErrorStatus = (err: unknown): null | number => {
+  if (!err || typeof err !== "object" || !("status" in err) || typeof err.status !== "number") {
+    return null;
   }
-  return true;
+  return err.status;
 };
 
 describe("/login", () => {
-  let event: MockedObject<RequestEvent>,
-    err: unknown,
-    result: { success: boolean; currentUser?: CurrentUser };
+  let event: RequestEvent, err: unknown, result: Awaited<ReturnType<typeof actions.default>>;
 
   describe("no token provided", () => {
     beforeAll(async () => {
       err = undefined;
       event = getEvent();
-      await actions.default(event).catch((e) => (err = e));
+      result = await actions.default(event).catch((e) => (err = e));
       return () => vi.restoreAllMocks();
     });
-    it("responds with a 400 error", () => {
-      expect(isErrorStatus(err, 400)).toEqual(true);
-    });
+    it("fails with a 400 error", () =>
+      expect(result).toMatchObject({
+        data: {
+          success: false,
+        },
+        status: 400,
+      }));
     it("does not get a redis client", () =>
       expect(event.locals.getConnectedRedisClient).not.toHaveBeenCalled());
   });
@@ -113,14 +103,11 @@ describe("/login", () => {
     it("gets a redis client", () =>
       expect(event.locals.getConnectedRedisClient).toHaveBeenCalledOnce());
     it("requests the user info from Contentful", () =>
-      expect(event.fetch).toHaveBeenCalledOnceWith(
-        `${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`,
-        {
-          headers: {
-            Authorization: `Bearer ${managementAPIToken}`,
-          },
-        }
-      ));
+      expect(fetch).toHaveBeenCalledOnceWith(`${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${managementAPIToken}`,
+        },
+      }));
   };
 
   describe("already logged in", () => {
@@ -135,7 +122,13 @@ describe("/login", () => {
       result = await actions.default(event).catch((e) => (err = e));
       return () => vi.restoreAllMocks();
     });
-    it("responds with a 400 error", () => expect(isErrorStatus(err, 400)).toEqual(true));
+    it("responds with a 400 error", () =>
+      expect(result).toMatchObject({
+        status: 400,
+        data: {
+          success: false,
+        },
+      }));
   });
 
   describe("good token provided", () => {
@@ -144,7 +137,7 @@ describe("/login", () => {
       event = getEvent({
         body: { token: managementAPIToken },
       });
-      event.fetch.mockReturnValueOnce(
+      fetch.mockReturnValueOnce(
         Promise.resolve(new Response(JSON.stringify(testUserContentfulResponse)))
       );
       result = await actions.default(event).catch((e) => (err = e));
@@ -171,13 +164,11 @@ describe("/login", () => {
     beforeAll(async () => {
       err = undefined;
       event = getEvent({ body: { token: managementAPIToken } });
-      event.fetch.mockReturnValueOnce(
-        Promise.resolve(new Response("401 Unauthorized", { status: 401 }))
-      );
+      fetch.mockReturnValueOnce(Promise.resolve(new Response("401 Unauthorized", { status: 401 })));
       result = await actions.default(event).catch((e) => (err = e));
       return () => vi.restoreAllMocks();
     });
     expectedBehaviorWithAnyToken();
-    it("responds with a 401 error", () => expect(isErrorStatus(err, 401)).toEqual(true));
+    it("responds with a 401 error", () => expect(getErrorStatus(err)).toEqual(401));
   });
 });
