@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
-import mainNavTestContent from "./__tests__/MainNavTestContent";
-import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
+import mainNavTestContent from "./__tests__/mainNavTestContent";
+import secondaryNavTestContent from "./__tests__/secondaryNavTestContent";
 import type { NavLinkType, NavMenuType } from "./types";
 import type { MainNavQuery } from "./$queries.generated";
 import { error } from "@sveltejs/kit";
