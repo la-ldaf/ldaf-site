@@ -48,14 +48,18 @@ const handlePreload = (async ({ event, resolve }) =>
       (type === "font" && !!path.match(/sourcesanspro-regular-webfont.[0-9a-z]{8}.woff2$/)),
   })) satisfies Handle;
 
-const handleSetupRedisClient = (async ({ event, resolve }) => {
+export const handleSetupRedisClient = (async ({ event, resolve }) => {
   // we intentionally don't await this promise here, so that other things can happen while redis is
   // initializing. Anything that needs redis can await the promise by calling
   // event.locals.getConnectedRedisClient() and awaiting the result. If nothing awaits the promise
   // then we never wait on redis connecting first.
+  const parsed = new URL(KV_URL);
   const redisClientPromise = !KV_URL
     ? Promise.reject(new Error("could not get redis client"))
-    : createConnectedRedisClient({ url: KV_URL, useTLS: !KV_URL.startsWith("redis://localhost") });
+    : createConnectedRedisClient({
+        url: KV_URL,
+        useTLS: !(parsed.hostname === "localhost" || parsed.hostname === "kv"),
+      });
 
   // So we don't get unhandled promise rejection warnings if nothing awaits the promise
   redisClientPromise.catch((err) => event.locals.logger.logError(err));
