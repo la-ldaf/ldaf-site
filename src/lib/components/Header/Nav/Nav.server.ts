@@ -13,12 +13,14 @@ const mainNavQuery = gql`
         childrenCollection {
           items {
             ... on DraftNavigationMenu {
+              __typename
               sys {
                 id
               }
               text
               childrenCollection {
                 items {
+                  __typename
                   ... on DraftNavigationLink {
                     sys {
                       id
