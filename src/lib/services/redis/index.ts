@@ -1,21 +1,18 @@
 import { createClient as createRedisClient, type RedisClientType } from "redis";
 
+type None = Record<never, never>;
+
 export const createConnectedRedisClient = async ({
   url,
   useTLS = false,
 }: {
   url: string;
   useTLS: boolean;
-}): Promise<RedisClientType | undefined> => {
-  let client: RedisClientType;
-  try {
-    client = createRedisClient({
-      url,
-      socket: { tls: useTLS },
-    });
-    await client.connect();
-  } catch (_) {
-    return;
-  }
+}): Promise<RedisClientType> => {
+  const client = createRedisClient<None, None, None>({
+    url,
+    socket: { tls: useTLS },
+  });
+  await client.connect();
   return client;
 };
