@@ -15,13 +15,13 @@ declare global {
     }
     interface Locals {
       logger: Logger;
+      getConnectedRedisClient: () => Promise<RedisClientType | undefined>;
       previewAuthenticationError?: {
         status: number;
         message: string;
       };
       currentUser?: CurrentUser;
       contentfulClient?: ContentfulClient;
-      getConnectedRedisClient?: () => Promise<RedisClientType>;
     }
     // interface PageData {}
     // interface Platform {}
