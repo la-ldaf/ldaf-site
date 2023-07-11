@@ -1,4 +1,4 @@
-import { parse } from "devalue";
+import type { parse as devalueParse } from "devalue";
 
 const getBodyMessage = (body: unknown): string | false =>
   !!(!!body && typeof body === "object" && "message" in body && typeof body.message === "string") &&
@@ -15,26 +15,29 @@ const getErrorMessage = (body: unknown): string | false =>
     typeof body.error.message === "string"
   ) && body.error.message;
 
-const getDataMessage = (body: unknown): string | false => {
-  if (!(!!body && typeof body === "object" && "data" in body && typeof body.data === "string"))
-    return false;
-  try {
-    const parsed: unknown = parse(body.data);
-    if (
-      !(
-        !!parsed &&
-        typeof parsed === "object" &&
-        "message" in parsed &&
-        typeof parsed.message === "string"
-      )
-    ) {
+const getGetDataMessage =
+  ({ parse }: { parse: typeof devalueParse }) =>
+  (body: unknown): string | false => {
+    if (!(body && typeof body === "object" && "data" in body && typeof body.data === "string")) {
       return false;
     }
-    return parsed.message;
-  } catch (_) {
-    return false;
-  }
-};
+    try {
+      const parsed: unknown = parse(body.data);
+      if (
+        !(
+          !!parsed &&
+          typeof parsed === "object" &&
+          "message" in parsed &&
+          typeof parsed.message === "string"
+        )
+      ) {
+        return false;
+      }
+      return parsed.message;
+    } catch (_) {
+      return false;
+    }
+  };
 
 export default async (response: Response): Promise<string | undefined> => {
   const contentType = response.headers.get("Content-Type");
@@ -49,7 +52,8 @@ export default async (response: Response): Promise<string | undefined> => {
     const errorMessage = getErrorMessage(body);
     if (errorMessage) return errorMessage;
 
-    const dataMessage = getDataMessage(body);
+    const { parse } = await import("devalue");
+    const dataMessage = getGetDataMessage({ parse })(body);
     if (dataMessage) return dataMessage;
   }
   return undefined;
