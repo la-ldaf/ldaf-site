@@ -1,4 +1,4 @@
-type AssetLink = {
+export type AssetLink = {
   sys: { id: string };
   contentType: string;
   title: string;
@@ -7,7 +7,7 @@ type AssetLink = {
   size: number;
 };
 
-type ImageAssetLink = AssetLink & {
+export type ImageAssetLink = AssetLink & {
   contentType: `image/${string}`;
   width: number;
   height: number;
