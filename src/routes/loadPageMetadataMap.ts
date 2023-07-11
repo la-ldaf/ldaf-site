@@ -5,7 +5,6 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
-import type { BreadcrumbsType } from "$lib/components/Breadcrumbs";
 
 // extend the type of the items we get back from the query so we can add children and a full URL
 export type PageMetadataMapItem = NonNullable<
@@ -13,8 +12,16 @@ export type PageMetadataMapItem = NonNullable<
 >["items"][number] & {
   children?: string[];
   url?: string | null;
-  breadcrumbs?: BreadcrumbsType;
+  breadcrumbs?: Breadcrumbs;
 };
+
+// might want to move this type def if we want to use it elsewhere
+type Breadcrumb = {
+  id: string;
+  title: string | null | undefined;
+  link: string | null | undefined;
+};
+type Breadcrumbs = Array<Breadcrumb>;
 
 const pageMetadataMap = new Map<string, PageMetadataMapItem>();
 
@@ -68,8 +75,8 @@ const constructFullPathFromMap = (pageMetadata: PageMetadataMapItem, path = ""):
 // Recursive function that puts together breadcrumbs for a page.
 const constructBreadcrumbs = (
   metadata: PageMetadataMapItem,
-  breadcrumbs: BreadcrumbsType = []
-): BreadcrumbsType => {
+  breadcrumbs: Breadcrumbs = []
+): Breadcrumbs => {
   let link = metadata.url;
   if (metadata.isRoot) {
     link = "/";
