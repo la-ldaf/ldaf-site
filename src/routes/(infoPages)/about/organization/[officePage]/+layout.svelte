@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores";
-  import Breadcrumbs from "$lib/components/Breadcrumbs/index.js";
   import SideNav from "$lib/components/SideNav";
 
   export let data;
