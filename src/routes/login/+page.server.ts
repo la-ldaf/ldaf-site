@@ -4,18 +4,19 @@ import getCurrentUser from "$lib/server/getCurrentUser";
 import tokenDuration from "$lib/constants/tokenDuration";
 import { error, fail } from "@sveltejs/kit";
 import type { Actions } from "./$types";
+import getErrorMessage from "$lib/util/getErrorMessage";
 
 export const actions = {
   default: async ({ request, locals, cookies, fetch }) => {
     const data = await request.formData();
 
     if (cookies.get("ldafUserToken")) {
-      throw fail(400, { message: "You are already logged in!" });
+      return fail(400, { success: false, message: "You are already logged in!" });
     }
 
     const managementAPIToken = data.get("token");
     if (typeof managementAPIToken !== "string") {
-      throw fail(400, { message: "token must be a string" });
+      return fail(400, { success: false, message: "token must be a string" });
     }
 
     const { logger, getConnectedRedisClient } = locals;
@@ -56,15 +57,13 @@ export const actions = {
       });
       return { success: true, currentUser: locals.currentUser };
     } catch (err) {
-      const message =
-        err && typeof err === "object" && "message" in err && typeof err.message === "string"
-          ? `Could not save token: ${err.message}`
-          : `Could not save token: unknown error`;
+      console.log({ err });
+      const message = `Could not save token: ${getErrorMessage(err) ?? "unknown error"}`;
       const status =
         err && typeof err === "object" && "status" in err && typeof err.status === "number"
           ? err.status
           : 500;
-      throw fail(status, { message });
+      return fail(status, { success: false, message });
     }
   },
 } satisfies Actions;

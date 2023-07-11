@@ -14,7 +14,7 @@
 
   let redirectPromise: Promise<void> | undefined;
   $: redirectURL = $page.url.searchParams.get("state");
-  $: if (form?.success) currentUser.set(form.currentUser);
+  $: if (form?.success && form?.currentUser) currentUser.set(form.currentUser);
   $: if (browser && form?.success && redirectURL && !redirectPromise) {
     redirectPromise = (async () => {
       await timeout(2500);
@@ -26,7 +26,9 @@
 <div class="grid-container">
   {#if form?.success}
     <p>Successfully logged in!</p>
-    <p>Welcome {form.currentUser.name}!</p>
+    {#if form.currentUser?.name}
+      <p>Welcome {form.currentUser.name}!</p>
+    {/if}
     {#if redirectURL}
       <p>Redirecting you back to <a href={redirectURL}>{redirectURL}</a>...</p>
     {/if}
@@ -42,12 +44,18 @@
     <ContentfulLoginLink><h2>Click here to log in with Contentful</h2></ContentfulLoginLink>
 
     <h2>Log in with personal access token</h2>
-    <form method="POST" use:enhance>
+    <form method="POST">
       <label>
         Token
         <input name="token" type="text" />
       </label>
       <input type="submit" value="Login" />
     </form>
+
+    {#if form?.success === false}
+      <p>
+        {form?.message}
+      </p>
+    {/if}
   {/if}
 </div>
