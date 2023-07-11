@@ -37,17 +37,21 @@ const isSignificantNode = (node: Node) =>
 // Svelte uses attributes starting with __ internally, so our tests will always fail unless we ignore them
 const isHiddenAttribute = ({ name }: Attr) => name.startsWith("__");
 
-const attributesMatch = (nodeA: HTMLElement, nodeB: HTMLElement): boolean => {
+const attributesMatch = (
+  nodeA: HTMLElement,
+  nodeB: HTMLElement,
+  { ignoreAttributes }: { ignoreAttributes: Set<string> }
+): boolean => {
   const firstAttrsSet = new Set<string>();
 
   for (const attr of nodeA.attributes) {
-    if (isHiddenAttribute(attr)) continue;
+    if (isHiddenAttribute(attr) || ignoreAttributes.has(attr.name)) continue;
     firstAttrsSet.add(attr.name);
     if (nodeB.attributes.getNamedItem(attr.name)?.value !== attr.value) return false;
   }
 
   for (const attr of nodeB.attributes) {
-    if (isHiddenAttribute(attr)) continue;
+    if (isHiddenAttribute(attr) || ignoreAttributes.has(attr.name)) continue;
     if (!firstAttrsSet.has(attr.name)) return false;
   }
 
@@ -94,7 +98,11 @@ function* getChildNodePairs(
 const doctypesMatch = (doctypeA: DocumentType | null, doctypeB: DocumentType | null) =>
   (doctypeA === null && doctypeB === null) || doctypeA?.name === doctypeB?.name;
 
-const nodesMatch = (rootNodeA: Node, rootNodeB: Node): boolean => {
+const nodesMatch = (
+  rootNodeA: Node,
+  rootNodeB: Node,
+  { ignoreAttributes }: { ignoreAttributes: Set<string> }
+): boolean => {
   const stack: [Node, Node][] = [[rootNodeA, rootNodeB]];
 
   const addChildNodePairsToStack = (
@@ -119,7 +127,7 @@ const nodesMatch = (rootNodeA: Node, rootNodeB: Node): boolean => {
     }
 
     if (isElementNode(nodeA) && isElementNode(nodeB)) {
-      if (!attributesMatch(nodeA, nodeB)) return false;
+      if (!attributesMatch(nodeA, nodeB, { ignoreAttributes })) return false;
       addChildNodePairsToStack(nodeA, nodeB);
       continue;
     }
@@ -201,7 +209,8 @@ export function toMatchDOMNodes<R>(
     utils: { diff: (a: string, b: string) => string | null };
   },
   received: R,
-  expected: string | Node[] | HTMLElement | NodeList
+  expected: string | Node[] | HTMLElement | NodeList,
+  { ignoreAttributes = [] }: { ignoreAttributes?: string[] } = {}
 ) {
   const { isNot } = this;
 
@@ -209,7 +218,11 @@ export function toMatchDOMNodes<R>(
   const expectedNodeArray = getExpectedAsSignificantNodeArray(expected);
 
   const pass = receivedNodeArray.reduce(
-    (p, node, i) => p && nodesMatch(node, expectedNodeArray[i]),
+    (p, node, i) =>
+      p &&
+      nodesMatch(node, expectedNodeArray[i], {
+        ignoreAttributes: new Set(ignoreAttributes),
+      }),
     true
   );
 

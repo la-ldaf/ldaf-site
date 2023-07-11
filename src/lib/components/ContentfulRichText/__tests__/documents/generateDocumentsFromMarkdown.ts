@@ -13,7 +13,7 @@ import { richTextFromMarkdown } from "@contentful/rich-text-from-markdown";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import prettier from "prettier";
 import escapeRegExp from "lodash/escapeRegExp";
-import type { Links } from "./types";
+import type { ImageAssetLink, Link, Links } from "./types";
 import fakeAssets from "./fakeAssets";
 
 const importURL = new URL(import.meta.url);
@@ -24,27 +24,23 @@ const __dirname = path
 const isAssetBlock = (node: Block | Inline): node is AssetLinkBlock =>
   node.nodeType === "embedded-asset-block";
 
+const isImageAsset = (node: Link): node is ImageAssetLink => node.contentType.startsWith("image/");
+
 const printDocument = (document: Document, links: Links) =>
   documentToHtmlString(document, {
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: (node) => {
         if (!isAssetBlock(node)) throw new Error(`got unexpected node type: ${node.nodeType}`);
-        const {
-          data: {
-            target: {
-              sys: { id: assetID },
-            },
-          },
-        } = node;
+        const assetID = node.data.target.sys.id;
         const asset = links.assets.block.find(({ sys: { id } }) => id === assetID);
         if (!asset) throw new Error(`asset ${assetID} not found`);
         // TODO: figure out a better way of doing this that doesn't couple this generation code with
         // the Image component
-        if (asset.contentType.startsWith("image/")) {
+        if (isImageAsset(asset)) {
           return `
-            <div role="img" aria-label="${asset.description}" class="ldaf-img ldaf-img__container">
+            <div role="img" aria-label="${asset.description}">
               <picture>
-                <img class="ldaf-img__img ldaf-img__loading" width="1280" height="720" border="0" alt="" loading="lazy" decoding="async" />
+                <img width="${asset.width}" height="${asset.height}" border="0" alt="" loading="lazy" decoding="async" />
               </picture>
             </div>
           `;
@@ -52,7 +48,7 @@ const printDocument = (document: Document, links: Links) =>
 
         return `
           <p>
-            <a href="${asset.url}" class="usa-link">${asset.title}</a><br />
+            <a href="${asset.url}">${asset.title}</a><br />
             <em>${asset.description}</em>
           </p>
         `;
