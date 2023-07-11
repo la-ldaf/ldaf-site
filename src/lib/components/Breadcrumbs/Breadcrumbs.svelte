@@ -7,21 +7,19 @@
     title: string;
     link: string;
   }[];
-  $: lastElement = path[path.length - 1];
-  $: currentPageTitle = lastElement?.title;
+  $: currentPage = path[path.length - 1];
+  $: previousPages = path.slice(0, -1);
 </script>
 
 <nav class="usa-breadcrumb usa-breadcrumb--wrap" aria-label="Breadcrumbs">
   <ol class="usa-breadcrumb__list">
-    {#each path as { id, title, link }, index (id)}
-      {#if index < path.length - 1}
-        <li class="usa-breadcrumb__list-item">
-          <Link href={link} class="usa-breadcrumb__link"><span>{title}</span></Link>
-        </li>
-      {/if}
+    {#each previousPages as { id, title, link } (id)}
+      <li class="usa-breadcrumb__list-item">
+        <Link href={link} class="usa-breadcrumb__link"><span>{title}</span></Link>
+      </li>
     {/each}
     <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
-      <span>{currentPageTitle}</span>
+      <span>{currentPage?.title}</span>
     </li>
   </ol>
 </nav>
