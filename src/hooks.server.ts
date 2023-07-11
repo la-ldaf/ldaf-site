@@ -7,14 +7,13 @@ import {
 } from "$env/static/private";
 import type { Handle, HandleServerError, MaybePromise, RequestEvent } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
-import { createClient as createRedisClient, type RedisClientType } from "redis";
 import getContentfulClient from "$lib/services/contentful";
+import { createConnectedRedisClient } from "$lib/services/redis";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 import { newLogger } from "$lib/logger/private.server";
 import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorStatus from "$lib/util/getErrorStatus";
 import consoleErrorIfYouCan from "$lib/util/consoleErrorIfYouCan";
-import { createConnectedRedisClient } from "$lib/services/redis";
 
 export const handleError = (async ({ error, event }) => {
   const logger = event.locals.logger ?? newLogger();

@@ -8,7 +8,7 @@ export const actions = {
     try {
       if (!getConnectedRedisClient) throw new Error("could not attempt to connect to Redis");
       const redisClient = await getConnectedRedisClient();
-      await redisClient.del(`ldafUserInfoByToken:${userToken}`);
+      await redisClient?.del(`ldafUserInfoByToken:${userToken}`);
     } catch (err) {
       logger.logError(err);
     }
