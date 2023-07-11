@@ -1,13 +1,9 @@
 import gql from "graphql-tag";
 import mainNavTestContent from "./__tests__/MainNavTestContent";
 import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
-import type {
-  DraftNavigationLink,
-  DraftNavigationMenu,
-  DraftNavigationMenuChildrenItem,
-} from "$lib/services/contentful/schema";
 import type { NavLinkType, NavMenuType } from "./types";
 import type { MainNavQuery } from "./$queries.generated";
+import { error } from "@sveltejs/kit";
 
 const mainNavQuery = gql`
   query MainNav($preview: Boolean = false) {
@@ -47,26 +43,35 @@ export const loadMainNav = async ({
 }): Promise<NavMenuType[]> => {
   if (!contentfulClient) return mainNavTestContent;
   const data = await contentfulClient.fetch<MainNavQuery>(mainNavQuery);
-  const mainMenu = data.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
-  const mainMenuChildren = mainMenu?.childrenCollection?.items as DraftNavigationMenuChildrenItem[];
-  // Convert DraftNavigationMenuChildrenItem[] to NavItem[]
-  return mainMenuChildren.map((mainMenuChild): NavMenuType => {
+  const mainMenu = data.draftNavigationMenuCollection?.items[0];
+  const mainMenuChildren = mainMenu?.childrenCollection?.items;
+  if (!mainMenuChildren) throw error(500);
+  return mainMenuChildren.map((mainMenuChild): NavMenuType | NavLinkType => {
     // Treat all children of the main menu as submenus.
-    // TODO: Update this if we decide we want normal links as children.
-    const subMenu = mainMenuChild as DraftNavigationMenu;
-    const subMenuChildren = subMenu?.childrenCollection?.items as DraftNavigationMenuChildrenItem[];
-    const transformedSubMenuNavItems = subMenuChildren.map((subMenuChild): NavLinkType => {
-      const navLink = subMenuChild as DraftNavigationLink;
+    if (!mainMenuChild?.__typename) throw error(500, { message: "Got malformed submenu" });
+    if (mainMenuChild.__typename === "DraftNavigationLink") {
+      // TODO: Update this if we decide we want normal links as children.
+      throw error(500, { message: "Cannot have a top-level link" });
+    }
+    if (mainMenuChild.__typename !== "DraftNavigationMenu") {
+      throw error(500, {
+        message: `Got unexpected main menu child type: ${mainMenuChild.__typename}`,
+      });
+    }
+    const children = mainMenuChild?.childrenCollection?.items?.map((navItem): NavLinkType => {
+      if (navItem?.__typename !== "DraftNavigationLink") {
+        throw error(500, { message: "Cannot nest menus!" });
+      }
       return {
-        id: navLink.sys.id,
-        name: navLink.text || undefined,
-        link: navLink.link || undefined,
+        id: navItem.sys.id,
+        name: navItem.text ?? undefined,
+        link: navItem.link ?? undefined,
       };
     });
     return {
-      id: subMenu.sys.id,
-      name: subMenu.text || undefined,
-      children: transformedSubMenuNavItems,
+      id: mainMenuChild.sys.id,
+      name: mainMenuChild.text ?? undefined,
+      children,
     };
   });
 };
