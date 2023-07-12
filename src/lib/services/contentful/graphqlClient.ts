@@ -1,3 +1,5 @@
+import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
+
 type SpaceID = string;
 type Token = string;
 type APIPrefix = string;
@@ -47,8 +49,11 @@ const getClient = ({ spaceID, token, apiPrefix = defaultAPIPrefix }: ClientOptio
         body: JSON.stringify({ query }),
       });
       if (!response.ok) {
+        const errorMessage = await getErrorMessageFromResponse(response);
         throw new Error(
-          `Got failed response with status code ${response.status} ${response.statusText}`
+          `Got failed response with status code ${response.status} ${response.statusText}${
+            errorMessage ? `\n${errorMessage}` : ""
+          }`
         );
       }
       const { data } = await response.json();

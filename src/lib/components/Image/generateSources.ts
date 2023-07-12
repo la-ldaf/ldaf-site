@@ -1,5 +1,5 @@
 import type { Srcset, Sources, Format, FixedImage, FixedSetOfImages } from "./types";
-import { sizes as imageSizes, formats as imageFormatStrings } from "$lib/constants/images.json";
+import { sizes as imageSizes, formats as imageFormatStrings } from "$lib/constants/images";
 
 const imageFormats = imageFormatStrings.every((str) => str.startsWith("image/"))
   ? (imageFormatStrings as `image/${string}`[])
@@ -52,12 +52,14 @@ export const generateSourcesFromFixedSetOfImages = (
     },
     {}
   );
-  return formats.map((format) => ({
-    type: format,
-    srcset: getSortedUniqueSizes(byFormat[format])
-      .filter(({ size }) => size === "original" || sizes.includes(size))
-      .map(({ size, src }) => (size === "original" ? src : [src, size])) as Srcset,
-  }));
+  return formats
+    .filter((format) => byFormat[format])
+    .map((format) => ({
+      type: format,
+      srcset: getSortedUniqueSizes(byFormat[format])
+        .filter(({ size }) => size === "original" || sizes.includes(size))
+        .map(({ size, src }) => (size === "original" ? src : [src, size])) as Srcset,
+    }));
 };
 
 /* type ImageData = Record<never, never>;

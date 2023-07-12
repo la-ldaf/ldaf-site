@@ -6,6 +6,8 @@
   import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&w=412&imagetools";
   import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&imagetools";
   import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&w=412&imagetools";
+  import landingImageAvif from "$lib/assets/commissioner-strain-with-farmer.jpg?avif&quality=75&imagetools";
+  import landingImageAvifMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?avif&quality=75&w=412&imagetools";
   import landingImageBlurhash, {
     width as landingImageWidth,
     height as landingImageHeight,
@@ -22,6 +24,8 @@
     { format: "image/jpeg", size: 412, src: landingImageMobile },
     { format: "image/webp", size: "original", src: landingImageWebP },
     { format: "image/webp", size: 412, src: landingImageWebpMobile },
+    { format: "image/avif", size: "original", src: landingImageAvif },
+    { format: "image/avif", size: 412, src: landingImageAvifMobile },
   ] satisfies FixedSetOfImages;
 
   const imageSources = generateSourcesFromFixedSetOfImages(images);
@@ -39,6 +43,7 @@
     width={landingImageWidth}
     height={landingImageHeight}
     mean={landingImageMean}
+    style="object-position: 0 25%"
   />
   <section class="grid-container homepage-greeting maxw-tablet">
     <ContentfulRichText document={data.title} />
