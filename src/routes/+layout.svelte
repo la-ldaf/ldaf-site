@@ -5,7 +5,7 @@
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
   import "../app.scss";
-  import Banner from "$lib/components/landingPage/Banner.svelte";
+  import DotGovBanner from "$lib/components/DotGovBanner";
   import Header from "$lib/components/Header";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
@@ -33,7 +33,7 @@
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
   <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-  <Banner />
+  <DotGovBanner />
   <div class="usa-overlay" />
   <Header {navItems} {secondaryNavItems} {siteTitle} bind:navMenuExpanded />
   <slot />
