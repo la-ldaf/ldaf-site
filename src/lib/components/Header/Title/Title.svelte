@@ -1,14 +1,13 @@
 <script lang="ts">
   import "./Title.scss";
-  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import type { SiteTitleType } from "./types";
+  import Logo from "../Logo";
   export let siteTitle: SiteTitleType;
 </script>
 
 <div class="usa-logo ldaf-logo__wide" id="basic-logo">
   <a href="/">
-    <!-- TODO: Replace alt value with content from CMS. -->
-    <img src={ldafLogo} alt="Louisiana Department of Agriculture and Forestry Home" />
+    <Logo />
   </a>
   <div class="ldaf-agency-info">
     <div class="ldaf-name__wide">
