@@ -49,12 +49,13 @@
 }
 
 @include at-media-max("mobile-lg") {
-  .usa-banner.ldaf-banner--announcement .usa-link {
-    padding-left: 0;
-  }
-
-  .usa-banner__inner {
-    margin-left: 0;
+  .usa-banner.ldaf-banner--announcement {
+    .usa-link {
+      padding-left: 0;
+    }
+    .usa-banner__inner {
+      margin-left: 0;
+    }
   }
 
   .ldaf-banner--announcement-text {
