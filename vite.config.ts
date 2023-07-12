@@ -30,6 +30,7 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "json", "html", "lcov"],
     },
+    setupFiles: ["src/lib/__tests__/setup.ts"],
   },
   css: {
     preprocessorOptions: {
