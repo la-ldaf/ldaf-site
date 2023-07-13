@@ -1,5 +1,5 @@
-import { renderMessageToPlainText } from "./logMessages";
 import type { WithSomeLoggerArg } from "./types";
+import renderMessageToPlainText from "./renderMessageToPlainText";
 
 export default (async (_, message) => {
   const renderedToPlainText = renderMessageToPlainText(message);
