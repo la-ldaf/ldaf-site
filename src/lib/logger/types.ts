@@ -37,6 +37,7 @@ export type MessageInit = Partial<Omit<Message, "messageType" | "context">>;
 export type PublicContext = Partial<{
   currentUser: CurrentUser;
   url: string;
+  stack: string;
   initialURL: string;
   isPreview: boolean;
 }>;
@@ -48,6 +49,7 @@ export type SetPublicContextOptions = Partial<{
 }>;
 
 export type Context = Partial<{
+  stack: string;
   redisConnected: boolean;
   request: RequestEvent;
 }> & {

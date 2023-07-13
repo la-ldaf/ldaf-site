@@ -5,16 +5,17 @@ import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorStatus from "$lib/util/getErrorStatus";
 
 const handleError = (async ({ error, event }) => {
-  const logger = event.locals.logger ?? newLogger();
-  const message = getErrorMessage(error);
-  const status = getErrorStatus(error);
+  let message: string | undefined, status: number | undefined;
   try {
+    const logger = event?.locals?.logger ?? newLogger();
+    message = getErrorMessage(error);
+    status = getErrorStatus(error);
     try {
-      logger.setPublicContext("url", event.url.toString());
+      logger.setPublicContext("url", event?.url?.toString());
     } catch (_) {
       // do nothing
     }
-    await logger.logError(error);
+    await logger?.logError?.(error);
   } catch (err) {
     consoleErrorIfYouCan(`Error while trying to log unexpected error: ${message}`);
   }

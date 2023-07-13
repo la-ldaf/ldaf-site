@@ -11,9 +11,10 @@ import type {
 import setupLoggerMethod from "./setupLoggerMethod";
 import { setContextOptions, setPublicContextOptions } from "./contextOptions";
 import { logMessage, logError, logErrorResponse } from "./logMethods";
-import { newMessage, renderMessageToSlackMessage } from "./logMessages";
+import { newMessage } from "./logMessages";
+import { renderMessageToSlackMessage } from "./renderMessageToSlackMessage";
 import { dev } from "$app/environment";
-import logRawMessageInDevOrTests from "./logRawMessageInDevOrTests";
+import logRawMessageToConsole from "./logRawMessageToConsole";
 export type { Logger, Context };
 
 const setContext = <K extends keyof Context>(
@@ -47,18 +48,17 @@ const setPublicContext = <K extends keyof PublicContext>(
 };
 
 const logRawMessage: WithLoggerArg<"logRawMessage"> = async (_, message) => {
-  if (dev) {
-    await logRawMessageInDevOrTests(_, message);
-    return;
+  if (!dev && LDAF_SLACK_WEBHOOK_URL) {
+    const renderedToSlackMessage = renderMessageToSlackMessage(message);
+    await fetch(LDAF_SLACK_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(renderedToSlackMessage),
+    });
   }
-  const renderedToSlackMessage = renderMessageToSlackMessage(message);
-  await fetch(LDAF_SLACK_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(renderedToSlackMessage),
-  });
+  await logRawMessageToConsole(_, message);
 };
 
 type ContextInit = Partial<Omit<Context, "PUBLIC">> & { PUBLIC?: Partial<PublicContext> };

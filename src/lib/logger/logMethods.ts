@@ -12,7 +12,17 @@ export const logError: WithSomeLoggerArg<"logError"> = async (logger, error, opt
   const message = getErrorMessage(error);
   const status = getErrorStatus(error);
   const messageHasStatus = message.trimStart().search(/^[0-9]+\b/g);
-  return logger.logMessage(messageHasStatus ? message : `${status}: ${message}`, options);
+  if (error && typeof error === "object" && "stack" in error && typeof error.stack === "string") {
+    if ("setContext" in logger) {
+      logger.setContext("stack", error.stack);
+    } else {
+      logger.setPublicContext("stack", error.stack);
+    }
+  }
+  return logger.logMessage(messageHasStatus ? message : `${status}: ${message}`, {
+    ...options,
+    eventType: "ERROR",
+  });
 };
 
 export const logErrorResponse: WithSomeLoggerArg<"logErrorResponse"> = async (
