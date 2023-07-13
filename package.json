@@ -10,7 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "pretest": "node scripts/pretest.js && npm run gen-operations-types",
-    "test": "concurrently --kill-others --raw \"npm run gen-operations-types -- --watch --silent\" \"npm run lint && npm run check && npm run test:unit\"",
+    "test": "concurrently --kill-others --raw --passthrough-arguments \"npm run gen-operations-types -- --watch --silent\" \"npm run lint && npm run check && npm run test:unit -- {@}\" --",
     "test:e2e": "playwright test",
     "test:e2e:ui": "npm run test:e2e -- --ui",
     "test:unit": "vitest",
@@ -25,7 +25,9 @@
     "bundle-visualizer": "npm run prebuild && mkdir -p ./bundle-visualizer && vite-bundle-visualizer --open=false -o bundle-visualizer/index.html",
     "gen-schema": "graphql-codegen --config codegen/schema.yml --require dotenv/config && npm run gen-schema-types",
     "gen-schema-types": "graphql-codegen --config codegen/schema-types.yml",
-    "gen-operations-types": "graphql-codegen --config codegen/operations.yml"
+    "gen-operations-types": "graphql-codegen --config codegen/operations.yml",
+    "docker-compose-dev": "docker compose -f docker-compose.base.yml -f docker-compose.dev.yml",
+    "docker-compose-e2e": "docker compose -f docker-compose.base.yml -f docker-compose.e2e.yml"
   },
   "devDependencies": {
     "@contentful/rich-text-from-markdown": "^15.16.6",
