@@ -6,8 +6,6 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 import officePageTestContent from "./__tests__/OfficePageTestContent";
 
-import type { PageServerLoad } from "./$types";
-import type { OfficePage } from "$lib/services/contentful/schema";
 import type { OfficePageQuery } from "./$queries.generated";
 
 const query = gql`
@@ -49,9 +47,10 @@ const query = gql`
         }
         pageMetadata {
           ... on PageMetadata {
+            sys {
+              id
+            }
             slug
-            metaTitle
-            metaDescription
           }
         }
       }
@@ -59,9 +58,12 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params }): Promise<OfficePage> => {
-  const { slug } = params;
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return officePageTestContent;
+export const load = async ({ parent, params }) => {
+  const { pageMetadataMap } = await parent();
+  const slug = params.officePage;
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+    return { officePage: officePageTestContent, pageMetadata: {} };
+  }
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -72,8 +74,17 @@ export const load = (async ({ params }): Promise<OfficePage> => {
   const matchedOfficePage = officePages.find(
     (officePage) => officePage?.pageMetadata?.slug === slug
   );
-  // TODO: remove this type assertion and either use a predicate to assert "matchedOfficePage is
-  // OfficePage" or use the query type in the front-end and account for potentially missing data.
-  if (matchedOfficePage) return matchedOfficePage as OfficePage;
+  if (matchedOfficePage) {
+    const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
+    if (pageMetadataId) {
+      const pageMetadata = pageMetadataMap.get(pageMetadataId);
+      if (pageMetadata) {
+        return {
+          officePage: matchedOfficePage,
+          pageMetadata,
+        };
+      }
+    }
+  }
   throw error(404);
-}) satisfies PageServerLoad;
+};

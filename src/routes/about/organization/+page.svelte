@@ -1,10 +1,11 @@
 <script lang="ts">
   export let data;
-  $: ({ text } = data);
+  $: ({ pageMetadata } = data);
 </script>
 
 <div class="usa-section grid-container">
   <main id="main-content">
-    This is a stub for the <strong>{text}</strong> page!
+    <h1>{pageMetadata?.title}</h1>
+    <p>This is a stub for the Offices Aggregation page!</p>
   </main>
 </div>

@@ -3374,7 +3374,7 @@ enum TestRichTextOrder {
 }
 
 """
-Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
+Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
 """
 type TopTier implements Entry {
   contentfulMetadata: ContentfulMetadata!

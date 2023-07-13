@@ -11,7 +11,8 @@
 </script>
 
 <div class="grid-container">
-  <Breadcrumb path={breadcrumbs} currentPageTitle={$page.data.pageTitle} />
+  <!-- TODO: use Page Metadata to populate breadcrumbs -->
+  <Breadcrumb path={breadcrumbs} currentPageTitle={$page.data.officePage.pageTitle} />
   <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 margin-bottom-2">
       <SideNav tree={sidenav} />
