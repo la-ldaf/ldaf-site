@@ -1,11 +1,12 @@
 <script lang="ts">
   import Link from "$lib/components/Link";
-  import type SideNavItemType from "./SideNavItemType";
+  import type SideNavItem from "./types";
 
-  export let title: string,
+  export let activeItem: string | null,
+    title: string,
     link: string,
     isCurrent: boolean,
-    children: SideNavItemType[] | undefined = undefined;
+    children: SideNavItem[] | undefined = undefined;
 </script>
 
 <li class="usa-sidenav__item">
@@ -13,7 +14,7 @@
   {#if children}
     <ul class="usa-sidenav__sublist">
       {#each children as { id, ...child } (id)}
-        <svelte:self {...child} />
+        <svelte:self {...child} {activeItem} isCurrent={id === activeItem} />
       {/each}
     </ul>
   {/if}

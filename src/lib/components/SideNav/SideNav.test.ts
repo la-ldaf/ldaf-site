@@ -10,6 +10,7 @@ describe("SideNav", () => {
     render(SideNav, {
       props: {
         tree: sideNavTestContent,
+        activeItem: "3",
       },
     });
     const parentItem = screen.getByText("SideNav Link 0");
