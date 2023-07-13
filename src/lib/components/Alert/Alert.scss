@@ -6,13 +6,13 @@
   background-color: $error-dark;
 
   .usa-alert__body {
-    color: white;
+    color: $white;
     background-color: $error-dark;
 
     .usa-link {
-      color: white;
+      color: $white;
       &:visited {
-        color: white;
+        color: $white;
       }
     }
 

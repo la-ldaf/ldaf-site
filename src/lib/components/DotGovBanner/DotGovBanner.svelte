@@ -1,32 +1,35 @@
-<script>
-  import "./Banner.scss";
-  import usFlagSmall from "@uswds/uswds/img/us_flag_small.png";
+<script lang="ts">
+  import "./DotGovBanner.scss";
+  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
   import { url as dotGovIcon } from "$icons/icon-dot-gov";
   import { url as httpsIcon } from "$icons/icon-https";
   import Icon from "$lib/components/Icon";
-  // TODO: figure out how to/if we want to import component JS or
-  // write any interactivity ourselves
-  // Related Ticket: https://ldaf.atlassian.net/browse/LDAF-173
-  // import banner from '@uswds/uswds/js/usa-banner';
+
   let bannerExpanded = false;
 </script>
 
-<section id="top" class="usa-banner" aria-label="Official website of the United States government">
+<section
+  id="top"
+  class="usa-banner"
+  aria-label="Official website of the Louisiana state government"
+>
   <div class="usa-accordion">
     <header class="usa-banner__header" class:usa-banner__header--expanded={bannerExpanded}>
       <div class="usa-banner__inner">
         <div class="grid-col-auto">
           <img
             aria-hidden={!bannerExpanded}
-            class="usa-banner__header-flag"
-            src={usFlagSmall}
-            alt=""
+            class="usa-banner__header-flag ldaf-logo"
+            src={ldafLogo}
+            alt="Louisiana Department of Agriculture and Forestry Logo"
             width={16}
             height={11}
           />
         </div>
         <div class="grid-col-fill tablet:grid-col-auto" aria-hidden={!bannerExpanded}>
-          <p class="usa-banner__header-text">An official website of the United States government</p>
+          <p class="usa-banner__header-text">
+            An official website of the Louisiana state government
+          </p>
           <p class="usa-banner__header-action" aria-hidden={!bannerExpanded}>Here’s how you know</p>
         </div>
         <button
