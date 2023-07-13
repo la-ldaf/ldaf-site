@@ -1,5 +1,4 @@
 import type { PageServerLoad } from "./$types";
-import type { DraftNavigationLink } from "$lib/services/contentful/schema";
 
 import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
@@ -29,8 +28,8 @@ export const load = (async ({
   const dynamicRoute = `/${params.dynamicRoute}`;
   const data = await contentfulClient.fetch<StubQuery>(query);
   if (data) {
-    const navLinks = data?.draftNavigationLinkCollection?.items as DraftNavigationLink[];
-    const matchedNavLink = navLinks.find((navLink) => navLink.link === dynamicRoute);
+    const navLinks = data?.draftNavigationLinkCollection?.items;
+    const matchedNavLink = navLinks?.find((navLink) => navLink?.link === dynamicRoute);
     if (matchedNavLink && matchedNavLink.text) {
       return { text: matchedNavLink.text };
     }
