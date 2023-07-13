@@ -15,6 +15,8 @@ export type PageMetadataMapItem = NonNullable<
   breadcrumbs?: Breadcrumbs;
 };
 
+export type PageMetadataMap = Map<string, PageMetadataMapItem>;
+
 // might want to move this type def if we want to use it elsewhere
 type Breadcrumb = {
   id: string;
@@ -23,7 +25,7 @@ type Breadcrumb = {
 };
 type Breadcrumbs = Array<Breadcrumb>;
 
-const pageMetadataMap = new Map<string, PageMetadataMapItem>();
+const pageMetadataMap: PageMetadataMap = new Map();
 
 const query = gql`
   query PageMetadataCollection {
