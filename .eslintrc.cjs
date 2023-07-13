@@ -24,7 +24,7 @@ module.exports = {
       files: ["*.graphql"],
       extends: "plugin:@graphql-eslint/operations-recommended",
       parserOptions: {
-        schema: "./src/lib/services/contentful/schema.graphql",
+        schema: "./src/lib/services/server/contentful/schema.graphql",
         operations: "./src/**/*.{ts,svelte,gql,graphql}",
       },
     },
@@ -40,5 +40,16 @@ module.exports = {
     browser: true,
     es2017: true,
     node: true,
+  },
+  rules: {
+    "no-undef": "off", // this is already checked by TypeScript and ESLint causes spurious errors with it on
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
   },
 };

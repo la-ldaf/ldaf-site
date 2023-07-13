@@ -1,41 +1,32 @@
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
-import mainNavTestContent from "./__tests__/MainNavTestContent";
-import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
-import type {
-  DraftNavigationLink,
-  DraftNavigationMenu,
-  DraftNavigationMenuChildrenItem,
-} from "$lib/services/contentful/schema";
+import mainNavTestContent from "./__tests__/mainNavTestContent";
+import secondaryNavTestContent from "./__tests__/secondaryNavTestContent";
 import type { NavLinkType, NavMenuType } from "./types";
-import type { NavQuery } from "./$queries.generated";
+import type { MainNavQuery } from "./$queries.generated";
+import { error } from "@sveltejs/kit";
 
-export const loadMainNav = async () => {
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const query = gql`
-      query Nav {
-        draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1) {
+const mainNavQuery = gql`
+  query MainNav($preview: Boolean = false) {
+    draftNavigationMenuCollection(where: { type: "Main Menu" }, limit: 1, preview: $preview) {
+      items {
+        text
+        childrenCollection {
           items {
-            text
-            childrenCollection {
-              items {
-                ... on DraftNavigationMenu {
-                  sys {
-                    id
-                  }
-                  text
-                  childrenCollection {
-                    items {
-                      ... on DraftNavigationLink {
-                        sys {
-                          id
-                        }
-                        text
-                        link
-                      }
+            ... on DraftNavigationMenu {
+              __typename
+              sys {
+                id
+              }
+              text
+              childrenCollection {
+                items {
+                  __typename
+                  ... on DraftNavigationLink {
+                    sys {
+                      id
                     }
+                    text
+                    link
                   }
                 }
               }
@@ -43,39 +34,48 @@ export const loadMainNav = async () => {
           }
         }
       }
-    `;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<NavQuery>(printQuery(query));
-    const mainMenu = data?.draftNavigationMenuCollection?.items[0] as DraftNavigationMenu;
-    const mainMenuChildren = mainMenu?.childrenCollection
-      ?.items as DraftNavigationMenuChildrenItem[];
-    // Convert DraftNavigationMenuChildrenItem[] to NavItem[]
-    return mainMenuChildren.map((mainMenuChild): NavMenuType => {
-      // Treat all children of the main menu as submenus.
+    }
+  }
+`;
+
+export const loadMainNav = async ({
+  locals: { contentfulClient },
+}: {
+  locals: App.Locals;
+}): Promise<NavMenuType[]> => {
+  if (!contentfulClient) return mainNavTestContent;
+  const data = await contentfulClient.fetch<MainNavQuery>(mainNavQuery);
+  const mainMenu = data.draftNavigationMenuCollection?.items[0];
+  const mainMenuChildren = mainMenu?.childrenCollection?.items;
+  if (!mainMenuChildren) throw error(500);
+  return mainMenuChildren.map((mainMenuChild): NavMenuType | NavLinkType => {
+    // Treat all children of the main menu as submenus.
+    if (!mainMenuChild?.__typename) throw error(500, { message: "Got malformed submenu" });
+    if (mainMenuChild.__typename === "DraftNavigationLink") {
       // TODO: Update this if we decide we want normal links as children.
-      const subMenu = mainMenuChild as DraftNavigationMenu;
-      const subMenuChildren = subMenu?.childrenCollection
-        ?.items as DraftNavigationMenuChildrenItem[];
-      const transformedSubMenuNavItems = subMenuChildren.map((subMenuChild): NavLinkType => {
-        const navLink = subMenuChild as DraftNavigationLink;
-        return {
-          id: navLink.sys.id,
-          name: navLink.text || undefined,
-          link: navLink.link || undefined,
-        };
+      throw error(500, { message: "Cannot have a top-level link" });
+    }
+    if (mainMenuChild.__typename !== "DraftNavigationMenu") {
+      throw error(500, {
+        message: `Got unexpected main menu child type: ${mainMenuChild.__typename}`,
       });
+    }
+    const children = mainMenuChild?.childrenCollection?.items?.map((navItem): NavLinkType => {
+      if (navItem?.__typename !== "DraftNavigationLink") {
+        throw error(500, { message: "Cannot nest menus!" });
+      }
       return {
-        id: subMenu.sys.id,
-        name: subMenu.text || undefined,
-        children: transformedSubMenuNavItems,
+        id: navItem.sys.id,
+        name: navItem.text ?? undefined,
+        link: navItem.link ?? undefined,
       };
     });
-  } else {
-    return mainNavTestContent;
-  }
+    return {
+      id: mainMenuChild.sys.id,
+      name: mainMenuChild.text ?? undefined,
+      children,
+    };
+  });
 };
 
 // TODO: Fetch from Contentful

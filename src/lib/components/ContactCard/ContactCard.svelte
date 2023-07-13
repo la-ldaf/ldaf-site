@@ -10,7 +10,7 @@
     ContentTypeLocation,
     Contact,
     Sys,
-  } from "$lib/services/contentful/schema.js";
+  } from "$lib/services/server/contentful/schema";
 
   export let address:
     | Maybe<
