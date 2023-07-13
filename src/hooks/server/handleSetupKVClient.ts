@@ -1,6 +1,8 @@
 import type { Handle } from "@sveltejs/kit";
 import { createClient } from "$lib/services/server/kv";
-import { KV_URL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
+
+const { KV_URL } = env;
 
 export const getHandleSetupKVClient = ({ env: { KV_URL } }: { env: { KV_URL: string } }) =>
   (async ({ event, resolve }) => {
