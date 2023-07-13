@@ -24,7 +24,7 @@ module.exports = {
       files: ["*.graphql"],
       extends: "plugin:@graphql-eslint/operations-recommended",
       parserOptions: {
-        schema: "./src/lib/services/contentful/schema.graphql",
+        schema: "./src/lib/services/server/contentful/schema.graphql",
         operations: "./src/**/*.{ts,svelte,gql,graphql}",
       },
     },

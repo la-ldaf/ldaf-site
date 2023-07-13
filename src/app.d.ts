@@ -1,7 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type { RedisClientType } from "redis";
-import type { ContentfulClient } from "./lib/services/contentful";
+import type { ContentfulClient } from "./lib/services/server/contentful";
 import type { Client as KVClient } from "./lib/services/server/kv";
 import type { CurrentUser } from "./lib/contexts/currentUser";
 import type { Logger } from "./lib/logger/private.server";

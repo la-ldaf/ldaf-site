@@ -5,6 +5,6 @@
 
 <div class="usa-section grid-container">
   <main id="main-content">
-    This is a stub for the <strong>{text}</strong> page!
+    This is a stub for the <strong>{text ?? "unknown"}</strong> page!
   </main>
 </div>

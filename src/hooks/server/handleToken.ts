@@ -1,5 +1,5 @@
 import type { Handle, RequestEvent } from "@sveltejs/kit";
-import getContentfulClient from "$lib/services/contentful";
+import getContentfulClient from "$lib/services/server/contentful";
 import {
   CONTENTFUL_SPACE_ID,
   CONTENTFUL_DELIVERY_API_TOKEN,
