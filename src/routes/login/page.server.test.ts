@@ -1,11 +1,13 @@
-import { vi, expect, it, describe, beforeAll, type MockedFunction } from "vitest";
+import { vi, expect, it, describe, type MockedFunction } from "vitest";
+import setup from "$lib/__tests__/util/setup";
 import type { RequestEvent } from "./$types";
-import { client as redisClient } from "$lib/__tests__/mocks/redis";
-import { getRequestEvent, getRequestEventCookies } from "$lib/__tests__/mocks/requestEvent";
-import type { ServerUserInfo } from "$lib/server/types";
+import getRequestEvent from "$lib/__tests__/util/getRequestEvent";
 import tokenDuration from "$lib/constants/tokenDuration";
-import type { Cookies } from "@sveltejs/kit";
 import { newLogger } from "$lib/logger/private.server";
+
+vi.mock("$lib/services/server/kv");
+
+import { createClient as createKVClient, type Client as KVClient } from "$lib/services/server/kv";
 
 const env = {
   CONTENTFUL_MANAGEMENT_API_ENDPOINT: "http://localhost/contentful",
@@ -50,12 +52,15 @@ const getEvent = ({
   body = {},
   fetch = _fetch,
   cookies,
+  kvClient,
 }: {
   body?: Record<string, string | Blob>;
   fetch?: typeof globalThis.fetch;
-  cookies?: Cookies;
-} = {}): RequestEvent =>
-  getRequestEvent<RequestEvent>({
+  cookies?: Record<string, string>;
+  kvClient?: KVClient;
+} = {}): RequestEvent => {
+  const logger = newLogger();
+  return getRequestEvent<RequestEvent>({
     request: new Request("http://localhost/login", {
       method: "POST",
       body: formDataWith(body),
@@ -64,12 +69,13 @@ const getEvent = ({
       id: "/login",
     },
     locals: {
-      logger: newLogger(),
-      getConnectedRedisClient: vi.fn(async () => redisClient),
+      logger,
+      getKVClient: vi.fn(async () => kvClient ?? createKVClient({ logger })),
     },
     fetch,
     cookies,
   });
+};
 
 const getErrorStatus = (err: unknown): null | number => {
   if (!err || typeof err !== "object" || !("status" in err) || typeof err.status !== "number") {
@@ -78,15 +84,24 @@ const getErrorStatus = (err: unknown): null | number => {
   return err.status;
 };
 
-describe("/login", () => {
-  let event: RequestEvent, err: unknown, result: Awaited<ReturnType<typeof actions.default>>;
+const expectedBehaviorWithAnyToken = (getEvent: () => RequestEvent) => {
+  it("gets a redis client", () => expect(getEvent().locals.getKVClient).toHaveBeenCalledOnce());
+  it("requests the user info from Contentful", () =>
+    expect(fetch).toHaveBeenCalledOnceWith(`${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${managementAPIToken}`,
+      },
+    }));
+};
 
+const catcher = vi.fn(() => undefined);
+
+describe("/login", () => {
   describe("no token provided", () => {
-    beforeAll(async () => {
-      err = undefined;
+    let event: RequestEvent, result: Awaited<ReturnType<typeof actions.default>> | undefined;
+    setup(async () => {
       event = getEvent();
-      result = await actions.default(event).catch((e) => (err = e));
-      return () => vi.restoreAllMocks();
+      result = await actions.default(event).catch(catcher);
     });
     it("fails with a 400 error", () =>
       expect(result).toMatchObject({
@@ -95,32 +110,18 @@ describe("/login", () => {
         },
         status: 400,
       }));
-    it("does not get a redis client", () =>
-      expect(event.locals.getConnectedRedisClient).not.toHaveBeenCalled());
+    it("does not throw", () => expect(catcher).not.toHaveBeenCalled);
+    it("does not get a kv client", () => expect(event.locals.getKVClient).not.toHaveBeenCalled());
   });
 
-  const expectedBehaviorWithAnyToken = () => {
-    it("gets a redis client", () =>
-      expect(event.locals.getConnectedRedisClient).toHaveBeenCalledOnce());
-    it("requests the user info from Contentful", () =>
-      expect(fetch).toHaveBeenCalledOnceWith(`${CONTENTFUL_MANAGEMENT_API_ENDPOINT}/users/me`, {
-        headers: {
-          Authorization: `Bearer ${managementAPIToken}`,
-        },
-      }));
-  };
-
   describe("already logged in", () => {
-    beforeAll(async () => {
-      err = undefined;
+    let event: RequestEvent, result: Awaited<ReturnType<typeof actions.default>> | undefined;
+    setup(async () => {
       event = getEvent({
         body: { token: managementAPIToken },
-        cookies: getRequestEventCookies({
-          get: vi.fn((name: string) => ({ ldafUserToken: randomUUID }[name])),
-        }),
+        cookies: { ldafUserToken: randomUUID },
       });
-      result = await actions.default(event).catch((e) => (err = e));
-      return () => vi.restoreAllMocks();
+      result = await actions.default(event).catch(catcher);
     });
     it("responds with a 400 error", () =>
       expect(result).toMatchObject({
@@ -129,27 +130,30 @@ describe("/login", () => {
           success: false,
         },
       }));
+    it("does not throw", () => expect(catcher).not.toHaveBeenCalled);
   });
 
   describe("good token provided", () => {
-    beforeAll(async () => {
-      err = undefined;
+    let event: RequestEvent,
+      result: Awaited<ReturnType<typeof actions.default>>,
+      kvClient: KVClient;
+    setup(async () => {
+      kvClient = await createKVClient({ url: "redis://localhost" });
       event = getEvent({
         body: { token: managementAPIToken },
+        kvClient,
       });
       fetch.mockReturnValueOnce(
         Promise.resolve(new Response(JSON.stringify(testUserContentfulResponse)))
       );
-      result = await actions.default(event).catch((e) => (err = e));
-      return () => vi.restoreAllMocks();
+      result = await actions.default(event);
     });
-    expectedBehaviorWithAnyToken();
+    expectedBehaviorWithAnyToken(() => event);
     it("sets the user info in Redis", () =>
-      expect(redisClient.set).toHaveBeenCalledWith(
-        `ldafUserInfoByToken:${randomUUID}`,
-        JSON.stringify({ ...testUser, managementAPIToken } satisfies ServerUserInfo),
-        { EX: tokenDuration }
-      ));
+      expect(kvClient.setUserInfoByToken).toHaveBeenCalledWith(randomUUID, {
+        ...testUser,
+        managementAPIToken,
+      }));
     it("returns success and currentUser", () =>
       expect(result).toEqual({ success: true, currentUser: testUser }));
     it("sets the cookie", () =>
@@ -161,14 +165,19 @@ describe("/login", () => {
   });
 
   describe("bad token provided", () => {
-    beforeAll(async () => {
+    let event: RequestEvent, err: unknown;
+    const dontCall = vi.fn();
+    setup(async () => {
       err = undefined;
       event = getEvent({ body: { token: managementAPIToken } });
       fetch.mockReturnValueOnce(Promise.resolve(new Response("401 Unauthorized", { status: 401 })));
-      result = await actions.default(event).catch((e) => (err = e));
-      return () => vi.restoreAllMocks();
+      await actions
+        .default(event)
+        .then(dontCall)
+        .catch((e) => (err = e));
     });
-    expectedBehaviorWithAnyToken();
+    expectedBehaviorWithAnyToken(() => event);
+    it("rejects", () => expect(dontCall).not.toHaveBeenCalled());
     it("responds with a 401 error", () => expect(getErrorStatus(err)).toEqual(401));
   });
 });

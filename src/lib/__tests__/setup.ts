@@ -32,3 +32,5 @@ vi.mock("$app/stores", (): typeof stores => {
 
 vi.mock("$lib/logger/private.server");
 vi.mock("$lib/logger/public");
+
+vi.mock("$lib/services/server/kv");

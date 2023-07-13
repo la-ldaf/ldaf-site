@@ -1,6 +1,11 @@
 import type { Handle, RequestEvent } from "@sveltejs/kit";
 import getContentfulClient from "$lib/services/contentful";
-import * as env from "$env/static/private";
+import {
+  CONTENTFUL_SPACE_ID,
+  CONTENTFUL_DELIVERY_API_TOKEN,
+  CONTENTFUL_PREVIEW_API_TOKEN,
+  CONTENTFUL_MANAGEMENT_API_ENDPOINT,
+} from "$env/static/private";
 import getErrorMessage from "$lib/util/getErrorMessage";
 import resolveWithStatus from "$lib/util/resolveWithStatus";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
@@ -40,7 +45,8 @@ export const getHandleToken = ({
   (async ({ event, resolve }) => {
     const {
       fetch,
-      locals: { logger },
+      url,
+      locals: { logger, getKVClient },
     } = event;
 
     // We _always_ want to initialize the contentful client first thing because without it we will
@@ -55,8 +61,6 @@ export const getHandleToken = ({
           })
         : undefined;
 
-    const { getConnectedRedisClient } = event.locals;
-
     const ldafUserToken =
       event.cookies.get("ldafUserToken") ??
       event.request.headers.get("Authorization")?.match(/^Bearer ([^ ]+)$/)?.[1];
@@ -67,16 +71,14 @@ export const getHandleToken = ({
     // that depends on event.locals.currentUser
     setCurrentUser: if (ldafUserToken) {
       try {
-        const redisClient = await getConnectedRedisClient();
-        if (!redisClient) break setCurrentUser;
-        const json = await redisClient.get(`ldafUserInfoByToken:${ldafUserToken}`);
-        if (json === null) {
+        const kvClient = await getKVClient();
+        const userInfo = await kvClient.getUserInfoByToken(ldafUserToken);
+        if (userInfo === null) {
           event.cookies.delete("ldafUserToken");
           break setCurrentUser;
         }
-        const parsed = JSON.parse(json);
-        const { email, name, avatarURL } = parsed;
-        ({ managementAPIToken } = parsed);
+        const { email, name, avatarURL } = userInfo;
+        ({ managementAPIToken } = userInfo);
         event.locals.currentUser = { email, name, avatarURL };
         logger.setPublicContext("currentUser", event.locals.currentUser, {
           errorIfAlreadyDefined: true,
@@ -90,22 +92,25 @@ export const getHandleToken = ({
     // new token or get rid of the current one.
     if (isLogin(event) || isLogout(event)) return resolve(event);
 
-    const preview = event.url.searchParams.has("preview");
-    if (!preview) return resolve(event);
+    const preview = url.searchParams.has("preview");
+    logger.setPublicContext("isPreview", preview);
 
-    logger.setPublicContext("isPreview", true);
+    if (!preview) {
+      return resolve(event);
+    }
 
     const handleBadTokenAndGetMessage = async () => {
       if (event.locals.currentUser) event.locals.currentUser = undefined;
       if (ldafUserToken) {
         if (event.cookies.get("ldafUserToken")) event.cookies.delete("ldafUserToken");
         try {
-          const redisClient = await getConnectedRedisClient();
-          await redisClient?.del(`ldafUserInfoByToken:${ldafUserToken}`);
+          const kvClient = await getKVClient();
+          await kvClient.deleteUserInfoByToken(ldafUserToken);
         } catch (err) {
-          const message = getErrorMessage(err);
           logger.logMessage(
-            `Got the following error while trying to delete bad user token from Redis: ${message}`
+            `Got the following error while trying to delete bad user token from Redis: ${getErrorMessage(
+              err
+            )}`
           );
         }
       }
@@ -120,7 +125,8 @@ export const getHandleToken = ({
         status: 401,
         message,
       };
-      return resolveWithStatus(401, "Unauthorized", resolve, event);
+      const response = await resolveWithStatus(401, "Unauthorized", resolve, event);
+      return response;
     }
 
     // If the user is trying to see preview data, we should always check that they're still
@@ -170,4 +176,11 @@ export const getHandleToken = ({
     return resolve(event);
   }) satisfies Handle;
 
-export default getHandleToken({ env });
+export default getHandleToken({
+  env: {
+    CONTENTFUL_SPACE_ID,
+    CONTENTFUL_DELIVERY_API_TOKEN,
+    CONTENTFUL_PREVIEW_API_TOKEN,
+    CONTENTFUL_MANAGEMENT_API_ENDPOINT,
+  },
+});
