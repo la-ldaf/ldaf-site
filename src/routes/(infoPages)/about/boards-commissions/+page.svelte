@@ -3,9 +3,7 @@
   $: ({ pageMetadata } = data);
 </script>
 
-<div class="usa-section grid-container">
-  <main id="main-content">
-    <h1>{pageMetadata?.title}</h1>
-    <p>This is a stub for the Boards and Commissions Aggregation page!</p>
-  </main>
-</div>
+<main id="main-content">
+  <h1>{pageMetadata?.title}</h1>
+  <p>This is a stub for the Boards and Commissions Aggregation page!</p>
+</main>
