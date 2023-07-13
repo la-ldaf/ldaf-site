@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    environment:
+      KV_URL: "redis://kv"
+  kv:
+    image: "redis:alpine"

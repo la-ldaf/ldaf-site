@@ -1,0 +1,16 @@
+services:
+  base:
+    build: .
+  web:
+    build:
+      context: .
+      dockerfile: e2e.Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "4173:4173"
+    command: "npm run preview -- --host"
+  kv:
+    ports:
+      - "6379:6379"
+

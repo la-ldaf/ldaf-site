@@ -11,11 +11,12 @@ const config: PlaywrightTestConfig = {
     ? [["github"], ["html", { outputFolder: "e2e-tests/report", open: "never" }]]
     : [["list"], ["html", { outputFolder: "e2e-tests/report", open: "on-failure" }]],
   use: {
+    baseURL: "http://localhost:4173",
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npm run build && npm run preview",
-    port: 4173,
+    command: "npm run docker-compose-e2e -- up",
+    url: "http://localhost:4173",
     reuseExistingServer: !process.env.CI,
     // Set a ridiculously long timeout to allow the site to be built.
     timeout: 60 * 60 * 1000,
