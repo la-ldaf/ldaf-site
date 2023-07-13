@@ -44,7 +44,7 @@
     <ContentfulLoginLink><h2>Click here to log in with Contentful</h2></ContentfulLoginLink>
 
     <h2>Log in with personal access token</h2>
-    <form method="POST">
+    <form method="POST" use:enhance>
       <label>
         Token
         <input name="token" type="text" />

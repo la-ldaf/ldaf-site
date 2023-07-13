@@ -2,6 +2,7 @@
 
 import type { RedisClientType } from "redis";
 import type { ContentfulClient } from "./lib/services/contentful";
+import type { Client as KVClient } from "./lib/services/server/kv";
 import type { CurrentUser } from "./lib/contexts/currentUser";
 import type { Logger } from "./lib/logger/private.server";
 
@@ -15,7 +16,7 @@ declare global {
     }
     interface Locals {
       logger: Logger;
-      getConnectedRedisClient: () => Promise<RedisClientType | undefined>;
+      getKVClient: () => Promise<KVClient>;
       previewAuthenticationError?: {
         status: number;
         message: string;

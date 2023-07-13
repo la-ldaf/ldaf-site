@@ -1,5 +1,4 @@
 import { CONTENTFUL_MANAGEMENT_API_ENDPOINT } from "$env/static/private";
-import type { ServerUserInfo } from "$lib/server/types";
 import getCurrentUser from "$lib/server/getCurrentUser";
 import tokenDuration from "$lib/constants/tokenDuration";
 import { error, fail } from "@sveltejs/kit";
@@ -19,34 +18,28 @@ export const actions = {
       return fail(400, { success: false, message: "token must be a string" });
     }
 
-    const { logger, getConnectedRedisClient } = locals;
+    const { logger, getKVClient } = locals;
 
     try {
-      const [redisClient, currentUser] = await Promise.all([
-        getConnectedRedisClient(),
+      const [kvClient, currentUser] = await Promise.all([
+        getKVClient(),
         getCurrentUser({
           fetch,
           token: managementAPIToken,
           apiEndpoint: CONTENTFUL_MANAGEMENT_API_ENDPOINT,
         }),
       ]);
-      if (!redisClient) {
+      if (!kvClient) {
         const message = "Could not log in: Redis client failed to initialize";
         logger.logMessage(message);
         throw error(500, { message });
       }
       locals.currentUser = currentUser;
       const ldafUserToken = crypto.randomUUID();
-      await redisClient.set(
-        `ldafUserInfoByToken:${ldafUserToken}`,
-        JSON.stringify({
-          email: locals.currentUser.email,
-          name: locals.currentUser.name,
-          avatarURL: locals.currentUser.avatarURL,
-          managementAPIToken,
-        } satisfies ServerUserInfo),
-        { EX: tokenDuration }
-      );
+      await kvClient.setUserInfoByToken(ldafUserToken, {
+        ...locals.currentUser,
+        managementAPIToken,
+      });
       cookies.set("ldafUserToken", ldafUserToken, {
         maxAge: tokenDuration,
         sameSite: "none",

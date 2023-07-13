@@ -4,7 +4,7 @@ import { newPublicLogger as newPublicLoggerToWrap, type PublicLoggerInit } from 
 
 export const newPublicLogger = vi.fn((init: PublicLoggerInit) =>
   newPublicLoggerToWrap({
-    ...init,
     logRawMessage: vi.fn(logRawMessageInDevOrTests),
+    ...init,
   })
 );

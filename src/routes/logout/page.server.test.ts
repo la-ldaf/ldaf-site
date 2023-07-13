@@ -1,15 +1,18 @@
-import { getRequestEvent, getRequestEventCookies } from "$lib/__tests__/mocks/requestEvent";
+import getRequestEvent from "$lib/__tests__/util/getRequestEvent";
 import { vi, beforeAll, type MockedObject } from "vitest";
 import type { RequestEvent } from "./$types";
-import { client as redisClient } from "$lib/__tests__/mocks/redis";
 import { newLogger } from "$lib/logger/private.server";
-
-const { actions } = await import("./+page.server");
+import { createClient as createKVClient, type Client as KVClient } from "$lib/services/server/kv";
+import { actions } from "./+page.server";
 
 const ldafUserToken = "4d196bda-c147-43bf-89ad-2f0249f14c56";
 
-const getEvent = ({ cookies = {} }: { cookies?: Record<string, string> } = {}) =>
-  getRequestEvent<MockedObject<RequestEvent>>({
+const getEvent = ({
+  cookies = {},
+  kvClient,
+}: { cookies?: Record<string, string>; kvClient?: KVClient } = {}) => {
+  const logger = newLogger();
+  return getRequestEvent<MockedObject<RequestEvent>>({
     request: new Request("http://localhost/logout", {
       method: "POST",
     }),
@@ -17,32 +20,32 @@ const getEvent = ({ cookies = {} }: { cookies?: Record<string, string> } = {}) =
       id: "/logout",
     },
     locals: {
-      logger: newLogger(),
-      getConnectedRedisClient: vi.fn(async () => redisClient),
+      logger,
+      getKVClient: vi.fn(async () => kvClient ?? createKVClient({ logger })),
     },
-    cookies: getRequestEventCookies({
-      get: vi.fn((name: string) => (cookies ?? {})[name]),
-    }),
+    cookies,
   });
+};
 
-describe("/logout", () => {
-  let event: RequestEvent, result: { success: boolean };
-  describe("not logged in", () => {
-    beforeAll(async () => {
-      event = getEvent();
-      result = await actions.default(event);
-    });
-    it("succeeds", () => expect(result.success).toEqual(true));
-    it("does not call redis", () => expect(redisClient.del).not.toHaveBeenCalled());
+describe("not logged in", () => {
+  let event: RequestEvent, result: { success: boolean }, kvClient: KVClient;
+  beforeAll(async () => {
+    kvClient = await createKVClient();
+    event = getEvent({ kvClient });
+    result = await actions.default(event);
   });
+  it("succeeds", () => expect(result.success).toEqual(true));
+  it("does not call redis", () => expect(kvClient.deleteUserInfoByToken).not.toHaveBeenCalled());
+});
 
-  describe("logged in", () => {
-    beforeAll(async () => {
-      event = getEvent({ cookies: { ldafUserToken } });
-      result = await actions.default(event);
-    });
-    it("succeeds", () => expect(result.success).toEqual(true));
-    it("deletes the redis entry", () =>
-      expect(redisClient.del).toHaveBeenCalledOnceWith(`ldafUserInfoByToken:${ldafUserToken}`));
+describe("logged in", () => {
+  let event: RequestEvent, result: { success: boolean }, kvClient: KVClient;
+  beforeAll(async () => {
+    kvClient = await createKVClient();
+    event = getEvent({ kvClient, cookies: { ldafUserToken } });
+    result = await actions.default(event);
   });
+  it("succeeds", () => expect(result.success).toEqual(true));
+  it("deletes the redis entry", () =>
+    expect(kvClient.deleteUserInfoByToken).toHaveBeenCalledOnceWith(ldafUserToken));
 });
