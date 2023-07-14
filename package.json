@@ -34,7 +34,7 @@
     "@graphql-codegen/schema-ast": "^4.0.0",
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
-    "@graphql-eslint/eslint-plugin": "^3.20.0",
+    "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@playwright/test": "^1.36.0",
     "@poppanator/sveltekit-svg": "^3.0.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
