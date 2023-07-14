@@ -21,6 +21,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     tree: sideNavTestContent,
-    activeItem: "3",
+    currentPath: "#bc",
   },
 };

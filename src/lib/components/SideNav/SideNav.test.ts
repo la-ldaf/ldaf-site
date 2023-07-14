@@ -10,17 +10,17 @@ describe("SideNav", () => {
     render(SideNav, {
       props: {
         tree: sideNavTestContent,
-        activeItem: "3",
+        currentPath: "#bc",
       },
     });
     const parentItem = screen.getByText("SideNav Link 0");
     const childItem = screen.getByText("Child Link 0");
-    const currentItem = screen.getByText("SideNav Link 3");
+    const currentItem = screen.getByText("Child Link 2");
     expect(parentItem).toBeVisible();
-    expect(parentItem).toHaveAttribute("href", "/");
+    expect(parentItem.closest("a")).toHaveAttribute("href", "#a");
     expect(childItem).toBeVisible();
-    expect(childItem).toHaveAttribute("href", "/");
+    expect(childItem.closest("a")).toHaveAttribute("href", "#ba");
     expect(currentItem).toBeVisible();
-    expect(currentItem).toHaveAttribute("class", "usa-link usa-current");
+    expect(currentItem.closest("a")).toHaveAttribute("class", "usa-link usa-current");
   });
 });
