@@ -48,7 +48,7 @@
     "@storybook/svelte": "^7.1.0-alpha.12",
     "@storybook/sveltekit": "^7.1.0-alpha.12",
     "@storybook/testing-library": "^0.2.0",
-    "@sveltejs/adapter-vercel": "^3.0.1",
+    "@sveltejs/adapter-vercel": "^3.0.2",
     "@sveltejs/kit": "^1.22.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/svelte": "^4.0.3",
