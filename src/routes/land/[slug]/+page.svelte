@@ -2,7 +2,7 @@
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Accordion from "$lib/components/Accordion/Accordion.svelte";
-  import AccordionItem from "$lib/components/Accordion/AccordionItem.svelte";
+  import ServiceEntryItem from "./ServiceEntryItem.svelte";
 
   export let data;
   $: ({
@@ -32,10 +32,10 @@
 {#if serviceEntriesCollection}
   <h2>{serviceListName}</h2>
   <Accordion multiselectable>
-    {#each serviceEntriesCollection.items as serviceEntry}
-      <AccordionItem title={serviceEntry?.entryTitle || serviceEntry?.title}>
-        <ContentfulRichText document={serviceEntry?.description?.json} />
-      </AccordionItem>
+    {#each serviceEntriesCollection.items as item}
+      <ServiceEntryItem {item}>
+        <ContentfulRichText document={item?.description?.json} />
+      </ServiceEntryItem>
     {/each}
   </Accordion>
 {/if}
