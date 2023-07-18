@@ -18,7 +18,8 @@
 </script>
 
 {#if heroImage}
-  <!-- TODO: Update this to use a proper Hero/Image Component -->
+  <!-- TODO: Update this to use a proper Hero/Image Component 
+       (pending merging of https://github.com/la-ldaf/ldaf-site/pull/279) -->
   <img src={heroImage.imageSource?.url} alt={heroImage.imageSource?.description} />
 {/if}
 <h1>{title}</h1>
@@ -28,7 +29,6 @@
 {#if description}
   <ContentfulRichText document={description?.json} />
 {/if}
-<!-- TODO: Refactor the service entries into a reusable Accordion component -->
 {#if serviceEntriesCollection}
   <h2>{serviceListName}</h2>
   <Accordion multiselectable>
