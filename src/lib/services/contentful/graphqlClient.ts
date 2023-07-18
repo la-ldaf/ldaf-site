@@ -1,23 +1,23 @@
 type SpaceID = string;
 type Token = string;
-type APIPrefix = string;
+type APIEndpoint = string;
 
-const defaultAPIPrefix: APIPrefix = "https://graphql.contentful.com/content/v1/spaces";
+const defaultAPIEndpoint: APIEndpoint = "https://graphql.contentful.com/content/v1/spaces";
 
 type ClientOptions = {
   spaceID: SpaceID;
   token: Token;
-  apiPrefix?: APIPrefix;
+  apiEndpoint?: APIEndpoint;
 };
 
 const delim = "#" as const;
-
-type ClientKey = `${APIPrefix}${typeof delim}${SpaceID}${typeof delim}${Token}`;
+type Delim = typeof delim;
+type ClientKey = `${APIEndpoint}${Delim}${SpaceID}${Delim}${Token}`;
 const getKeyFromOptions = ({
   spaceID,
   token,
-  apiPrefix = defaultAPIPrefix,
-}: ClientOptions): ClientKey => `${apiPrefix}${delim}${spaceID}${delim}${token}`;
+  apiEndpoint = defaultAPIEndpoint,
+}: ClientOptions): ClientKey => `${apiEndpoint}${delim}${spaceID}${delim}${token}`;
 
 export type Client = {
   options: ClientOptions;
@@ -27,17 +27,17 @@ export type Client = {
 
 const clients = new Map<ClientKey, Client>();
 
-const getClient = ({ spaceID, token, apiPrefix = defaultAPIPrefix }: ClientOptions): Client => {
+const getClient = ({ spaceID, token, apiEndpoint = defaultAPIEndpoint }: ClientOptions): Client => {
   const key = getKeyFromOptions({ spaceID, token });
   const existingClient = clients.get(key);
   if (existingClient) return existingClient;
 
   const client = {
-    options: { spaceID, token, apiPrefix },
+    options: { spaceID, token, apiEndpoint },
     key,
     async fetch<T>(query: string): Promise<T> {
-      const { spaceID, token, apiPrefix } = this.options;
-      const url = `${apiPrefix}/${spaceID}`;
+      const { spaceID, token, apiEndpoint } = this.options;
+      const url = `${apiEndpoint}/${spaceID}`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
