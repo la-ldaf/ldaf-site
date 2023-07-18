@@ -6,20 +6,35 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 import ServiceGroupPageTestContent from "./__tests__/ServiceGroupPageTestContent";
 
-import type { PageServerLoad } from "../$types";
+import type { PageServerLoad } from "./$types";
 import type { ServiceGroup } from "$lib/services/contentful/schema";
+import type { ServiceGroupPageQuery } from "./$queries.generated";
 
 const query = gql`
   query ServiceGroupPage {
-    serviceGroupCollection(where: { sys: { id: "1x4YtppqTIZ0SGWya4hDAW" } }) {
+    serviceGroupCollection {
       items {
         sys {
           id
         }
         heroImage {
-          imageTitle
-          altField
-          fotogCredit
+          ... on HeroImage {
+            imageSource {
+              ... on Asset {
+                title
+                description
+                contentType
+                fileName
+                size
+                url
+                width
+                height
+              }
+            }
+            imageTitle
+            altField
+            fotogCredit
+          }
         }
         title
         subheading
@@ -78,14 +93,13 @@ const query = gql`
 
 export const load = (async ({ params }): Promise<ServiceGroup> => {
   const { slug } = params;
-  // TODO update
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return ServiceGroupPageTestContent;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
 
-  const data = await client.fetch(printQuery(query));
+  const data = await client.fetch<ServiceGroupPageQuery>(printQuery(query));
   const serviceGroupPages = data?.serviceGroupCollection?.items;
   if (!serviceGroupPages) throw error(404);
   const serviceGroupPage = serviceGroupPages.find(
