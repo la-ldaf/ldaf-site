@@ -86,7 +86,7 @@
     "vite": "^4.4.4",
     "vite-bundle-visualizer": "^0.8.0",
     "vite-imagetools": "^5.0.5",
-    "vite-plugin-svelte-purgecss": "^0.0.3",
+    "vite-plugin-svelte-purgecss": "^0.1.2",
     "vitest": "^0.33.0"
   },
   "type": "module",
