@@ -1,5 +1,5 @@
 import { isMockFunction, type MockedFunction } from "@vitest/spy";
-import { utilInspect } from "@vitest/utils";
+import { inspect as utilInspect } from "@vitest/utils";
 
 export const toHaveBeenCalledOnceWith = function (
   this: {

@@ -75,7 +75,7 @@ const getClient = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query: printQuery(query), variables }),
+        body: JSON.stringify({ query: printQuery(query), variables: { ...variables, preview } }),
       };
       const response = await fetch(url, requestInit);
       if (!response.ok) throw new FailedResponseError(query, url, requestInit, response);
