@@ -21,11 +21,12 @@ const query = gql`
 `;
 
 // TODO: refactor to a reusable helper function that wraps contenfulClient
-export async function load() {
+export async function load({ fetch }) {
   if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
+      fetch,
     });
 
     const { titleEntry, bodyEntry } = await client.fetch<EntriesQuery>(printQuery(query));

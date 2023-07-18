@@ -59,12 +59,13 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params }): Promise<OfficePage> => {
+export const load = (async ({ fetch, params }): Promise<OfficePage> => {
   const { slug } = params;
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return officePageTestContent;
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
+    fetch,
   });
   const data = await client.fetch<OfficePageQuery>(printQuery(query));
   const officePages = data?.officePageCollection?.items;

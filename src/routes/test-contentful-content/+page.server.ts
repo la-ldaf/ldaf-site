@@ -17,10 +17,11 @@ const query = gql`
   }
 `;
 
-export const load = async () => {
+export const load = async ({ fetch }) => {
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
+    fetch,
   });
   const data = await client.fetch<EntryQuery>(printQuery(query));
   return {
