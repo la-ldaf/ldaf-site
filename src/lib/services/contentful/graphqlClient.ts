@@ -8,6 +8,7 @@ type ClientOptions = {
   spaceID: SpaceID;
   token: Token;
   apiEndpoint?: APIEndpoint;
+  fetch?: typeof global.fetch;
 };
 
 const delim = "#" as const;
@@ -27,7 +28,12 @@ export type Client = {
 
 const clients = new Map<ClientKey, Client>();
 
-const getClient = ({ spaceID, token, apiEndpoint = defaultAPIEndpoint }: ClientOptions): Client => {
+const getClient = ({
+  spaceID,
+  token,
+  apiEndpoint = defaultAPIEndpoint,
+  fetch = global.fetch,
+}: ClientOptions): Client => {
   const key = getKeyFromOptions({ spaceID, token });
   const existingClient = clients.get(key);
   if (existingClient) return existingClient;
