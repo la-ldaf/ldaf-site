@@ -1,11 +1,10 @@
 <script lang="ts">
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
-  import Accordion from "./Accordion.svelte";
-  import AccordionItem from "../AccordionItem.svelte";
+  import Accordion from "$lib/components/Accordion/Accordion.svelte";
+  import AccordionItem from "$lib/components/Accordion/AccordionItem.svelte";
 
   export let data;
-  // console.log(data);
   $: ({
     title,
     subheading,

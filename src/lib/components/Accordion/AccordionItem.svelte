@@ -1,24 +1,12 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store";
+  import { getContext, onMount } from "svelte";
+  import type { AccordionContext, AccordionContextItems } from "./types";
+
   export let id = "accordionItem-" + Math.random().toString(36);
   export let title = "Title";
   export let expanded = false;
 
-  import { getContext, onMount } from "svelte";
-
   const context: AccordionContext = getContext("Accordion");
-  type AccordionItem = {
-    id: string;
-    expanded: boolean;
-  };
-
-  type AccordionContext = {
-    items: Writable<AccordionContextItems>;
-    add: (item: AccordionItem) => AccordionContext;
-    remove: (item: AccordionItem) => AccordionContext;
-    toggle: (item: AccordionItem) => AccordionContext;
-  };
-  type AccordionContextItems = Record<string, boolean>;
 
   let ref: HTMLElement | null = null;
   let unsubscribe: () => void | undefined;
