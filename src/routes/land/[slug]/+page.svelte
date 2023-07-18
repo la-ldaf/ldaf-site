@@ -1,9 +1,11 @@
 <script lang="ts">
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
+  import Accordion from "./Accordion.svelte";
+  import AccordionItem from "../AccordionItem.svelte";
 
   export let data;
-  console.log(data);
+  // console.log(data);
   $: ({
     title,
     subheading,
@@ -30,26 +32,13 @@
 <!-- TODO: Refactor the service entries into a reusable Accordion component -->
 {#if serviceEntriesCollection}
   <h2>{serviceListName}</h2>
-  <div
-    class="usa-accordion usa-accordion--bordered usa-accordion--multiselectable"
-    data-allow-multiple
-  >
+  <Accordion multiselectable>
     {#each serviceEntriesCollection.items as serviceEntry}
-      <h3 class="usa-accordion__heading">
-        <button
-          type="button"
-          class="usa-accordion__button"
-          aria-expanded="true"
-          aria-controls="m-a1"
-        >
-          {serviceEntry?.entryTitle || serviceEntry?.title}
-        </button>
-      </h3>
-      <div id="m-a1" class="usa-accordion__content usa-prose">
+      <AccordionItem title={serviceEntry?.entryTitle || serviceEntry?.title}>
         <ContentfulRichText document={serviceEntry?.description?.json} />
-      </div>
+      </AccordionItem>
     {/each}
-  </div>
+  </Accordion>
 {/if}
 <div />
 {#if contactInfoCollection}
