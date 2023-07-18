@@ -1,5 +1,4 @@
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import { print as printQuery } from "graphql";
 import gql from "graphql-tag";
 import getContentfulClient from "$lib/services/contentful";
 import { homepageTestData } from "$lib/components/ContentfulRichText/__tests__/documents";
@@ -29,7 +28,7 @@ export async function load({ fetch }) {
       fetch,
     });
 
-    const { titleEntry, bodyEntry } = await client.fetch<EntriesQuery>(printQuery(query));
+    const { titleEntry, bodyEntry } = await client.fetch<EntriesQuery>(query);
 
     return {
       title: titleEntry?.body?.json,

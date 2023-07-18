@@ -1,7 +1,15 @@
 import { describe, expect, it, vi, type Mock } from "vitest";
+import { print as printQuery } from "graphql";
+import gql from "graphql-tag";
 import getClient, { type Client } from "./graphqlClient";
 
-const query = "{ some { graphql { query } } }";
+const query = gql`
+  query Test($preview: Boolean = true) {
+    testRichText(id: "test", preview: $preview) {
+      title
+    }
+  }
+`;
 
 const sampleData = Symbol("sample return value");
 
@@ -28,7 +36,7 @@ describe("Contentful Fetch", () => {
       expect(fetch).toHaveBeenCalledWith(
         "https://graphql.contentful.com/content/v1/spaces/SPACE_ID",
         {
-          body: `{"query":"${query}"}`,
+          body: JSON.stringify({ query: printQuery(query) }),
           headers: {
             Authorization: "Bearer API_TOKEN",
             "Content-Type": "application/json",

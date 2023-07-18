@@ -1,6 +1,5 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
@@ -67,7 +66,7 @@ export const load = (async ({ fetch, params }): Promise<OfficePage> => {
     token: CONTENTFUL_DELIVERY_API_TOKEN,
     fetch,
   });
-  const data = await client.fetch<OfficePageQuery>(printQuery(query));
+  const data = await client.fetch<OfficePageQuery>(query);
   const officePages = data?.officePageCollection?.items;
   if (!officePages) throw error(404);
   const matchedOfficePage = officePages.find(

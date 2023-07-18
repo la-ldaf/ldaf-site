@@ -1,3 +1,5 @@
+import { type DocumentNode, print as printQuery } from "graphql";
+
 type SpaceID = string;
 type Token = string;
 type APIEndpoint = string;
@@ -20,10 +22,20 @@ const getKeyFromOptions = ({
   apiEndpoint = defaultAPIEndpoint,
 }: ClientOptions): ClientKey => `${apiEndpoint}${delim}${spaceID}${delim}${token}`;
 
+type ClientFetchOptions<T, V extends Record<string, unknown>> = {
+  predicate?: (data: unknown) => data is T;
+  variables?: V;
+};
+
+type ClientFetch = <T, V extends Record<string, unknown> = Record<never, never>>(
+  query: DocumentNode,
+  options?: ClientFetchOptions<T, V>
+) => Promise<T>;
+
 export type Client = {
   options: ClientOptions;
   key: ClientKey;
-  fetch: <T>(query: string) => Promise<T>;
+  fetch: ClientFetch;
 };
 
 const clients = new Map<ClientKey, Client>();
@@ -41,7 +53,10 @@ const getClient = ({
   const client = {
     options: { spaceID, token, apiEndpoint },
     key,
-    async fetch<T>(query: string): Promise<T> {
+    async fetch<T, V extends Record<string, unknown>>(
+      query: DocumentNode,
+      { predicate, variables }: ClientFetchOptions<T, V> = {}
+    ): Promise<T> {
       const { spaceID, token, apiEndpoint } = this.options;
       const url = `${apiEndpoint}/${spaceID}`;
       const response = await fetch(url, {
@@ -50,7 +65,7 @@ const getClient = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query: printQuery(query), variables }),
       });
       if (!response.ok) {
         throw new Error(
@@ -58,7 +73,8 @@ const getClient = ({
         );
       }
       const { data } = await response.json();
-      if (!data) throw new Error("Got successful response with unexpected structure!");
+      if (!data || (predicate && !predicate(data)))
+        throw new Error("Got successful response with unexpected structure!");
       return data as T;
     },
   };
