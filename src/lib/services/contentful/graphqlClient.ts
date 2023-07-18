@@ -1,4 +1,5 @@
 import { type DocumentNode, print as printQuery } from "graphql";
+import { FailedResponseError, UnexpectedStructureError } from "./errors";
 
 type SpaceID = string;
 type Token = string;
@@ -59,22 +60,18 @@ const getClient = ({
     ): Promise<T> {
       const { spaceID, token, apiEndpoint } = this.options;
       const url = `${apiEndpoint}/${spaceID}`;
-      const response = await fetch(url, {
+      const requestInit = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ query: printQuery(query), variables }),
-      });
-      if (!response.ok) {
-        throw new Error(
-          `Got failed response with status code ${response.status} ${response.statusText}`
-        );
-      }
+      };
+      const response = await fetch(url, requestInit);
+      if (!response.ok) throw new FailedResponseError(query, url, requestInit, response);
       const { data } = await response.json();
-      if (!data || (predicate && !predicate(data)))
-        throw new Error("Got successful response with unexpected structure!");
+      if (!data || (predicate && !predicate(data))) throw new UnexpectedStructureError(query, data);
       return data as T;
     },
   };
