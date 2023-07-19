@@ -57,9 +57,9 @@ const query = gql`
                 id
               }
               title
-              description {
-                json
-              }
+              # ServiceGroup should be displayed with the <Card /> Component,
+              # using subheading in the body instead of the longer description
+              subheading
             }
           }
         }

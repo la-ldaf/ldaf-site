@@ -13,6 +13,9 @@
   // TODO: remove and validate core content pages with data once navigation changes are merged
   // import pestControlData from "./pest-control-data.json";
   // let data = pestControlData.data.serviceGroupCollection.items[0];
+
+  // import industrialHempData from "./industrial-hemp-data.json";
+  // let data = industrialHempData.data.serviceGroupCollection.items[0];
   $: ({
     title,
     subheading,
@@ -69,7 +72,11 @@
   {#each serviceGroups as item}
     <Card>
       <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-      <p slot="body">{item.subheading}</p>
+      <svelte:fragment slot="body">
+        {#if item.subheading}
+          {item.subheading}
+        {/if}
+      </svelte:fragment>
       <!-- TODO: figure out how to update query to get full url
       to the related Content page -->
       <Button slot="footer">Link to Core Content Page</Button>

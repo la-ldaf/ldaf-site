@@ -1,0 +1,283 @@
+{
+  "data": {
+    "serviceGroupCollection": {
+      "items": [
+        {
+          "sys": { "id": "idbnv6IzkilHgv0G6lUPF" },
+          "heroImage": null,
+          "title": "Industrial hemp",
+          "subheading": "Produce, process, sell, and transport non-consumable hemp in Louisiana",
+          "description": null,
+          "additionalResources": {
+            "json": {
+              "data": {},
+              "content": [
+                {
+                  "data": {},
+                  "content": [
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            {
+                              "data": {},
+                              "marks": [],
+                              "value": "Apply to be an Industrial Hemp Consultant [to be created]",
+                              "nodeType": "text"
+                            }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            {
+                              "data": {},
+                              "marks": [],
+                              "value": "Get your seeds quality tested [to be created]",
+                              "nodeType": "text"
+                            }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" },
+                            {
+                              "data": { "uri": "https://www.lahemp.net/" },
+                              "content": [
+                                {
+                                  "data": {},
+                                  "marks": [],
+                                  "value": "Louisiana Industrial Hemp",
+                                  "nodeType": "text"
+                                }
+                              ],
+                              "nodeType": "hyperlink"
+                            },
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" },
+                            {
+                              "data": {
+                                "uri": "https://www.lsuagcenter.com/topics/crops/industrial-hemp"
+                              },
+                              "content": [
+                                {
+                                  "data": {},
+                                  "marks": [],
+                                  "value": "LSU AgCenter: Industrial Hemp",
+                                  "nodeType": "text"
+                                }
+                              ],
+                              "nodeType": "hyperlink"
+                            },
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" },
+                            {
+                              "data": {
+                                "uri": "https://www.farmers.gov/your-business/row-crops/hemp"
+                              },
+                              "content": [
+                                {
+                                  "data": {},
+                                  "marks": [],
+                                  "value": "USDA: Hemp and Farm Programs",
+                                  "nodeType": "text"
+                                }
+                              ],
+                              "nodeType": "hyperlink"
+                            },
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" },
+                            {
+                              "data": {
+                                "uri": "https://www.ams.usda.gov/rules-regulations/hemp/dea-laboratories"
+                              },
+                              "content": [
+                                {
+                                  "data": {},
+                                  "marks": [],
+                                  "value": "USDA: Hemp Analytical Testing Laboratories",
+                                  "nodeType": "text"
+                                }
+                              ],
+                              "nodeType": "hyperlink"
+                            },
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" },
+                            {
+                              "data": {
+                                "uri": "http://www.ldaf.state.la.us/wp-content/uploads/2020/02/Establishing-FSN.pdf"
+                              },
+                              "content": [
+                                {
+                                  "data": {},
+                                  "marks": [],
+                                  "value": "Establishing a Farm Serial Number (FSN)",
+                                  "nodeType": "text"
+                                }
+                              ],
+                              "nodeType": "hyperlink"
+                            },
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    },
+                    {
+                      "data": {},
+                      "content": [
+                        {
+                          "data": {},
+                          "content": [
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" },
+                            {
+                              "data": {
+                                "uri": "https://www.epa.gov/pesticide-registration/pesticide-products-registered-use-hemp"
+                              },
+                              "content": [
+                                {
+                                  "data": {},
+                                  "marks": [],
+                                  "value": "EPA: Pesticide Products Registered for Use on Hemp",
+                                  "nodeType": "text"
+                                }
+                              ],
+                              "nodeType": "hyperlink"
+                            },
+                            { "data": {}, "marks": [], "value": "", "nodeType": "text" }
+                          ],
+                          "nodeType": "paragraph"
+                        }
+                      ],
+                      "nodeType": "list-item"
+                    }
+                  ],
+                  "nodeType": "unordered-list"
+                },
+                {
+                  "data": {},
+                  "content": [{ "data": {}, "marks": [], "value": "", "nodeType": "text" }],
+                  "nodeType": "paragraph"
+                }
+              ],
+              "nodeType": "document"
+            }
+          },
+          "serviceListName": "Services",
+          "pageMetadata": {
+            "slug": "industrial-hemp",
+            "metaTitle": "Industrial hemp",
+            "metaDescription": "Produce, process, sell, and transport non-consumable hemp in Louisiana."
+          },
+          "serviceEntriesCollection": {
+            "items": [
+              {
+                "sys": { "id": "4qkNm9HyFLs50DMg4sxmRp" },
+                "title": "Purchasing and transporting hemp seeds or stock",
+                "subheading": "Follow our guidelines for the safe and legal movement of hemp"
+              },
+              {
+                "sys": { "id": "3MnZmJD5J6XKHO7p6AnwTU" },
+                "title": "Industrial hemp laws, regulations, and restrictions",
+                "subheading": "Learn requirements around producing hemp in Louisiana"
+              },
+              {
+                "sys": { "id": "3ssoySaxiGrlpI8Pez5CuS" },
+                "title": "Industrial hemp licensing",
+                "subheading": "Get authorized to grow, process, and handle industrial hemp"
+              }
+            ]
+          },
+          "contactInfoCollection": {
+            "items": [
+              {
+                "sys": { "id": "GpAkIqB9lNa9QiJNn3Iyj" },
+                "entityName": "Industrial Hemp Program",
+                "phone": "(225) 952-8062",
+                "email": "industrialhemp@ldaf.state.la.us"
+              },
+              {
+                "sys": { "id": "2VcWnKsYwn14zfufQmQIzx" },
+                "entityName": "Seed Program",
+                "phone": "(225) 925-4733",
+                "email": "seed@ldaf.state.la.us"
+              },
+              {
+                "sys": { "id": "6BiOFeeNUEP58DHUCZXK0k" },
+                "entityName": "Horticulture and Quarantine",
+                "phone": "(225) 952-8100",
+                "email": "horticulture@ldaf.state.la.us"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
