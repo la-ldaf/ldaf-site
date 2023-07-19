@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Accordion from "$lib/components/Accordion";
-  import AccordionItem from "$lib/components/Accordion/AccordionItem.svelte";
+  import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button/Button.svelte";
   import Card from "$lib/components/Card/Card.svelte";
   import ContactCard from "$lib/components/ContactCard";
