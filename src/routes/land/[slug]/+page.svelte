@@ -7,10 +7,12 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
 
   import type { ServiceEntry, ServiceGroup } from "$lib/services/contentful/schema";
-  import pestControlData from "./pest-control-data.json";
 
-  // export let data;
-  let data = pestControlData.data.serviceGroupCollection.items[0];
+  export let data;
+
+  // TODO: remove and validate core content pages with data once navigation changes are merged
+  // import pestControlData from "./pest-control-data.json";
+  // let data = pestControlData.data.serviceGroupCollection.items[0];
   $: ({
     title,
     subheading,
@@ -68,6 +70,8 @@
     <Card>
       <h3 class="usa-card__heading" slot="header">{item.title}</h3>
       <p slot="body">{item.subheading}</p>
+      <!-- TODO: figure out how to update query to get full url
+      to the related Content page -->
       <Button slot="footer">Link to Core Content Page</Button>
     </Card>
   {/each}
