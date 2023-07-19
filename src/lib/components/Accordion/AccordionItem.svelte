@@ -3,7 +3,7 @@
   import type { AccordionContext, AccordionContextItems } from "./types";
 
   export let id = "accordionItem-" + Math.random().toString(36);
-  export let title = "Title";
+  export let title: string | null | undefined = "Title";
   export let expanded = false;
 
   const context: AccordionContext = getContext("Accordion");
