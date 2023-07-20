@@ -4,22 +4,10 @@
   import Breadcrumbs from "$lib/components/Breadcrumbs";
   import SideNav from "$lib/components/SideNav";
 
-  import type { PageMetadataMapItem } from "../loadPageMetadataMap";
-
-  const getTopTier = (metadata: PageMetadataMapItem): PageMetadataMapItem => {
-    if (metadata.parent) {
-      const parent = pageMetadataMap.get(metadata.parent.sys.id);
-      if (parent && !parent.isRoot) {
-        return getTopTier(parent);
-      }
-    }
-    return metadata;
-  };
-
   $: ({ pathname } = $page.url);
-  $: ({ pageMetadata, pageMetadataMap, sideNavMap } = $page.data);
+  $: ({ pageMetadata, sideNavMap } = $page.data);
   $: ({ breadcrumbs } = pageMetadata);
-  $: topTierSlug = getTopTier(pageMetadata).slug;
+  $: topTierSlug = pathname.split("/")[1];
   $: sideNavTree = sideNavMap.get(topTierSlug).children;
 </script>
 
