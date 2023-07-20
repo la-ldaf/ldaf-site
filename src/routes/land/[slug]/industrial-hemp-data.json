@@ -238,16 +238,19 @@
           "serviceEntriesCollection": {
             "items": [
               {
+                "__typename": "ServiceGroup",
                 "sys": { "id": "4qkNm9HyFLs50DMg4sxmRp" },
                 "title": "Purchasing and transporting hemp seeds or stock",
                 "subheading": "Follow our guidelines for the safe and legal movement of hemp"
               },
               {
+                "__typename": "ServiceGroup",
                 "sys": { "id": "3MnZmJD5J6XKHO7p6AnwTU" },
                 "title": "Industrial hemp laws, regulations, and restrictions",
                 "subheading": "Learn requirements around producing hemp in Louisiana"
               },
               {
+                "__typename": "ServiceGroup",
                 "sys": { "id": "3ssoySaxiGrlpI8Pez5CuS" },
                 "title": "Industrial hemp licensing",
                 "subheading": "Get authorized to grow, process, and handle industrial hemp"

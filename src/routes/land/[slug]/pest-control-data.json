@@ -245,6 +245,7 @@
           "serviceEntriesCollection": {
             "items": [
               {
+                "__typename": "ServiceGroup",
                 "sys": {
                   "id": "7FdFCEkaVu9bz548QBZY84"
                 },
@@ -252,6 +253,7 @@
                 "subheading": "Get authorized to apply pesticides within and around structures"
               },
               {
+                "__typename": "ServiceGroup",
                 "sys": {
                   "id": "3Ug8fIFVzc67hD4N2J8uOM"
                 },
@@ -259,6 +261,7 @@
                 "subheading": "Protect the public by reporting termiticide application and other pest control work "
               },
               {
+                "__typename": "ServiceGroup",
                 "sys": {
                   "id": "3qT1VrOHouuAbwO7s7NIMx"
                 },

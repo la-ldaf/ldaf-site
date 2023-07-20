@@ -5,8 +5,6 @@
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
 
-  import type { ServiceEntry, ServiceGroup } from "$lib/services/contentful/schema";
-
   export let data;
 
   // TODO: remove and validate core content pages with data once navigation changes are merged
@@ -21,25 +19,11 @@
     description,
     heroImage,
     serviceListName,
-    serviceEntriesCollection,
+    serviceEntries,
+    serviceGroups,
     contactInfoCollection,
     additionalResources,
   } = data);
-
-  let serviceEntries: ServiceEntry[] = [];
-  let serviceGroups: ServiceGroup[] = [];
-  $: serviceEntries = [];
-  $: serviceGroups = [];
-
-  $: {
-    data.serviceEntriesCollection?.items.map((item) => {
-      if (item && "entryTitle" in item) {
-        serviceEntries?.push(item);
-      } else if (item && "title" in item) {
-        serviceGroups?.push(item);
-      }
-    });
-  }
 </script>
 
 {#if heroImage}
@@ -55,7 +39,7 @@
   <ContentfulRichText document={description?.json} />
 {/if}
 
-{#if serviceEntriesCollection}
+{#if serviceEntries || serviceGroups}
   <h2>{serviceListName}</h2>
   {#if serviceEntries.length > 0}
     {#each serviceEntries as item}

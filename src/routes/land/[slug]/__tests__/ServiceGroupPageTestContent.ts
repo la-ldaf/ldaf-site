@@ -1,4 +1,4 @@
-import type { ServiceGroup } from "$lib/services/contentful/schema";
+import type { ServiceGroupPage } from "../+page.server";
 import documentWithParagraphData from "$lib/components/ContentfulRichText/__tests__/documents";
 
 export default {
@@ -22,6 +22,40 @@ export default {
       resources: { block: [] },
     },
   },
+  serviceEntries: [
+    {
+      __typename: "ServiceEntry",
+      sys: { id: "0", environmentId: "", spaceId: "" },
+      contentfulMetadata: { tags: [] },
+      entryTitle: "Sample Service Entry",
+      description: {
+        links: {
+          assets: { block: [], hyperlink: [] },
+          entries: { block: [], hyperlink: [], inline: [] },
+          resources: { block: [] },
+        },
+        json: {
+          data: {},
+          content: [
+            {
+              data: {},
+              content: [
+                {
+                  data: {},
+                  marks: [],
+                  value: "Here's a service entry",
+                  nodeType: "text",
+                },
+              ],
+              nodeType: "paragraph",
+            },
+          ],
+          nodeType: "document",
+        },
+      },
+    },
+  ],
+  serviceGroups: [],
   contactInfoCollection: {
     limit: 100,
     skip: 0,
@@ -53,4 +87,4 @@ export default {
     },
   },
   serviceListName: "Sample service list name",
-} satisfies ServiceGroup;
+} satisfies ServiceGroupPage;

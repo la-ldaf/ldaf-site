@@ -7,8 +7,13 @@ import getContentfulClient from "$lib/services/contentful";
 import ServiceGroupPageTestContent from "./__tests__/ServiceGroupPageTestContent";
 
 import type { PageServerLoad } from "./$types";
-import type { ServiceGroup } from "$lib/services/contentful/schema";
+import type { ServiceGroup, ServiceEntry } from "$lib/services/contentful/schema";
 import type { ServiceGroupPageQuery } from "./$queries.generated";
+
+export type ServiceGroupPage = ServiceGroup & {
+  serviceEntries: ServiceEntry[];
+  serviceGroups: ServiceGroup[];
+};
 
 const query = gql`
   query ServiceGroupPage {
@@ -44,6 +49,7 @@ const query = gql`
         serviceEntriesCollection {
           items {
             ... on ServiceEntry {
+              __typename
               sys {
                 id
               }
@@ -53,6 +59,7 @@ const query = gql`
               }
             }
             ... on ServiceGroup {
+              __typename
               sys {
                 id
               }
@@ -91,7 +98,7 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params }): Promise<ServiceGroup> => {
+export const load = (async ({ params }): Promise<ServiceGroupPage> => {
   const { slug } = params;
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return ServiceGroupPageTestContent;
   const client = getContentfulClient({
@@ -105,6 +112,19 @@ export const load = (async ({ params }): Promise<ServiceGroup> => {
   const serviceGroupPage = serviceGroupPages.find(
     (servicePage) => servicePage?.pageMetadata?.slug === slug
   );
-  if (serviceGroupPage) return serviceGroupPage as ServiceGroup;
+  if (serviceGroupPage) {
+    const serviceEntries = serviceGroupPage.serviceEntriesCollection?.items.filter(
+      (item) => item?.__typename === "ServiceEntry"
+    );
+    const serviceGroups = serviceGroupPage.serviceEntriesCollection?.items.filter(
+      (item) => item?.__typename === "ServiceGroup"
+    );
+
+    return {
+      ...serviceGroupPage,
+      serviceEntries,
+      serviceGroups,
+    } as ServiceGroupPage;
+  }
   throw error(404);
 }) satisfies PageServerLoad;
