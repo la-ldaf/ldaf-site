@@ -19,7 +19,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default args can be found in the Link wrapper LinkView.svelte
+// Default args can be found in the Accordion wrapper AccordionView.svelte
 export const Default: Story = {
   args: {},
 };
