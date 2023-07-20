@@ -44,7 +44,7 @@
   {#if serviceEntries.length > 0}
     {#each serviceEntries as item}
       <Accordion multiselectable>
-        <AccordionItem title={item?.entryTitle}>
+        <AccordionItem title={item?.entryTitle} id={item.sys.id}>
           <ContentfulRichText document={item?.description?.json} />
         </AccordionItem>
       </Accordion>

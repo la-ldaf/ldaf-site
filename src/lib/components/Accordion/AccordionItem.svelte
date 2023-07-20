@@ -2,6 +2,8 @@
   import { getContext, onMount } from "svelte";
   import type { AccordionContext, AccordionContextItems } from "./types";
 
+  // Note: `id` has a fallback value, but ideally,
+  // one should supply their own identifiers
   export let id = "accordionItem-" + Math.random().toString(36);
   export let title: string | null | undefined = "Title";
   export let expanded = false;
