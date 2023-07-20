@@ -1,6 +1,5 @@
 <script>
   import AnnouncementBanner from "$lib/components/AnnouncementBanner";
-  import Hero from "$lib/components/landingPage/Hero.svelte";
   import Image from "$lib/components/Image";
   import Icon from "$lib/components/Icon";
   import Card from "$lib/components/Card";
