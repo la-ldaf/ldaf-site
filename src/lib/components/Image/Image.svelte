@@ -153,6 +153,7 @@
         {...imgProps}
         alt=""
         class={classNames("ldaf-img__img", fit && "ldaf-img__img-fit", imageLoadClass, imageClass)}
+        style={`aspect-ratio: ${width} / ${height}`}
         on:load={() => (imageLoaded = true)}
         {loading}
         {decoding}
