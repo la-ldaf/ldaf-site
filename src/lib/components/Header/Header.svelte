@@ -60,7 +60,6 @@
       </button>
 
       <a class="ldaf-logo__compact" href="/">
-        <!-- TODO: Replace alt value with content from CMS. -->
         <Logo />
       </a>
       <div class="ldaf-commissioner__compact">
