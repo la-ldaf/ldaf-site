@@ -26,6 +26,7 @@
     const isWidths = typeSet.has("number");
     const withFilteredWidths = isWidths
       ? // we're smarter than typescript here, it doesn't know how sets work
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         widthsOrDPIStrings.filter(([_, w]) => (width ?? 0) > (w as number))
       : widthsOrDPIStrings;
     return [
