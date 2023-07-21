@@ -18,8 +18,9 @@
   const link = linksContext.linksAssetsMaps.hyperlink.get(assetID);
   if (!link) throw new Error(`the asset ${assetID} was not found in the context`);
   const { url } = link;
-  if (!url)
+  if (!url) {
     throw new Error(`the asset ${assetID} was found in the context but did not have a source URL`);
+  }
 </script>
 
 <a href={url}

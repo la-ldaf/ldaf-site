@@ -16,6 +16,7 @@
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for embedded asset node");
   const assetID = asset.data.target.sys.id;
+
   const link = linksContext.linksAssetsMaps.block.get(assetID);
   if (!link) throw new Error(`the asset ${assetID} was not found in the context`);
   const { url } = link;
@@ -36,6 +37,7 @@
     alt={link.description ?? "Unknown image"}
     width={link.width ?? undefined}
     height={link.height ?? undefined}
+    fit
     {blurhash}
   />
 {:else}
