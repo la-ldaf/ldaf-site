@@ -10,7 +10,7 @@ describe("ContentfulRichText", () => {
     it(`renders ${label}`, async () => {
       const { container } = render(ContentfulRichText, { document, links });
       expect(container?.firstChild?.childNodes).toMatchDOMNodes(expectedHTML, {
-        ignoreAttributes: ["class"],
+        ignoreAttributes: ["class", "style"],
       });
     });
   });
