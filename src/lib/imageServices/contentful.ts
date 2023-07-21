@@ -7,6 +7,7 @@ const getURL = (url: string, format?: string, size?: number) =>
     w: size,
     q: quality,
   })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .filter(([_, val]) => Boolean(val))
     .map((x) => x.join("="))
     .join("&")}`;
