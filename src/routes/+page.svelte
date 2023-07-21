@@ -43,6 +43,7 @@
     blurhash={landingImageBlurhash}
     width={landingImageWidth}
     height={landingImageHeight}
+    fit
     mean={landingImageMean}
     style="object-position: 0 25%"
   />

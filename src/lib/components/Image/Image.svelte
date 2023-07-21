@@ -10,6 +10,9 @@
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
 
+  // Whether the image should fit its container
+  export let fit = false;
+
   export let src: string;
 
   // Tuple of [src, width]
@@ -151,7 +154,7 @@
       <img
         {...imgProps}
         alt=""
-        class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
+        class={classNames("ldaf-img__img", fit && "ldaf-img__img-fit", imageLoadClass, imageClass)}
         on:load={() => (imageLoaded = true)}
         {loading}
         {decoding}

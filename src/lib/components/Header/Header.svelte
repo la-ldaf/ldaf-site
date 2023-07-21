@@ -44,6 +44,7 @@
     alt=""
     width={headerBgWidth}
     height={headerBgHeight}
+    fit
   />
   <div class="ldaf-nav usa-navbar">
     <Title {siteTitle} />

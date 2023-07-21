@@ -30,6 +30,7 @@
     blurhash={heroImgBlurhash}
     width={heroImgWidth}
     height={heroImgHeight}
+    fit
     mean={heroImgMean}
     loading="eager"
   />
