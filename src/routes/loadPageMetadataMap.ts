@@ -9,7 +9,19 @@ import type { PageMetadataCollectionQuery } from "./$queries.generated";
 // extend the type of the items we get back from the query so we can add children and a full URL
 export type PageMetadataMapItem = NonNullable<
   PageMetadataCollectionQuery["pageMetadataCollection"]
->["items"][number] & { children?: string[]; url?: string | null };
+>["items"][number] & {
+  children?: string[];
+  url?: string | null;
+  breadcrumbs?: Breadcrumbs;
+};
+
+// might want to move this type def if we want to use it elsewhere
+type Breadcrumb = {
+  id: string;
+  title: string | null | undefined;
+  link: string | null | undefined;
+};
+type Breadcrumbs = Array<Breadcrumb>;
 
 const pageMetadataMap = new Map<string, PageMetadataMapItem>();
 
@@ -60,6 +72,25 @@ const constructFullPathFromMap = (pageMetadata: PageMetadataMapItem, path = ""):
   }
 };
 
+// Recursive function that puts together breadcrumbs for a page.
+const constructBreadcrumbs = (
+  metadata: PageMetadataMapItem,
+  breadcrumbs: Breadcrumbs = []
+): Breadcrumbs => {
+  breadcrumbs.unshift({
+    id: metadata.sys.id,
+    title: metadata.title,
+    link: metadata.url,
+  });
+  if (metadata.parent) {
+    const parent = pageMetadataMap.get(metadata.parent.sys.id);
+    if (parent) {
+      return constructBreadcrumbs(parent, breadcrumbs);
+    }
+  }
+  return breadcrumbs;
+};
+
 export const loadPageMetadataMap = async () => {
   if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
     const client = getContentfulClient({
@@ -100,6 +131,10 @@ export const loadPageMetadataMap = async () => {
         }
         // update the item in the map
         pageMetadataMap.set(page.sys.id, page);
+      });
+      // construct breadcrumbs for each page
+      [...pageMetadataMap].forEach(([_, page]) => {
+        page.breadcrumbs = constructBreadcrumbs(page);
       });
     }
   }
