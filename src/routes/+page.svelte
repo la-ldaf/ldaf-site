@@ -1,30 +1,30 @@
 <script lang="ts">
   import "./page.scss";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
-  import underConstructionGif from "$lib/assets/under-construction.gif";
-  import landingImage from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&imagetools";
-  import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=75&w=412&imagetools";
-  import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&imagetools";
-  import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?webp&quality=75&w=412&imagetools";
+
+  import {
+    src as underConstructionGif,
+    width as underConstructionWidth,
+    height as underConstructionHeight,
+  } from "$lib/assets/under-construction.gif?as=metadata&imagetoolsMetadata";
+
+  // vite-imagetools doesn't support converting to an animated avif on the fly, so i did it ahead of
+  // time and added it to the repo. it's only 12kb.
+  import underConstructionAvif from "$lib/assets/under-construction.avif";
+
+  import landingImage from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=85&imagetools";
+  import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=85&w=412&imagetools";
+  import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?format=webp&quality=85&imagetools";
+  import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?format=webp&quality=85&w=412&imagetools";
+  import landingImageAvif from "$lib/assets/commissioner-strain-with-farmer.jpg?format=avif&quality=85&imagetools";
+  import landingImageAvifMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?format=avif&quality=85&w=412&imagetools";
   import landingImageBlurhash, {
     width as landingImageWidth,
     height as landingImageHeight,
     mean as landingImageMean,
   } from "$lib/assets/commissioner-strain-with-farmer.jpg?blurhash";
 
-  import Image, {
-    generateSourcesFromFixedSetOfImages,
-    type FixedSetOfImages,
-  } from "$lib/components/Image";
-
-  const images = [
-    { format: "image/jpeg", size: "original", src: landingImage },
-    { format: "image/jpeg", size: 412, src: landingImageMobile },
-    { format: "image/webp", size: "original", src: landingImageWebP },
-    { format: "image/webp", size: 412, src: landingImageWebpMobile },
-  ] satisfies FixedSetOfImages;
-
-  const imageSources = generateSourcesFromFixedSetOfImages(images);
+  import Image from "$lib/components/Image";
 
   export let data;
 </script>
@@ -33,21 +33,33 @@
   <Image
     class="main-image"
     alt=""
+    loading="eager"
     src={landingImage}
-    sources={imageSources}
+    sources={[
+      { type: "image/avif", srcset: [landingImageAvif, [landingImageAvifMobile, 412]] },
+      { type: "image/webp", srcset: [landingImageWebP, [landingImageWebpMobile, 412]] },
+      { type: "image/jpeg", srcset: [landingImage, [landingImageMobile, 412]] },
+    ]}
     blurhash={landingImageBlurhash}
     width={landingImageWidth}
     height={landingImageHeight}
+    fit
     mean={landingImageMean}
+    style="object-position: 0 25%"
   />
   <section class="grid-container homepage-greeting maxw-tablet">
     <ContentfulRichText document={data.title} />
     <div class="grid-row">
       <div class="grid-col-4 construction-sign-container">
-        <img
-          class="construction-sign"
-          alt="Under construction sign swinging in the wind"
+        <Image
           src={underConstructionGif}
+          sources={[
+            { type: "image/avif", srcset: [underConstructionAvif] },
+            { type: "image/gif", srcset: [underConstructionGif] },
+          ]}
+          alt="Under construction sign swinging in the wind"
+          width={underConstructionWidth}
+          height={underConstructionHeight}
         />
       </div>
       <div class="grid-col-8 padding-left-4">

@@ -39,7 +39,7 @@ const encodePathToBlurHashAndInfo = async (path: string): Promise<BlurHashAndInf
 };
 
 export default () => {
-  const imageRegex = /\.(jpg|webp|png)\?blurhash$/;
+  const imageRegex = /\.(jpg|webp|png|avif)\?blurhash$/;
 
   return {
     name: "blurhash-loader",
