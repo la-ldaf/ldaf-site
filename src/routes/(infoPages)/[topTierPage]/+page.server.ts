@@ -42,6 +42,10 @@ export const load = async ({ parent, params }) => {
       if (pageMetadata) {
         return { pageMetadata };
       }
+    } else {
+      console.warn(
+        `A Top Tier entry with the slug "${topTierSlug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Top Tier entry is not.`
+      );
     }
   }
   throw error(404);

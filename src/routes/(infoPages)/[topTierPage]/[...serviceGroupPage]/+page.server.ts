@@ -125,7 +125,7 @@ export const load = async ({ parent, params }) => {
         return serviceGroup?.pageMetadata?.slug === slug;
       }
     );
-    if (matchedServiceGroupsFromSlug) {
+    if (matchedServiceGroupsFromSlug && matchedServiceGroupsFromSlug.length > 0) {
       let matchedPageMetadata;
       // account for possibility that two service groups have the same ending slug
       const matchedServiceGroup = matchedServiceGroupsFromSlug.find((group) => {
@@ -159,6 +159,10 @@ export const load = async ({ parent, params }) => {
           serviceGroups,
         } as ServiceGroupPage;
       }
+    } else {
+      console.warn(
+        `A Service Group entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Service Group entry is not.`
+      );
     }
   }
   throw error(404);
