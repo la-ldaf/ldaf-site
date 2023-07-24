@@ -10,7 +10,7 @@
     servicesAndPrograms,
     mailingAddress,
     contactsCollection,
-  } = data);
+  } = data.officePage);
 </script>
 
 <h1>{pageTitle}</h1>
