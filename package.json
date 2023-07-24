@@ -68,7 +68,7 @@
     "glob": "^10.3.3",
     "graphql": "^16.7.1",
     "jsdom": "^22.1.0",
-    "postcss": "^8.4.26",
+    "postcss": "^8.4.27",
     "postcss-load-config": "^4.0.1",
     "prettier": "^2.8.8",
     "prettier-plugin-svelte": "^2.10.1",
