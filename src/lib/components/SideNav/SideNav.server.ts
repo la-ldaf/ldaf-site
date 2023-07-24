@@ -10,10 +10,9 @@ const sideNavMap: SideNavMap = new Map();
 const buildSideNavTree = (
   pageMetadataMap: PageMetadataMap,
   featuredPages: string[],
-  metadata: PageMetadataMapItem
+  children: PageMetadataMapItem["children"]
 ): SideNavItem[] => {
   const tree: SideNavItem[] = [];
-  const { children } = metadata;
   if (children) {
     featuredPages.forEach((featuredPageId) => {
       const matchedChildId = children.find((childId) => childId === featuredPageId);
@@ -25,7 +24,7 @@ const buildSideNavTree = (
             id: child.sys.id,
             title: child.title,
             link: child.url,
-            children: buildSideNavTree(pageMetadataMap, featuredPages, child),
+            children: buildSideNavTree(pageMetadataMap, featuredPages, child.children),
           });
         }
       }
@@ -42,7 +41,7 @@ const buildSideNavTree = (
             id: child.sys.id,
             title: child.title,
             link: child.url,
-            children: buildSideNavTree(pageMetadataMap, featuredPages, child),
+            children: buildSideNavTree(pageMetadataMap, featuredPages, child.children),
           });
         }
       }
@@ -76,7 +75,7 @@ export const loadSideNavMap = async (
         id: metadata.sys.id,
         title: metadata.title,
         link: metadata.url,
-        children: buildSideNavTree(pageMetadataMap, featuredPages, metadata),
+        children: buildSideNavTree(pageMetadataMap, featuredPages, metadata.children),
       });
     }
   });
