@@ -13,10 +13,14 @@
 
   export let data;
   const {
+    pageMetadataMap,
     navItems,
     secondaryNavItems,
     siteTitle,
   }: { navItems: NavItemType[]; secondaryNavItems: NavLinkType[]; siteTitle: SiteTitleType } = data;
+
+  // console.log(pageMetadataMap);
+  // console.log(Object.fromEntries(pageMetadataMap));
 
   // Update the active nav item based on the current path.
   let activeNavItemIndex = -1;

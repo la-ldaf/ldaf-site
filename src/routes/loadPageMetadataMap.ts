@@ -11,6 +11,7 @@ export type PageMetadataMapItem = NonNullable<
   PageMetadataCollectionQuery["pageMetadataCollection"]
 >["items"][number] & { children?: string[]; url?: string | null };
 
+// const cache = await caches.open("pageMetadataMap");
 const pageMetadataMap = new Map<string, PageMetadataMapItem>();
 
 const query = gql`
@@ -103,5 +104,6 @@ export const loadPageMetadataMap = async () => {
       });
     }
   }
+  // cache.put(pageMetadataMap);
   return pageMetadataMap;
 };
