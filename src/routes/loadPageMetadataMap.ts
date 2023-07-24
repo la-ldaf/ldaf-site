@@ -77,14 +77,10 @@ const constructBreadcrumbs = (
   metadata: PageMetadataMapItem,
   breadcrumbs: Breadcrumbs = []
 ): Breadcrumbs => {
-  let link = metadata.url;
-  if (metadata.isRoot) {
-    link = "/";
-  }
   breadcrumbs.unshift({
     id: metadata.sys.id,
     title: metadata.title,
-    link,
+    link: metadata.url,
   });
   if (metadata.parent) {
     const parent = pageMetadataMap.get(metadata.parent.sys.id);
