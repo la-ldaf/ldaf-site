@@ -153,8 +153,8 @@ export const load = async ({ parent, params }) => {
 
         console.log("Matching metadata in service group's +page.server", matchedPageMetadata);
         return {
-          pageMetadata: matchedPageMetadata,
           ...matchedServiceGroup,
+          pageMetadata: matchedPageMetadata,
           serviceEntries,
           serviceGroups,
         } as ServiceGroupPage;
