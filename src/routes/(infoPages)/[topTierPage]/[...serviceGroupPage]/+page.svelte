@@ -45,18 +45,21 @@
   {/if}
 {/if}
 {#if serviceGroups.length > 0}
-  {#each serviceGroups as item}
-    <Card>
-      <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-      <svelte:fragment slot="body">
-        {#if item.subheading}
-          {item.subheading}
-        {/if}
-      </svelte:fragment>
-      <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
-      <a slot="footer" href={item.url} class="usa-button">Go To Page</a>
-    </Card>
-  {/each}
+  <ul>
+    {#each serviceGroups as item}
+      <!-- TODO: Create a <CardGroup /> Wrapper to avoid dealing with the <ul> and styling overrides here -->
+      <Card>
+        <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+        <svelte:fragment slot="body">
+          {#if item.subheading}
+            {item.subheading}
+          {/if}
+        </svelte:fragment>
+        <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
+        <a slot="footer" href={item.url} class="usa-button">Go To Page</a>
+      </Card>
+    {/each}
+  </ul>
 {/if}
 <div />
 {#if contactInfoCollection}
@@ -67,3 +70,10 @@
   <h2>Related Links</h2>
   <ContentfulRichText document={additionalResources?.json} />
 {/if}
+
+<style>
+  ul {
+    padding-inline-start: 0;
+    list-style: none;
+  }
+</style>
