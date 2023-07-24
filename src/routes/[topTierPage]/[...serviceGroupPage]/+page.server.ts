@@ -5,19 +5,99 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 
+import type {
+  ServiceGroup,
+  ServiceEntry,
+  // ServiceGroupServiceEntriesItem,
+} from "$lib/services/contentful/schema";
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
+import ServiceGroupPageTestContent from "./__tests__/ServiceGroupPageTestContent";
+
+export type ServiceGroupPage = ServiceGroup & {
+  serviceEntries: ServiceEntry[];
+  serviceGroups: (ServiceGroup & { url: string })[];
+};
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
   query ServiceGroupCollection {
-    serviceGroupCollection(limit: 100) {
+    serviceGroupCollection {
       items {
+        sys {
+          id
+        }
+        heroImage {
+          ... on HeroImage {
+            imageSource {
+              ... on Asset {
+                title
+                description
+                contentType
+                fileName
+                size
+                url
+                width
+                height
+              }
+            }
+            imageTitle
+            altField
+            fotogCredit
+          }
+        }
+        title
+        subheading
+        description {
+          json
+        }
+        serviceEntriesCollection(limit: 10) {
+          items {
+            ... on ServiceEntry {
+              sys {
+                id
+              }
+              __typename
+              entryTitle
+              description {
+                json
+              }
+            }
+            ... on ServiceGroup {
+              __typename
+              pageMetadata {
+                sys {
+                  id
+                }
+              }
+              title
+              subheading
+            }
+          }
+        }
+        contactInfoCollection(limit: 5) {
+          items {
+            ... on Contact {
+              sys {
+                id
+              }
+              entityName
+              phone
+              email
+            }
+          }
+        }
+        additionalResources {
+          json
+        }
+        serviceListName
         pageMetadata {
           ... on PageMetadata {
             sys {
               id
             }
             slug
+            metaTitle
+            metaDescription
           }
         }
       }
@@ -26,6 +106,7 @@ const query = gql`
 `;
 
 export const load = async ({ parent, params }) => {
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return ServiceGroupPageTestContent;
   const { pageMetadataMap } = await parent();
   const { topTierPage, serviceGroupPage } = params;
   // construct URL for matching later
@@ -46,18 +127,34 @@ export const load = async ({ parent, params }) => {
     );
     if (matchedServiceGroupsFromSlug) {
       // account for possibility that two service groups have the same ending slug
-      const matchedServiceGroupsMetadata = matchedServiceGroupsFromSlug.map((group) => {
-        const serviceGroupMetadataId = group?.pageMetadata?.sys?.id;
-        if (serviceGroupMetadataId) return pageMetadataMap.get(serviceGroupMetadataId);
+      const matchedServiceGroup = matchedServiceGroupsFromSlug.find((group) => {
+        const serviceGroupMetadataId = group?.pageMetadata?.sys?.id || "";
+        const matchedMetadata = pageMetadataMap.get(serviceGroupMetadataId);
+        if (matchedMetadata) {
+          return matchedMetadata.url === url;
+        }
       });
-      // Regardless of how many matches we have, we want to ensure the URL matches.
-      //   Otherwise we could render the page for /land/fire/safety at /foo/bar/safety.
-      // TODO: Possibly account for possiblity that two service groups (erroneously) have the same URL
-      const matchedPageMetadata = matchedServiceGroupsMetadata.find(
-        (matchedServiceGroupMetadata) => matchedServiceGroupMetadata?.url === url
-      );
-      if (matchedPageMetadata) {
-        return { pageMetadata: matchedPageMetadata };
+
+      if (matchedServiceGroup) {
+        const serviceEntries = matchedServiceGroup.serviceEntriesCollection?.items.filter(
+          (item) => item?.__typename === "ServiceEntry"
+        );
+        let serviceGroups = matchedServiceGroup.serviceEntriesCollection?.items.filter(
+          (item) => item?.__typename === "ServiceGroup"
+        ) as ServiceGroup[];
+
+        serviceGroups = serviceGroups.map((serviceGroup) => {
+          const serviceGroupMetadata = pageMetadataMap.get(
+            serviceGroup?.pageMetadata?.sys.id || ""
+          );
+          return { ...serviceGroup, url: serviceGroupMetadata?.url };
+        });
+
+        return {
+          ...matchedServiceGroup,
+          serviceEntries,
+          serviceGroups,
+        } as ServiceGroupPage;
       }
     }
   }

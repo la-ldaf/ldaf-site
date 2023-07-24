@@ -88,6 +88,9 @@ const query = gql`
         serviceListName
         pageMetadata {
           ... on PageMetadata {
+            sys {
+              id
+            }
             slug
             metaTitle
             metaDescription
