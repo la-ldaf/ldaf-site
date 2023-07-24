@@ -86,5 +86,8 @@ export const load = async ({ parent, params }) => {
       }
     }
   }
+  console.warn(
+    `An Office Page entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Office Page entry is not.`
+  );
   throw error(404);
 };
