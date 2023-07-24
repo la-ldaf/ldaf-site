@@ -126,12 +126,13 @@ export const load = async ({ parent, params }) => {
       }
     );
     if (matchedServiceGroupsFromSlug) {
+      let matchedPageMetadata;
       // account for possibility that two service groups have the same ending slug
       const matchedServiceGroup = matchedServiceGroupsFromSlug.find((group) => {
         const serviceGroupMetadataId = group?.pageMetadata?.sys?.id || "";
-        const matchedMetadata = pageMetadataMap.get(serviceGroupMetadataId);
-        if (matchedMetadata) {
-          return matchedMetadata.url === url;
+        matchedPageMetadata = pageMetadataMap.get(serviceGroupMetadataId);
+        if (matchedPageMetadata) {
+          return matchedPageMetadata.url === url;
         }
       });
 
@@ -150,7 +151,9 @@ export const load = async ({ parent, params }) => {
           return { ...serviceGroup, url: serviceGroupMetadata?.url };
         });
 
+        console.log("Matching metadata in service group's +page.server", matchedPageMetadata);
         return {
+          pageMetadata: matchedPageMetadata,
           ...matchedServiceGroup,
           serviceEntries,
           serviceGroups,
