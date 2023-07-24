@@ -10,16 +10,37 @@
   export let height: undefined | number = undefined;
   export let width: undefined | number = undefined;
 
+  // Whether the image should fit its container
+  export let fit = false;
+
   export let src: string;
 
   // Tuple of [src, width]
-  const getSrcsetAttr = ([defaultSrc, ...widths]: Srcset) =>
-    [
-      ...(widths ?? []).flatMap(([source, sourceWidth]) =>
-        !width || width >= sourceWidth ? [`${source} ${sourceWidth}w`] : []
+  const getSrcsetAttr = ([defaultSrc, ...widthsOrDPIStrings]: Srcset) => {
+    const typeSet = new Set(widthsOrDPIStrings.map((w) => typeof w));
+    if (typeSet.size > 1) {
+      throw new Error(
+        "srcset attribute must include either width or DPI annotations, but not both"
+      );
+    }
+    const isWidths = typeSet.has("number");
+    const withFilteredWidths = isWidths
+      ? // we're smarter than typescript here, it doesn't know how sets work
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        widthsOrDPIStrings.filter(([_, w]) => (width ?? 0) > (w as number))
+      : widthsOrDPIStrings;
+    return [
+      ...withFilteredWidths.map(
+        ([source, sourceWidthOrDPIString]) =>
+          `${source} ${
+            typeof sourceWidthOrDPIString === "string"
+              ? sourceWidthOrDPIString
+              : `${sourceWidthOrDPIString}w`
+          }`
       ),
       defaultSrc,
     ].join(", ");
+  };
 
   export let sources: Sources = [];
 
@@ -134,7 +155,7 @@
       <img
         {...imgProps}
         alt=""
-        class={classNames("ldaf-img__img", imageLoadClass, imageClass)}
+        class={classNames("ldaf-img__img", fit && "ldaf-img__img-fit", imageLoadClass, imageClass)}
         on:load={() => (imageLoaded = true)}
         {loading}
         {decoding}

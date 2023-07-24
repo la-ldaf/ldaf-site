@@ -4,11 +4,14 @@
 }
 
 .ldaf-img__img {
+  display: block;
+  opacity: 0;
+}
+
+.ldaf-img__img-fit {
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
-  opacity: 0;
 }
 
 @keyframes fadeIn {

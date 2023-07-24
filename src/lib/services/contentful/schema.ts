@@ -735,8 +735,6 @@ export enum CallToActionLinkingCollectionsPromoBannerWithCtaCollectionOrder {
 export enum CallToActionLinkingCollectionsServiceEntryCollectionOrder {
   EntryTitleAsc = 'entryTitle_ASC',
   EntryTitleDesc = 'entryTitle_DESC',
-  SubheadingAsc = 'subheading_ASC',
-  SubheadingDesc = 'subheading_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -1222,8 +1220,6 @@ export enum ContactLinkingCollectionsOfficePageCollectionOrder {
 export enum ContactLinkingCollectionsServiceEntryCollectionOrder {
   EntryTitleAsc = 'entryTitle_ASC',
   EntryTitleDesc = 'entryTitle_DESC',
-  SubheadingAsc = 'subheading_ASC',
-  SubheadingDesc = 'subheading_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -1577,7 +1573,6 @@ export type DocumentWrapperLinkingCollections = {
   __typename?: 'DocumentWrapperLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
   eventEntryCollection?: Maybe<EventEntryCollection>;
-  serviceEntryCollection?: Maybe<ServiceEntryCollection>;
 };
 
 
@@ -1597,15 +1592,6 @@ export type DocumentWrapperLinkingCollectionsEventEntryCollectionArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
-
-export type DocumentWrapperLinkingCollectionsServiceEntryCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Array<InputMaybe<DocumentWrapperLinkingCollectionsServiceEntryCollectionOrder>>>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-};
-
 export enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   EventDateAndTimeAsc = 'eventDateAndTime_ASC',
   EventDateAndTimeDesc = 'eventDateAndTime_DESC',
@@ -1617,21 +1603,6 @@ export enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   InternalNameDesc = 'internalName_DESC',
   ShortTitleAsc = 'shortTitle_ASC',
   ShortTitleDesc = 'shortTitle_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
-}
-
-export enum DocumentWrapperLinkingCollectionsServiceEntryCollectionOrder {
-  EntryTitleAsc = 'entryTitle_ASC',
-  EntryTitleDesc = 'entryTitle_DESC',
-  SubheadingAsc = 'subheading_ASC',
-  SubheadingDesc = 'subheading_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -3488,7 +3459,7 @@ export type OfficePageServicesAndProgramsResources = {
   block: Array<ResourceLink>;
 };
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadata = Entry & {
   __typename?: 'PageMetadata';
   contentfulMetadata: ContentfulMetadata;
@@ -3505,13 +3476,13 @@ export type PageMetadata = Entry & {
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataExternalRedirectArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataInternalRedirectArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3519,31 +3490,31 @@ export type PageMetadataInternalRedirectArgs = {
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataIsRootArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataMetaDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataMetaTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataParentArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3551,13 +3522,13 @@ export type PageMetadataParentArgs = {
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataSlugArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4533,10 +4504,8 @@ export type ServiceEntry = Entry & {
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<ServiceEntryDescription>;
   entryTitle?: Maybe<Scalars['String']['output']>;
-  linkedDocumentCollection?: Maybe<ServiceEntryLinkedDocumentCollection>;
   linkedFrom?: Maybe<ServiceEntryLinkingCollections>;
   serviceCtaCollection?: Maybe<ServiceEntryServiceCtaCollection>;
-  subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
 };
 
@@ -4565,17 +4534,6 @@ export type ServiceEntryEntryTitleArgs = {
 
 
 /** Service content that will show up as an accordion on a service group page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
-export type ServiceEntryLinkedDocumentCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Array<InputMaybe<ServiceEntryLinkedDocumentCollectionOrder>>>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<DocumentWrapperFilter>;
-};
-
-
-/** Service content that will show up as an accordion on a service group page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntryLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
@@ -4589,12 +4547,6 @@ export type ServiceEntryServiceCtaCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CallToActionFilter>;
-};
-
-
-/** Service content that will show up as an accordion on a service group page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
-export type ServiceEntrySubheadingArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ServiceEntryCollection = {
@@ -4679,40 +4631,10 @@ export type ServiceEntryFilter = {
   entryTitle_not?: InputMaybe<Scalars['String']['input']>;
   entryTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
   entryTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  linkedDocument?: InputMaybe<CfDocumentWrapperNestedFilter>;
-  linkedDocumentCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   serviceCta?: InputMaybe<CfCallToActionNestedFilter>;
   serviceCtaCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  subheading?: InputMaybe<Scalars['String']['input']>;
-  subheading_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  subheading_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  subheading_not?: InputMaybe<Scalars['String']['input']>;
-  subheading_not_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
 };
-
-export type ServiceEntryLinkedDocumentCollection = {
-  __typename?: 'ServiceEntryLinkedDocumentCollection';
-  items: Array<Maybe<DocumentWrapper>>;
-  limit: Scalars['Int']['output'];
-  skip: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
-
-export enum ServiceEntryLinkedDocumentCollectionOrder {
-  DocWrapperNameAsc = 'docWrapperName_ASC',
-  DocWrapperNameDesc = 'docWrapperName_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
-}
 
 export type ServiceEntryLinkingCollections = {
   __typename?: 'ServiceEntryLinkingCollections';
@@ -4785,7 +4707,6 @@ export type ServiceEntryOrServiceGroup = Entry & {
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<ServiceEntryOrServiceGroupDescription>;
   linkedFrom?: Maybe<ServiceEntryOrServiceGroupLinkingCollections>;
-  subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
 };
 
@@ -4799,12 +4720,6 @@ export type ServiceEntryOrServiceGroupDescriptionArgs = {
 /** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntryOrServiceGroup) */
 export type ServiceEntryOrServiceGroupLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-
-/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntryOrServiceGroup) */
-export type ServiceEntryOrServiceGroupSubheadingArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ServiceEntryOrServiceGroupCollection = {
@@ -4853,13 +4768,6 @@ export type ServiceEntryOrServiceGroupFilter = {
   description_contains?: InputMaybe<Scalars['String']['input']>;
   description_exists?: InputMaybe<Scalars['Boolean']['input']>;
   description_not_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading?: InputMaybe<Scalars['String']['input']>;
-  subheading_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  subheading_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  subheading_not?: InputMaybe<Scalars['String']['input']>;
-  subheading_not_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
 };
 
@@ -4879,8 +4787,6 @@ export type ServiceEntryOrServiceGroupLinkingCollectionsEntryCollectionArgs = {
 export enum ServiceEntryOrder {
   EntryTitleAsc = 'entryTitle_ASC',
   EntryTitleDesc = 'entryTitle_DESC',
-  SubheadingAsc = 'subheading_ASC',
-  SubheadingDesc = 'subheading_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -5424,7 +5330,7 @@ export enum TestRichTextOrder {
   TitleDesc = 'title_DESC'
 }
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTier = Entry & {
   __typename?: 'TopTier';
   contentfulMetadata: ContentfulMetadata;
@@ -5440,13 +5346,13 @@ export type TopTier = Entry & {
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierFeaturedServiceListCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -5457,7 +5363,7 @@ export type TopTierFeaturedServiceListCollectionArgs = {
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5465,13 +5371,13 @@ export type TopTierHeroImageArgs = {
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierPageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5479,19 +5385,19 @@ export type TopTierPageMetadataArgs = {
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierSubheadingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierVideoArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6209,13 +6115,6 @@ export type CfServiceEntryOrServiceGroupNestedFilter = {
   description_contains?: InputMaybe<Scalars['String']['input']>;
   description_exists?: InputMaybe<Scalars['Boolean']['input']>;
   description_not_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading?: InputMaybe<Scalars['String']['input']>;
-  subheading_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  subheading_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  subheading_not?: InputMaybe<Scalars['String']['input']>;
-  subheading_not_contains?: InputMaybe<Scalars['String']['input']>;
-  subheading_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
 };
 

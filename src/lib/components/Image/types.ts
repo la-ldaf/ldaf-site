@@ -3,7 +3,7 @@ export type Loading = "eager" | "lazy";
 export type LazyLoading = "none" | "native" | "intersectionObserver";
 
 export type SrcsetDefault = string;
-export type SrcsetWidth = [string, number];
+export type SrcsetWidth = [string, number | string];
 export type Srcset = [SrcsetDefault, ...SrcsetWidth[]];
 
 export type Format = `image/${string}`;

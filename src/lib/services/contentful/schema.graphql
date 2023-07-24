@@ -471,8 +471,6 @@ enum CallToActionLinkingCollectionsPromoBannerWithCtaCollectionOrder {
 enum CallToActionLinkingCollectionsServiceEntryCollectionOrder {
   entryTitle_ASC
   entryTitle_DESC
-  subheading_ASC
-  subheading_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -784,8 +782,6 @@ enum ContactLinkingCollectionsOfficePageCollectionOrder {
 enum ContactLinkingCollectionsServiceEntryCollectionOrder {
   entryTitle_ASC
   entryTitle_DESC
-  subheading_ASC
-  subheading_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1052,7 +1048,6 @@ input DocumentWrapperFilter {
 type DocumentWrapperLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   eventEntryCollection(limit: Int = 100, locale: String, order: [DocumentWrapperLinkingCollectionsEventEntryCollectionOrder], preview: Boolean, skip: Int = 0): EventEntryCollection
-  serviceEntryCollection(limit: Int = 100, locale: String, order: [DocumentWrapperLinkingCollectionsServiceEntryCollectionOrder], preview: Boolean, skip: Int = 0): ServiceEntryCollection
 }
 
 enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
@@ -1066,21 +1061,6 @@ enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   internalName_DESC
   shortTitle_ASC
   shortTitle_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-enum DocumentWrapperLinkingCollectionsServiceEntryCollectionOrder {
-  entryTitle_ASC
-  entryTitle_DESC
-  subheading_ASC
-  subheading_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -2375,7 +2355,7 @@ type OfficePageServicesAndProgramsResources {
 }
 
 """
-Metadata about a page for setting its URL, for linking to it from menus and other pages, and for setting up a redirect. Also contains additional fields for improving SEO (search engine optimization). A page will not appear on the site unless it has a corresponding Page metadata entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata)
+Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata)
 """
 type PageMetadata implements Entry {
   contentfulMetadata: ContentfulMetadata!
@@ -2768,10 +2748,8 @@ type ServiceEntry implements Entry {
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): ServiceEntryDescription
   entryTitle(locale: String): String
-  linkedDocumentCollection(limit: Int = 100, locale: String, order: [ServiceEntryLinkedDocumentCollectionOrder], preview: Boolean, skip: Int = 0, where: DocumentWrapperFilter): ServiceEntryLinkedDocumentCollection
   linkedFrom(allowedLocales: [String]): ServiceEntryLinkingCollections
   serviceCtaCollection(limit: Int = 100, locale: String, order: [ServiceEntryServiceCtaCollectionOrder], preview: Boolean, skip: Int = 0, where: CallToActionFilter): ServiceEntryServiceCtaCollection
-  subheading(locale: String): String
   sys: Sys!
 }
 
@@ -2850,38 +2828,9 @@ input ServiceEntryFilter {
   entryTitle_not: String
   entryTitle_not_contains: String
   entryTitle_not_in: [String]
-  linkedDocument: cfDocumentWrapperNestedFilter
-  linkedDocumentCollection_exists: Boolean
   serviceCta: cfCallToActionNestedFilter
   serviceCtaCollection_exists: Boolean
-  subheading: String
-  subheading_contains: String
-  subheading_exists: Boolean
-  subheading_in: [String]
-  subheading_not: String
-  subheading_not_contains: String
-  subheading_not_in: [String]
   sys: SysFilter
-}
-
-type ServiceEntryLinkedDocumentCollection {
-  items: [DocumentWrapper]!
-  limit: Int!
-  skip: Int!
-  total: Int!
-}
-
-enum ServiceEntryLinkedDocumentCollectionOrder {
-  docWrapperName_ASC
-  docWrapperName_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
 }
 
 type ServiceEntryLinkingCollections {
@@ -2929,7 +2878,6 @@ type ServiceEntryOrServiceGroup implements Entry {
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): ServiceEntryOrServiceGroupDescription
   linkedFrom(allowedLocales: [String]): ServiceEntryOrServiceGroupLinkingCollections
-  subheading(locale: String): String
   sys: Sys!
 }
 
@@ -2973,13 +2921,6 @@ input ServiceEntryOrServiceGroupFilter {
   description_contains: String
   description_exists: Boolean
   description_not_contains: String
-  subheading: String
-  subheading_contains: String
-  subheading_exists: Boolean
-  subheading_in: [String]
-  subheading_not: String
-  subheading_not_contains: String
-  subheading_not_in: [String]
   sys: SysFilter
 }
 
@@ -2990,8 +2931,6 @@ type ServiceEntryOrServiceGroupLinkingCollections {
 enum ServiceEntryOrder {
   entryTitle_ASC
   entryTitle_DESC
-  subheading_ASC
-  subheading_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -3374,7 +3313,7 @@ enum TestRichTextOrder {
 }
 
 """
-Top tier navigation pages group related service groups and services together. They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
+Top tier navigation pages group highlight the most important services (service groups). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
 """
 type TopTier implements Entry {
   contentfulMetadata: ContentfulMetadata!
@@ -3989,13 +3928,6 @@ input cfServiceEntryOrServiceGroupNestedFilter {
   description_contains: String
   description_exists: Boolean
   description_not_contains: String
-  subheading: String
-  subheading_contains: String
-  subheading_exists: Boolean
-  subheading_in: [String]
-  subheading_not: String
-  subheading_not_contains: String
-  subheading_not_in: [String]
   sys: SysFilter
 }
 
