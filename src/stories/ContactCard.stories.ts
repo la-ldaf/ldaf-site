@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/svelte";
 
 import ContactCard from "$lib/components/ContactCard";
 
-import OfficePageTestContent from "../routes/about/organization/[officePage]/__tests__/OfficePageTestContent";
+import OfficePageTestContent from "../routes/(infoPages)/about/organization/[officePage]/__tests__/OfficePageTestContent";
 
 const meta = {
   title: "Components/ContactCard",

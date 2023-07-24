@@ -2,15 +2,14 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
-import Breadcrumb from "./Breadcrumb.svelte";
-import breadcrumbTestContent from "./__tests__/BreadcrumbTestContent";
+import Breadcrumbs from "./Breadcrumbs.svelte";
+import breadcrumbsTestContent from "./__tests__/BreadcrumbsTestContent";
 
-describe("Breadcrumb", () => {
+describe("Breadcrumbs", () => {
   it("renders", async () => {
-    render(Breadcrumb, {
+    render(Breadcrumbs, {
       props: {
-        path: breadcrumbTestContent,
-        currentPageTitle: "Current",
+        path: breadcrumbsTestContent,
       },
     });
     const link = screen.getByText("Breadcrumb 0").parentElement;
