@@ -48,6 +48,10 @@ export const load = async ({ parent, params }) => {
             };
           }
         }
+      } else {
+        console.warn(
+          `A Board or Commission entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Board or Commission entry is not.`
+        );
       }
     }
   }

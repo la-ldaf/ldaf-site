@@ -44,7 +44,7 @@ export const load = async ({ parent, params }) => {
         return serviceGroup?.pageMetadata?.slug === slug;
       }
     );
-    if (matchedServiceGroupsFromSlug) {
+    if (matchedServiceGroupsFromSlug && matchedServiceGroupsFromSlug.length > 0) {
       // account for possibility that two service groups have the same ending slug
       const matchedServiceGroupsMetadata = matchedServiceGroupsFromSlug.map((group) => {
         const serviceGroupMetadataId = group?.pageMetadata?.sys?.id;
@@ -59,6 +59,10 @@ export const load = async ({ parent, params }) => {
       if (matchedPageMetadata) {
         return { pageMetadata: matchedPageMetadata };
       }
+    } else {
+      console.warn(
+        `A Service Group entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Service Group entry is not.`
+      );
     }
   }
   throw error(404);
