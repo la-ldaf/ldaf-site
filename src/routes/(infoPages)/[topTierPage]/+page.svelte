@@ -5,6 +5,7 @@
   import Card from "$lib/components/Card";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
+  import VideoCard from "$lib/components/VideoCard";
 
   export let data;
   $: ({ topTierPage, pageMetadata } = data);
@@ -29,18 +30,7 @@
   <ContentfulRichText document={description?.json} />
 {/if}
 {#if video?.videoUrl}
-  <div>
-    <!-- TODO: Perform some querystring parsing to get the video ID -->
-    <iframe
-      width="560"
-      height="315"
-      src={`https://www.youtube.com/embed/${video.videoUrl.slice(-11)}`}
-      title="YouTube video player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-    />
-  </div>
+  <VideoCard url={video.videoUrl} title={video.videoTitle} description={video.videoSubhead} />
 {/if}
 {#if featuredServices}
   <ul class="ldaf-card-list">
