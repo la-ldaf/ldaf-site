@@ -5,15 +5,33 @@
   import SideNav from "$lib/components/SideNav";
 
   $: ({ pathname } = $page.url);
-  $: ({ pageMetadata, sideNavMap } = $page.data);
+  $: ({ pageMetadata, sideNavMap, __typename, topTierPage } = $page.data);
   $: ({ breadcrumbs } = pageMetadata);
   $: topTierSlug = pathname.split("/")[1];
   $: sideNavTree = sideNavMap.get(topTierSlug).children;
 </script>
 
-<!-- TODO: Support variation of layout for Top Tier pages (includes hero image above breadcrumbs) -->
+{#if __typename === "TopTier"}
+  <div class="grid-container">
+    <Breadcrumbs path={breadcrumbs} />
+  </div>
+  {#if topTierPage?.heroImage}
+    <!-- TODO: Update this to use a proper Hero/Image Component
+       (pending merge of https://github.com/la-ldaf/ldaf-site/pull/279) -->
+    <div
+      style={`background-image:url(${topTierPage?.heroImage?.imageSource?.url}); background-size: cover; background-position: center;
+  background-repeat: no-repeat; height: 33vh; width: 100%;`}
+    />
+  {/if}
+  <div class="grid-container">
+    <h1>{topTierPage?.title}</h1>
+  </div>
+{:else}
+  <div class="grid-container">
+    <Breadcrumbs path={breadcrumbs} />
+  </div>
+{/if}
 <div class="grid-container">
-  <Breadcrumbs path={breadcrumbs} />
   <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 margin-bottom-2">
       <SideNav tree={sideNavTree} currentPath={pathname} />

@@ -10,6 +10,67 @@ const query = gql`
   query TopTierCollection {
     topTierCollection(limit: 10) {
       items {
+        __typename
+        title
+        subheading
+        heroImage {
+          ... on HeroImage {
+            imageSource {
+              ... on Asset {
+                title
+                description
+                contentType
+                fileName
+                size
+                url
+                width
+                height
+              }
+            }
+            imageTitle
+            altField
+            fotogCredit
+          }
+        }
+        video {
+          ... on VideoWrapper {
+            videoTitle
+            videoSubhead
+            videoUrl
+          }
+        }
+        description {
+          json
+        }
+        featuredServiceListCollection {
+          items {
+            ... on ServiceGroup {
+              title
+              subheading
+              heroImage {
+                ... on HeroImage {
+                  imageSource {
+                    title
+                    description
+                    contentType
+                    fileName
+                    size
+                    url
+                    width
+                    height
+                  }
+                }
+              }
+              pageMetadata {
+                ... on PageMetadata {
+                  sys {
+                    id
+                  }
+                }
+              }
+            }
+          }
+        }
         pageMetadata {
           ... on PageMetadata {
             sys {
@@ -40,7 +101,19 @@ export const load = async ({ parent, params }) => {
     if (matchedTopTierId) {
       const pageMetadata = pageMetadataMap.get(matchedTopTierId);
       if (pageMetadata) {
-        return { pageMetadata };
+        const featuredServices = matchedTopTier.featuredServiceListCollection?.items.map(
+          (featuredItem) => {
+            const featuredItemMetadata = pageMetadataMap.get(
+              featuredItem?.pageMetadata?.sys.id || ""
+            );
+            return { ...featuredItem, url: featuredItemMetadata?.url };
+          }
+        );
+        return {
+          __typename: matchedTopTier.__typename,
+          topTierPage: { ...matchedTopTier, featuredServices },
+          pageMetadata,
+        };
       }
     } else {
       console.warn(
