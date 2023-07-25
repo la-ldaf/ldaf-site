@@ -35,13 +35,13 @@
 {#if serviceEntries.length > 0 || serviceGroups.length > 0}
   <h2>{serviceListName}</h2>
   {#if serviceEntries.length > 0}
-    {#each serviceEntries as item}
-      <Accordion multiselectable>
+    <Accordion multiselectable>
+      {#each serviceEntries as item}
         <AccordionItem title={item?.entryTitle} id={item.sys.id}>
           <ContentfulRichText document={item?.description?.json} />
         </AccordionItem>
-      </Accordion>
-    {/each}
+      {/each}
+    </Accordion>
   {/if}
 {/if}
 {#if serviceGroups.length > 0}

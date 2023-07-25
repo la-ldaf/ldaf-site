@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
 
-  export let id = "accordionItem-" + crypto.randomUUID();
+  export let id: string;
   export let title: string | null | undefined = "Title";
   export let expanded = false;
   let ref: HTMLElement | null = null;

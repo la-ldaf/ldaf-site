@@ -13,10 +13,10 @@
 </script>
 
 <Accordion {multiselectable} {bordered} class={className}>
-  <AccordionItem title={titleOne}>
+  <AccordionItem id={crypto.randomUUID()} title={titleOne}>
     {accordionOneContent}
   </AccordionItem>
-  <AccordionItem title={titleTwo}>
+  <AccordionItem id={crypto.randomUUID()} title={titleTwo}>
     {accordionTwoContent}
   </AccordionItem>
 </Accordion>
