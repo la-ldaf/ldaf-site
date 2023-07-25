@@ -1,7 +1,10 @@
 <script lang="ts">
   import "./Button.scss";
+  import Link from "$lib/components/Link";
   import classNames from "$lib/util/classNames";
   import type { Variant, Type } from "./buttonOptions";
+
+  export let isLink = false;
 
   export let disabled = false;
 
@@ -11,6 +14,7 @@
 
   const variantClassesDict: Record<Variant, string[]> = {
     primary: [],
+    secondary: ["usa-button--secondary"],
     base: ["usa-button--base"],
     inverse: ["usa-button--inverse"],
     "text-only": ["usa-button--text-only"],
@@ -34,6 +38,12 @@
   );
 </script>
 
-<button {type} {disabled} aria-disabled={disabled} class={classes} on:click>
-  <slot>Button</slot>
-</button>
+{#if isLink}
+  <Link class={classes} {...$$restProps}>
+    <slot>Link</slot>
+  </Link>
+{:else}
+  <button {type} {disabled} aria-disabled={disabled} class={classes} on:click>
+    <slot>Button</slot>
+  </button>
+{/if}

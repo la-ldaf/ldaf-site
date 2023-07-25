@@ -1,6 +1,7 @@
 <script lang="ts">
   import { url as arrowIcon } from "$icons/arrow_forward";
 
+  import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
@@ -8,6 +9,17 @@
   export let data;
   $: ({ topTierPage, pageMetadata } = data);
   $: ({ subheading, video, description, featuredServices } = topTierPage);
+
+  const getButtonVariant = (index: number): Variant => {
+    switch (index) {
+      case 0:
+        return "primary";
+      case 1:
+        return "secondary";
+      default:
+        return "outline";
+    }
+  };
 </script>
 
 <h2>
@@ -32,7 +44,7 @@
 {/if}
 {#if featuredServices}
   <ul class="ldaf-card-list">
-    {#each featuredServices as item}
+    {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
       {#if item?.heroImage?.imageSource?.url}
         <Card>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
@@ -47,9 +59,15 @@
             {/if}
           </svelte:fragment>
           <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
-          <a slot="footer" href={item?.url} class="usa-button ldaf-card-button">
+          <Button
+            slot="footer"
+            isLink={true}
+            variant={getButtonVariant(index)}
+            href={item.url}
+            class="usa-button ldaf-card-button"
+          >
             <Icon src={arrowIcon} size={3} />
-          </a>
+          </Button>
         </Card>
       {:else}
         <Card>
@@ -60,9 +78,15 @@
             {/if}
           </svelte:fragment>
           <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
-          <a slot="footer" href={item.url} class="usa-button ldaf-card-button">
+          <Button
+            slot="footer"
+            isLink={true}
+            variant={getButtonVariant(index)}
+            href={item.url}
+            class="usa-button ldaf-card-button"
+          >
             <Icon src={arrowIcon} size={3} />
-          </a>
+          </Button>
         </Card>
       {/if}
     {/each}
@@ -73,9 +97,5 @@
   .ldaf-card-list {
     padding-inline-start: 0;
     list-style: none;
-  }
-  .ldaf-card-button {
-    background: white;
-    border: 2px solid black;
   }
 </style>
