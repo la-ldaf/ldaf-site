@@ -5,11 +5,7 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 
-import type {
-  ServiceGroup,
-  ServiceEntry,
-  // ServiceGroupServiceEntriesItem,
-} from "$lib/services/contentful/schema";
+import type { ServiceGroup, ServiceEntry } from "$lib/services/contentful/schema";
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
 import ServiceGroupPageTestContent from "./__tests__/ServiceGroupPageTestContent";
 
