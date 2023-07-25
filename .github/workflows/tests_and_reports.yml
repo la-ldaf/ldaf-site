@@ -240,7 +240,7 @@ jobs:
       - name: Report deployment success message to PR in comment
         if: ${{ !fromJSON(env.IS_MAIN) }}
         # https://github.com/marketplace/actions/comment-progress
-        uses: hasura/comment-progress@v2.2.0
+        uses: hasura/comment-progress@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
