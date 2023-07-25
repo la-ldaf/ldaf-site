@@ -14,17 +14,17 @@
 </script>
 
 <h1>{pageTitle}</h1>
-<p class="usa-intro">
+<!-- <p class="usa-intro">
   {subheading}
-</p>
+</p> -->
 {#if description}
   <ContentfulRichText document={description?.json} />
 {/if}
-{#if servicesAndPrograms}
+<!-- {#if servicesAndPrograms}
   <h2>Services</h2>
   <ContentfulRichText document={servicesAndPrograms?.json} />
 {/if}
 <div />
 {#if mailingAddress || contactsCollection}
   <ContactCard address={mailingAddress} contacts={contactsCollection?.items} class="margin-top-6" />
-{/if}
+{/if} -->
