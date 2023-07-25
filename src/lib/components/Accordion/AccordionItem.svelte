@@ -1,31 +1,21 @@
 <script lang="ts">
-  import { getContext, onMount } from "svelte";
-  import type { AccordionContext, AccordionContextItems } from "./types";
+  import { getContext } from "svelte";
 
-  // Note: `id` has a fallback value, but ideally,
-  // one should supply their own identifiers
-  export let id = "accordionItem-" + Math.random().toString(36);
+  export let id = "accordionItem-" + crypto.randomUUID();
   export let title: string | null | undefined = "Title";
   export let expanded = false;
-
-  const context: AccordionContext = getContext("Accordion");
-
   let ref: HTMLElement | null = null;
-  let unsubscribe: () => void | undefined;
 
-  onMount(() => {
-    return () => {
-      if (context) context.remove({ id, expanded: !expanded });
-      if (unsubscribe) unsubscribe();
-    };
-  });
-
-  $: if (context) {
-    context.add({ id, expanded });
-    unsubscribe = context.items.subscribe((value: AccordionContextItems) => {
-      expanded = value[id];
-    });
+  interface ItemApi {
+    subscribe: (run: (items: Record<string, boolean>) => void) => () => void;
+    toggle: (id: string) => void;
   }
+
+  const { subscribe, toggle } = getContext<ItemApi>("Accordion");
+
+  subscribe((items) => {
+    expanded = items[id] || false;
+  });
 </script>
 
 <h3 {...$$restProps} class="usa-accordion__heading">
@@ -36,11 +26,9 @@
     aria-expanded={expanded}
     aria-controls={id}
     on:click={() => {
-      if (context) {
-        context.toggle({ id, expanded: !expanded });
-        if (expanded && ref && ref.getBoundingClientRect().top < 0) {
-          ref.scrollIntoView();
-        }
+      toggle(id);
+      if (expanded && ref && ref.getBoundingClientRect().top < 0) {
+        ref.scrollIntoView();
       }
     }}
   >
