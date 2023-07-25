@@ -6,10 +6,6 @@
 
   export let document: Document;
 
-  // export let document;
-  // $: ({ content } = document);
-  // $: id = Symbol(content)
-  // $: console.log("content", JSON.stringify(content, null, 2));
   if (!isDocument(document)) {
     throw error(500, {
       title: "We could not render this page.",
@@ -21,6 +17,3 @@
 {#each document.content as subNode (crypto.randomUUID())}
   <Node node={subNode} />
 {/each}
-<!-- <pre>
-  {JSON.stringify(document.content, null, 2)}
-</pre> -->

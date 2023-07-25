@@ -17,8 +17,6 @@
     contactInfoCollection,
     additionalResources,
   } = data);
-
-  // $: console.log("new description", description);
 </script>
 
 {#if heroImage}
