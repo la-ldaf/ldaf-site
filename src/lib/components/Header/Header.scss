@@ -40,7 +40,8 @@
   }
 
   .ldaf-nav__secondary.usa-nav__secondary {
-    bottom: 5rem;
+    // TODO: switch this back to 5rem once Search input is displayed
+    bottom: 7rem;
 
     &.search-page {
       // Prevent visual displacement of secondary links when search bar is hidden
