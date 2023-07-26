@@ -1,4 +1,8 @@
-@media (min-width: 40em) {
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+@include at-media("tablet") {
   .search-results .usa-pagination__previous-page {
     margin-right: 120px;
   }
@@ -23,14 +27,12 @@
   padding: 0;
 }
 
-@media (min-width: 30em) {
-  .search-results .usa-input {
-    border-radius: 5px 0 0 5px;
-  }
-  .search-results .usa-search__submit-icon {
-    display: inline-block;
-    fill: white;
-  }
+.search-results .usa-input {
+  border-radius: 5px 0 0 5px;
+}
+.search-results .usa-search__submit-icon {
+  display: inline-block;
+  fill: white;
 }
 
 .search-results {
