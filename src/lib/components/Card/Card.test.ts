@@ -6,7 +6,7 @@ import { describe, it, expect } from "vitest";
 //  When slots are better supported, we should update this test to handle it more cleanly.
 import CardView from "../../../stories/CardView.svelte";
 
-describe("Link", () => {
+describe("Card", () => {
   it("renders the default view", async () => {
     render(CardView, {
       props: {
