@@ -101,6 +101,7 @@ export const load = async ({ parent, params }) => {
     if (matchedTopTierId) {
       const pageMetadata = pageMetadataMap.get(matchedTopTierId);
       if (pageMetadata) {
+        // Get the URLs for these features from the pageMetadataMap
         const featuredServices = matchedTopTier.featuredServiceListCollection?.items.map(
           (featuredItem) => {
             const featuredItemMetadata = pageMetadataMap.get(

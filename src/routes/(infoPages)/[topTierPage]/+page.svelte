@@ -8,8 +8,7 @@
   import VideoCard from "$lib/components/VideoCard";
 
   export let data;
-  $: ({ topTierPage, pageMetadata } = data);
-  $: ({ subheading, video, description, featuredServices } = topTierPage);
+  $: ({ subheading, video, description, featuredServices } = data?.topTierPage);
 
   const getButtonVariant = (index: number): Variant => {
     switch (index) {
@@ -23,11 +22,13 @@
   };
 </script>
 
-<h2>
-  {subheading}
-</h2>
-{#if description}
-  <ContentfulRichText document={description?.json} />
+{#if subheading}
+  <h2>
+    {subheading}
+  </h2>
+{/if}
+{#if description?.json}
+  <ContentfulRichText document={description.json} />
 {/if}
 {#if video?.videoUrl}
   <VideoCard url={video.videoUrl} title={video.videoTitle} description={video.videoSubhead} />
@@ -35,6 +36,7 @@
 {#if featuredServices}
   <ul class="ldaf-card-list">
     {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
+      <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
       {#if item?.heroImage?.imageSource?.url}
         <Card>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
@@ -48,14 +50,7 @@
               {item.subheading}
             {/if}
           </svelte:fragment>
-          <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
-          <Button
-            slot="footer"
-            isLink={true}
-            variant={getButtonVariant(index)}
-            href={item.url}
-            class="usa-button ldaf-card-button"
-          >
+          <Button slot="footer" isLink={true} variant={getButtonVariant(index)} href={item.url}>
             <Icon src={arrowIcon} size={3} />
           </Button>
         </Card>
@@ -67,14 +62,7 @@
               {item.subheading}
             {/if}
           </svelte:fragment>
-          <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
-          <Button
-            slot="footer"
-            isLink={true}
-            variant={getButtonVariant(index)}
-            href={item.url}
-            class="usa-button ldaf-card-button"
-          >
+          <Button slot="footer" isLink={true} variant={getButtonVariant(index)} href={item.url}>
             <Icon src={arrowIcon} size={3} />
           </Button>
         </Card>
