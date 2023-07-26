@@ -13,6 +13,7 @@
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
   import Search from "$lib/components/Search";
+  import { page } from "$app/stores";
   import Image from "$lib/components/Image";
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
@@ -26,6 +27,7 @@
   export let navMenuExpanded = false;
   const toggleNavMenu = (show: boolean) => (navMenuExpanded = show);
 
+  const showSearch = false;
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
 </script>
 
@@ -70,7 +72,10 @@
       <Nav items={navItems} />
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
-      <div class="ldaf-nav__secondary usa-nav__secondary">
+      <div
+        class="ldaf-nav__secondary usa-nav__secondary"
+        class:search-page={$page.url.pathname === "/search"}
+      >
         <ul class="usa-nav__secondary-links">
           {#each secondaryNavItems as item, i (item.id)}
             {@const { name, link } = item}
@@ -80,13 +85,15 @@
           {/each}
         </ul>
 
-        <section aria-label="Search component">
-          <Search
-            size="small"
-            id="ldaf-header-search"
-            on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
-          />
-        </section>
+        {#if showSearch && $page.url.pathname !== "/search"}
+          <section aria-label="Search component">
+            <Search
+              size="small"
+              id="ldaf-header-search"
+              on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
+            />
+          </section>
+        {/if}
       </div>
     </div>
   </nav>
