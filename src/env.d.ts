@@ -3,6 +3,7 @@
 //   unavailable in CI and may also contain local dev machine system environment variables that
 //   we do not want to check in to git.
 declare module "$env/static/private" {
+  export const CONTENTFUL_DEFAULT_ENVIRONMENT: string;
   export const CONTENTFUL_DELIVERY_API_TOKEN: string;
   export const CONTENTFUL_SPACE_ID: string;
   export const VERCEL: string;
