@@ -73,10 +73,3 @@
     {/each}
   </ul>
 {/if}
-
-<style>
-  .ldaf-card-list {
-    padding-inline-start: 0;
-    list-style: none;
-  }
-</style>
