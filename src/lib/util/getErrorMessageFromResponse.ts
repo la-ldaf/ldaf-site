@@ -46,12 +46,15 @@ export default async (response: Response): Promise<string | undefined> => {
   if (contentType.startsWith("application/json") || contentType.startsWith("text/json")) {
     const body = await response.json();
 
+    // Error message from Contentful
     const bodyMessage = getBodyMessage(body);
     if (bodyMessage) return bodyMessage;
 
+    // Error message from SvelteKit
     const dataMessage = getDataMessage(body, { parseDevalue });
     if (dataMessage) return dataMessage;
 
+    // Generic error message
     return getErrorMessage(body) || undefined;
   }
   return undefined;
