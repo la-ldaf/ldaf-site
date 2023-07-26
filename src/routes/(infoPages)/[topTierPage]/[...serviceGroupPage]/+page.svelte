@@ -71,6 +71,6 @@
 {/if}
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
-  <h2>Related Links</h2>
+  <h2>Related links</h2>
   <ContentfulRichText document={additionalResources?.json} />
 {/if}
