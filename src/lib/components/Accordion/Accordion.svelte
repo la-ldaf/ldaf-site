@@ -9,16 +9,11 @@
 
   setContext("Accordion", {
     subscribe: selectedItems.subscribe,
-    toggle: (itemID: string) => {
-      if (multiselectable) {
-        selectedItems.update((items) => ({
-          ...items,
-          [itemID]: !items[itemID],
-        }));
-      } else {
-        selectedItems.update((selectedItems) => ({ [itemID]: !selectedItems[itemID] }));
-      }
-    },
+    toggle: (itemID: string) =>
+      selectedItems.update((items) => ({
+        ...(multiselectable ? items : {}),
+        [itemID]: !items[itemID],
+      })),
   });
 </script>
 
