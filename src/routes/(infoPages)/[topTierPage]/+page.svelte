@@ -8,7 +8,8 @@
   import VideoCard from "$lib/components/VideoCard";
 
   export let data;
-  $: ({ subheading, video, description, featuredServices } = data?.topTierPage);
+  $: ({ topTierPage } = data);
+  $: ({ subheading, video, description, featuredServices } = topTierPage);
 
   const getButtonVariant = (index: number): Variant => {
     switch (index) {
