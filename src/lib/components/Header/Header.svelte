@@ -22,6 +22,7 @@
   export let navMenuExpanded = false;
   const toggleNavMenu = (show: boolean) => (navMenuExpanded = show);
 
+  const showSearch = false;
   $: navClassNames = classNames("usa-nav", navMenuExpanded && "is-visible");
 </script>
 
@@ -66,7 +67,7 @@
           {/each}
         </ul>
 
-        {#if $page.url.pathname !== "/search"}
+        {#if showSearch && $page.url.pathname !== "/search"}
           <section aria-label="Search component">
             <Search
               size="small"
