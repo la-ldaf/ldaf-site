@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
+import { getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
 import type { Document } from "@contentful/rich-text-types";
 import type { EntryQuery } from "./$queries.generated";
@@ -45,18 +46,7 @@ export const load = async ({ fetch }) => {
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
   const data = await client.fetch<EntryQuery>(printQuery(query));
-  const blurhashes = Object.fromEntries(
-    await Promise.all(
-      data?.testRichText?.body?.links.assets.block
-        .filter((item) => !!item)
-        .flatMap(async (item) => {
-          if (!item?.sys?.id || !item?.url || !item?.contentType?.startsWith("image/")) return [];
-          const blurhashResponse = await fetch(`/api/v1/blurhash/${encodeURIComponent(item.url)}`);
-          if (!blurhashResponse.ok) return [];
-          return [item.sys.id, await blurhashResponse.text()];
-        }) ?? []
-    )
-  );
+  const blurhashes = getBlurhashMapFromRichText(data?.testRichText, { fetch });
   return {
     document:
       (data?.testRichText?.body?.json as Document | undefined | null) ?? markdownDocument.document,

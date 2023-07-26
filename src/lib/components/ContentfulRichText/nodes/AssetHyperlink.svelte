@@ -2,6 +2,7 @@
   import Node from "./Node.svelte";
   import type { Node as NodeType, AssetHyperlink } from "@contentful/rich-text-types";
   import { getContext } from "svelte";
+  import Link from "$lib/components/Link/Link.svelte";
   import { linksKey, type LinksContext } from "../context";
   export let node: NodeType;
   import { isAssetHyperlink } from "../predicates";
@@ -23,6 +24,6 @@
   }
 </script>
 
-<a href={url}
-  >{#each assetHyperlink.content as subNode}<Node node={subNode} />{/each}</a
+<Link href={url}
+  >{#each assetHyperlink.content as subNode}<Node node={subNode} />{/each}</Link
 >

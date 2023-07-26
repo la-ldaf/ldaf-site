@@ -17,8 +17,9 @@ const getDataMessage = (
   body: unknown,
   { parseDevalue }: { parseDevalue: (str: string) => unknown }
 ): string | false => {
-  if (!(!!body && typeof body === "object" && "data" in body && typeof body.data === "string"))
+  if (!(!!body && typeof body === "object" && "data" in body && typeof body.data === "string")) {
     return false;
+  }
   try {
     const parsed: unknown = parseDevalue(body.data);
     if (
@@ -48,11 +49,10 @@ export default async (response: Response): Promise<string | undefined> => {
     const bodyMessage = getBodyMessage(body);
     if (bodyMessage) return bodyMessage;
 
-    const errorMessage = getErrorMessage(body);
-    if (errorMessage) return errorMessage;
-
     const dataMessage = getDataMessage(body, { parseDevalue });
     if (dataMessage) return dataMessage;
+
+    return getErrorMessage(body) || undefined;
   }
   return undefined;
 };
