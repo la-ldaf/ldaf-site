@@ -100,6 +100,8 @@
       }),
     ]);
 
+    // TODO: consider toggling this flag on subsequent
+    // searches if a slowness threshold is reached.
     loading = false;
     search.start();
   });
