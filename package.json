@@ -27,6 +27,7 @@
     "gen-operations": "graphql-codegen --config codegen-operations.yml"
   },
   "devDependencies": {
+    "@algolia/client-search": "^4.17.1",
     "@contentful/rich-text-from-markdown": "^15.16.6",
     "@contentful/rich-text-html-renderer": "^16.1.0",
     "@graphql-codegen/cli": "^4.0.1",
@@ -67,6 +68,7 @@
     "eslint-plugin-svelte3": "^4.0.0",
     "glob": "^10.3.3",
     "graphql": "^16.7.1",
+    "instantsearch.js": "^4.56.3",
     "jsdom": "^22.1.0",
     "postcss": "^8.4.27",
     "postcss-load-config": "^4.0.1",

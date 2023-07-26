@@ -1,0 +1,46 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+@include at-media("tablet") {
+  .search-results .usa-pagination__previous-page {
+    margin-right: 120px;
+  }
+  .search-results .usa-pagination__next-page {
+    margin-left: 120px;
+  }
+}
+
+.usa-pagination__item.usa-current,
+.usa-current .usa-pagination__button,
+.usa-current .usa-pagination__button:focus {
+  border-radius: 0.25rem;
+  color: white;
+}
+
+.search-results li {
+  list-style-type: none;
+}
+
+.ais-Hits-list {
+  margin: 0;
+  padding: 0;
+}
+
+.search-results .usa-input {
+  border-radius: 5px 0 0 5px;
+}
+.search-results .usa-search__submit-icon {
+  display: inline-block;
+  fill: white;
+}
+
+.search-results {
+  .searchbox {
+    margin-bottom: 25px;
+  }
+
+  .pagination {
+    margin-top: 4em;
+  }
+}
