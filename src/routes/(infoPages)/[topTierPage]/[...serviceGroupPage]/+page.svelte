@@ -1,6 +1,7 @@
 <script lang="ts">
   import "../page.scss";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
+  import Button from "$lib/components/Button";
   import Card from "$lib/components/Card/Card.svelte";
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
@@ -57,10 +58,9 @@
             {item.subheading}
           {/if}
         </svelte:fragment>
-        <!-- TODO: Use <Link /> pending LDAF-301 (link styled as button support) -->
-        <a slot="footer" href={item.url} class="usa-button">
+        <Button slot="footer" isLink={true} href={item.url}>
           <Icon src={arrowIcon} size={3} />
-        </a>
+        </Button>
       </Card>
     {/each}
   </ul>
