@@ -1,4 +1,6 @@
 <script lang="ts">
+  import "./page.scss";
+
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import Button, { type Variant } from "$lib/components/Button";
@@ -35,7 +37,7 @@
   <VideoCard url={video.videoUrl} title={video.videoTitle} description={video.videoSubhead} />
 {/if}
 {#if featuredServices}
-  <ul class="ldaf-card-list">
+  <ul class="service-group-list">
     {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
       <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
       {#if item?.heroImage?.imageSource?.url}

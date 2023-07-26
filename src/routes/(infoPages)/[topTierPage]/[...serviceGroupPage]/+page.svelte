@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "./page.scss";
+  import "../page.scss";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Card from "$lib/components/Card/Card.svelte";
   import ContactCard from "$lib/components/ContactCard";
