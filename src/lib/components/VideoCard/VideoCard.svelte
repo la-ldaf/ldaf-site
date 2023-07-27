@@ -1,10 +1,16 @@
 <script lang="ts">
   import "./VideoCard.scss";
 
+  import { afterUpdate } from "svelte";
+
+  import ConditionalGridContainer from "$lib/components/ConditionalGridContainer";
+  import getYoutubeVideoData from "$lib/services/youtube";
+
   type VideoCardVariation = "hero" | "primary" | "secondary" | "tertiary";
 
+  let className = "";
+  export { className as class };
   export let url: string;
-  // TODO: Support fetching title and description from YouTube if title and description are not provided.
   export let title: string | null | undefined;
   export let description: string | null | undefined;
   export let variation: VideoCardVariation = "primary";
@@ -21,23 +27,37 @@
       console.warn("Unsupported video type; could not embed video.");
     }
   }
+
+  afterUpdate(async () => {
+    if (youtubeVideoId && (!title || !description)) {
+      const snippet = await getYoutubeVideoData(youtubeVideoId);
+      title = snippet.title;
+      description = snippet.description;
+    }
+  });
 </script>
 
 <!-- TODO: Build out card instead of just embedding video directly in page. -->
 <!-- TODO: Make embed responsive. -->
 {#if youtubeVideoId}
-  <div class="ldaf-video-card ldaf-video-card--{variation}">
-    <div class="ldaf-video-container">
-      <iframe
-        src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-        title="Embedded YouTube video"
-        frameborder="0"
-        allowfullscreen
-      />
-    </div>
-    <div class="ldaf-video-info">
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
+  <div class="ldaf-video-card-outer ldaf-video-card-outer--{variation} {className}">
+    <ConditionalGridContainer condition={variation === "hero"}>
+      <div class="ldaf-video-card-inner">
+        <div class="ldaf-video-container">
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+            title="Embedded YouTube video"
+            frameborder="0"
+            allowfullscreen
+          />
+        </div>
+        <div class="ldaf-video-info">
+          {#if title && description}
+            <h3>{title}</h3>
+            <p>{description}</p>
+          {/if}
+        </div>
+      </div>
+    </ConditionalGridContainer>
   </div>
 {/if}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import "./page.scss";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
+  import VideoCard from "$lib/components/VideoCard";
 
   import {
     src as underConstructionGif,
@@ -67,4 +68,11 @@
       </div>
     </div>
   </section>
+  <VideoCard
+    url="https://www.youtube.com/watch?v=3HRGzFjA_cU"
+    title={null}
+    description={null}
+    variation="hero"
+    class="margin-top-2"
+  />
 </main>
