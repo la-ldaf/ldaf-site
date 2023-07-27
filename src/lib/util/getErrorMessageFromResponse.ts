@@ -6,7 +6,7 @@ const getErrorsMessage = (body: unknown): string | false =>
   !!(!!body && typeof body === "object" && "errors" in body && Array.isArray(body.errors)) &&
   `\
 Errors:
-${body.errors.map((err) => `- ${getBodyMessage(err)}`)}.join("\n")`;
+${body.errors.map((err) => `- ${getBodyMessage(err)}`).join("\n")}`;
 
 const getErrorMessage = (body: unknown): string | false =>
   !!(
