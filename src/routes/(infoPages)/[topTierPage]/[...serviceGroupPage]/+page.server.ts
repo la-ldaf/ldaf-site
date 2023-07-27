@@ -10,6 +10,7 @@ import type { ServiceGroupCollectionQuery } from "./$queries.generated";
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
 
+// TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
   fragment ImageProps on Asset {
     sys {

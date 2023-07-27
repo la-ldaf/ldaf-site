@@ -6,7 +6,8 @@ export const linksKey = Symbol("contentfulRichTextLinks");
 const getAssetLinksMap = (links: Links, key: "block" | "hyperlink") =>
   new Map(links.assets[key]?.flatMap((link) => (link ? [[link.sys.id, link]] : [])));
 
-export const createLinksContext = (links: Links): LinksContext => ({
+export const createLinksContext = (links: Links, pageMetadataMap): LinksContext => ({
+  pageMetadataMap,
   links: {
     assets: {
       block: links.assets.block?.filter(Boolean),

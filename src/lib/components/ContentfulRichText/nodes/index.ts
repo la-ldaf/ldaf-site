@@ -12,6 +12,7 @@ import blockquote from "./Blockquote.svelte";
 import unorderedList from "./UnorderedList.svelte";
 import orderedList from "./OrderedList.svelte";
 import listItem from "./ListItem.svelte";
+import entryHyperlink from "./EntryHyperlink.svelte";
 import hyperlink from "./Hyperlink.svelte";
 import table from "./Table.svelte";
 import tableRow from "./TableRow.svelte";
@@ -34,6 +35,7 @@ const nodes: Record<string, typeof SvelteComponent> = {
   "unordered-list": unorderedList,
   "ordered-list": orderedList,
   "list-item": listItem,
+  "entry-hyperlink": entryHyperlink,
   hyperlink,
   table,
   "table-row": tableRow,

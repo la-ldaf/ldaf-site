@@ -14,10 +14,17 @@
   } from "./context";
   import type { SizeType } from "$lib/constants/images";
 
-  export let document: Document;
+  // We support "unknown" here because we always check if we've received a document type, and the
+  // type of the rich text JSON returned from Contentful (which is auto-generated based on the
+  // schema) is always "unknown"
+  export let document: Document | unknown;
+  export let pageMetadataMap;
 
   export let links: Links | undefined = undefined;
-  $: setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
+  setContext<LinksContext | undefined>(
+    linksKey,
+    links ? createLinksContext(links, pageMetadataMap) : links
+  );
 
   export let blurhashes: Record<string, string> | null | undefined = undefined;
   $: setContext<Record<string, string> | null | undefined>(blurhashesKey, blurhashes);
