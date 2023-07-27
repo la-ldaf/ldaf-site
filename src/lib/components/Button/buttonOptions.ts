@@ -1,5 +1,6 @@
 export const variants = [
   "primary",
+  "secondary",
   "base",
   "inverse",
   "text-only",
