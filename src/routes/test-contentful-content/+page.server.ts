@@ -1,10 +1,8 @@
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
+import { error } from "@sveltejs/kit";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
-import type { Document } from "@contentful/rich-text-types";
-import type { EntryQuery } from "./$queries.generated";
+import { isDocument } from "$lib/components/ContentfulRichText/predicates";
+import type { EntryQuery, EntryQueryVariables } from "./$queries.generated";
 
 const query = gql`
   fragment ImageProps on Asset {
@@ -39,15 +37,28 @@ const query = gql`
   }
 `;
 
-export const load = async ({ fetch }) => {
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<EntryQuery>(printQuery(query));
+export const load = async ({ locals: { contentfulClient } }) => {
+  if (!contentfulClient) {
+    return {
+      title: "Test Document",
+      document: markdownDocument.document,
+    };
+  }
+
+  const data = await contentfulClient.fetch<EntryQuery, EntryQueryVariables>(query);
+
+  const { testRichText } = data;
+  if (!testRichText) throw error(500, { message: "Failed to load entry" });
+
+  const title = testRichText.title;
+  if (!title) throw error(500, { message: "Entry title was missing" });
+
+  const document = testRichText.body?.json;
+  if (!isDocument(document)) throw error(500, { message: "Entry body was missing or misshapen" });
+
   const blurhashes = Object.fromEntries(
     await Promise.all(
-      data?.testRichText?.body?.links.assets.block
+      data.testRichText?.body?.links.assets.block
         .filter((item) => !!item)
         .flatMap(async (item) => {
           if (!item?.sys?.id || !item?.url || !item?.contentType?.startsWith("image/")) return [];

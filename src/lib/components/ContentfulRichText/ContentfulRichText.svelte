@@ -7,7 +7,10 @@
   import type { Links } from "./types";
   import { linksKey, createLinksContext, blurhashesKey, type LinksContext } from "./context";
 
-  export let document: Document;
+  // We support "unknown" here because we always check if we've received a document type, and the
+  // type of the rich text JSON returned from Contentful (which is auto-generated based on the
+  // schema) is always "unknown"
+  export let document: Document | unknown;
 
   export let links: Links | undefined = undefined;
   setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
@@ -18,11 +21,12 @@
   if (!isDocument(document)) {
     throw error(500, {
       title: "We could not render this page.",
-      message: "Contentful connection failed and fallback document does not match expected format.",
+      message:
+        "Provided document was in the incorrect format. Contentful may have returned bad data, or the Contentful connection may have failed and the fallback data was bad.",
     });
   }
 </script>
 
-{#each document.content as subNode (crypto.randomUUID())}
+{#each doc.content as subNode (crypto.randomUUID())}
   <Node node={subNode} />
 {/each}

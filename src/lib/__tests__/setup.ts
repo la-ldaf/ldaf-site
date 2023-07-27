@@ -1,3 +1,4 @@
+import "./extendExpect";
 import { vi } from "vitest";
 import type { Navigation, Page } from "@sveltejs/kit";
 import type * as stores from "$app/stores";
@@ -28,3 +29,8 @@ vi.mock("$app/stores", (): typeof stores => {
     updated: mockedStores.updated,
   };
 });
+
+vi.mock("$lib/logger/private.server");
+vi.mock("$lib/logger/public");
+
+vi.mock("$lib/services/server/kv");

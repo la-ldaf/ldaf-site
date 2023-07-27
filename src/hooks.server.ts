@@ -3,6 +3,14 @@ import { KV_URL } from "$env/static/private";
 import { createClient as createRedisClient, type RedisClientType } from "redis";
 import { sequence } from "@sveltejs/kit/hooks";
 
+export { default as handleError } from "./hooks/server/handleError";
+
+import handleCSP from "./hooks/server/handleCSP";
+import handlePreload from "./hooks/server/handlePreload";
+import handleSetupLogger from "./hooks/server/handleSetupLogger";
+import handleSetupKVClient from "./hooks/server/handleSetupKVClient";
+import handleToken from "./hooks/server/handleToken";
+
 type None = Record<never, never>;
 
 const createConnectedRedisClient = async ({
@@ -42,14 +50,11 @@ const handleSetupRedisClient = (async ({ event, resolve }) => {
   return resolve(event);
 }) satisfies Handle;
 
-const handlePreload = (async ({ event, resolve }) => {
-  const response = await resolve(event, {
-    preload: ({ type, path }) =>
-      type === "js" ||
-      type === "css" ||
-      (type === "font" && !!path.match(/sourcesanspro-regular-webfont.[0-9a-z]{8}.woff2$/)),
-  });
-  return response;
-}) satisfies Handle;
-
-export const handle = sequence(handleSetupRedisClient, handlePreload);
+export const handle = sequence(
+  handleSetupRedisClient,
+  handleSetupLogger,
+  handleSetupKVClient,
+  handlePreload,
+  handleToken,
+  handleCSP
+);

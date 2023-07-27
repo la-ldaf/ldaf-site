@@ -22,6 +22,9 @@
     links,
     blurhashes,
   } = data);
+
+  const hasServiceEntries = serviceEntries && serviceEntries.length > 0;
+  const hasServiceGroups = serviceGroups && serviceGroups.length > 0;
 </script>
 
 {#if heroImage}
@@ -37,19 +40,20 @@
   <ContentfulRichText document={description?.json} {links} {blurhashes} />
 {/if}
 
-{#if serviceEntries.length > 0 || serviceGroups.length > 0}
+{#if hasServiceEntries || hasServiceGroups}
   <h2>{serviceListName}</h2>
-  {#if serviceEntries.length > 0}
-    <Accordion multiselectable>
+  <Accordion multiselectable>
+    {#if serviceEntries.length > 0}
       {#each serviceEntries as item}
         <AccordionItem title={item?.entryTitle} id={item.sys.id}>
           <ContentfulRichText document={item?.description?.json} {links} {blurhashes} />
         </AccordionItem>
       {/each}
-    </Accordion>
-  {/if}
+    {/if}
+  </Accordion>
 {/if}
-{#if serviceGroups.length > 0}
+
+{#if hasServiceGroups}
   <ul class="service-group-list">
     {#each serviceGroups as item}
       <Card class="service-group-card">

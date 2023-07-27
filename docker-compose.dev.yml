@@ -1,0 +1,11 @@
+services:
+  web:
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: "npm run dev -- --host"
+  kv:
+    ports:
+      - "6379:6379"
