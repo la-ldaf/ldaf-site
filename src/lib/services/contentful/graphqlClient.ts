@@ -30,7 +30,7 @@ const getKeyFromOptions = ({
 export type Client = {
   options: ClientOptions;
   key: ClientKey;
-  fetch: <T>(query: string) => Promise<T>;
+  fetch: <T>(query: string, options?: { variables?: Record<string, unknown> }) => Promise<T>;
 };
 
 const clients = new Map<ClientKey, Client>();
@@ -48,7 +48,10 @@ const getClient = ({
   const client = {
     options: { spaceID, environment, token, apiPrefix },
     key,
-    async fetch<T>(query: string): Promise<T> {
+    async fetch<T>(
+      query: string,
+      { variables = {} }: { variables?: Record<string, unknown> } = {}
+    ): Promise<T> {
       const { spaceID, environment, token, apiPrefix } = this.options;
       const url = `${apiPrefix}/${spaceID}/environments/${environment}`;
       const response = await fetch(url, {
@@ -57,7 +60,7 @@ const getClient = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, variables }),
       });
       if (!response.ok) {
         const errorMessage = await getErrorMessageFromResponse(response);
