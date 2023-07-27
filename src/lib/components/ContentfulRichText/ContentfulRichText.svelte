@@ -11,9 +11,13 @@
   // type of the rich text JSON returned from Contentful (which is auto-generated based on the
   // schema) is always "unknown"
   export let document: Document | unknown;
+  export let pageMetadataMap;
 
   export let links: Links | undefined = undefined;
-  setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
+  setContext<LinksContext | undefined>(
+    linksKey,
+    links ? createLinksContext(links, pageMetadataMap) : links
+  );
 
   export let blurhashes: Record<string, string> | undefined = undefined;
   setContext<Record<string, string> | undefined>(blurhashesKey, blurhashes);

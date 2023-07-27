@@ -2,14 +2,9 @@ import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import type { ServiceGroup, ServiceEntry } from "$lib/services/server/contentful/schema";
+import type { ServiceGroup } from "$lib/services/server/contentful/schema";
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
 import ServiceGroupPageTestContent from "./__tests__/ServiceGroupPageTestContent";
-
-export type ServiceGroupPage = ServiceGroup & {
-  serviceEntries: ServiceEntry[];
-  serviceGroups: (ServiceGroup & { url: string })[];
-};
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
@@ -160,9 +155,12 @@ export const load = async ({
   // service groups can be deeply nested
   const path = url.split("/");
   const slug = path[path.length - 1];
-  const data = await contentfulClient.fetch<ServiceGroupCollectionQuery>(query, {
-    variables: { pageSlug: slug },
-  });
+
+  const data =
+    contentfulClient &&
+    (await contentfulClient.fetch<ServiceGroupCollectionQuery>(query, {
+      variables: { pageSlug: slug },
+    }));
 
   if (!data) {
     await logger.logError(new Error("query returned no response"));
@@ -205,9 +203,10 @@ export const load = async ({
 
       const descriptionLinks = matchedServiceGroup.description?.links;
       const resourceLinks = matchedServiceGroup.additionalResources?.links;
-      const serviceEntryLinks = matchedServiceGroup?.serviceEntriesCollection?.items.map(
-        (item) => item?.description?.links
-      );
+      const serviceEntryLinks =
+        matchedServiceGroup?.serviceEntriesCollection?.items.map(
+          (item) => item?.description?.links
+        ) || [];
 
       const links = [descriptionLinks, resourceLinks, ...serviceEntryLinks].filter(
         (link) => !!link
@@ -230,8 +229,8 @@ export const load = async ({
         (acc, cur) => {
           return {
             assets: {
-              block: [...acc?.assets?.block, ...cur?.assets?.block],
-              hyperlink: [...acc?.assets?.hyperlink, ...cur?.assets?.hyperlink],
+              block: [...(acc.assets?.block ?? []), ...(cur?.assets?.block ?? [])],
+              hyperlink: [...(acc?.assets?.hyperlink ?? []), ...(cur?.assets?.hyperlink ?? [])],
             },
           };
         },
@@ -239,8 +238,8 @@ export const load = async ({
       );
 
       // console.log("links", links);
-      let blurhashes = [];
-
+      // let blurhashes = [];
+      //
       // if (matchedServiceGroup?.description?.links.assets.block.length > 0) {
       // links.map(async (linksObject, index) => {
       //   const blurhashes = Object.fromEntries(
@@ -264,6 +263,7 @@ export const load = async ({
       // }
 
       return {
+        pageMetadataMap,
         ...matchedServiceGroup,
         pageMetadata: matchedPageMetadata,
         serviceEntries,
@@ -271,7 +271,7 @@ export const load = async ({
         links: mergedLinks,
         // links: undefined,
         blurhashes: undefined,
-      } as ServiceGroupPage;
+      }; // as ServiceGroupPage;
     }
   }
 };

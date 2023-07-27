@@ -11,7 +11,8 @@
     throw new Error("node is not an asset hyperlink");
   }
   assetHyperlink = node;
-  console.log("asset", JSON.stringify(assetHyperlink));
+  // console.log("asset", JSON.stringify(assetHyperlink, null, 2));
+  // console.log(`Asset text: ${assetHyperlink.content[0].value}`);
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for asset hyperlink");
   const { id: assetID } = assetHyperlink.data.target.sys;

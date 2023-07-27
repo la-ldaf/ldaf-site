@@ -7,22 +7,21 @@
   const component = nodes[node.nodeType];
 
   if (!component) {
-    // throw new Error(`unsupported nodeType ${node.nodeType}`);
+    throw new Error(`unsupported nodeType ${node.nodeType}`);
   }
 </script>
 
-<!-- {#if node.nodeType === "asset-hyperlink" || node.nodeType === "embedded-asset-block"} -->
-{#if node.nodeType === "embedded-asset-block"}
+<!-- {#if node.nodeType === "embedded-asset-block"}
   Node type <pre>{node.nodeType}</pre>
   is not supported
 {:else}
   <svelte:component this={component} {node} />
-{/if}
+{/if} -->
 
-<!-- <svelte:component this={component} {node} /> -->
+<svelte:component this={component} {node} />
 
-<style>
+<!-- <style>
   pre {
     display: inline-block;
   }
-</style>
+</style> -->

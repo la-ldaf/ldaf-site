@@ -17,6 +17,7 @@ import {
   type Quote,
   type AssetLinkBlock,
   type AssetHyperlink,
+  type EntryHyperlink,
 } from "@contentful/rich-text-types";
 
 import type { HeadingLevel, HeadingTypeByLevel } from "./headings";
@@ -71,3 +72,6 @@ export const isAssetBlock = (n: unknown): n is AssetLinkBlock =>
 
 export const isAssetHyperlink = (n: unknown): n is AssetHyperlink =>
   isNode(n) && n.nodeType === INLINES.ASSET_HYPERLINK;
+
+export const isEntryHyperlink = (n: unknown): n is EntryHyperlink =>
+  isNode(n) && n.nodeType === INLINES.ENTRY_HYPERLINK;

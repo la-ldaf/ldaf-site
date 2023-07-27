@@ -86,16 +86,16 @@ export const load = async ({ parent, params, locals: { contentfulClient, logger 
   const { pageMetadataMap } = await parent();
   const topTierSlug = params.topTierPage;
 
-  const data = await contentfulClient.fetch<TopTierCollectionQuery>(query);
+  const data = contentfulClient && (await contentfulClient.fetch<TopTierCollectionQuery>(query));
 
   if (!data) {
     await logger.logError(new Error(`query returned no response`));
-    throw error(404);
     console.warn(
       `A Top Tier entry with the slug "${topTierSlug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Top Tier entry is not.`
     );
+    throw error(404);
   }
-  // TODO: Possibly account for possiblity that two Top Tier pages (erroneously) have the same slug
+  // TODO: Possibly account for possibility that two Top Tier pages (erroneously) have the same slug
   const matchedTopTier = data?.topTierCollection?.items?.find(
     (topTier) => topTier?.pageMetadata?.slug === topTierSlug
   );

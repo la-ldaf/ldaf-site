@@ -10,6 +10,7 @@
 
   export let data;
   $: ({
+    pageMetadataMap,
     title,
     subheading,
     description,
@@ -37,7 +38,7 @@
   {subheading}
 </p>
 {#if description}
-  <ContentfulRichText document={description?.json} {links} {blurhashes} />
+  <ContentfulRichText document={description?.json} {pageMetadataMap} {links} {blurhashes} />
 {/if}
 
 {#if hasServiceEntries || hasServiceGroups}
@@ -46,7 +47,12 @@
     {#if serviceEntries.length > 0}
       {#each serviceEntries as item}
         <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-          <ContentfulRichText document={item?.description?.json} {links} {blurhashes} />
+          <ContentfulRichText
+            document={item?.description?.json}
+            {pageMetadataMap}
+            {links}
+            {blurhashes}
+          />
         </AccordionItem>
       {/each}
     {/if}
@@ -77,5 +83,5 @@
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
-  <ContentfulRichText document={additionalResources?.json} {links} {blurhashes} />
+  <ContentfulRichText document={additionalResources?.json} {pageMetadataMap} {links} {blurhashes} />
 {/if}
