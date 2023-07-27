@@ -54,7 +54,9 @@ const query = gql`
             }
           }
         }
-        serviceEntriesCollection(limit: 5) {
+        # /animals/meat-poultry has 8 service entries, this limit
+        # needs to be higher to account for more flexibility
+        serviceEntriesCollection(limit: 8) {
           items {
             ... on ServiceEntry {
               sys {
@@ -74,6 +76,13 @@ const query = gql`
                       # eslint-disable-next-line @graphql-eslint/selection-set-depth
                       ...ImageProps
                     }
+                  }
+                }
+              }
+              serviceCtaCollection {
+                items {
+                  callToActionDestination {
+                    json
                   }
                 }
               }

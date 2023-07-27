@@ -11,7 +11,6 @@
   import Image from "$lib/components/Image";
 
   export let data;
-
   $: ({
     serviceGroup: {
       title,
@@ -53,38 +52,38 @@
 
 {#if childServiceEntries.length > 0 || childServiceGroups.length > 0}
   <h2>{serviceListName}</h2>
-{/if}
 
-{#if childServiceEntries.length > 0}
-  <Accordion multiselectable>
-    {#each childServiceEntries as item}
-      <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-        <ContentfulRichText
-          document={item?.description?.json}
-          links={item?.description?.links}
-          blurhashes={item?.description?.blurhashes}
-        />
-      </AccordionItem>
-    {/each}
-  </Accordion>
-{/if}
+  {#if childServiceEntries.length > 0}
+    <Accordion multiselectable>
+      {#each childServiceEntries as item}
+        <AccordionItem title={item?.entryTitle} id={item.sys.id}>
+          <ContentfulRichText
+            document={item?.description?.json}
+            links={item?.description?.links}
+            blurhashes={item?.description?.blurhashes}
+          />
+        </AccordionItem>
+      {/each}
+    </Accordion>
+  {/if}
 
-{#if childServiceGroups.length > 0}
-  <ul class="service-group-list">
-    {#each childServiceGroups as item}
-      <Card class="service-group-card">
-        <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-        <svelte:fragment slot="body">
-          {#if item.subheading}
-            {item.subheading}
-          {/if}
-        </svelte:fragment>
-        <Button slot="footer" isLink={true} href={item.url}>
-          <Icon src={arrowIcon} size={3} />
-        </Button>
-      </Card>
-    {/each}
-  </ul>
+  {#if childServiceGroups.length > 0}
+    <ul class="service-group-list">
+      {#each childServiceGroups as item}
+        <Card class="service-group-card">
+          <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+          <svelte:fragment slot="body">
+            {#if item.subheading}
+              {item.subheading}
+            {/if}
+          </svelte:fragment>
+          <Button slot="footer" isLink={true} href={item.url}>
+            <Icon src={arrowIcon} size={3} />
+          </Button>
+        </Card>
+      {/each}
+    </ul>
+  {/if}
 {/if}
 
 <div />
