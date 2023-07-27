@@ -11,12 +11,15 @@
   }
 </script>
 
-{#if component}
-  <svelte:component this={component} {node} />
-{:else}
+<!-- {#if node.nodeType === "asset-hyperlink" || node.nodeType === "embedded-asset-block"} -->
+{#if node.nodeType === "embedded-asset-block"}
   Node type <pre>{node.nodeType}</pre>
   is not supported
+{:else}
+  <svelte:component this={component} {node} />
 {/if}
+
+<!-- <svelte:component this={component} {node} /> -->
 
 <style>
   pre {

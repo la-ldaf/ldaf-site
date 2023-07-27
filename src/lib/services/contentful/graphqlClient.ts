@@ -48,7 +48,7 @@ const getClient = ({
   const client = {
     options: { spaceID, environment, token, apiPrefix },
     key,
-    async fetch<T>(query: string): Promise<T> {
+    async fetch<T>(query: string, { variables } = {}): Promise<T> {
       const { spaceID, environment, token, apiPrefix } = this.options;
       const url = `${apiPrefix}/${spaceID}/environments/${environment}`;
       const response = await fetch(url, {
@@ -57,7 +57,7 @@ const getClient = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, variables: { ...variables } }),
       });
       if (!response.ok) {
         const errorMessage = await getErrorMessageFromResponse(response);

@@ -8,7 +8,6 @@
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   export let data;
-
   $: ({
     title,
     subheading,
@@ -19,6 +18,8 @@
     serviceGroups,
     contactInfoCollection,
     additionalResources,
+    links,
+    blurhashes,
   } = data);
 </script>
 
@@ -32,7 +33,7 @@
   {subheading}
 </p>
 {#if description}
-  <ContentfulRichText document={description?.json} />
+  <ContentfulRichText document={description?.json} {links} {blurhashes} />
 {/if}
 
 {#if serviceEntries.length > 0 || serviceGroups.length > 0}
@@ -41,7 +42,7 @@
     <Accordion multiselectable>
       {#each serviceEntries as item}
         <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-          <ContentfulRichText document={item?.description?.json} />
+          <ContentfulRichText document={item?.description?.json} {links} {blurhashes} />
         </AccordionItem>
       {/each}
     </Accordion>
@@ -72,5 +73,5 @@
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
-  <ContentfulRichText document={additionalResources?.json} />
+  <ContentfulRichText document={additionalResources?.json} {links} {blurhashes} />
 {/if}

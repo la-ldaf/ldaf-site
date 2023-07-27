@@ -16,8 +16,20 @@ export type ServiceGroupPage = ServiceGroup & {
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
-  query ServiceGroupCollection {
-    serviceGroupCollection {
+  fragment ImageProps on Asset {
+    sys {
+      id
+    }
+    contentType
+    title
+    description
+    url
+    width
+    height
+  }
+
+  query ServiceGroupCollection($pageSlug: String) {
+    serviceGroupCollection(limit: 1, where: { pageMetadata: { slug: $pageSlug } }) {
       items {
         sys {
           id
@@ -45,8 +57,20 @@ const query = gql`
         subheading
         description {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+          }
         }
-        serviceEntriesCollection(limit: 10) {
+        # /animals/meat-poultry has 8 service entries, this limit
+        # needs to be higher to account for more flexibility
+        serviceEntriesCollection(limit: 8) {
           items {
             ... on ServiceEntry {
               sys {
@@ -56,6 +80,23 @@ const query = gql`
               entryTitle
               description {
                 json
+                links {
+                  assets {
+                    block {
+                      ...ImageProps
+                    }
+                    hyperlink {
+                      ...ImageProps
+                    }
+                  }
+                }
+              }
+              serviceCtaCollection {
+                items {
+                  callToActionDestination {
+                    json
+                  }
+                }
               }
             }
             ... on ServiceGroup {
@@ -84,6 +125,16 @@ const query = gql`
         }
         additionalResources {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+          }
         }
         serviceListName
         pageMetadata {
@@ -114,7 +165,9 @@ export const load = async ({ parent, params }) => {
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
-  const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query));
+  const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query), {
+    variables: { pageSlug: slug },
+  });
   if (data) {
     const matchedServiceGroupsFromSlug = data?.serviceGroupCollection?.items?.filter(
       (serviceGroup) => {
@@ -147,11 +200,74 @@ export const load = async ({ parent, params }) => {
           return { ...serviceGroup, url: serviceGroupMetadata?.url };
         });
 
+        const descriptionLinks = matchedServiceGroup.description?.links;
+        const resourceLinks = matchedServiceGroup.additionalResources?.links;
+        const serviceEntryLinks = matchedServiceGroup?.serviceEntriesCollection?.items.map(
+          (item) => item?.description?.links
+        );
+
+        const links = [descriptionLinks, resourceLinks, ...serviceEntryLinks].filter(
+          (link) => !!link
+        );
+
+        // const links = [
+        //   matchedServiceGroup?.description?.links || {},
+        //   matchedServiceGroup?.additionalResources?.links || {},
+        //   ...matchedServiceGroup?.serviceEntriesCollection?.items.map(
+        //     (item) => item.description.links || {}
+        //   ),
+        // ].filter((link) => !!link);
+
+        // console.log(matchedServiceGroup?.serviceEntriesCollection?.items);
+        // const serviceEntryLinks = matchedServiceGroup?.serviceEntriesCollection?.items.map(
+        //   (item) => item.description.links
+        // );
+        // console.log("serviceEntryLinks", serviceEntryLinks);
+        const mergedLinks = links.reduce(
+          (acc, cur) => {
+            return {
+              assets: {
+                block: [...acc?.assets?.block, ...cur?.assets?.block],
+                hyperlink: [...acc?.assets?.hyperlink, ...cur?.assets?.hyperlink],
+              },
+            };
+          },
+          { assets: { block: [], hyperlink: [] } }
+        );
+
+        // console.log("links", links);
+        let blurhashes = [];
+
+        // if (matchedServiceGroup?.description?.links.assets.block.length > 0) {
+        // links.map(async (linksObject, index) => {
+        //   const blurhashes = Object.fromEntries(
+        //     await Promise.all(
+        //       // matchedServiceGroup?.description?.links.assets.block
+        //       linksObject?.assets.block
+        //         .filter((item) => !!item)
+        //         .flatMap(async (item) => {
+        //           if (!item?.sys?.id || !item?.url || !item?.contentType?.startsWith("image/"))
+        //             return [];
+        //           const blurhashResponse = await fetch(
+        //             `/api/v1/blurhash/${encodeURIComponent(item.url)}`
+        //           );
+        //           if (!blurhashResponse.ok) return [];
+        //           return [item.sys.id, await blurhashResponse.text()];
+        //         }) ?? []
+        //     )
+        //   );
+        //   console.log(`Blurhashes ${index}:`, blurhashes);
+        // });
+        // }
+
         return {
           ...matchedServiceGroup,
           pageMetadata: matchedPageMetadata,
           serviceEntries,
           serviceGroups,
+          links: mergedLinks,
+          // links: undefined,
+          blurhashes: undefined,
         } as ServiceGroupPage;
       }
     } else {
