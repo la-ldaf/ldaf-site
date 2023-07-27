@@ -4,11 +4,12 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
 export const load = async () => {
-  const pageMetadataMap = await loadPageMetadataMap();
+  const { pageMetadataMap, pathsToIDs } = await loadPageMetadataMap();
   const navItems = await loadMainNav(pageMetadataMap);
   const sideNavMap = await loadSideNavMap(pageMetadataMap, navItems);
   return {
     pageMetadataMap,
+    pathsToIDs,
     siteTitle: loadSiteTitle(),
     navItems,
     secondaryNavItems: loadSecondaryNav(),

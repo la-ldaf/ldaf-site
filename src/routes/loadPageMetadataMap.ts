@@ -25,8 +25,6 @@ type Breadcrumb = {
 };
 type Breadcrumbs = Array<Breadcrumb>;
 
-const pageMetadataMap: PageMetadataMap = new Map();
-
 const query = gql`
   query PageMetadataCollection {
     pageMetadataCollection(limit: 500) {
@@ -51,12 +49,17 @@ const query = gql`
 
 // Recursive function that constructs a full path by concatenating slugs.
 // Walks up the "tree" by looking at pageMetadata, then its parent, then its grandparent, etc.
-const constructFullPathFromMap = (pageMetadata: PageMetadataMapItem, path = ""): string | null => {
+const constructFullPathFromMap = (
+  pageMetadataMap: PageMetadataMap,
+  pageMetadata: PageMetadataMapItem,
+  path = ""
+): string | null => {
   if (pageMetadata.parent) {
     // recurse, running on parent
     const parentPageMetadata = pageMetadataMap.get(pageMetadata.parent.sys.id);
     if (parentPageMetadata) {
       return constructFullPathFromMap(
+        pageMetadataMap,
         parentPageMetadata,
         // only append path if not blank
         `${pageMetadata.slug}${path ? `/${path}` : ""}`
@@ -76,6 +79,7 @@ const constructFullPathFromMap = (pageMetadata: PageMetadataMapItem, path = ""):
 
 // Recursive function that puts together breadcrumbs for a page.
 const constructBreadcrumbs = (
+  pageMetadataMap: PageMetadataMap,
   metadata: PageMetadataMapItem,
   breadcrumbs: Breadcrumbs = []
 ): Breadcrumbs => {
@@ -87,13 +91,19 @@ const constructBreadcrumbs = (
   if (metadata.parent) {
     const parent = pageMetadataMap.get(metadata.parent.sys.id);
     if (parent) {
-      return constructBreadcrumbs(parent, breadcrumbs);
+      return constructBreadcrumbs(pageMetadataMap, parent, breadcrumbs);
     }
   }
   return breadcrumbs;
 };
 
-export const loadPageMetadataMap = async () => {
+export const loadPageMetadataMap = async (): Promise<{
+  pageMetadataMap: PageMetadataMap;
+  pathsToIDs: Map<string, string>;
+}> => {
+  const pageMetadataMap: PageMetadataMap = new Map();
+  const pathsToIDs = new Map<string, string>();
+
   if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
@@ -125,7 +135,7 @@ export const loadPageMetadataMap = async () => {
       // construct full URLs for each page using their parent, and warn on pages if we can't resolve their path
       // TODO: We may want to consider completely invalidating these entries instead, removing them from the map.
       [...pageMetadataMap].forEach(([_, page]) => {
-        page.url = constructFullPathFromMap(page);
+        page.url = constructFullPathFromMap(pageMetadataMap, page);
         if (!page.url) {
           console.warn(
             `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`
@@ -133,12 +143,13 @@ export const loadPageMetadataMap = async () => {
         }
         // update the item in the map
         pageMetadataMap.set(page.sys.id, page);
+        if (page.url) pathsToIDs.set(page.url, page.sys.id);
       });
       // construct breadcrumbs for each page
       [...pageMetadataMap].forEach(([_, page]) => {
-        page.breadcrumbs = constructBreadcrumbs(page);
+        page.breadcrumbs = constructBreadcrumbs(pageMetadataMap, page);
       });
     }
   }
-  return pageMetadataMap;
+  return { pageMetadataMap, pathsToIDs };
 };
