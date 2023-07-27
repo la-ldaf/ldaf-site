@@ -1,0 +1,42 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+.ldaf-video-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 12px;
+  &--hero {
+    color: $white;
+    background: $primary-darkest;
+  }
+  &--primary {
+    background: $accent-light;
+  }
+  &--secondary {
+    background: $primary-lightest;
+  }
+  &--tertiary {
+    background: $grayscale-05;
+  }
+
+  .ldaf-video-container {
+    aspect-ratio: 16 / 9;
+    border-radius: 5px;
+    flex: 1 0 auto;
+    overflow: hidden;
+    position: relative;
+    transform: translateZ(0px);
+
+    iframe {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .ldaf-video-info {
+    flex: 1 1 auto;
+    width: 200px;
+  }
+}

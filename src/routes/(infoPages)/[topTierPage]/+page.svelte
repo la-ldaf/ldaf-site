@@ -34,7 +34,12 @@
   <ContentfulRichText document={description.json} />
 {/if}
 {#if video?.videoUrl}
-  <VideoCard url={video.videoUrl} title={video.videoTitle} description={video.videoSubhead} />
+  <VideoCard
+    url={video.videoUrl}
+    title={video.videoTitle}
+    description={video.videoSubhead}
+    variation="secondary"
+  />
 {/if}
 {#if featuredServices}
   <ul class="service-group-list">
