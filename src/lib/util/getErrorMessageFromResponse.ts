@@ -2,6 +2,12 @@ const getBodyMessage = (body: unknown): string | false =>
   !!(!!body && typeof body === "object" && "message" in body && typeof body.message === "string") &&
   body.message;
 
+const getErrorsMessage = (body: unknown): string | false =>
+  !!(!!body && typeof body === "object" && "errors" in body && Array.isArray(body.errors)) &&
+  `\
+Errors:
+${body.errors.map((err) => `- ${getBodyMessage(err)}`)}.join("\n")`;
+
 const getErrorMessage = (body: unknown): string | false =>
   !!(
     !!body &&
@@ -50,12 +56,16 @@ export default async (response: Response): Promise<string | undefined> => {
     const bodyMessage = getBodyMessage(body);
     if (bodyMessage) return bodyMessage;
 
+    // List of errors from Contentful
+    const errorsMessage = getErrorsMessage(body);
+    if (errorsMessage) return errorsMessage;
+
     // Error message from SvelteKit
     const dataMessage = getDataMessage(body, { parseDevalue });
     if (dataMessage) return dataMessage;
 
     // Generic error message
-    return getErrorMessage(body) || undefined;
+    return getErrorMessage(body) || "(unknown error message)";
   }
   return undefined;
 };
