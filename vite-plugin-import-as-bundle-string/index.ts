@@ -24,6 +24,13 @@ export default () => {
       const bundle = await rollup({
         input: path,
         plugins,
+        // Suppress some TS warnings that we know are irrelevant.
+        onwarn: (warning, handler) => {
+          const { pluginCode } = warning;
+          // TS7031 - https://github.com/microsoft/TypeScript/blob/cbf3c63ef3bb85e235092eaf5aa6035dad04b185/src/compiler/diagnosticMessages.json#L6382-L6385
+          if (pluginCode === "TS7031") return;
+          handler(warning);
+        },
       });
       const { output } = await bundle.generate({
         sourcemap: process.env.NODE_ENV === "production" ? false : "inline",
