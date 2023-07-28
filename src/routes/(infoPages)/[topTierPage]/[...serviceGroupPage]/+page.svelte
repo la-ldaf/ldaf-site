@@ -76,7 +76,7 @@
             {/each}
           {/if}
 
-          {#if serviceEntry.contactInformationCollection}
+          {#if serviceEntry.contactInformationCollection && serviceEntry.contactInformationCollection.items.length > 0}
             <ContactCard
               address={undefined}
               contacts={serviceEntry.contactInformationCollection?.items}
@@ -108,7 +108,7 @@
 {/if}
 <div />
 {#if contactInfoCollection?.items && contactInfoCollection.items.length > 0}
-  <ContactCard address={undefined} contacts={contactInfoCollection.items} />
+  <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />
 {/if}
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
