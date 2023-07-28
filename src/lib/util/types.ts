@@ -15,3 +15,19 @@ export type ExpandRecursively<T> = T extends (...args: infer A) => infer R
   : T;
 
 export type AnyMap<K, V> = Map<K, V> | (K extends object ? WeakMap<K, V> : never);
+
+type ExtractorPathElement<T> = keyof NonNullable<T>;
+
+// Q is the query type we're extracting from and P is the path
+export type ExtractQueryType<
+  Q,
+  P extends [] | [ExtractorPathElement<Q>, ...(readonly (number | string)[])]
+> = P extends []
+  ? Q
+  : P extends [ExtractorPathElement<Q>, ...infer Tail]
+  ? Tail extends
+      | []
+      | [ExtractorPathElement<NonNullable<Q>[P[0]]>, ...(readonly (number | string)[])]
+    ? ExtractQueryType<NonNullable<NonNullable<Q>[P[0]]>, Tail>
+    : never
+  : never;
