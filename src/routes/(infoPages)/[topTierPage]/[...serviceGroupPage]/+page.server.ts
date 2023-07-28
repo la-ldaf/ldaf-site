@@ -98,6 +98,18 @@ const query = gql`
                   }
                 }
               }
+              contactInformationCollection(limit: 5) {
+                items {
+                  ... on Contact {
+                    sys {
+                      id
+                    }
+                    entityName
+                    phone
+                    email
+                  }
+                }
+              }
             }
             ... on ServiceGroup {
               __typename
