@@ -87,6 +87,16 @@ const query = gql`
                 items {
                   callToActionDestination {
                     json
+                    links {
+                      assets {
+                        block {
+                          ...ImageProps
+                        }
+                        hyperlink {
+                          ...ImageProps
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -196,6 +206,8 @@ export const load = async ({
         (item) => item?.__typename === "ServiceGroup"
       ) as ServiceGroup[];
 
+      // console.log(matchedServiceGroup.serviceEntriesCollection);
+      // console.log("groups", serviceEntries);
       serviceGroups = serviceGroups.map((serviceGroup) => {
         const serviceGroupMetadata = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys.id || "");
         return { ...serviceGroup, url: serviceGroupMetadata?.url };
@@ -208,9 +220,23 @@ export const load = async ({
           (item) => item?.description?.links
         ) || [];
 
-      const links = [descriptionLinks, resourceLinks, ...serviceEntryLinks].filter(
-        (link) => !!link
-      );
+      const serviceEntryCTALinks =
+        matchedServiceGroup?.serviceEntriesCollection?.items.flatMap((item) => {
+          const ctaItems = item?.serviceCtaCollection?.items || [];
+          const ctaLinks = ctaItems.map((ctaItem) => ctaItem.callToActionDestination?.links);
+
+          return ctaLinks;
+        }) || [];
+      // console.log("serviceLinks", serviceEntryLinks);
+      // serviceEntryLinks.forEach((link) => console.log(link.assets.hyperlink[0]?.sys.id));
+      serviceEntryLinks.forEach((link) => console.log(link.assets));
+
+      const links = [
+        descriptionLinks,
+        resourceLinks,
+        ...serviceEntryLinks,
+        ...serviceEntryCTALinks,
+      ].filter((link) => !!link);
 
       // const links = [
       //   matchedServiceGroup?.description?.links || {},

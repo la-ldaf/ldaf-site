@@ -7,6 +7,7 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import { url as arrowIcon } from "$icons/arrow_forward";
+  import { onMount } from "svelte";
 
   export let data;
   $: ({
@@ -24,8 +25,17 @@
     blurhashes,
   } = data);
 
-  const hasServiceEntries = serviceEntries && serviceEntries.length > 0;
-  const hasServiceGroups = serviceGroups && serviceGroups.length > 0;
+  $: hasServiceEntries = serviceEntries && serviceEntries.length > 0;
+  $: hasServiceGroups = serviceGroups && serviceGroups.length > 0;
+
+  onMount(() => {
+    // Call To Actions within service entry accordions are rich text,
+    // leaving no way to designate additional formatting/styling for them.
+    // We must manually add the required classes to achieve the desired styles
+    document
+      .querySelectorAll(".service-entry-CTA a")
+      .forEach((linkEl) => linkEl.classList.add("usa-button"));
+  });
 </script>
 
 {#if heroImage}
@@ -45,14 +55,29 @@
   <h2>{serviceListName}</h2>
   <Accordion multiselectable>
     {#if serviceEntries.length > 0}
-      {#each serviceEntries as item}
-        <AccordionItem title={item?.entryTitle} id={item.sys.id}>
+      {#each serviceEntries as serviceEntry}
+        <AccordionItem title={serviceEntry?.entryTitle} id={serviceEntry.sys.id}>
           <ContentfulRichText
-            document={item?.description?.json}
+            document={serviceEntry?.description?.json}
             {pageMetadataMap}
             {links}
             {blurhashes}
           />
+          {#if serviceEntry.serviceCtaCollection}
+            <h3>CALL TO ACTIONS</h3>
+            <!-- {console.log(JSON.stringify(serviceEntry.serviceCtaCollection, null, 2))} -->
+            <!-- {console.log(serviceEntry.serviceCtaCollection) || "log"} -->
+            {#each serviceEntry.serviceCtaCollection.items as ctaItem}
+              <span class="service-entry-CTA">
+                <ContentfulRichText
+                  document={ctaItem?.callToActionDestination?.json}
+                  {pageMetadataMap}
+                  {links}
+                  {blurhashes}
+                />
+              </span>
+            {/each}
+          {/if}
         </AccordionItem>
       {/each}
     {/if}
@@ -61,15 +86,15 @@
 
 {#if hasServiceGroups}
   <ul class="service-group-list">
-    {#each serviceGroups as item}
+    {#each serviceGroups as serviceGroup}
       <Card class="service-group-card">
-        <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+        <h3 class="usa-card__heading" slot="header">{serviceGroup.title}</h3>
         <svelte:fragment slot="body">
-          {#if item.subheading}
-            {item.subheading}
+          {#if serviceGroup.subheading}
+            {serviceGroup.subheading}
           {/if}
         </svelte:fragment>
-        <Button slot="footer" isLink={true} href={item.url}>
+        <Button slot="footer" isLink={true} href={serviceGroup.url}>
           <Icon src={arrowIcon} size={3} />
         </Button>
       </Card>

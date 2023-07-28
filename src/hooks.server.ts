@@ -51,9 +51,9 @@ const handleSetupRedisClient = (async ({ event, resolve }) => {
 }) satisfies Handle;
 
 export const handle = sequence(
-  handleSetupRedisClient,
+  // handleSetupRedisClient,
   handleSetupLogger,
-  handleSetupKVClient,
+  // handleSetupKVClient,
   handlePreload,
   handleToken,
   handleCSP
