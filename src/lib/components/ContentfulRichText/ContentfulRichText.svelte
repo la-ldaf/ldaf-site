@@ -5,6 +5,7 @@
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
   import type { Links } from "./types";
+  import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
   import {
     linksKey,
     createLinksContext,
@@ -18,7 +19,7 @@
   // type of the rich text JSON returned from Contentful (which is auto-generated based on the
   // schema) is always "unknown"
   export let document: Document | unknown;
-  export let pageMetadataMap;
+  export let pageMetadataMap: PageMetadataMap | undefined = undefined;
 
   export let links: Links | undefined = undefined;
   setContext<LinksContext | undefined>(

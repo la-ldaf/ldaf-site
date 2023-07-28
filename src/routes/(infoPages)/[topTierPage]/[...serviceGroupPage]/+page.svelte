@@ -9,6 +9,7 @@
   import Icon from "$lib/components/Icon";
   import { url as arrowIcon } from "$icons/arrow_forward";
   import Image from "$lib/components/Image";
+  import { onMount } from "svelte";
 
   export let data;
   $: ({
@@ -25,6 +26,15 @@
     childServiceEntries,
     childServiceGroups,
   } = data);
+
+  onMount(() => {
+    // Call To Actions within service entry accordions are rich text,
+    // leaving no way to designate additional formatting/styling for them.
+    // We must manually add the required classes to achieve the desired styles
+    document
+      .querySelectorAll(".service-entry-CTA a")
+      .forEach((linkEl) => linkEl.classList.add("usa-button"));
+  });
 </script>
 
 {#if heroImage && heroImage?.imageSource?.url}
@@ -65,6 +75,21 @@
             blurhashes={item?.description?.blurhashes}
             {pageMetadataMap}
           />
+          {#if item.serviceCtaCollection}
+            <h3>CALL TO ACTIONS</h3>
+            <!-- {console.log(JSON.stringify(serviceEntry.serviceCtaCollection, null, 2))} -->
+            <!-- {console.log(serviceEntry.serviceCtaCollection) || "log"} -->
+            {#each item.serviceCtaCollection.items as ctaItem}
+              <span class="service-entry-CTA">
+                <ContentfulRichText
+                  document={ctaItem?.callToActionDestination?.json}
+                  links={ctaItem?.links}
+                  blurhashes={ctaItem?.blurhashes}
+                  {pageMetadataMap}
+                />
+              </span>
+            {/each}
+          {/if}
         </AccordionItem>
       {/each}
     </Accordion>

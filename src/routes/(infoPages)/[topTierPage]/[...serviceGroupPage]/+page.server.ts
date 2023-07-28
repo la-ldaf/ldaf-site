@@ -9,6 +9,7 @@ import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashe
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
+import type { PageMetadataMap } from "../../../loadPageMetadataMap";
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
@@ -84,6 +85,16 @@ const query = gql`
                 items {
                   callToActionDestination {
                     json
+                    links {
+                      assets {
+                        block {
+                          ...ImageProps
+                        }
+                        hyperlink {
+                          ...ImageProps
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -175,6 +186,7 @@ export type ServiceGroupPage = {
   })[];
   childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
   pageMetadata?: ServiceGroupMetadata;
+  pageMetadataMap: PageMetadataMap;
 };
 
 export const load = async ({
@@ -254,6 +266,7 @@ export const load = async ({
           : undefined,
       },
       pageMetadata,
+      pageMetadataMap,
       childServiceEntries,
       childServiceGroups,
     };
