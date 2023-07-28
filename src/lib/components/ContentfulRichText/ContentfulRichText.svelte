@@ -10,10 +10,10 @@
   export let document: Document;
 
   export let links: Links | undefined = undefined;
-  setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
+  $: setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
 
   export let blurhashes: Record<string, string> | undefined = undefined;
-  setContext<Record<string, string> | undefined>(blurhashesKey, blurhashes);
+  $: setContext<Record<string, string> | undefined>(blurhashesKey, blurhashes);
 
   if (!isDocument(document)) {
     throw error(500, {
