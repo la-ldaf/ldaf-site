@@ -37,24 +37,25 @@
   });
 </script>
 
-<!-- TODO: Build out card instead of just embedding video directly in page. -->
-<!-- TODO: Make embed responsive. -->
 {#if youtubeVideoId}
   {#key youtubeVideoId}
     <div class="ldaf-video-card ldaf-video-card--{variation} {className}">
       <div class="ldaf-video-container">
         <iframe
-          src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-          title="Embedded YouTube video"
+          class="ldaf-video-embed"
+          src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}`}
+          title="Embedded YouTube video player"
           frameborder="0"
+          allow="accelerometer; gyroscope; picture-in-picture;"
           allowfullscreen
         />
       </div>
       <div class="ldaf-video-info">
         <!-- https://developers.google.com/youtube/youtube_subscribe_button -->
+        <!-- TODO: Support different heading level for hero variation. -->
         {#if title && description}
-          <h3>{title}</h3>
-          <p>{description}</p>
+          <h3 class="ldaf-video-title">{title}</h3>
+          <p class="ldaf-video-description">{description}</p>
           <script src="https://apis.google.com/js/platform.js"></script>
           <div
             class="g-ytsubscribe"

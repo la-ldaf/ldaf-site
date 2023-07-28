@@ -7,9 +7,11 @@
   flex-wrap: wrap;
   gap: 24px;
   padding: 12px;
+  // change colors based on variation
   &--hero {
     color: $white;
     background: $primary-darkest;
+    // provide more padding when this takes up the full container
     padding: 24px;
   }
   &--primary {
@@ -23,25 +25,31 @@
   }
 
   .ldaf-video-container {
+    // setting aspect-ratio to attempt to size video properly
+    // because it's in a flexbox, it will still shrink and break the ratio
+    // may want to look into using a container query instead to more manually set the size
     aspect-ratio: 16 / 9;
     border-radius: 5px;
-    flex: 1 0 auto;
+    // grow to 5 columns and only shrink once the other column has reached its flex-basis
+    flex: 5 0 auto;
+    // following is to set the border radius on the iframe
     overflow: hidden;
     position: relative;
     transform: translateZ(0px);
-    iframe {
+    .ldaf-video-embed {
       height: 100%;
       width: 100%;
     }
   }
 
   .ldaf-video-info {
-    flex: 1 1 auto;
-    width: 200px;
-    p {
-      display: -webkit-box;
-      -webkit-line-clamp: 5;
+    // grow to 1 column, shrink to flex-basis, set flex-basis to 200px (any lower and it gets squished)
+    flex: 1 1 200px;
+    .ldaf-video-description {
+      // cut off description after 5 lines
       -webkit-box-orient: vertical;
+      -webkit-line-clamp: 5;
+      display: -webkit-box;
       overflow: hidden;
     }
   }
