@@ -3,7 +3,7 @@
 
   import { afterUpdate } from "svelte";
 
-  import ConditionalGridContainer from "$lib/components/ConditionalGridContainer";
+  import { PUBLIC_YOUTUBE_CHANNEL_ID } from "$env/static/public";
   import getYoutubeVideoData from "$lib/services/youtube";
 
   type VideoCardVariation = "hero" | "primary" | "secondary" | "tertiary";
@@ -40,24 +40,30 @@
 <!-- TODO: Build out card instead of just embedding video directly in page. -->
 <!-- TODO: Make embed responsive. -->
 {#if youtubeVideoId}
-  <div class="ldaf-video-card-outer ldaf-video-card-outer--{variation} {className}">
-    <ConditionalGridContainer condition={variation === "hero"}>
-      <div class="ldaf-video-card-inner">
-        <div class="ldaf-video-container">
-          <iframe
-            src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-            title="Embedded YouTube video"
-            frameborder="0"
-            allowfullscreen
-          />
-        </div>
-        <div class="ldaf-video-info">
-          {#if title && description}
-            <h3>{title}</h3>
-            <p>{description}</p>
-          {/if}
-        </div>
+  {#key youtubeVideoId}
+    <div class="ldaf-video-card ldaf-video-card--{variation} {className}">
+      <div class="ldaf-video-container">
+        <iframe
+          src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+          title="Embedded YouTube video"
+          frameborder="0"
+          allowfullscreen
+        />
       </div>
-    </ConditionalGridContainer>
-  </div>
+      <div class="ldaf-video-info">
+        <!-- https://developers.google.com/youtube/youtube_subscribe_button -->
+        {#if title && description}
+          <h3>{title}</h3>
+          <p>{description}</p>
+          <script src="https://apis.google.com/js/platform.js"></script>
+          <div
+            class="g-ytsubscribe"
+            data-channelid={PUBLIC_YOUTUBE_CHANNEL_ID}
+            data-layout="default"
+            data-count="hidden"
+          />
+        {/if}
+      </div>
+    </div>
+  {/key}
 {/if}

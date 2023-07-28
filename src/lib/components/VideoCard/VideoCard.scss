@@ -2,10 +2,15 @@
   $theme-show-notifications: false
 );
 
-.ldaf-video-card-outer {
+.ldaf-video-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 12px;
   &--hero {
     color: $white;
     background: $primary-darkest;
+    padding: 24px;
   }
   &--primary {
     background: $accent-light;
@@ -17,39 +22,27 @@
     background: $grayscale-05;
   }
 
-  // Set different padding on hero variation.
-  .grid-container .ldaf-video-card-inner {
-    padding: 1rem 0rem;
+  .ldaf-video-container {
+    aspect-ratio: 16 / 9;
+    border-radius: 5px;
+    flex: 1 0 auto;
+    overflow: hidden;
+    position: relative;
+    transform: translateZ(0px);
+    iframe {
+      height: 100%;
+      width: 100%;
+    }
   }
 
-  .ldaf-video-card-inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    padding: 12px;
-
-    .ldaf-video-container {
-      aspect-ratio: 16 / 9;
-      border-radius: 5px;
-      flex: 1 0 auto;
+  .ldaf-video-info {
+    flex: 1 1 auto;
+    width: 200px;
+    p {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      position: relative;
-      transform: translateZ(0px);
-      iframe {
-        height: 100%;
-        width: 100%;
-      }
-    }
-
-    .ldaf-video-info {
-      flex: 1 1 auto;
-      width: 200px;
-      p {
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
     }
   }
 }

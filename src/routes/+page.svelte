@@ -68,11 +68,12 @@
       </div>
     </div>
   </section>
-  <VideoCard
-    url="https://www.youtube.com/watch?v=3HRGzFjA_cU"
-    title={null}
-    description={null}
-    variation="hero"
-    class="margin-top-2"
-  />
+  <div class="grid-container margin-top-2">
+    <VideoCard
+      url="https://www.youtube.com/watch?v=3HRGzFjA_cU"
+      title={null}
+      description={null}
+      variation="hero"
+    />
+  </div>
 </main>
