@@ -64,9 +64,6 @@
             {blurhashes}
           />
           {#if serviceEntry.serviceCtaCollection}
-            <h3>CALL TO ACTIONS</h3>
-            <!-- {console.log(JSON.stringify(serviceEntry.serviceCtaCollection, null, 2))} -->
-            <!-- {console.log(serviceEntry.serviceCtaCollection) || "log"} -->
             {#each serviceEntry.serviceCtaCollection.items as ctaItem}
               <span class="service-entry-CTA">
                 <ContentfulRichText
@@ -77,6 +74,14 @@
                 />
               </span>
             {/each}
+          {/if}
+
+          {#if serviceEntry.contactInformationCollection}
+            <ContactCard
+              address={undefined}
+              contacts={serviceEntry.contactInformationCollection?.items}
+              class="margin-top-4"
+            />
           {/if}
         </AccordionItem>
       {/each}
@@ -103,7 +108,7 @@
 {/if}
 <div />
 {#if contactInfoCollection?.items && contactInfoCollection.items.length > 0}
-  <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />
+  <ContactCard address={undefined} contacts={contactInfoCollection.items} />
 {/if}
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}

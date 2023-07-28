@@ -100,6 +100,18 @@ const query = gql`
                   }
                 }
               }
+              contactInformationCollection(limit: 5) {
+                items {
+                  ... on Contact {
+                    sys {
+                      id
+                    }
+                    entityName
+                    phone
+                    email
+                  }
+                }
+              }
             }
             ... on ServiceGroup {
               __typename
@@ -238,14 +250,6 @@ export const load = async ({
         ...serviceEntryCTALinks,
       ].filter((link) => !!link);
 
-      // const links = [
-      //   matchedServiceGroup?.description?.links || {},
-      //   matchedServiceGroup?.additionalResources?.links || {},
-      //   ...matchedServiceGroup?.serviceEntriesCollection?.items.map(
-      //     (item) => item.description.links || {}
-      //   ),
-      // ].filter((link) => !!link);
-
       // console.log(matchedServiceGroup?.serviceEntriesCollection?.items);
       // const serviceEntryLinks = matchedServiceGroup?.serviceEntriesCollection?.items.map(
       //   (item) => item.description.links
@@ -263,7 +267,6 @@ export const load = async ({
         { assets: { block: [], hyperlink: [] } }
       );
 
-      // console.log("links", links);
       // let blurhashes = [];
       //
       // if (matchedServiceGroup?.description?.links.assets.block.length > 0) {
