@@ -88,7 +88,7 @@
             {/each}
           {/if}
 
-          {#if item.contactInformationCollection}
+          {#if item.contactInformationCollection && item.contactInformationCollection.items.length > 0}
             <ContactCard
               address={undefined}
               contacts={item.contactInformationCollection?.items}
@@ -122,7 +122,7 @@
 <div />
 
 {#if contactInfoCollection?.items && contactInfoCollection.items.length > 0}
-  <ContactCard address={undefined} contacts={contactInfoCollection.items} />
+  <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />
 {/if}
 
 <!-- TODO: Is this where Related Links will get stored? -->
