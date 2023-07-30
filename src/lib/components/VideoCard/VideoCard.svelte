@@ -7,13 +7,20 @@
   import getYoutubeVideoData from "$lib/services/youtube";
 
   type VideoCardVariation = "hero" | "primary" | "secondary" | "tertiary";
+  interface $$Props {
+    class?: string;
+    url: string;
+    title?: string | null | undefined;
+    description?: string | null | undefined;
+    variation?: VideoCardVariation;
+  }
 
   let className = "";
   export { className as class };
-  export let url: string;
-  export let title: string | null | undefined;
-  export let description: string | null | undefined;
-  export let variation: VideoCardVariation = "primary";
+  export let url = "";
+  export let title: $$Props["title"] = null;
+  export let description: $$Props["description"] = null;
+  export let variation = "primary";
 
   let youtubeVideoId: string | null;
   $: {
