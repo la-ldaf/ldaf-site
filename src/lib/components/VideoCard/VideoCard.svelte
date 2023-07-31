@@ -53,7 +53,6 @@
           src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}`}
           title="Embedded YouTube video player"
           frameborder="0"
-          allow="accelerometer; gyroscope; picture-in-picture;"
           allowfullscreen
         />
       </div>
