@@ -10,16 +10,16 @@
   interface $$Props {
     class?: string;
     url: string;
-    title?: string | null | undefined;
-    description?: string | null | undefined;
+    customTitle?: string | null | undefined;
+    customDescription?: string | null | undefined;
     variation?: VideoCardVariation;
   }
 
   let className = "";
   export { className as class };
   export let url = "";
-  export let title: $$Props["title"] = null;
-  export let description: $$Props["description"] = null;
+  export let customTitle: $$Props["customTitle"] = null;
+  export let customDescription: $$Props["customDescription"] = null;
   export let variation = "primary";
 
   let youtubeVideoId: string | null;
@@ -35,8 +35,11 @@
     }
   }
 
+  $: title = customTitle;
+  $: description = customDescription;
+
   afterUpdate(async () => {
-    if (youtubeVideoId && (!title || !description)) {
+    if (youtubeVideoId && (!customTitle || !customDescription)) {
       const snippet = await getYoutubeVideoData(youtubeVideoId);
       title = snippet.title;
       description = snippet.description;

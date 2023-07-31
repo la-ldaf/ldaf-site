@@ -28,8 +28,8 @@
     // may want to look into using a container query instead to more manually set the size
     aspect-ratio: 16 / 9;
     border-radius: 5px;
-    // grow to 5 columns and only shrink once the other column has reached its flex-basis
-    flex: 5 0 auto;
+    // grow to 5 columns and shrink once the other column has reached its flex-basis
+    flex: 5 1 auto;
     // following is to set the border radius on the iframe
     overflow: hidden;
     position: relative;
@@ -41,8 +41,10 @@
   }
 
   .ldaf-video-info {
-    // grow to 1 column, shrink to flex-basis, set flex-basis to 200px (any lower and it gets squished)
+    // grow to 1 column, shrink to flex-basis, set flex-basis to 200px
+    //   (any lower and it gets squished in two-column layout)
     flex: 1 1 200px;
+    width: 100%;
     .ldaf-video-title {
       margin-top: 0;
     }

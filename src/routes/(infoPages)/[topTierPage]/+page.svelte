@@ -36,8 +36,8 @@
 {#if video?.videoUrl}
   <VideoCard
     url={video.videoUrl}
-    title={video.videoTitle}
-    description={video.videoSubhead}
+    customTitle={video.videoTitle}
+    customDescription={video.videoSubhead}
     variation="secondary"
   />
 {/if}
