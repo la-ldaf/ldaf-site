@@ -11,15 +11,17 @@
   export let data;
 
   $: ({
-    title,
-    subheading,
-    description,
-    heroImage,
-    serviceListName,
-    serviceEntries,
-    serviceGroups,
-    contactInfoCollection,
-    additionalResources,
+    serviceGroup: {
+      title,
+      subheading,
+      description,
+      heroImage,
+      serviceListName,
+      contactInfoCollection,
+      additionalResources,
+    },
+    childServiceEntries,
+    childServiceGroups,
   } = data);
 </script>
 
@@ -33,24 +35,24 @@
   {subheading}
 </p>
 {#if description}
-  <ContentfulRichText document={description?.json} />
+  <ContentfulRichText document={description?.json} links={description?.links} />
 {/if}
 
-{#if serviceEntries.length > 0 || serviceGroups.length > 0}
+{#if childServiceEntries.length > 0 || childServiceGroups.length > 0}
   <h2>{serviceListName}</h2>
-  {#if serviceEntries.length > 0}
+  {#if childServiceEntries.length > 0}
     <Accordion multiselectable>
-      {#each serviceEntries as item}
+      {#each childServiceEntries as item}
         <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-          <ContentfulRichText document={item?.description?.json} />
+          <ContentfulRichText document={item?.description?.json} links={item?.description?.links} />
         </AccordionItem>
       {/each}
     </Accordion>
   {/if}
 {/if}
-{#if serviceGroups.length > 0}
+{#if childServiceGroups.length > 0}
   <ul class="service-group-list">
-    {#each serviceGroups as item}
+    {#each childServiceGroups as item}
       <Card class="service-group-card">
         <h3 class="usa-card__heading" slot="header">{item.title}</h3>
         <svelte:fragment slot="body">
@@ -72,5 +74,5 @@
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
-  <ContentfulRichText document={additionalResources?.json} />
+  <ContentfulRichText document={additionalResources.json} links={additionalResources.links} />
 {/if}
