@@ -40,16 +40,18 @@
 
 {#if childServiceEntries.length > 0 || childServiceGroups.length > 0}
   <h2>{serviceListName}</h2>
-  {#if childServiceEntries.length > 0}
-    <Accordion multiselectable>
-      {#each childServiceEntries as item}
-        <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-          <ContentfulRichText document={item?.description?.json} links={item?.description?.links} />
-        </AccordionItem>
-      {/each}
-    </Accordion>
-  {/if}
 {/if}
+
+{#if childServiceEntries.length > 0}
+  <Accordion multiselectable>
+    {#each childServiceEntries as item}
+      <AccordionItem title={item?.entryTitle} id={item.sys.id}>
+        <ContentfulRichText document={item?.description?.json} links={item?.description?.links} />
+      </AccordionItem>
+    {/each}
+  </Accordion>
+{/if}
+
 {#if childServiceGroups.length > 0}
   <ul class="service-group-list">
     {#each childServiceGroups as item}
@@ -67,10 +69,13 @@
     {/each}
   </ul>
 {/if}
+
 <div />
+
 {#if contactInfoCollection?.items && contactInfoCollection.items.length > 0}
   <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />
 {/if}
+
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
