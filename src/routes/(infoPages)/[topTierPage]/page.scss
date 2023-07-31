@@ -1,13 +1,10 @@
 // TODO: Create a <CardGroup /> Wrapper to
 // avoid dealing with  the <ul> and styling overrides here.
-.service-group-list {
+.usa-prose .service-group-list {
   list-style: none;
-}
-
-ul.service-group-list {
   padding-left: 0;
-}
-
-.service-group-list .usa-card__container {
-  margin-left: 0;
+  .usa-card__container {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import "./page.scss";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
+  // import VideoCard from "$lib/components/VideoCard";
 
   import {
     src as underConstructionGif,
@@ -67,4 +68,10 @@
       </div>
     </div>
   </section>
+  <!-- TODO: Uncomment when working on homepage, provide data from Contentful. -->
+  <!--
+  <div class="grid-container margin-top-2">
+    <VideoCard url="https://www.youtube.com/watch?v=3HRGzFjA_cU" variation="hero" />
+  </div>
+  -->
 </main>

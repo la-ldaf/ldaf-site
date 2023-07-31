@@ -1,9 +1,26 @@
 <script lang="ts">
-  export let url: string;
-  // TODO: Support fetching title and description from YouTube if title and description are not provided.
-  // TODO: Use let, actually use values in card.
-  export const title: string | null | undefined = undefined;
-  export const description: string | null | undefined = undefined;
+  import "./VideoCard.scss";
+
+  import { afterUpdate } from "svelte";
+
+  import { PUBLIC_YOUTUBE_CHANNEL_ID } from "$env/static/public";
+  import getYoutubeVideoData from "$lib/services/youtube";
+
+  type VideoCardVariation = "hero" | "primary" | "secondary" | "tertiary";
+  interface $$Props {
+    class?: string;
+    url: string;
+    customTitle?: string | null | undefined;
+    customDescription?: string | null | undefined;
+    variation?: VideoCardVariation;
+  }
+
+  let className = "";
+  export { className as class };
+  export let url = "";
+  export let customTitle: $$Props["customTitle"] = null;
+  export let customDescription: $$Props["customDescription"] = null;
+  export let variation = "primary";
 
   let youtubeVideoId: string | null;
   $: {
@@ -17,17 +34,46 @@
       console.warn("Unsupported video type; could not embed video.");
     }
   }
+
+  $: title = customTitle;
+  $: description = customDescription;
+
+  afterUpdate(async () => {
+    if (youtubeVideoId && (!customTitle || !customDescription)) {
+      const snippet = await getYoutubeVideoData(youtubeVideoId);
+      title = snippet.title;
+      description = snippet.description;
+    }
+  });
 </script>
 
-<!-- TODO: Build out card instead of just embedding video directly in page. -->
-<!-- TODO: Make embed responsive. -->
 {#if youtubeVideoId}
-  <iframe
-    width="560"
-    height="315"
-    src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-    title="Embedded YouTube video"
-    frameborder="0"
-    allowfullscreen
-  />
+  {#key youtubeVideoId}
+    <div class="ldaf-video-card ldaf-video-card--{variation} {className}">
+      <div class="ldaf-video-container">
+        <iframe
+          class="ldaf-video-embed"
+          src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}`}
+          title="Embedded YouTube video player"
+          frameborder="0"
+          allowfullscreen
+        />
+      </div>
+      <div class="ldaf-video-info">
+        <!-- https://developers.google.com/youtube/youtube_subscribe_button -->
+        <!-- TODO: Support different heading level for hero variation. -->
+        {#if title && description}
+          <h3 class="ldaf-video-title">{title}</h3>
+          <p class="ldaf-video-description">{description}</p>
+          <script src="https://apis.google.com/js/platform.js"></script>
+          <div
+            class="g-ytsubscribe"
+            data-channelid={PUBLIC_YOUTUBE_CHANNEL_ID}
+            data-layout="default"
+            data-count="hidden"
+          />
+        {/if}
+      </div>
+    </div>
+  {/key}
 {/if}

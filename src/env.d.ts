@@ -17,6 +17,8 @@ declare module "$env/static/private" {
 declare module "$env/static/public" {
   export const PUBLIC_ALGOLIA_APP_ID: string;
   export const PUBLIC_ALGOLIA_API_KEY: string;
+  export const PUBLIC_YOUTUBE_API_KEY: string;
+  export const PUBLIC_YOUTUBE_CHANNEL_ID: string;
 }
 /*
 // Uncomment to declare other environment variable strategies.
