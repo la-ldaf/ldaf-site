@@ -6,7 +6,7 @@ import VideoCard from "$lib/components/VideoCard";
 import VideoCardTestContent from "./__tests__/VideoCardTestContent";
 
 describe("VideoCard", () => {
-  it("renders with provided title and description", () => {
+  it("renders with provided title", () => {
     render(VideoCard, {
       props: VideoCardTestContent,
     });
