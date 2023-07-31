@@ -5,14 +5,12 @@
 .ldaf-video-card {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  padding: 12px;
+  gap: 1.5rem;
+  padding: 1.5rem;
   // change colors based on variation
   &--hero {
     color: $white;
     background: $primary-darkest;
-    // provide more padding when this takes up the full container
-    padding: 24px;
   }
   &--primary {
     background: $accent-light;
@@ -45,6 +43,9 @@
   .ldaf-video-info {
     // grow to 1 column, shrink to flex-basis, set flex-basis to 200px (any lower and it gets squished)
     flex: 1 1 200px;
+    .ldaf-video-title {
+      margin-top: 0;
+    }
     .ldaf-video-description {
       // cut off description after 5 lines
       -webkit-box-orient: vertical;
