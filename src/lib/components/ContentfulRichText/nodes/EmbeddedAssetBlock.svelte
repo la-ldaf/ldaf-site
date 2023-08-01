@@ -26,7 +26,7 @@
 
   const isImage = link.contentType?.startsWith("image/");
 
-  const blurhashes = getContext<Record<string, string> | undefined>(blurhashesKey);
+  const blurhashes = getContext<Record<string, string> | null | undefined>(blurhashesKey);
   const blurhash = blurhashes?.[assetID];
 </script>
 

@@ -6,6 +6,7 @@ export default {
     sys: { id: "0" },
     heroImage: {
       imageSource: {
+        sys: { id: "0" },
         url: "",
         description: "",
       },
