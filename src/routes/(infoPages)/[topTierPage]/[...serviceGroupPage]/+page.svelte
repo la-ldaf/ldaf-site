@@ -9,7 +9,7 @@
   import Icon from "$lib/components/Icon";
   import { url as arrowIcon } from "$icons/arrow_forward";
   import Image from "$lib/components/Image";
-  import { onMount } from "svelte";
+  import { afterUpdate } from "svelte";
 
   export let data;
   $: ({
@@ -27,10 +27,12 @@
     childServiceGroups,
   } = data);
 
-  onMount(() => {
+  afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
-    // We must manually add the required classes to achieve the desired styles
+    // We must manually add the required classes to achieve the desired styles.
+    // This wasn't always getting applied in `onMount`, so making sure it doesn't
+    // Happen prematurely by using `afterUpdate` instead
     document
       .querySelectorAll(".service-entry-CTA a")
       .forEach((linkEl) => linkEl.classList.add("usa-button"));
@@ -59,6 +61,7 @@
     links={description?.links}
     imageSizeType="col-9"
     {pageMetadataMap}
+    {blurhashes}
   />
 {/if}
 
@@ -133,5 +136,6 @@
     links={additionalResources.links}
     imageSizeType="col-9"
     {pageMetadataMap}
+    {blurhashes}
   />
 {/if}
