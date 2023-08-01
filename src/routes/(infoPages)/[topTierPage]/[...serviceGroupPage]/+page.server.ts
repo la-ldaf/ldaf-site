@@ -77,8 +77,9 @@ const query = gql`
             }
           }
         }
-        # /animals/meat-poultry has 8 service entries, this limit
-        # needs to be higher to account for more flexibility
+        # TODO:  this limit needs to be higher to accommodate
+        # larger core content pages with many services.
+        # E.g. /animals/meat-poultry has 8 service entries
         serviceEntriesCollection(limit: 8) {
           items {
             ... on ServiceEntry {
@@ -235,8 +236,6 @@ export const load = async ({
         (item) => item?.__typename === "ServiceGroup"
       ) as ServiceGroup[];
 
-      // console.log(matchedServiceGroup.serviceEntriesCollection);
-      // console.log("groups", serviceEntries);
       serviceGroups = serviceGroups.map((serviceGroup) => {
         const serviceGroupMetadata = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys.id || "");
         return { ...serviceGroup, url: serviceGroupMetadata?.url };
@@ -246,10 +245,9 @@ export const load = async ({
       const resourceLinks = matchedServiceGroup.additionalResources?.links;
       const serviceEntryLinks =
         matchedServiceGroup?.serviceEntriesCollection?.items.map(
+          // items with __typename "ServiceGroup" will be undefined and filtered out below
           (item) => item?.description?.links
-          // item?.__typename === "ServiceEntry" ? item?.description?.links : null
         ) || [];
-
       const serviceEntryCTALinks =
         matchedServiceGroup?.serviceEntriesCollection?.items.flatMap((item) => {
           const ctaItems = item?.serviceCtaCollection?.items || [];
@@ -257,25 +255,15 @@ export const load = async ({
 
           return ctaLinks;
         }) || [];
-      // console.log("serviceLinks", serviceEntryLinks);
-      // console.log("serviceLinks", matchedServiceGroup?.serviceEntriesCollection?.items);
 
-      // serviceEntryLinks.forEach((link) => console.log(link.assets.hyperlink[0]?.sys.id));
-      // serviceEntryLinks.forEach((link) => console.log(link.assets));
-
-      const links = [
+      const aggregatedLinks = [
         descriptionLinks,
         resourceLinks,
         ...serviceEntryLinks,
         ...serviceEntryCTALinks,
       ].filter((link) => !!link);
-      // console.log("description links", descriptionLinks?.entries.block);
-      // console.log(matchedServiceGroup?.serviceEntriesCollection?.items);
-      // const serviceEntryLinks = matchedServiceGroup?.serviceEntriesCollection?.items.map(
-      //   (item) => item.description.links
-      // );
-      // console.log("serviceEntryLinks", serviceEntryLinks);
-      const mergedLinks = links.reduce(
+
+      const mergedLinks = aggregatedLinks.reduce(
         (acc, cur) => {
           return {
             assets: {
@@ -290,6 +278,8 @@ export const load = async ({
         },
         { assets: { block: [], hyperlink: [] }, entries: { block: [], hyperlink: [] } }
       );
+
+      // TODO: Figure out how to aggregate blurhashes in a similar fashion to links
       // let blurhashes = [];
       //
       // if (matchedServiceGroup?.description?.links.assets.block.length > 0) {
@@ -321,9 +311,8 @@ export const load = async ({
         serviceEntries,
         serviceGroups,
         links: mergedLinks,
-        // links: undefined,
         blurhashes: undefined,
-      }; // as ServiceGroupPage;
+      };
     }
   }
 };
