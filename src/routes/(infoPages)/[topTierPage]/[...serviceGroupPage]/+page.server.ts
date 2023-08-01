@@ -54,6 +54,19 @@ const query = gql`
                 ...ImageProps
               }
             }
+            entries {
+              block {
+                __typename
+                ... on Contact {
+                  sys {
+                    id
+                  }
+                  entityName
+                  phone
+                  email
+                }
+              }
+            }
           }
         }
         # /animals/meat-poultry has 8 service entries, this limit

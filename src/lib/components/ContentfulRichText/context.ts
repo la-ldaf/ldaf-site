@@ -6,6 +6,9 @@ export const linksKey = Symbol("contentfulRichTextLinks");
 const getAssetLinksMap = (links: Links, key: "block" | "hyperlink") =>
   new Map(links.assets[key]?.flatMap((link) => (link ? [[link.sys.id, link]] : [])));
 
+const getAssetEntriesMap = (links: Links, key: "block" | "hyperlink") =>
+  new Map(links.entries[key]?.flatMap((link) => (link ? [[link.sys.id, link]] : [])));
+
 export const createLinksContext = (links: Links, pageMetadataMap): LinksContext => ({
   pageMetadataMap,
   links: {
@@ -13,10 +16,18 @@ export const createLinksContext = (links: Links, pageMetadataMap): LinksContext 
       block: links.assets.block?.filter(Boolean),
       hyperlink: links.assets.hyperlink?.filter(Boolean),
     },
+    entries: {
+      block: links.entries.block?.filter(Boolean),
+      hyperlink: links.entries.hyperlink?.filter(Boolean),
+    },
   },
   linksAssetsMaps: {
     block: getAssetLinksMap(links, "block"),
     hyperlink: getAssetLinksMap(links, "hyperlink"),
+  },
+  linksEntriesMaps: {
+    block: getAssetEntriesMap(links, "block"),
+    hyperlink: getAssetEntriesMap(links, "hyperlink"),
   },
 });
 

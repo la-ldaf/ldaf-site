@@ -24,6 +24,10 @@ export type Links = {
     hyperlink?: (RenderableHyperlink | null)[];
     block?: (RenderableBlock | null)[];
   };
+  entries: {
+    hyperlink?: (RenderableHyperlink | null)[];
+    block?: (RenderableBlock | null)[];
+  };
 };
 
 export type LinksMap<T extends RenderableBlock | RenderableHyperlink> = Map<string, T>;
@@ -31,6 +35,10 @@ export type LinksMap<T extends RenderableBlock | RenderableHyperlink> = Map<stri
 export type LinksContext = {
   links: Links;
   linksAssetsMaps: {
+    block: LinksMap<RenderableBlock>;
+    hyperlink: LinksMap<RenderableHyperlink>;
+  };
+  linksEntriesMaps: {
     block: LinksMap<RenderableBlock>;
     hyperlink: LinksMap<RenderableHyperlink>;
   };
