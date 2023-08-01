@@ -20,8 +20,12 @@ const query = gql`
     height
   }
 
-  query ServiceGroupCollection($pageSlug: String) {
-    serviceGroupCollection(limit: 1, where: { pageMetadata: { slug: $pageSlug } }) {
+  query ServiceGroupCollection($pageSlug: String, $preview: Boolean = false) {
+    serviceGroupCollection(
+      limit: 1
+      preview: $preview
+      where: { pageMetadata: { slug: $pageSlug } }
+    ) {
       items {
         sys {
           id
@@ -56,6 +60,19 @@ const query = gql`
               }
               hyperlink {
                 ...ImageProps
+              }
+            }
+            entries {
+              block {
+                __typename
+                ... on Contact {
+                  sys {
+                    id
+                  }
+                  entityName
+                  phone
+                  email
+                }
               }
             }
           }
@@ -181,7 +198,7 @@ export const load = async ({
   const data =
     contentfulClient &&
     (await contentfulClient.fetch<ServiceGroupCollectionQuery>(query, {
-      variables: { pageSlug: slug },
+      variables: { pageSlug: slug, preview: false },
     }));
 
   if (!data) {
@@ -230,6 +247,7 @@ export const load = async ({
       const serviceEntryLinks =
         matchedServiceGroup?.serviceEntriesCollection?.items.map(
           (item) => item?.description?.links
+          // item?.__typename === "ServiceEntry" ? item?.description?.links : null
         ) || [];
 
       const serviceEntryCTALinks =
@@ -240,8 +258,10 @@ export const load = async ({
           return ctaLinks;
         }) || [];
       // console.log("serviceLinks", serviceEntryLinks);
+      // console.log("serviceLinks", matchedServiceGroup?.serviceEntriesCollection?.items);
+
       // serviceEntryLinks.forEach((link) => console.log(link.assets.hyperlink[0]?.sys.id));
-      serviceEntryLinks.forEach((link) => console.log(link.assets));
+      // serviceEntryLinks.forEach((link) => console.log(link.assets));
 
       const links = [
         descriptionLinks,
@@ -249,7 +269,7 @@ export const load = async ({
         ...serviceEntryLinks,
         ...serviceEntryCTALinks,
       ].filter((link) => !!link);
-
+      // console.log("description links", descriptionLinks?.entries.block);
       // console.log(matchedServiceGroup?.serviceEntriesCollection?.items);
       // const serviceEntryLinks = matchedServiceGroup?.serviceEntriesCollection?.items.map(
       //   (item) => item.description.links
@@ -262,11 +282,14 @@ export const load = async ({
               block: [...(acc.assets?.block ?? []), ...(cur?.assets?.block ?? [])],
               hyperlink: [...(acc?.assets?.hyperlink ?? []), ...(cur?.assets?.hyperlink ?? [])],
             },
+            entries: {
+              block: [...(acc.entries?.block ?? []), ...(cur?.entries?.block ?? [])],
+              hyperlink: [...(acc?.entries?.hyperlink ?? []), ...(cur?.entries?.hyperlink ?? [])],
+            },
           };
         },
-        { assets: { block: [], hyperlink: [] } }
+        { assets: { block: [], hyperlink: [] }, entries: { block: [], hyperlink: [] } }
       );
-
       // let blurhashes = [];
       //
       // if (matchedServiceGroup?.description?.links.assets.block.length > 0) {
