@@ -14,13 +14,13 @@
   export let pageMetadataMap;
 
   export let links: Links | undefined = undefined;
-  setContext<LinksContext | undefined>(
+  $: setContext<LinksContext | undefined>(
     linksKey,
     links ? createLinksContext(links, pageMetadataMap) : links
   );
 
   export let blurhashes: Record<string, string> | undefined = undefined;
-  setContext<Record<string, string> | undefined>(blurhashesKey, blurhashes);
+  $: setContext<Record<string, string> | undefined>(blurhashesKey, blurhashes);
 
   if (!isDocument(document)) {
     throw error(500, {
