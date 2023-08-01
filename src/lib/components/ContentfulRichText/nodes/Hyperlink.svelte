@@ -7,7 +7,7 @@
 
   let hyperlink: Hyperlink;
   if (!isHyperlink(node)) {
-    throw new Error("node is not a paragraph");
+    throw new Error("node is not a hyperlink");
   }
   hyperlink = node;
 </script>
