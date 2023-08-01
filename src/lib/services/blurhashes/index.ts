@@ -38,11 +38,9 @@ export const getBlurhashMapFromAssetList = async (
   );
 
 type RichTextForBlurhashes = Nullable<{
-  body?: Nullable<{
-    links?: Nullable<{
-      assets?: Nullable<{
-        block?: Nullable<(Asset | null | undefined)[]>;
-      }>;
+  links?: Nullable<{
+    assets?: Nullable<{
+      block?: Nullable<(Asset | null | undefined)[]>;
     }>;
   }>;
 }>;
@@ -50,4 +48,4 @@ type RichTextForBlurhashes = Nullable<{
 export const getBlurhashMapFromRichText = async (
   richText: RichTextForBlurhashes,
   options: Options
-) => getBlurhashMapFromAssetList(richText?.body?.links?.assets?.block ?? [], options);
+) => getBlurhashMapFromAssetList(richText?.links?.assets?.block ?? [], options);

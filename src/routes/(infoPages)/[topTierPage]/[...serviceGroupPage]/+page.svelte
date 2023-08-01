@@ -1,5 +1,6 @@
 <script lang="ts">
   import "../page.scss";
+  import { getSources } from "$lib/imageServices/contentful";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button";
   import Card from "$lib/components/Card/Card.svelte";
@@ -7,6 +8,7 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import { url as arrowIcon } from "$icons/arrow_forward";
+  import Image from "$lib/components/Image";
 
   export let data;
 
@@ -25,10 +27,17 @@
   } = data);
 </script>
 
-{#if heroImage}
-  <!-- TODO: Update this to use a proper Hero/Image Component 
-       (pending merge of https://github.com/la-ldaf/ldaf-site/pull/279) -->
-  <img src={heroImage?.imageSource?.url} alt={heroImage.imageSource?.description} />
+{#if heroImage && heroImage?.imageSource?.url}
+  <Image
+    src={heroImage.imageSource.url}
+    sources={getSources(heroImage.imageSource.url)}
+    blurhash={heroImage?.imageSource?.blurhash ?? undefined}
+    alt={heroImage.imageSource?.description ?? "Hero image"}
+    width={heroImage.imageSource?.width ?? undefined}
+    height={heroImage.imageSource?.height ?? undefined}
+    fit
+    loading="eager"
+  />
 {/if}
 <h1>{title}</h1>
 <p class="usa-intro">
@@ -46,7 +55,11 @@
   <Accordion multiselectable>
     {#each childServiceEntries as item}
       <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-        <ContentfulRichText document={item?.description?.json} links={item?.description?.links} />
+        <ContentfulRichText
+          document={item?.description?.json}
+          links={item?.description?.links}
+          blurhashes={item?.description?.blurhashes}
+        />
       </AccordionItem>
     {/each}
   </Accordion>

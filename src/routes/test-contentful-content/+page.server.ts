@@ -46,7 +46,7 @@ export const load = async ({ fetch }) => {
     token: CONTENTFUL_DELIVERY_API_TOKEN,
   });
   const data = await client.fetch<EntryQuery>(printQuery(query));
-  const blurhashes = getBlurhashMapFromRichText(data?.testRichText, { fetch });
+  const blurhashes = getBlurhashMapFromRichText(data?.testRichText?.body, { fetch });
   return {
     document:
       (data?.testRichText?.body?.json as Document | undefined | null) ?? markdownDocument.document,

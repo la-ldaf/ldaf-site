@@ -4,12 +4,12 @@ import { error } from "@sveltejs/kit";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
+import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
 
-// TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
   fragment ImageProps on Asset {
     sys {
@@ -32,16 +32,7 @@ const query = gql`
         heroImage {
           ... on HeroImage {
             imageSource {
-              ... on Asset {
-                title
-                description
-                contentType
-                fileName
-                size
-                url
-                width
-                height
-              }
+              ...ImageProps
             }
             imageTitle
             altField
@@ -157,37 +148,66 @@ type ChildServiceEntry = Extract<ChildServiceEntryOrGroup, { __typename: "Servic
 type ChildServiceGroup = Extract<ChildServiceEntryOrGroup, { __typename: "ServiceGroup" }>;
 
 export type ServiceGroupPage = {
-  serviceGroup: ServiceGroup;
-  childServiceEntries: ChildServiceEntry[];
+  serviceGroup: ServiceGroup & {
+    heroImage?: ServiceGroup["heroImage"] & {
+      imageSource?: NonNullable<ServiceGroup["heroImage"]>["imageSource"] & {
+        blurhash?: string | null | undefined;
+      };
+    };
+    description?: ServiceGroup["description"] & {
+      blurhashes?: Record<string, string> | null | undefined;
+    };
+  };
+  childServiceEntries: (ChildServiceEntry & {
+    description?: ChildServiceEntry["description"] & {
+      blurhashes?: Record<string, string> | null | undefined;
+    };
+  })[];
   childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
   pageMetadata?: ServiceGroupMetadata;
 };
 
-export const load = async ({ parent, params }): Promise<ServiceGroupPage> => {
+export const load = async ({
+  parent,
+  params: { topTierPage, serviceGroupPage },
+  fetch,
+}): Promise<ServiceGroupPage> => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
-  const { topTierPage, serviceGroupPage } = params;
   // construct URL for matching later
-  const url = `/${topTierPage}/${serviceGroupPage}`;
-  // service groups can be deeply nested
-  const metadataID = pathsToIDs.get(url);
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query), {
-    variables: { metadataID },
-  });
-  findMatchingServiceGroup: {
-    if (!data) break findMatchingServiceGroup;
+  const path = `/${topTierPage}/${serviceGroupPage}`;
+  fetchData: {
+    const metadataID = pathsToIDs.get(path);
+    if (!metadataID) break fetchData;
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+    const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query), {
+      variables: { metadataID },
+    });
+    if (!data) break fetchData;
     const [serviceGroup] = data?.serviceGroupCollection?.items ?? [];
-    if (!serviceGroup) break findMatchingServiceGroup;
-    const { pageMetadata } = serviceGroup ?? {};
-    if (!pageMetadata) break findMatchingServiceGroup;
-    const childServiceEntries =
-      serviceGroup.serviceEntriesCollection?.items.filter(
-        (item): item is ChildServiceEntry => item?.__typename === "ServiceEntry"
-      ) ?? [];
+    if (!serviceGroup) break fetchData;
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) break fetchData;
+    const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
+    const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
+    const descriptionBlurhashesPromise = getBlurhashMapFromRichText(serviceGroup?.description, {
+      fetch,
+    });
+    const childServiceEntriesPromises =
+      serviceGroup.serviceEntriesCollection?.items
+        .filter((item): item is ChildServiceEntry => item?.__typename === "ServiceEntry")
+        .map(async (entry) => ({
+          ...entry,
+          description: entry.description
+            ? {
+                ...entry.description,
+                blurhashes: await getBlurhashMapFromRichText(entry?.description, { fetch }),
+              }
+            : undefined,
+        })) ?? [];
     const childServiceGroups =
       serviceGroup.serviceEntriesCollection?.items
         .filter((item): item is ChildServiceGroup => item?.__typename === "ServiceGroup")
@@ -197,8 +217,32 @@ export const load = async ({ parent, params }): Promise<ServiceGroupPage> => {
           const { url } = pageMetadataMap.get(id) ?? {};
           return { ...group, url };
         }) ?? [];
+
+    // additionalResources is not yet used on the page, so we don't fetch its blurhashes
+
+    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
+      heroImageBlurhashPromise,
+      descriptionBlurhashesPromise,
+      Promise.all(childServiceEntriesPromises),
+    ]);
     return {
-      serviceGroup,
+      serviceGroup: {
+        ...serviceGroup,
+        description: serviceGroup.description
+          ? {
+              ...serviceGroup.description,
+              blurhashes: descriptionBlurhashes,
+            }
+          : undefined,
+        heroImage: serviceGroup.heroImage
+          ? {
+              ...serviceGroup.heroImage,
+              imageSource: serviceGroup.heroImage.imageSource
+                ? { ...serviceGroup.heroImage.imageSource, blurhash: heroImageBlurhash }
+                : undefined,
+            }
+          : undefined,
+      },
       pageMetadata,
       childServiceEntries,
       childServiceGroups,

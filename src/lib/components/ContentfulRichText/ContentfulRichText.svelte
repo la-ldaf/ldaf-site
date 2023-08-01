@@ -12,7 +12,7 @@
   export let links: Links | undefined = undefined;
   $: setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
 
-  export let blurhashes: Record<string, string> | undefined = undefined;
+  export let blurhashes: Record<string, string> | null | undefined = undefined;
   $: setContext<Record<string, string> | undefined>(blurhashesKey, blurhashes);
 
   if (!isDocument(document)) {
