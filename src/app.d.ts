@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import type { RedisClientType } from "redis";
+import type { Client } from "$lib/services/server/kv";
 
 type None = Record<never, never>;
 
@@ -11,7 +11,7 @@ declare global {
       title?: string;
     }
     interface Locals {
-      getConnectedRedisClient: () => Promise<RedisClientType<None, None, None> | undefined>;
+      getKVClient: () => Promise<Client | undefined>;
     }
     // interface PageData {}
     // interface Platform {}

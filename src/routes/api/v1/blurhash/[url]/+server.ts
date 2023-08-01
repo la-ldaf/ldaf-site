@@ -4,7 +4,7 @@ import getErrorMessage from "$lib/util/getErrorMessage";
 import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
 import { CONTENTFUL_IMAGE_API_ENDPOINT, CONTENTFUL_SPACE_ID } from "$env/static/private";
 
-export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: imageURL } }) => {
+export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }) => {
   let parsedImageURL: URL;
   try {
     parsedImageURL = new URL(decodeURIComponent(imageURL));
@@ -23,8 +23,8 @@ export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: 
     );
   }
 
-  const redisClient = await getConnectedRedisClient();
-  const cachedBlurhash = await redisClient?.get(`ldafBlurhashByURL:${imageURL}`);
+  const kvClient = await getKVClient();
+  const cachedBlurhash = await kvClient?.getBlurhashByURL(imageURL);
   if (cachedBlurhash) {
     return new Response(cachedBlurhash, {
       headers: { "Content-Type": "text/plain", "Cache-Control": "max-age=31536000" },
@@ -80,7 +80,7 @@ export const GET = async ({ locals: { getConnectedRedisClient }, params: { url: 
     );
   }
 
-  await redisClient?.set(`ldafBlurhashByURL:${imageURL}`, blurhash);
+  await kvClient?.setBlurhashByURL(imageURL, blurhash);
 
   return new Response(blurhash, {
     headers: { "Content-Type": "text/plain", "Cache-Control": "max-age=31536000" }, // cache for one year
