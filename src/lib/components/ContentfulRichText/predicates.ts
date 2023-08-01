@@ -23,8 +23,6 @@ import {
 } from "@contentful/rich-text-types";
 
 import type { HeadingLevel, HeadingTypeByLevel } from "./headings";
-import type EmbeddedEntry from "./nodes/EmbeddedEntry.svelte";
-import type EmbeddedEntryBlock from "./nodes/EmbeddedEntryBlock.svelte";
 
 export const isNode = (n: unknown): n is Node =>
   typeof n === "object" &&

@@ -69,8 +69,9 @@ const query = gql`
             }
           }
         }
-        # /animals/meat-poultry has 8 service entries, this limit
-        # needs to be higher to account for more flexibility
+        # TODO:  this limit needs to be higher to accommodate
+        # larger core content pages with many services.
+        # E.g. /animals/meat-poultry has 8 service entries
         serviceEntriesCollection(limit: 8) {
           items {
             ... on ServiceEntry {
