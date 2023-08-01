@@ -279,31 +279,6 @@ export const load = async ({
         { assets: { block: [], hyperlink: [] }, entries: { block: [], hyperlink: [] } }
       );
 
-      // TODO: Figure out how to aggregate blurhashes in a similar fashion to links
-      // let blurhashes = [];
-      //
-      // if (matchedServiceGroup?.description?.links.assets.block.length > 0) {
-      // links.map(async (linksObject, index) => {
-      //   const blurhashes = Object.fromEntries(
-      //     await Promise.all(
-      //       // matchedServiceGroup?.description?.links.assets.block
-      //       linksObject?.assets.block
-      //         .filter((item) => !!item)
-      //         .flatMap(async (item) => {
-      //           if (!item?.sys?.id || !item?.url || !item?.contentType?.startsWith("image/"))
-      //             return [];
-      //           const blurhashResponse = await fetch(
-      //             `/api/v1/blurhash/${encodeURIComponent(item.url)}`
-      //           );
-      //           if (!blurhashResponse.ok) return [];
-      //           return [item.sys.id, await blurhashResponse.text()];
-      //         }) ?? []
-      //     )
-      //   );
-      //   console.log(`Blurhashes ${index}:`, blurhashes);
-      // });
-      // }
-
       return {
         pageMetadataMap,
         ...matchedServiceGroup,
