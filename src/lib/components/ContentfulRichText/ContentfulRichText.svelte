@@ -22,7 +22,7 @@
   export let pageMetadataMap: PageMetadataMap | undefined = undefined;
 
   export let links: Links | undefined = undefined;
-  setContext<LinksContext | undefined>(
+  $: setContext<LinksContext | undefined>(
     linksKey,
     links ? createLinksContext(links, pageMetadataMap) : links
   );
