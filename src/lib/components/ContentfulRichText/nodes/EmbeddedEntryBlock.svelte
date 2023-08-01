@@ -9,7 +9,7 @@
 
   let entry: EntryLinkBlock;
   if (!isEntryBlock(node)) {
-    throw new Error("Node is not of type 'embedded-entry-block'");
+    throw new Error("Node is not an embedded entry block");
   }
   entry = node;
 

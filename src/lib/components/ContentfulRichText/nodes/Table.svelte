@@ -7,7 +7,7 @@
 
   let table: Table;
   if (!isTable(node)) {
-    throw new Error("node is not a paragraph");
+    throw new Error("node is not a table");
   }
   table = node;
 </script>

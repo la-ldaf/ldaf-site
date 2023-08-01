@@ -7,7 +7,7 @@
 
   let tableCell: TableCell;
   if (!isTableCell(node)) {
-    throw new Error("node is not a paragraph");
+    throw new Error("node is not a table cell");
   }
   tableCell = node;
 </script>
