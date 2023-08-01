@@ -7,7 +7,7 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import { url as arrowIcon } from "$icons/arrow_forward";
-  import { onMount } from "svelte";
+  import { afterUpdate } from "svelte";
 
   export let data;
   $: ({
@@ -21,17 +21,18 @@
     serviceGroups,
     contactInfoCollection,
     additionalResources,
-    links,
     blurhashes,
   } = data);
 
   $: hasServiceEntries = serviceEntries && serviceEntries.length > 0;
   $: hasServiceGroups = serviceGroups && serviceGroups.length > 0;
 
-  onMount(() => {
+  afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
-    // We must manually add the required classes to achieve the desired styles
+    // We must manually add the required classes to achieve the desired styles.
+    // This wasn't always getting applied in `onMount`, so making sure it doesn't
+    // Happen prematurely by using `afterUpdate` instead
     document
       .querySelectorAll(".service-entry-CTA a")
       .forEach((linkEl) => linkEl.classList.add("usa-button"));
@@ -48,19 +49,24 @@
   {subheading}
 </p>
 {#if description}
-  <ContentfulRichText document={description?.json} {pageMetadataMap} {links} {blurhashes} />
+  <ContentfulRichText
+    document={description?.json}
+    links={description?.links}
+    {pageMetadataMap}
+    {blurhashes}
+  />
 {/if}
 
 {#if hasServiceEntries || hasServiceGroups}
   <h2>{serviceListName}</h2>
-  <Accordion multiselectable>
+  <Accordion multiselectable bordered>
     {#if serviceEntries.length > 0}
       {#each serviceEntries as serviceEntry}
         <AccordionItem title={serviceEntry?.entryTitle} id={serviceEntry.sys.id}>
           <ContentfulRichText
             document={serviceEntry?.description?.json}
+            links={serviceEntry.description.links}
             {pageMetadataMap}
-            {links}
             {blurhashes}
           />
           {#if serviceEntry.serviceCtaCollection}
@@ -68,8 +74,8 @@
               <span class="service-entry-CTA">
                 <ContentfulRichText
                   document={ctaItem?.callToActionDestination?.json}
+                  links={ctaItem?.callToActionDestination?.links}
                   {pageMetadataMap}
-                  {links}
                   {blurhashes}
                 />
               </span>
@@ -113,5 +119,10 @@
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
-  <ContentfulRichText document={additionalResources?.json} {pageMetadataMap} {links} {blurhashes} />
+  <ContentfulRichText
+    document={additionalResources?.json}
+    links={additionalResources?.links}
+    {pageMetadataMap}
+    {blurhashes}
+  />
 {/if}

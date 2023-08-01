@@ -241,51 +241,12 @@ export const load = async ({
         return { ...serviceGroup, url: serviceGroupMetadata?.url };
       });
 
-      const descriptionLinks = matchedServiceGroup.description?.links;
-      const resourceLinks = matchedServiceGroup.additionalResources?.links;
-      const serviceEntryLinks =
-        matchedServiceGroup?.serviceEntriesCollection?.items.map(
-          // items with __typename "ServiceGroup" will be undefined and filtered out below
-          (item) => item?.description?.links
-        ) || [];
-      const serviceEntryCTALinks =
-        matchedServiceGroup?.serviceEntriesCollection?.items.flatMap((item) => {
-          const ctaItems = item?.serviceCtaCollection?.items || [];
-          const ctaLinks = ctaItems.map((ctaItem) => ctaItem.callToActionDestination?.links);
-
-          return ctaLinks;
-        }) || [];
-
-      const aggregatedLinks = [
-        descriptionLinks,
-        resourceLinks,
-        ...serviceEntryLinks,
-        ...serviceEntryCTALinks,
-      ].filter((link) => !!link);
-
-      const mergedLinks = aggregatedLinks.reduce(
-        (acc, cur) => {
-          return {
-            assets: {
-              block: [...(acc.assets?.block ?? []), ...(cur?.assets?.block ?? [])],
-              hyperlink: [...(acc?.assets?.hyperlink ?? []), ...(cur?.assets?.hyperlink ?? [])],
-            },
-            entries: {
-              block: [...(acc.entries?.block ?? []), ...(cur?.entries?.block ?? [])],
-              hyperlink: [...(acc?.entries?.hyperlink ?? []), ...(cur?.entries?.hyperlink ?? [])],
-            },
-          };
-        },
-        { assets: { block: [], hyperlink: [] }, entries: { block: [], hyperlink: [] } }
-      );
-
       return {
         pageMetadataMap,
         ...matchedServiceGroup,
         pageMetadata: matchedPageMetadata,
         serviceEntries,
         serviceGroups,
-        links: mergedLinks,
         blurhashes: undefined,
       };
     }
