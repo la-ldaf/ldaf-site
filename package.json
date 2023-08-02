@@ -86,7 +86,7 @@
     "ts-node": "^10.9.1",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.4",
+    "vite": "^4.4.8",
     "vite-bundle-visualizer": "^0.8.1",
     "vite-imagetools": "^5.0.5",
     "vite-plugin-svelte-purgecss": "^0.0.3",
