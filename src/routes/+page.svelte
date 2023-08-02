@@ -1,79 +1,84 @@
 <script lang="ts">
-  import "./page.scss";
-  import ContentfulRichText from "$lib/components/ContentfulRichText";
-  // import VideoCard from "$lib/components/VideoCard";
+  import "./(infoPages)/[topTierPage]/page.scss";
 
-  import {
-    src as underConstructionGif,
-    width as underConstructionWidth,
-    height as underConstructionHeight,
-  } from "$lib/assets/under-construction.gif?as=metadata&imagetoolsMetadata";
+  import { url as arrowIcon } from "$icons/arrow_forward";
 
-  // vite-imagetools doesn't support converting to an animated avif on the fly, so i did it ahead of
-  // time and added it to the repo. it's only 12kb.
-  import underConstructionAvif from "$lib/assets/under-construction.avif";
+  import { getSources } from "$lib/imageServices/contentful";
 
-  import landingImage from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=85&imagetools";
-  import landingImageMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?quality=85&w=412&imagetools";
-  import landingImageWebP from "$lib/assets/commissioner-strain-with-farmer.jpg?format=webp&quality=85&imagetools";
-  import landingImageWebpMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?format=webp&quality=85&w=412&imagetools";
-  import landingImageAvif from "$lib/assets/commissioner-strain-with-farmer.jpg?format=avif&quality=85&imagetools";
-  import landingImageAvifMobile from "$lib/assets/commissioner-strain-with-farmer.jpg?format=avif&quality=85&w=412&imagetools";
-  import landingImageBlurhash, {
-    width as landingImageWidth,
-    height as landingImageHeight,
-    mean as landingImageMean,
-  } from "$lib/assets/commissioner-strain-with-farmer.jpg?blurhash";
-
-  import Image from "$lib/components/Image";
+  import Button, { type Variant } from "$lib/components/Button";
+  import Card from "$lib/components/Card";
+  import Icon from "$lib/components/Icon";
+  import VideoCard from "$lib/components/VideoCard";
+  import Image from "$lib/components/Image/Image.svelte";
 
   export let data;
+  $: ({
+    homePage: { heroVideo, featuredServices },
+  } = data);
+
+  const getCardSettings = (
+    index: number
+  ): { card: "full" | "half" | "third"; button: Variant; imageLoading: "lazy" | "eager" } => {
+    if (index === 0) return { card: "full", button: "primary", imageLoading: "eager" };
+    else if (index < 3) return { card: "half", button: "secondary", imageLoading: "eager" };
+    else return { card: "third", button: "outline", imageLoading: "lazy" };
+  };
 </script>
 
-<main id="main-content">
-  <Image
-    class="main-image"
-    alt=""
-    loading="eager"
-    src={landingImage}
-    sources={[
-      { type: "image/avif", srcset: [landingImageAvif, [landingImageAvifMobile, 412]] },
-      { type: "image/webp", srcset: [landingImageWebP, [landingImageWebpMobile, 412]] },
-      { type: "image/jpeg", srcset: [landingImage, [landingImageMobile, 412]] },
-    ]}
-    blurhash={landingImageBlurhash}
-    width={landingImageWidth}
-    height={landingImageHeight}
-    sizeType="full-bleed"
-    mean={landingImageMean}
-    preserveAspectRatio={false}
-    style="object-position: 0 25%"
-  />
-  <section class="grid-container homepage-greeting maxw-tablet">
-    <ContentfulRichText document={data.title} />
-    <div class="grid-row">
-      <div class="grid-col-4 construction-sign-container">
-        <Image
-          src={underConstructionGif}
-          sources={[
-            { type: "image/avif", srcset: [underConstructionAvif] },
-            { type: "image/gif", srcset: [underConstructionGif] },
-          ]}
-          alt="Under construction sign swinging in the wind"
-          width={underConstructionWidth}
-          height={underConstructionHeight}
-          fit={false}
-        />
-      </div>
-      <div class="grid-col-8 padding-left-4">
-        <ContentfulRichText document={data.body} />
-      </div>
-    </div>
-  </section>
-  <!-- TODO: Uncomment when working on homepage, provide data from Contentful. -->
-  <!--
-  <div class="grid-container margin-top-2">
-    <VideoCard url="https://www.youtube.com/watch?v=3HRGzFjA_cU" variation="hero" />
+<main id="main-content grid-container">
+  <div class="grid-container usa-prose margin-top-2">
+    {#if heroVideo?.videoUrl}
+      {@const { videoUrl, videoTitle, videoSubhead } = heroVideo}
+      <VideoCard
+        url={videoUrl}
+        customTitle={videoTitle}
+        customDescription={videoSubhead}
+        variation="hero"
+      />
+    {/if}
+    {#if featuredServices}
+      <ul class="service-group-list">
+        {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
+          {@const { card: cardSize, button: buttonVariant, imageLoading } = getCardSettings(index)}
+          <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
+          {#if item?.heroImage?.imageSource?.url}
+            <Card class={`usa-card--${cardSize}`}>
+              <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+              <Image
+                slot="image"
+                src={item.heroImage.imageSource.url}
+                alt={item.heroImage.imageSource.title || "Card image"}
+                sources={getSources(item.heroImage.imageSource.url)}
+                blurhash={item.heroImage.imageSource?.blurhash ?? undefined}
+                width={item.heroImage.imageSource.width ?? undefined}
+                height={item.heroImage.imageSource.height ?? undefined}
+                fit
+                loading={imageLoading}
+              />
+              <svelte:fragment slot="body">
+                {#if item.subheading}
+                  {item.subheading}
+                {/if}
+              </svelte:fragment>
+              <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
+                <Icon src={arrowIcon} size={3} />
+              </Button>
+            </Card>
+          {:else}
+            <Card class={`usa-card--${cardSize}`}>
+              <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+              <svelte:fragment slot="body">
+                {#if item.subheading}
+                  {item.subheading}
+                {/if}
+              </svelte:fragment>
+              <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
+                <Icon src={arrowIcon} size={3} />
+              </Button>
+            </Card>
+          {/if}
+        {/each}
+      </ul>
+    {/if}
   </div>
-  -->
 </main>

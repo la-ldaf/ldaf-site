@@ -7,9 +7,6 @@ import documentWithParagraphExpected from "./document-with-paragraph.expected.ht
 import markdownDocumentData from "./markdown-document.md.json";
 import markdownDocumentExpected from "./markdown-document.md.html?raw";
 
-import homepageTestTitle from "./homepage-test-title.md.json";
-import homepageTestBody from "./homepage-test-body.md.json";
-
 type Case = { document: Document; links: Links; expectedHTML: string };
 
 export const documentWithParagraph: Case = {
@@ -22,17 +19,6 @@ export const markdownDocument: Case = {
   document: markdownDocumentData.document as Document,
   links: markdownDocumentData.links,
   expectedHTML: markdownDocumentExpected,
-};
-
-export const homepageTestData = {
-  title: {
-    document: homepageTestTitle.document as Document,
-    links: homepageTestTitle.links,
-  },
-  body: {
-    document: homepageTestBody.document as Document,
-    links: homepageTestBody.links,
-  },
 };
 
 const cases: Record<string, Case> = {
