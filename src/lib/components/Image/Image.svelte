@@ -2,47 +2,72 @@
   import "./Image.scss";
   import { browser } from "$app/environment";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
+  import { screenSizes, sizesByScreenSizeByType, type SizeType } from "$lib/constants/images";
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
-  import type { Loading, LazyLoading, Color, Sources, Srcset } from "./types";
+  import type { Loading, LazyLoading, Color, Sources, GetSources, Srcset } from "./types";
 
-  export let height: undefined | number = undefined;
-  export let width: undefined | number = undefined;
+  export let height: number | undefined = undefined;
+  export let width: number | undefined = undefined;
 
   // Whether the image should fit its container
-  export let fit = false;
+  export let fit = true;
+  export let preserveAspectRatio = true;
+
+  // The size type of the image
+  export let sizeType: SizeType = "full-bleed";
 
   export let src: string;
 
-  // Tuple of [src, width]
-  const getSrcsetAttr = ([defaultSrc, ...widthsOrDPIStrings]: Srcset) => {
-    const typeSet = new Set(widthsOrDPIStrings.map((w) => typeof w));
-    if (typeSet.size > 1) {
-      throw new Error(
-        "srcset attribute must include either width or DPI annotations, but not both"
-      );
-    }
-    const isWidths = typeSet.has("number");
-    const withFilteredWidths = isWidths
-      ? // we're smarter than typescript here, it doesn't know how sets work
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        widthsOrDPIStrings.filter(([_, w]) => (width ?? 0) > (w as number))
-      : widthsOrDPIStrings;
-    return [
-      ...withFilteredWidths.map(
-        ([source, sourceWidthOrDPIString]) =>
-          `${source} ${
-            typeof sourceWidthOrDPIString === "string"
-              ? sourceWidthOrDPIString
-              : `${sourceWidthOrDPIString}w`
-          }`
+  const getSrcsetAttr = ([defaultSrc, ...widthsOrDPIStrings]: Srcset) =>
+    [
+      ...widthsOrDPIStrings.map(
+        ([source, sourceWidthOrDPIString]) => `${source} ${sourceWidthOrDPIString}w`
       ),
-      defaultSrc,
+      width ? `${defaultSrc} ${width}w` : defaultSrc,
     ].join(", ");
+
+  export let sources: Sources | GetSources | undefined = undefined;
+
+  const getWidths = (sizeType: SizeType): number[] => {
+    const imageWidth = width;
+    const unfilteredWidths = Object.values(sizesByScreenSizeByType[sizeType]);
+    const unfilteredWidthsAndDoubleWidths = [
+      ...new Set([...unfilteredWidths, ...unfilteredWidths.map((n) => n * 2)]),
+    ].sort((a, b) => a - b);
+    if (!imageWidth) return unfilteredWidthsAndDoubleWidths;
+    return unfilteredWidthsAndDoubleWidths.filter((w) => w <= imageWidth);
   };
 
-  export let sources: Sources = [];
+  $: resolvedSources = sources
+    ? Array.isArray(sources)
+      ? sources
+      : sources(src, { widths: getWidths(sizeType), srcWidth: width, srcHeight: height })
+    : undefined;
+
+  const getSizesAttr = (sizeType: SizeType) => {
+    const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
+    let lastSize: number = 0;
+    const screenSizesAndSizes: [number, number][] = [];
+    for (const screenSize of screenSizes) {
+      const size = sizesByScreenSize[screenSize];
+      if (size <= lastSize) continue;
+      lastSize = size;
+      screenSizesAndSizes.push([screenSize, size]);
+    }
+    const maxSize = lastSize;
+    const sizeStrings: string[] = [];
+    for (const [screenSize, size] of screenSizesAndSizes) {
+      if (sizeType === "full-bleed" || size < maxSize) {
+        sizeStrings.push(`(max-width: ${screenSize}px) ${size}px`);
+        continue;
+      }
+      sizeStrings.push(`${size}px`);
+      break;
+    }
+    return sizeStrings.join(", ");
+  };
 
   export let alt: string;
   export let loading: Loading = "lazy";
@@ -77,7 +102,9 @@
     explicitLazyLoadingType
   );
 
-  if (!width || !height) warn("image width or height was missing!");
+  if (!width || !height) {
+    warn("image width or height was missing!");
+  }
 
   $: decoding = loading === "lazy" ? ("async" as const) : ("auto" as const);
 
@@ -91,20 +118,14 @@
 
   let intersecting = false;
 
+  $: showSources =
+    loading === "eager" ||
+    (browser && (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting));
+
   const withNoSrcProp = {};
   let srcProps = withNoSrcProp;
   $: withSrcProp = { src };
-  $: if (!src) {
-    srcProps = withNoSrcProp;
-  } else if (loading === "eager") {
-    srcProps = withSrcProp;
-  } else if (!browser) {
-    srcProps = withNoSrcProp;
-  } else if (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting) {
-    srcProps = withSrcProp;
-  } else {
-    srcProps = withNoSrcProp;
-  }
+  $: srcProps = src && showSources ? withSrcProp : withNoSrcProp;
 
   $: imageLoadClass = imageLoaded
     ? "ldaf-img__loaded"
@@ -142,6 +163,9 @@
       className
     )}
     bind:this={thisContainer}
+    {...fit && preserveAspectRatio && width && height
+      ? { style: `aspect-ratio: ${width} / ${height}` }
+      : {}}
   >
     {#if loading === "lazy"}
       <noscript>
@@ -149,9 +173,20 @@
       </noscript>
     {/if}
     <picture>
-      {#each sources as { media, type, srcset }}
-        <source {media} {type} srcset={getSrcsetAttr(srcset)} />
-      {/each}
+      {#if resolvedSources && showSources}
+        {#each resolvedSources as { media, type, srcset }}
+          <source
+            {media}
+            {type}
+            srcset={getSrcsetAttr(srcset)}
+            sizes={fit
+              ? sizeType === "full-bleed"
+                ? "100vw"
+                : getSizesAttr(sizeType)
+              : `${width}px`}
+          />
+        {/each}
+      {/if}
       <img
         {...imgProps}
         alt=""
@@ -167,8 +202,8 @@
         class="ldaf-img__blur-bg"
         width={canvasSize}
         height={canvasSize}
-        data-blurhash={blurhash}
         bind:this={thisBg}
+        data-blurhash={blurhash}
       />
     {/if}
     {#if mean}

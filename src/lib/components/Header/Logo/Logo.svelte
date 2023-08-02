@@ -15,10 +15,11 @@
   alt="Louisiana Department of Agriculture and Forestry Home"
   {width}
   {height}
+  fit={false}
   loading="eager"
   sources={[
-    { type: "image/avif", srcset: [ldafLogoAvif, [ldafLogoAvif2x, "2x"]] },
-    { type: "image/webp", srcset: [ldafLogoWebp, [ldafLogoWebp2x, "2x"]] },
-    { type: "image/png", srcset: [ldafLogo, [ldafLogo2x, "2x"]] },
+    { type: "image/avif", srcset: [ldafLogoAvif, [ldafLogoAvif2x, width * 2]] },
+    { type: "image/webp", srcset: [ldafLogoWebp, [ldafLogoWebp2x, width * 2]] },
+    { type: "image/png", srcset: [ldafLogo, [ldafLogo2x, width * 2]] },
   ]}
 />

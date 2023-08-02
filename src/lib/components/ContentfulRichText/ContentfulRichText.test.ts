@@ -6,10 +6,12 @@ import ContentfulRichText from "./ContentfulRichText.svelte";
 import documentTestCases from "./__tests__/documents";
 
 describe("ContentfulRichText", () => {
-  Object.entries(documentTestCases).forEach(([label, { document, expectedHTML }]) => {
+  Object.entries(documentTestCases).forEach(([label, { document, links, expectedHTML }]) => {
     it(`renders ${label}`, async () => {
-      const { container } = render(ContentfulRichText, { document });
-      expect(container?.firstChild?.childNodes).toMatchDOMNodes(expectedHTML);
+      const { container } = render(ContentfulRichText, { document, links });
+      expect(container?.firstChild?.childNodes).toMatchDOMNodes(expectedHTML, {
+        ignoreAttributes: ["class", "style"],
+      });
     });
   });
 });

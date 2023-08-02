@@ -2,9 +2,8 @@ export type Color = { r: number; g: number; b: number };
 export type Loading = "eager" | "lazy";
 export type LazyLoading = "none" | "native" | "intersectionObserver";
 
-export type SrcsetDefault = string;
-export type SrcsetWidth = [string, number | string];
-export type Srcset = [SrcsetDefault, ...SrcsetWidth[]];
+type SrcsetSrc = [string, number];
+export type Srcset = [string, ...SrcsetSrc[]];
 
 export type Format = `image/${string}`;
 export type Source = {
@@ -14,6 +13,11 @@ export type Source = {
 };
 
 export type Sources = Source[];
+
+export type GetSources = (
+  url: string,
+  options?: { widths: number[]; srcWidth?: number; srcHeight?: number }
+) => Sources;
 
 export type FixedImage = { format: Format; size: number | "original"; src: string };
 export type FixedSetOfImages = FixedImage[];

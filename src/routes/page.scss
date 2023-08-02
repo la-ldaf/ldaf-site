@@ -7,10 +7,11 @@
   max-width: 175px;
 }
 
-.construction-sign-container {
+.homepage-greeting .construction-sign-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .homepage-greeting {

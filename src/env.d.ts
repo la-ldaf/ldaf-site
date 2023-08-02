@@ -4,6 +4,7 @@
 //   we do not want to check in to git.
 declare module "$env/static/private" {
   export const CONTENTFUL_DEFAULT_ENVIRONMENT: string;
+  export const CONTENTFUL_IMAGE_API_ENDPOINT: string;
   export const CONTENTFUL_DELIVERY_API_TOKEN: string;
   export const CONTENTFUL_SPACE_ID: string;
   export const VERCEL: string;
@@ -12,6 +13,7 @@ declare module "$env/static/private" {
   export const VERCEL_GIT_REPO_SLUG: string;
   export const VERCEL_GIT_COMMIT_SHA: string;
   export const VERCEL_GIT_PULL_REQUEST_ID: string;
+  export const KV_URL: string;
 }
 
 declare module "$env/static/public" {

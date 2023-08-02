@@ -4,20 +4,27 @@ import { error } from "@sveltejs/kit";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
+import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 
-import type { ServiceGroup, ServiceEntry } from "$lib/services/contentful/schema";
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
-import ServiceGroupPageTestContent from "./__tests__/ServiceGroupPageTestContent";
+import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
+import type { ExtractQueryType } from "$lib/util/types";
 
-export type ServiceGroupPage = ServiceGroup & {
-  serviceEntries: ServiceEntry[];
-  serviceGroups: (ServiceGroup & { url: string })[];
-};
-
-// TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
-  query ServiceGroupCollection {
-    serviceGroupCollection {
+  fragment ImageProps on Asset {
+    sys {
+      id
+    }
+    contentType
+    title
+    description
+    url
+    width
+    height
+  }
+
+  query ServiceGroupCollection($metadataID: String!) {
+    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         sys {
           id
@@ -25,16 +32,7 @@ const query = gql`
         heroImage {
           ... on HeroImage {
             imageSource {
-              ... on Asset {
-                title
-                description
-                contentType
-                fileName
-                size
-                url
-                width
-                height
-              }
+              ...ImageProps
             }
             imageTitle
             altField
@@ -45,8 +43,18 @@ const query = gql`
         subheading
         description {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+          }
         }
-        serviceEntriesCollection(limit: 10) {
+        serviceEntriesCollection(limit: 5) {
           items {
             ... on ServiceEntry {
               sys {
@@ -56,6 +64,18 @@ const query = gql`
               entryTitle
               description {
                 json
+                links {
+                  assets {
+                    block {
+                      # eslint-disable-next-line @graphql-eslint/selection-set-depth
+                      ...ImageProps
+                    }
+                    hyperlink {
+                      # eslint-disable-next-line @graphql-eslint/selection-set-depth
+                      ...ImageProps
+                    }
+                  }
+                }
               }
             }
             ... on ServiceGroup {
@@ -84,6 +104,16 @@ const query = gql`
         }
         additionalResources {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+          }
         }
         serviceListName
         pageMetadata {
@@ -101,64 +131,122 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params }) => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return ServiceGroupPageTestContent;
-  const { pageMetadataMap } = await parent();
-  const { topTierPage, serviceGroupPage } = params;
+type ServiceGroup = ExtractQueryType<
+  ServiceGroupCollectionQuery,
+  ["serviceGroupCollection", "items", number]
+>;
+
+type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
+
+type ChildServiceEntryOrGroup = ExtractQueryType<
+  ServiceGroup,
+  ["serviceEntriesCollection", "items", number]
+>;
+
+type ChildServiceEntry = Extract<ChildServiceEntryOrGroup, { __typename: "ServiceEntry" }>;
+
+type ChildServiceGroup = Extract<ChildServiceEntryOrGroup, { __typename: "ServiceGroup" }>;
+
+export type ServiceGroupPage = {
+  serviceGroup: ServiceGroup & {
+    heroImage?: ServiceGroup["heroImage"] & {
+      imageSource?: NonNullable<ServiceGroup["heroImage"]>["imageSource"] & {
+        blurhash?: string | null | undefined;
+      };
+    };
+    description?: ServiceGroup["description"] & {
+      blurhashes?: Record<string, string> | null | undefined;
+    };
+  };
+  childServiceEntries: (ChildServiceEntry & {
+    description?: ChildServiceEntry["description"] & {
+      blurhashes?: Record<string, string> | null | undefined;
+    };
+  })[];
+  childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
+  pageMetadata?: ServiceGroupMetadata;
+};
+
+export const load = async ({
+  parent,
+  params: { topTierPage, serviceGroupPage },
+  fetch,
+}): Promise<ServiceGroupPage> => {
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
+  const { pageMetadataMap, pathsToIDs } = await parent();
   // construct URL for matching later
-  const url = `/${topTierPage}/${serviceGroupPage}`;
-  // service groups can be deeply nested
-  const path = url.split("/");
-  const slug = path[path.length - 1];
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query));
-  if (data) {
-    const matchedServiceGroupsFromSlug = data?.serviceGroupCollection?.items?.filter(
-      (serviceGroup) => {
-        return serviceGroup?.pageMetadata?.slug === slug;
-      }
-    );
-    if (matchedServiceGroupsFromSlug && matchedServiceGroupsFromSlug.length > 0) {
-      let matchedPageMetadata;
-      // account for possibility that two service groups have the same ending slug
-      const matchedServiceGroup = matchedServiceGroupsFromSlug.find((group) => {
-        const serviceGroupMetadataId = group?.pageMetadata?.sys?.id || "";
-        matchedPageMetadata = pageMetadataMap.get(serviceGroupMetadataId);
-        if (matchedPageMetadata) {
-          return matchedPageMetadata.url === url;
-        }
-      });
+  const path = `/${topTierPage}/${serviceGroupPage}`;
+  fetchData: {
+    const metadataID = pathsToIDs.get(path);
+    if (!metadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) break fetchData;
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+    const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query), {
+      variables: { metadataID },
+    });
+    if (!data) break fetchData;
+    const [serviceGroup] = data?.serviceGroupCollection?.items ?? [];
+    if (!serviceGroup) break fetchData;
+    const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
+    const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
+    const descriptionBlurhashesPromise = getBlurhashMapFromRichText(serviceGroup?.description, {
+      fetch,
+    });
+    const childServiceEntriesPromises =
+      serviceGroup.serviceEntriesCollection?.items
+        .filter((item): item is ChildServiceEntry => item?.__typename === "ServiceEntry")
+        .map(async (entry) => ({
+          ...entry,
+          description: entry.description
+            ? {
+                ...entry.description,
+                blurhashes: await getBlurhashMapFromRichText(entry?.description, { fetch }),
+              }
+            : undefined,
+        })) ?? [];
+    const childServiceGroups =
+      serviceGroup.serviceEntriesCollection?.items
+        .filter((item): item is ChildServiceGroup => item?.__typename === "ServiceGroup")
+        .map((group) => {
+          const { id } = group?.pageMetadata?.sys ?? {};
+          if (!id) return group;
+          const { url } = pageMetadataMap.get(id) ?? {};
+          return { ...group, url };
+        }) ?? [];
 
-      if (matchedServiceGroup) {
-        const serviceEntries = matchedServiceGroup.serviceEntriesCollection?.items.filter(
-          (item) => item?.__typename === "ServiceEntry"
-        );
-        let serviceGroups = matchedServiceGroup.serviceEntriesCollection?.items.filter(
-          (item) => item?.__typename === "ServiceGroup"
-        ) as ServiceGroup[];
+    // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
-        serviceGroups = serviceGroups.map((serviceGroup) => {
-          const serviceGroupMetadata = pageMetadataMap.get(
-            serviceGroup?.pageMetadata?.sys.id || ""
-          );
-          return { ...serviceGroup, url: serviceGroupMetadata?.url };
-        });
-
-        return {
-          ...matchedServiceGroup,
-          pageMetadata: matchedPageMetadata,
-          serviceEntries,
-          serviceGroups,
-        } as ServiceGroupPage;
-      }
-    } else {
-      console.warn(
-        `A Service Group entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Service Group entry is not.`
-      );
-    }
+    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
+      heroImageBlurhashPromise,
+      descriptionBlurhashesPromise,
+      Promise.all(childServiceEntriesPromises),
+    ]);
+    return {
+      serviceGroup: {
+        ...serviceGroup,
+        description: serviceGroup.description
+          ? {
+              ...serviceGroup.description,
+              blurhashes: descriptionBlurhashes,
+            }
+          : undefined,
+        heroImage: serviceGroup.heroImage
+          ? {
+              ...serviceGroup.heroImage,
+              imageSource: serviceGroup.heroImage.imageSource
+                ? { ...serviceGroup.heroImage.imageSource, blurhash: heroImageBlurhash }
+                : undefined,
+            }
+          : undefined,
+      },
+      pageMetadata,
+      childServiceEntries,
+      childServiceGroups,
+    };
   }
   throw error(404);
 };

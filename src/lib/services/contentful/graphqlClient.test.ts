@@ -47,7 +47,7 @@ describe("Contentful Fetch", () => {
       expect(fetch).toHaveBeenCalledWith(
         "https://graphql.contentful.com/content/v1/spaces/SPACE_ID/environments/ENVIRONMENT",
         {
-          body: `{"query":"${query}"}`,
+          body: JSON.stringify({ query, variables: {} }),
           headers: {
             Authorization: "Bearer API_TOKEN",
             "Content-Type": "application/json",
