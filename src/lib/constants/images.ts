@@ -1,12 +1,9 @@
-import uniq from "lodash/uniq";
 import partition from "lodash/partition";
 
 export const sizeTypes = ["full-bleed", "col-12", "col-9"] as const;
 export type SizeType = (typeof sizeTypes)[number];
 
 type ScreenSize = number;
-type MobileScreenSize = number;
-type DesktopScreenSize = number;
 
 const screenSizesInit = [360, 412, 720, 960, 1024, 1280, 1366, 1440, 1920, 2560, 3840];
 export const screenSizes = [

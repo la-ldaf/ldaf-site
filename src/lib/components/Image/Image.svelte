@@ -14,7 +14,6 @@
   // Whether the image should fit its container
   export let fit = true;
   export let preserveAspectRatio = true;
-  export let fixed = false;
 
   // The size type of the image
   export let sizeType: SizeType = "full-bleed";
@@ -120,9 +119,8 @@
   let intersecting = false;
 
   $: showSources =
-    sources &&
-    (loading === "eager" ||
-      (browser && (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting)));
+    loading === "eager" ||
+    (browser && (lazyLoadingType === "native" || lazyLoadingType === "none" || intersecting));
 
   const withNoSrcProp = {};
   let srcProps = withNoSrcProp;
@@ -181,11 +179,11 @@
             {media}
             {type}
             srcset={getSrcsetAttr(srcset)}
-            sizes={fixed
-              ? `${width}px`
-              : sizeType === "full-bleed"
-              ? "100vw"
-              : getSizesAttr(sizeType)}
+            sizes={fit
+              ? sizeType === "full-bleed"
+                ? "100vw"
+                : getSizesAttr(sizeType)
+              : `${width}px`}
           />
         {/each}
       {/if}

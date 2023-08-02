@@ -16,7 +16,6 @@
   {width}
   {height}
   fit={false}
-  fixed={true}
   loading="eager"
   sources={[
     { type: "image/avif", srcset: [ldafLogoAvif, [ldafLogoAvif2x, width * 2]] },

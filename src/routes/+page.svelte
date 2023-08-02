@@ -62,6 +62,7 @@
           alt="Under construction sign swinging in the wind"
           width={underConstructionWidth}
           height={underConstructionHeight}
+          fit={false}
         />
       </div>
       <div class="grid-col-8 padding-left-4">
