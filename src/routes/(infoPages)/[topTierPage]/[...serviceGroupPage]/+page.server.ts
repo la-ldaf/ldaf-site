@@ -179,6 +179,8 @@ export const load = async ({
   fetchData: {
     const metadataID = pathsToIDs.get(path);
     if (!metadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -189,8 +191,6 @@ export const load = async ({
     if (!data) break fetchData;
     const [serviceGroup] = data?.serviceGroupCollection?.items ?? [];
     if (!serviceGroup) break fetchData;
-    const pageMetadata = pageMetadataMap.get(metadataID);
-    if (!pageMetadata) break fetchData;
     const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
     const descriptionBlurhashesPromise = getBlurhashMapFromRichText(serviceGroup?.description, {

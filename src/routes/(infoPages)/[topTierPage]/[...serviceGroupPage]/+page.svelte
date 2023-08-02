@@ -30,12 +30,12 @@
 {#if heroImage && heroImage?.imageSource?.url}
   <Image
     src={heroImage.imageSource.url}
-    sources={getSources(heroImage.imageSource.url)}
+    sources={getSources}
     blurhash={heroImage?.imageSource?.blurhash ?? undefined}
     alt={heroImage.imageSource?.description ?? "Hero image"}
     width={heroImage.imageSource?.width ?? undefined}
     height={heroImage.imageSource?.height ?? undefined}
-    fit
+    sizeType="col-9"
     loading="eager"
   />
 {/if}
@@ -44,7 +44,11 @@
   {subheading}
 </p>
 {#if description}
-  <ContentfulRichText document={description?.json} links={description?.links} />
+  <ContentfulRichText
+    document={description?.json}
+    links={description?.links}
+    imageSizeType="col-9"
+  />
 {/if}
 
 {#if childServiceEntries.length > 0 || childServiceGroups.length > 0}
@@ -92,5 +96,9 @@
 <!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
-  <ContentfulRichText document={additionalResources.json} links={additionalResources.links} />
+  <ContentfulRichText
+    document={additionalResources.json}
+    links={additionalResources.links}
+    imageSizeType="col-9"
+  />
 {/if}

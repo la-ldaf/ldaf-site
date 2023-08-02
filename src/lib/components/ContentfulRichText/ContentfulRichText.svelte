@@ -5,7 +5,14 @@
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
   import type { Links } from "./types";
-  import { linksKey, createLinksContext, blurhashesKey, type LinksContext } from "./context";
+  import {
+    linksKey,
+    createLinksContext,
+    blurhashesKey,
+    type LinksContext,
+    imageSizeTypeKey,
+  } from "./context";
+  import type { SizeType } from "$lib/constants/images";
 
   export let document: Document;
 
@@ -14,6 +21,9 @@
 
   export let blurhashes: Record<string, string> | null | undefined = undefined;
   $: setContext<Record<string, string> | null | undefined>(blurhashesKey, blurhashes);
+
+  export let imageSizeType: SizeType = "col-12";
+  $: setContext<string>(imageSizeTypeKey, imageSizeType);
 
   if (!isDocument(document)) {
     throw error(500, {

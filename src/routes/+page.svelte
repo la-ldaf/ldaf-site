@@ -44,8 +44,9 @@
     blurhash={landingImageBlurhash}
     width={landingImageWidth}
     height={landingImageHeight}
-    fit
+    sizeType="full-bleed"
     mean={landingImageMean}
+    preserveAspectRatio={false}
     style="object-position: 0 25%"
   />
   <section class="grid-container homepage-greeting maxw-tablet">

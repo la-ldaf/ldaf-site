@@ -3,7 +3,7 @@
   import { getContext } from "svelte";
   import { isAssetBlock } from "../predicates";
   import Image from "$lib/components/Image/Image.svelte";
-  import { linksKey, blurhashesKey, type LinksContext } from "../context";
+  import { linksKey, blurhashesKey, type LinksContext, imageSizeTypeKey } from "../context";
   import { getSources } from "$lib/imageServices/contentful";
   import Link from "$lib/components/Link/Link.svelte";
 
@@ -33,11 +33,11 @@
 {#if isImage}
   <Image
     src={url}
-    sources={getSources(url)}
+    sources={getSources}
     alt={link.description ?? "Unknown image"}
     width={link.width ?? undefined}
     height={link.height ?? undefined}
-    fit
+    sizeType={getContext(imageSizeTypeKey)}
     {blurhash}
   />
 {:else}

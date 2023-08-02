@@ -1,11 +1,10 @@
 export type {
   Color,
-  SrcsetDefault,
-  SrcsetWidth,
   Srcset,
   Format,
   Source,
   Sources,
+  GetSources,
   FixedImage,
   FixedSetOfImages,
 } from "./types";

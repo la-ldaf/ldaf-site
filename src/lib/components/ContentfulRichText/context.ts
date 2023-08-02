@@ -20,3 +20,5 @@ export const createLinksContext = (links: Links): LinksContext => ({
 });
 
 export const blurhashesKey = Symbol("blurhashes");
+
+export const imageSizeTypeKey = Symbol("sizeType");
