@@ -25,60 +25,58 @@
   };
 </script>
 
-<main id="main-content grid-container">
-  <div class="grid-container usa-prose margin-top-2">
-    {#if heroVideo?.videoUrl}
-      {@const { videoUrl, videoTitle, videoSubhead } = heroVideo}
-      <VideoCard
-        url={videoUrl}
-        customTitle={videoTitle}
-        customDescription={videoSubhead}
-        variation="hero"
-      />
-    {/if}
-    {#if featuredServices}
-      <ul class="service-group-list">
-        {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
-          {@const { card: cardSize, button: buttonVariant, imageLoading } = getCardSettings(index)}
-          <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
-          {#if item?.heroImage?.imageSource?.url}
-            <Card class={`usa-card--${cardSize}`}>
-              <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-              <Image
-                slot="image"
-                src={item.heroImage.imageSource.url}
-                alt={item.heroImage.imageSource.title || "Card image"}
-                sources={getSources(item.heroImage.imageSource.url)}
-                blurhash={item.heroImage.imageSource?.blurhash ?? undefined}
-                width={item.heroImage.imageSource.width ?? undefined}
-                height={item.heroImage.imageSource.height ?? undefined}
-                fit
-                loading={imageLoading}
-              />
-              <svelte:fragment slot="body">
-                {#if item.subheading}
-                  {item.subheading}
-                {/if}
-              </svelte:fragment>
-              <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
-                <Icon src={arrowIcon} size={3} />
-              </Button>
-            </Card>
-          {:else}
-            <Card class={`usa-card--${cardSize}`}>
-              <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-              <svelte:fragment slot="body">
-                {#if item.subheading}
-                  {item.subheading}
-                {/if}
-              </svelte:fragment>
-              <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
-                <Icon src={arrowIcon} size={3} />
-              </Button>
-            </Card>
-          {/if}
-        {/each}
-      </ul>
-    {/if}
-  </div>
+<main id="main-content" class="grid-container usa-prose margin-top-2">
+  {#if heroVideo?.videoUrl}
+    {@const { videoUrl, videoTitle, videoSubhead } = heroVideo}
+    <VideoCard
+      url={videoUrl}
+      customTitle={videoTitle}
+      customDescription={videoSubhead}
+      variation="hero"
+    />
+  {/if}
+  {#if featuredServices}
+    <ul class="service-group-list">
+      {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
+        {@const { card: cardSize, button: buttonVariant, imageLoading } = getCardSettings(index)}
+        <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
+        {#if item?.heroImage?.imageSource?.url}
+          <Card class={`usa-card--${cardSize}`}>
+            <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+            <Image
+              slot="image"
+              src={item.heroImage.imageSource.url}
+              alt={item.heroImage.imageSource.title || "Card image"}
+              sources={getSources(item.heroImage.imageSource.url)}
+              blurhash={item.heroImage.imageSource?.blurhash ?? undefined}
+              width={item.heroImage.imageSource.width ?? undefined}
+              height={item.heroImage.imageSource.height ?? undefined}
+              fit
+              loading={imageLoading}
+            />
+            <svelte:fragment slot="body">
+              {#if item.subheading}
+                {item.subheading}
+              {/if}
+            </svelte:fragment>
+            <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
+              <Icon src={arrowIcon} size={3} />
+            </Button>
+          </Card>
+        {:else}
+          <Card class={`usa-card--${cardSize}`}>
+            <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+            <svelte:fragment slot="body">
+              {#if item.subheading}
+                {item.subheading}
+              {/if}
+            </svelte:fragment>
+            <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
+              <Icon src={arrowIcon} size={3} />
+            </Button>
+          </Card>
+        {/if}
+      {/each}
+    </ul>
+  {/if}
 </main>
