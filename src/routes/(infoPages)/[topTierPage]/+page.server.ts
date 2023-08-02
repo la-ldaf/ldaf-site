@@ -110,48 +110,53 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
       : Promise.resolve();
 
     // Get the URLs for these features from the pageMetadataMap
-    const featuredServicesPromises = matchedTopTier.featuredServiceListCollection?.items.map(
-      async (featuredItem) => {
+    const featuredServicesPromises =
+      matchedTopTier.featuredServiceListCollection?.items.map(async (featuredItem) => {
+        if (!featuredItem) return [];
         const featuredItemMetadata = pageMetadataMap.get(featuredItem?.pageMetadata?.sys.id || "");
         const heroImageURL = featuredItem?.heroImage?.imageSource?.url;
         const heroImageBlurhash = heroImageURL && (await getBlurhash(heroImageURL, { fetch }));
-        return {
-          ...featuredItem,
-          url: featuredItemMetadata?.url,
-          heroImage: featuredItem.heroImage
-            ? {
-                ...featuredItem.heroImage,
-                imageSource: featuredItem.heroImage.imageSource
-                  ? {
-                      ...featuredItem.heroImage.imageSource,
-                      blurhash: heroImageBlurhash,
-                    }
-                  : undefined,
-              }
-            : undefined,
-        };
-      }
-    );
+        return [
+          {
+            ...featuredItem,
+            url: featuredItemMetadata?.url,
+            heroImage: featuredItem.heroImage
+              ? {
+                  ...featuredItem.heroImage,
+                  imageSource: featuredItem.heroImage.imageSource
+                    ? {
+                        ...featuredItem.heroImage.imageSource,
+                        blurhash: heroImageBlurhash,
+                      }
+                    : undefined,
+                }
+              : undefined,
+          },
+        ];
+      }) ?? [];
 
     const [heroImageBlurhash, featuredServices] = await Promise.all([
       heroImageBlurhashPromise,
-      Promise.all(featuredServicesPromises),
+      Promise.all(featuredServicesPromises).then((arr) => arr.flat()),
     ]);
 
     return {
       __typename: matchedTopTier.__typename,
-      heroImage: matchedTopTier.heroImage
-        ? {
-            ...matchedTopTier.heroImage,
-            imageSource: matchedTopTier.heroImage.imageSource
-              ? {
-                  ...matchedTopTier.heroImage.imageSource,
-                  blurhash: heroImageBlurhash,
-                }
-              : undefined,
-          }
-        : undefined,
-      topTierPage: { ...matchedTopTier, featuredServices },
+      topTierPage: {
+        ...matchedTopTier,
+        featuredServices,
+        heroImage: matchedTopTier.heroImage
+          ? {
+              ...matchedTopTier.heroImage,
+              imageSource: matchedTopTier.heroImage.imageSource
+                ? {
+                    ...matchedTopTier.heroImage.imageSource,
+                    blurhash: heroImageBlurhash,
+                  }
+                : undefined,
+            }
+          : undefined,
+      },
       pageMetadata,
     };
   }

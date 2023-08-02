@@ -31,6 +31,7 @@
       blurhash={topTierPage.heroImage.imageSource.blurhash}
       fit={true}
       preserveAspectRatio={false}
+      loading="eager"
     />
     {#if topTierPage.heroImage.fotogCredit}
       <div class="grid-container">

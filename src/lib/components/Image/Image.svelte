@@ -7,7 +7,6 @@
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
   import type { Loading, LazyLoading, Color, Sources, GetSources, Srcset } from "./types";
-  import { afterUpdate } from "svelte";
 
   export let height: number | undefined = undefined;
   export let width: number | undefined = undefined;
@@ -53,7 +52,7 @@
     const screenSizesAndSizes: [number, number][] = [];
     for (const screenSize of screenSizes) {
       const size = sizesByScreenSize[screenSize];
-      if (size <= lastSize) continue;
+      if (size === lastSize) continue;
       lastSize = size;
       screenSizesAndSizes.push([screenSize, size]);
     }
@@ -115,7 +114,12 @@
   let thisContainer: HTMLDivElement;
 
   let imageLoaded = false;
-  $: if (!src) imageLoaded = false;
+  let lastSrc = src;
+
+  $: {
+    if (!src || src !== lastSrc) imageLoaded = false;
+    lastSrc = src;
+  }
 
   let intersecting = false;
 
@@ -148,72 +152,79 @@
   const imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
 </script>
 
-<IntersectionObserver
-  target={thisContainer}
-  once={true}
-  on:intersect={() => (intersecting = true)}
-  enabled={lazyLoadingType === "intersectionObserver"}
->
-  <div
-    role="img"
-    aria-label={alt}
-    class={classNames(
-      "ldaf-img",
-      "ldaf-img__container",
-      loading === "eager" && "ldaf-img__eager",
-      className
-    )}
-    bind:this={thisContainer}
-    {...fit && preserveAspectRatio && width && height
-      ? { style: `aspect-ratio: ${width} / ${height}` }
-      : {}}
+{#key src}
+  <IntersectionObserver
+    target={thisContainer}
+    once={true}
+    on:intersect={() => (intersecting = true)}
+    enabled={lazyLoadingType === "intersectionObserver"}
   >
-    {#if loading === "lazy"}
-      <noscript>
-        <img {...imgProps} class="ldaf-img__backup-img" {src} alt="" />
-      </noscript>
-    {/if}
-    <picture>
-      {#if resolvedSources && showSources}
-        {#each resolvedSources as { media, type, srcset }}
-          <source
-            {media}
-            {type}
-            srcset={getSrcsetAttr(srcset)}
-            sizes={fit
-              ? sizeType === "full-bleed"
-                ? "100vw"
-                : getSizesAttr(sizeType)
-              : `${width}px`}
-          />
-        {/each}
+    <div
+      role="img"
+      aria-label={alt}
+      class={classNames(
+        "ldaf-img",
+        "ldaf-img__container",
+        loading === "eager" && "ldaf-img__eager",
+        className
+      )}
+      bind:this={thisContainer}
+      {...fit && preserveAspectRatio && width && height
+        ? { style: `aspect-ratio: ${width} / ${height}` }
+        : {}}
+    >
+      {#if loading === "lazy"}
+        <noscript>
+          <img {...imgProps} class="ldaf-img__backup-img" {src} alt="" />
+        </noscript>
       {/if}
-      <img
-        {...imgProps}
-        alt=""
-        class={classNames("ldaf-img__img", fit && "ldaf-img__img-fit", imageLoadClass, imageClass)}
-        on:load={() => (imageLoaded = true)}
-        {loading}
-        {decoding}
-        {...srcProps}
-      />
-    </picture>
-    {#if blurhash}
-      <canvas
-        class="ldaf-img__blur-bg"
-        width={canvasSize}
-        height={canvasSize}
-        bind:this={thisBg}
-        data-blurhash={blurhash}
-      />
-    {/if}
-    {#if mean}
-      <div
-        class="ldaf-img__color-bg"
-        style={`background-color: rgb(${Math.round(mean.r)}, ${Math.round(mean.g)}, ${Math.round(
-          mean.b
-        )});`}
-      />
-    {/if}
-  </div>
-</IntersectionObserver>
+      <picture>
+        {#if resolvedSources && showSources}
+          {#each resolvedSources as { media, type, srcset }}
+            <source
+              {media}
+              {type}
+              srcset={getSrcsetAttr(srcset)}
+              sizes={fit
+                ? sizeType === "full-bleed"
+                  ? "100vw"
+                  : getSizesAttr(sizeType)
+                : `${width}px`}
+            />
+          {/each}
+        {/if}
+        <img
+          {...imgProps}
+          alt=""
+          class={classNames(
+            "ldaf-img__img",
+            fit && "ldaf-img__img-fit",
+            imageLoadClass,
+            imageClass
+          )}
+          on:load={() => (imageLoaded = true)}
+          {loading}
+          {decoding}
+          {...srcProps}
+        />
+      </picture>
+      {#if blurhash}
+        <canvas
+          class="ldaf-img__blur-bg"
+          width={canvasSize}
+          height={canvasSize}
+          bind:this={thisBg}
+          data-blurhash={blurhash}
+        />
+      {/if}
+      {#if mean}
+        <div
+          class="ldaf-img__color-bg"
+          style={`background-color: rgb(${Math.round(mean.r)}, ${Math.round(mean.g)}, ${Math.round(
+            mean.b
+          )});`}
+        />
+      {/if}
+    </div>
+  </IntersectionObserver>
+{/key}

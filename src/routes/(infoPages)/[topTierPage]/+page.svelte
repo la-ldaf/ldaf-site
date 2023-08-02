@@ -43,7 +43,7 @@
     variation="secondary"
   />
 {/if}
-{#if featuredServices}
+{#if featuredServices && featuredServices.length > 0}
   <ul class="service-group-list">
     {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
       <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
@@ -53,10 +53,12 @@
           <Image
             slot="image"
             src={item.heroImage.imageSource.url}
-            alt={item.heroImage.imageSource.title}
-            blurhash={item.heroImage.imageSource.blurhash}
-            height={item.heroImage.imageSource.height}
-            width={item.heroImage.imageSource.width}
+            sources={getSources}
+            alt={item.heroImage.imageSource.title ?? "Hero image"}
+            blurhash={item.heroImage.imageSource.blurhash ?? undefined}
+            height={item.heroImage.imageSource.height ?? undefined}
+            width={item.heroImage.imageSource.width ?? undefined}
+            sizeType="card"
           />
           <svelte:fragment slot="body">
             {#if item.subheading}
