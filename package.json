@@ -27,7 +27,7 @@
     "gen-operations": "graphql-codegen --config codegen-operations.yml"
   },
   "devDependencies": {
-    "@algolia/client-search": "^4.17.1",
+    "@algolia/client-search": "^4.19.1",
     "@contentful/rich-text-from-markdown": "^15.16.6",
     "@contentful/rich-text-html-renderer": "^16.1.0",
     "@graphql-codegen/cli": "^4.0.1",
