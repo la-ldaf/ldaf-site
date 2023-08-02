@@ -1,6 +1,7 @@
 <script lang="ts">
   import "./DotGovBanner.scss";
-  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png";
+  import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png?w=16&imagetools";
+  import ldafLogo2x from "$lib/assets/ldaf-flat-logo-transparent.png?w=32&imagetools";
   import { url as dotGovIcon } from "$icons/icon-dot-gov";
   import { url as httpsIcon } from "$icons/icon-https";
   import Icon from "$lib/components/Icon";
@@ -21,9 +22,11 @@
             aria-hidden={!bannerExpanded}
             class="usa-banner__header-flag ldaf-logo"
             src={ldafLogo}
+            srcset={`${ldafLogo2x} 32w, ${ldafLogo} 16w`}
+            sizes="16px"
             alt="Louisiana Department of Agriculture and Forestry Logo"
             width={16}
-            height={11}
+            height={16}
           />
         </div>
         <div class="grid-col-fill tablet:grid-col-auto" aria-hidden={!bannerExpanded}>
