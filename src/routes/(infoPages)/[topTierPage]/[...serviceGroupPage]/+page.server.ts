@@ -240,15 +240,21 @@ export const load = async ({
 
     const [childEntriesDataChunks, childGroupsData] = await Promise.all([
       Promise.all(
-        childServiceEntryIDChunks.map((chunk) =>
-          client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
-            variables: { ids: chunk },
-          })
+        childServiceEntryIDChunks.flatMap((chunk) =>
+          chunk.length > 0
+            ? [
+                client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
+                  variables: { ids: chunk },
+                }),
+              ]
+            : []
         )
       ),
-      client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-        variables: { ids: childServiceGroupIDs },
-      }),
+      childServiceGroupIDs.length > 0
+        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
+            variables: { ids: childServiceGroupIDs },
+          })
+        : { serviceGroupCollection: { items: [] } },
     ]);
 
     const childServiceEntriesItems = childEntriesDataChunks
