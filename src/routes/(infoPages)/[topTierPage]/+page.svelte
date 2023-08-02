@@ -8,6 +8,8 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import VideoCard from "$lib/components/VideoCard";
+  import Image from "$lib/components/Image/Image.svelte";
+  import { getSources } from "$lib/imageServices/contentful";
 
   export let data;
   $: ({ topTierPage } = data);
@@ -48,10 +50,13 @@
       {#if item?.heroImage?.imageSource?.url}
         <Card>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-          <img
+          <Image
             slot="image"
             src={item.heroImage.imageSource.url}
             alt={item.heroImage.imageSource.title}
+            blurhash={item.heroImage.imageSource.blurhash}
+            height={item.heroImage.imageSource.height}
+            width={item.heroImage.imageSource.width}
           />
           <svelte:fragment slot="body">
             {#if item.subheading}

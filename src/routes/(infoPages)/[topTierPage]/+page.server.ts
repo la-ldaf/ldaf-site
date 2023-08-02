@@ -3,12 +3,13 @@ import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
+import { getBlurhash } from "$lib/services/blurhashes";
 
 import type { TopTierCollectionQuery } from "./$queries.generated";
 
 const query = gql`
-  query TopTierCollection {
-    topTierCollection(limit: 10) {
+  query TopTierCollection($metadataID: String!) {
+    topTierCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         __typename
         title
@@ -84,43 +85,75 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params }) => {
-  const { pageMetadataMap } = await parent();
-  const topTierSlug = params.topTierPage;
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<TopTierCollectionQuery>(printQuery(query));
-  if (data) {
-    // TODO: Possibly account for possiblity that two Top Tier pages (erroneously) have the same slug
-    const matchedTopTier = data?.topTierCollection?.items?.find(
-      (topTier) => topTier?.pageMetadata?.slug === topTierSlug
-    );
-    const matchedTopTierId = matchedTopTier?.pageMetadata?.sys?.id;
-    if (matchedTopTierId) {
-      const pageMetadata = pageMetadataMap.get(matchedTopTierId);
-      if (pageMetadata) {
-        // Get the URLs for these features from the pageMetadataMap
-        const featuredServices = matchedTopTier.featuredServiceListCollection?.items.map(
-          (featuredItem) => {
-            const featuredItemMetadata = pageMetadataMap.get(
-              featuredItem?.pageMetadata?.sys.id || ""
-            );
-            return { ...featuredItem, url: featuredItemMetadata?.url };
-          }
-        );
+export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => {
+  const { pageMetadataMap, pathsToIDs } = await parent();
+  fetchData: {
+    const metadataID = pathsToIDs.get(`/${slug}`);
+    if (!metadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) break fetchData;
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+    const data = await client.fetch<TopTierCollectionQuery>(printQuery(query), {
+      variables: { metadataID },
+    });
+    if (!data) break fetchData;
+
+    const [matchedTopTier] = data?.topTierCollection?.items ?? [];
+    if (!matchedTopTier) break fetchData;
+
+    const heroImageURL = matchedTopTier.heroImage?.imageSource?.url;
+    const heroImageBlurhashPromise = heroImageURL
+      ? getBlurhash(heroImageURL, { fetch })
+      : Promise.resolve();
+
+    // Get the URLs for these features from the pageMetadataMap
+    const featuredServicesPromises = matchedTopTier.featuredServiceListCollection?.items.map(
+      async (featuredItem) => {
+        const featuredItemMetadata = pageMetadataMap.get(featuredItem?.pageMetadata?.sys.id || "");
+        const heroImageURL = featuredItem?.heroImage?.imageSource?.url;
+        const heroImageBlurhash = heroImageURL && (await getBlurhash(heroImageURL, { fetch }));
         return {
-          __typename: matchedTopTier.__typename,
-          topTierPage: { ...matchedTopTier, featuredServices },
-          pageMetadata,
+          ...featuredItem,
+          url: featuredItemMetadata?.url,
+          heroImage: featuredItem.heroImage
+            ? {
+                ...featuredItem.heroImage,
+                imageSource: featuredItem.heroImage.imageSource
+                  ? {
+                      ...featuredItem.heroImage.imageSource,
+                      blurhash: heroImageBlurhash,
+                    }
+                  : undefined,
+              }
+            : undefined,
         };
       }
-    } else {
-      console.warn(
-        `A Top Tier entry with the slug "${topTierSlug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Top Tier entry is not.`
-      );
-    }
+    );
+
+    const [heroImageBlurhash, featuredServices] = await Promise.all([
+      heroImageBlurhashPromise,
+      Promise.all(featuredServicesPromises),
+    ]);
+
+    return {
+      __typename: matchedTopTier.__typename,
+      heroImage: matchedTopTier.heroImage
+        ? {
+            ...matchedTopTier.heroImage,
+            imageSource: matchedTopTier.heroImage.imageSource
+              ? {
+                  ...matchedTopTier.heroImage.imageSource,
+                  blurhash: heroImageBlurhash,
+                }
+              : undefined,
+          }
+        : undefined,
+      topTierPage: { ...matchedTopTier, featuredServices },
+      pageMetadata,
+    };
   }
   throw error(404);
 };

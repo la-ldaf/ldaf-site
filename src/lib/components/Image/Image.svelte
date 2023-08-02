@@ -7,6 +7,7 @@
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
   import type { Loading, LazyLoading, Color, Sources, GetSources, Srcset } from "./types";
+  import { afterUpdate } from "svelte";
 
   export let height: number | undefined = undefined;
   export let width: number | undefined = undefined;
