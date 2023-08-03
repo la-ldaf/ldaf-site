@@ -285,7 +285,7 @@ export const load = async ({
         const { id } = group.pageMetadata?.sys ?? {};
         if (!id) return [group];
         const { url } = pageMetadataMap.get(id) ?? {};
-        return { ...group, url };
+        return [{ ...group, url }];
       }) ?? [];
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
