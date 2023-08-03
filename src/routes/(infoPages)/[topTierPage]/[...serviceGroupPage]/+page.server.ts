@@ -261,35 +261,39 @@ export const load = async ({
       .map((dataChunk) => dataChunk?.serviceEntryCollection?.items ?? [])
       .flat();
 
-    const childServiceEntriesPromises =
-      childServiceEntriesItems
-        ?.filter((item): item is NonNullable<typeof item> => !!item)
-        ?.map(async (entry) => ({
-          ...entry,
-          description: entry.description
-            ? {
-                ...entry.description,
-                blurhashes: await getBlurhashMapFromRichText(entry?.description, { fetch }),
-              }
-            : undefined,
-        })) ?? [];
+    const childServiceEntriesPromise = Promise.all(
+      childServiceEntriesItems?.map(async (entry) =>
+        entry
+          ? [
+              {
+                ...entry,
+                description: entry.description
+                  ? {
+                      ...entry.description,
+                      blurhashes: await getBlurhashMapFromRichText(entry?.description, { fetch }),
+                    }
+                  : undefined,
+              },
+            ]
+          : []
+      ) ?? []
+    ).then((arr) => arr.flat());
 
     const childServiceGroups =
-      childGroupsData?.serviceGroupCollection?.items
-        ?.filter((item): item is NonNullable<typeof item> => !!item)
-        ?.map((group) => {
-          const { id } = group?.pageMetadata?.sys ?? {};
-          if (!id) return group;
-          const { url } = pageMetadataMap.get(id) ?? {};
-          return { ...group, url };
-        }) ?? [];
+      childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
+        if (!group) return [];
+        const { id } = group.pageMetadata?.sys ?? {};
+        if (!id) return [group];
+        const { url } = pageMetadataMap.get(id) ?? {};
+        return { ...group, url };
+      }) ?? [];
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
     const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
       heroImageBlurhashPromise,
       descriptionBlurhashesPromise,
-      Promise.all(childServiceEntriesPromises),
+      childServiceEntriesPromise,
     ]);
 
     return {
