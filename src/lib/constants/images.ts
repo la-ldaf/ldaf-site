@@ -1,11 +1,11 @@
 import partition from "lodash/partition";
 
-export const sizeTypes = ["full-bleed", "col-12", "col-9"] as const;
+export const sizeTypes = ["full-bleed", "col-12", "col-9", "card"] as const;
 export type SizeType = (typeof sizeTypes)[number];
 
 type ScreenSize = number;
 
-const screenSizesInit = [360, 412, 720, 960, 1024, 1280, 1366, 1440, 1920, 2560, 3840];
+const screenSizesInit = [360, 412, 640, 720, 960, 1024, 1280, 1366, 1440, 1920, 2560, 3840];
 export const screenSizes = [
   ...new Set([...screenSizesInit, ...screenSizesInit.map((n) => n * 2)]),
 ].sort((a, b) => a - b);
@@ -21,6 +21,11 @@ export const defaultWidths = [...screenSizes, ...screenSizes.map((n) => n * 2)].
   (a, b) => a - b
 );
 
+const [cardMobileScreenSizes, cardDesktopScreenSizes] = partition(screenSizes, (n) => n <= 640);
+const cardMobileSizes = Object.fromEntries(
+  cardMobileScreenSizes.map((size) => [size, size - mobilePadding - 2])
+) as Record<ScreenSize, number>;
+
 export const sizesByScreenSizeByType: Record<SizeType, Record<ScreenSize, number>> = {
   // typescript doesn't type the return value of Object.fromEntries as cleanly as it could, so the
   // "as" is necessary. we know it's safe because it's based solely on "as const" values above
@@ -32,6 +37,10 @@ export const sizesByScreenSizeByType: Record<SizeType, Record<ScreenSize, number
   "col-9": {
     ...mobileSizesInGrid,
     ...Object.fromEntries(desktopScreenSizes.map((size) => [size, 712])),
+  },
+  card: {
+    ...cardMobileSizes,
+    ...Object.fromEntries(cardDesktopScreenSizes.map((size) => [size, 240])),
   },
 };
 

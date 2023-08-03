@@ -8,6 +8,8 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import VideoCard from "$lib/components/VideoCard";
+  import Image from "$lib/components/Image/Image.svelte";
+  import { getSources } from "$lib/imageServices/contentful";
 
   export let data;
   $: ({ topTierPage } = data);
@@ -41,17 +43,22 @@
     variation="secondary"
   />
 {/if}
-{#if featuredServices}
+{#if featuredServices && featuredServices.length > 0}
   <ul class="service-group-list">
     {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
       <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
       {#if item?.heroImage?.imageSource?.url}
         <Card>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-          <img
+          <Image
             slot="image"
             src={item.heroImage.imageSource.url}
-            alt={item.heroImage.imageSource.title}
+            sources={getSources}
+            alt={item.heroImage.imageSource.title ?? "Hero image"}
+            blurhash={item.heroImage.imageSource.blurhash ?? undefined}
+            height={item.heroImage.imageSource.height ?? undefined}
+            width={item.heroImage.imageSource.width ?? undefined}
+            sizeType="card"
           />
           <svelte:fragment slot="body">
             {#if item.subheading}
