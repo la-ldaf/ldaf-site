@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { setContext } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { error } from "@sveltejs/kit";
   import { isDocument } from "$lib/components/ContentfulRichText/predicates";
+  import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
   import type { Links } from "./types";
@@ -16,9 +17,9 @@
   import type { SizeType } from "$lib/constants/images";
 
   export let document: Document;
-  export let pageMetadataMap: PageMetadataMap | undefined = undefined;
 
   export let links: Links | undefined = undefined;
+  $: pageMetadataMap = getContext<PageMetadataMap>(pageMetadataMapKey);
   $: setContext<LinksContext | undefined>(
     linksKey,
     links ? createLinksContext(links, pageMetadataMap) : links

@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { NavItemType, NavLinkType } from "$lib/components/Header/Nav";
   import type { SiteTitleType } from "$lib/components/Header/Title";
+  import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
+  import { setContext } from "svelte";
   import { navigating } from "$app/stores";
   import { page } from "$app/stores";
   import "../app.scss";
@@ -10,13 +12,12 @@
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
+  import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
 
   export let data;
-  const {
-    navItems,
-    secondaryNavItems,
-    siteTitle,
-  }: { navItems: NavItemType[]; secondaryNavItems: NavLinkType[]; siteTitle: SiteTitleType } = data;
+  $: ({ navItems, secondaryNavItems, siteTitle, pageMetadataMap } = data);
+
+  $: setContext<PageMetadataMap>(pageMetadataMapKey, pageMetadataMap);
 
   // Update the active nav item based on the current path.
   let activeNavItemIndex = -1;

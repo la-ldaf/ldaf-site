@@ -60,7 +60,6 @@
     document={description?.json}
     links={description?.links}
     imageSizeType="col-9"
-    {pageMetadataMap}
   />
 {/if}
 
@@ -76,7 +75,6 @@
           document={item?.description?.json}
           links={item?.description?.links}
           blurhashes={item?.description?.blurhashes}
-          {pageMetadataMap}
         />
         {#if item.serviceCtaCollection}
           {#each item.serviceCtaCollection.items as ctaItem}
@@ -84,7 +82,6 @@
               <ContentfulRichText
                 document={ctaItem?.callToActionDestination?.json}
                 links={ctaItem?.callToActionDestination?.links}
-                {pageMetadataMap}
               />
             </span>
           {/each}
@@ -136,6 +133,5 @@
     document={additionalResources.json}
     links={additionalResources.links}
     imageSizeType="col-9"
-    {pageMetadataMap}
   />
 {/if}
