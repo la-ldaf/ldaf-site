@@ -36,13 +36,14 @@
     />
   {/if}
   {#if featuredServices}
+    <!-- TODO: [LDAF-370] Set up a <CardGroup/> component to handle layout. -->
     <ul class="service-group-list">
       {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
         {@const { card: cardSize, button: buttonVariant, imageLoading } = getCardSettings(index)}
         <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
         {#if item?.heroImage?.imageSource?.url}
           <Card class={`usa-card--${cardSize}`}>
-            <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+            <h2 class="usa-card__heading" slot="header">{item.title}</h2>
             <!-- TODO: After merging #348, set Image sizeType="card" -->
             <Image
               slot="image"
@@ -66,7 +67,7 @@
           </Card>
         {:else}
           <Card class={`usa-card--${cardSize}`}>
-            <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+            <h2 class="usa-card__heading" slot="header">{item.title}</h2>
             <svelte:fragment slot="body">
               {#if item.subheading}
                 {item.subheading}

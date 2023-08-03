@@ -69,7 +69,7 @@
       />
     </div>
     <div class="ldaf-video-info">
-      <!-- TODO: Support different heading level for hero variation. -->
+      <!-- TODO: [LDAF-369] Support different heading level for hero variation. -->
       {#if title}
         <h3 class="ldaf-video-title">{title}</h3>
       {/if}
