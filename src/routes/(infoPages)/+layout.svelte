@@ -1,8 +1,11 @@
 <!-- Shared layout for all informative pages (Top Tiers, Service Groups, Offices, Boards/Commissions)-->
 <script lang="ts">
+  import "./layout.scss";
   import { page } from "$app/stores";
   import Breadcrumbs from "$lib/components/Breadcrumbs";
   import SideNav from "$lib/components/SideNav";
+  import Image from "$lib/components/Image";
+  import { getSources } from "$lib/imageServices/contentful";
 
   $: ({ pathname } = $page.url);
   $: ({ pageMetadata, sideNavMap, __typename, topTierPage } = $page.data);
@@ -16,20 +19,21 @@
 </div>
 <!-- Top Tier pages have a slightly different layout, with a hero image and title above the rest of the layout. -->
 {#if __typename === "TopTier"}
-  {#if topTierPage?.heroImage}
-    <!-- TODO: Update this to use a proper Hero/Image Component
-       (pending merge of https://github.com/la-ldaf/ldaf-site/pull/279) -->
-    <div
-      style={`
-        background-image:url(${topTierPage.heroImage?.imageSource?.url});
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        height: 33vh;
-        width: 100%;
-      `}
+  {#if topTierPage?.heroImage?.imageSource}
+    <Image
+      class="top-tier-page-hero-image"
+      src={topTierPage.heroImage.imageSource.url}
+      alt={topTierPage.heroImage.imageSource.description}
+      sources={getSources}
+      width={topTierPage.heroImage.imageSource.width}
+      height={topTierPage.heroImage.imageSource.height}
+      sizeType="full-bleed"
+      blurhash={topTierPage.heroImage.imageSource.blurhash}
+      fit={true}
+      preserveAspectRatio={false}
+      loading="eager"
     />
-    {#if topTierPage.heroImage?.fotogCredit}
+    {#if topTierPage.heroImage.fotogCredit}
       <div class="grid-container">
         <p class="font-sans-3xs text-base-dark">
           Photo credit: {topTierPage.heroImage.fotogCredit}
