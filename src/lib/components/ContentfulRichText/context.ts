@@ -1,6 +1,6 @@
 import type { Links, LinksContext } from "./types";
 export type { LinksContext };
-import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 export const linksKey = Symbol("contentfulRichTextLinks");
 

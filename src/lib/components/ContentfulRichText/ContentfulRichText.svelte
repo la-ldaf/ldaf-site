@@ -5,7 +5,7 @@
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
   import type { Links } from "./types";
-  import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
+  import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
   import {
     linksKey,
     createLinksContext,

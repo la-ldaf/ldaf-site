@@ -1,5 +1,5 @@
 import type { Asset, Entry, ImageWrapper, Contact } from "$lib/services/contentful/schema";
-import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 export const renderableAssetBlockRequiredKeys = [
   "url",

@@ -8,7 +8,7 @@ import secondaryNavTestContent from "./__tests__/SecondaryNavTestContent";
 
 import type { HeaderMainMenuQuery } from "./$queries.generated";
 import type { NavLinkType, NavMenuType } from "./types";
-import type { PageMetadataMap } from "../../../../routes/loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const headerMainMenuQuery = gql`
   query HeaderMainMenu {

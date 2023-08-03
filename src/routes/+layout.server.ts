@@ -1,4 +1,4 @@
-import { loadPageMetadataMap } from "./loadPageMetadataMap";
+import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
 import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";

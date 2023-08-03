@@ -16,7 +16,7 @@ import type { ExtractQueryType } from "$lib/util/types";
 import chunks from "$lib/util/chunks";
 import imagePropsFragment from "$lib/fragments/imageProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
-import type { PageMetadataMap } from "../../../loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const baseQuery = gql`
   ${imagePropsFragment}
