@@ -13,6 +13,14 @@
     font-size: initial;
   }
 
+  // Force title to render the same as other pages when we wrap in an <h1> on
+  //   the homepage.
+  .ldaf-header-homepage-heading {
+    display: inherit;
+    font-size: inherit;
+    margin: inherit;
+  }
+
   .ldaf-name__compact,
   .ldaf-name__wide,
   .ldaf-commissioner__wide {
