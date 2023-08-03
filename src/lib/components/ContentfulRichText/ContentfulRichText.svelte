@@ -15,10 +15,7 @@
   } from "./context";
   import type { SizeType } from "$lib/constants/images";
 
-  // We support "unknown" here because we always check if we've received a document type, and the
-  // type of the rich text JSON returned from Contentful (which is auto-generated based on the
-  // schema) is always "unknown"
-  export let document: Document | unknown;
+  export let document: Document;
   export let pageMetadataMap: PageMetadataMap | undefined = undefined;
 
   export let links: Links | undefined = undefined;
