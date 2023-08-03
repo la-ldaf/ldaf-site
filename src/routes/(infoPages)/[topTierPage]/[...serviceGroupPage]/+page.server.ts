@@ -276,9 +276,12 @@ export const load = async ({
     ]);
 
     const childServiceEntriesItems = inOrder(
-      childEntriesDataChunks
-        .map((dataChunk) => dataChunk?.serviceEntryCollection?.items ?? [])
-        .flat(),
+      childEntriesDataChunks.flatMap(
+        (dataChunk) =>
+          dataChunk?.serviceEntryCollection?.items.filter(
+            (item): item is NonNullable<typeof item> => !!item
+          ) ?? []
+      ),
       (item) => item?.sys?.id,
       childServiceEntryIDs
     );
