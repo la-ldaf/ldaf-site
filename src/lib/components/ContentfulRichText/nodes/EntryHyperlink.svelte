@@ -10,15 +10,12 @@
   if (!isEntryHyperlink(node)) {
     throw new Error("node is not an entry hyperlink");
   }
-
   let entryHyperlink: EntryHyperlink = node;
-  // console.log("NODE", JSON.stringify(node, null, 2));
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for entry hyperlink");
   const { id: entryId } = entryHyperlink.data.target.sys;
 
-  // console.log("ID", entryId);
   const entry = linksContext.linksEntriesMaps.hyperlink.get(entryId);
 
   let entryMetadata;
@@ -26,7 +23,6 @@
     entryMetadata = linksContext.pageMetadataMap.get(entryId);
     if (!entryMetadata)
       throw new Error(`the entry asset ${entryId} was not found in the pageMetadataMap`);
-    // const { url } = entryMetadata;
   }
 </script>
 
@@ -36,4 +32,6 @@
   >
 {:else if entry?.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entry]} />
+{:else}
+  <p>Entry hyperlink of type {entry?.__typename} not supported</p>
 {/if}

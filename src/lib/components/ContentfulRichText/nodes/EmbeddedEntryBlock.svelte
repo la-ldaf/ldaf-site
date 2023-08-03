@@ -7,17 +7,15 @@
   import ContactCard from "$lib/components/ContactCard";
   import Error from "../../../../routes/+error.svelte";
 
-  let entry: EntryLinkBlock;
   if (!isEntryBlock(node)) {
     throw new Error("Node is not an embedded entry block");
   }
-  entry = node;
+  let entry: EntryLinkBlock = node;
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for embedded entry block");
 
-  const { id: entryId } = entry.data.target.sys;
-  // console.log("entryid", entryId);
+  const entryId = entry.data.target.sys.id;
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
 

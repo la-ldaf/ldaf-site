@@ -1,4 +1,5 @@
 import type { Asset } from "$lib/services/contentful/schema";
+import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
 
 export const renderableBlockRequiredKeys = [
   "url",
@@ -33,6 +34,7 @@ export type Links = {
 export type LinksMap<T extends RenderableBlock | RenderableHyperlink> = Map<string, T>;
 
 export type LinksContext = {
+  pageMetadataMap: PageMetadataMap;
   links: Links;
   linksAssetsMaps: {
     block: LinksMap<RenderableBlock>;

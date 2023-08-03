@@ -12,7 +12,7 @@
     throw new Error("node is not an asset hyperlink");
   }
   assetHyperlink = node;
-  // console.log("node", JSON.stringify(node, null, 2));
+
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for asset hyperlink");
 
