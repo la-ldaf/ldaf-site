@@ -6,7 +6,6 @@
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
   import Image from "$lib/components/Image/Image.svelte";
-  import Error from "../../../../routes/+error.svelte";
 
   export let node: NodeType;
   if (!isEntryBlock(node)) {
