@@ -44,7 +44,6 @@
         {#if item?.heroImage?.imageSource?.url}
           <Card class={`usa-card--${cardSize}`}>
             <h2 class="usa-card__heading" slot="header">{item.title}</h2>
-            <!-- TODO: After merging #348, set Image sizeType="card" -->
             <Image
               slot="image"
               src={item.heroImage.imageSource.url}
