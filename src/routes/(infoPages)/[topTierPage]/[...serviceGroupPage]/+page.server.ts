@@ -25,6 +25,55 @@ const query = gql`
     height
   }
 
+  fragment EntryProps on Entry {
+    __typename
+    ... on PageMetadata {
+      sys {
+        id
+      }
+    }
+
+    ... on ImageWrapper {
+      sys {
+        id
+      }
+      __typename
+      internalTitle
+      altText
+      linkedImage {
+        title
+        description
+        contentType
+        fileName
+        size
+        url
+        width
+        height
+      }
+      imageCategory {
+        categoryName
+        categoryDescription
+      }
+    }
+    ... on Contact {
+      sys {
+        id
+      }
+      __typename
+      entityName
+      phoneExt
+      email
+      # location {
+      #   name
+      #   streetAddress1
+      #   streetAddress2
+      #   city
+      #   state
+      #   zip
+      # }
+    }
+  }
+  # 1L569xrvKtGUGBM7Jlwcah
   query ServiceGroupCollection($metadataID: String!) {
     serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
@@ -66,6 +115,9 @@ const query = gql`
                   email
                 }
               }
+              hyperlink {
+                ...EntryProps
+              }
             }
           }
         }
@@ -93,6 +145,14 @@ const query = gql`
                       ...ImageProps
                     }
                   }
+                  entries {
+                    block {
+                      ...EntryProps
+                    }
+                    hyperlink {
+                      ...EntryProps
+                    }
+                  }
                 }
               }
               serviceCtaCollection {
@@ -106,6 +166,14 @@ const query = gql`
                         }
                         hyperlink {
                           ...ImageProps
+                        }
+                      }
+                      entries {
+                        block {
+                          ...EntryProps
+                        }
+                        hyperlink {
+                          ...EntryProps
                         }
                       }
                     }
@@ -158,6 +226,22 @@ const query = gql`
               }
               hyperlink {
                 ...ImageProps
+              }
+            }
+            entries {
+              block {
+                __typename
+                ... on Contact {
+                  sys {
+                    id
+                  }
+                  entityName
+                  phone
+                  email
+                }
+              }
+              hyperlink {
+                ...EntryProps
               }
             }
           }
@@ -222,10 +306,12 @@ export const load = async ({
 }): Promise<ServiceGroupPage> => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
+  console.clear();
   // construct URL for matching later
   const path = `/${topTierPage}/${serviceGroupPage}`;
   fetchData: {
     const metadataID = pathsToIDs.get(path);
+    console.log(`metadataID: ${metadataID}`);
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
@@ -265,7 +351,6 @@ export const load = async ({
           const { url } = pageMetadataMap.get(id) ?? {};
           return { ...group, url };
         }) ?? [];
-
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
     const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
@@ -273,7 +358,9 @@ export const load = async ({
       descriptionBlurhashesPromise,
       Promise.all(childServiceEntriesPromises),
     ]);
-    return {
+    // console.log("DESCRIPTION LINKS", JSON.stringify(serviceGroup.description?.links, null, 2));
+    console.log("DESCRIPTION LINKS", Object.keys(serviceGroup.description?.links, null, 2));
+    const pageData = {
       serviceGroup: {
         ...serviceGroup,
         description: serviceGroup.description
@@ -296,6 +383,7 @@ export const load = async ({
       childServiceEntries,
       childServiceGroups,
     };
+    return pageData;
   }
   throw error(404);
 };

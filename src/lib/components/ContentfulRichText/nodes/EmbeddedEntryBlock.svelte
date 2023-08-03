@@ -17,6 +17,7 @@
   if (!linksContext) throw new Error("no context was provided for embedded entry block");
 
   const { id: entryId } = entry.data.target.sys;
+  // console.log("entryid", entryId);
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
 
@@ -33,4 +34,6 @@
 
 {#if entryBlock.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entryBlock]} />
+{:else}
+  <p>{`Entry block of type ${entryBlock.__typename} is not supported.`}</p>
 {/if}
