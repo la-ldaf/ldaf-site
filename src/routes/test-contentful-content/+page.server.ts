@@ -5,20 +5,11 @@ import getContentfulClient from "$lib/services/contentful";
 import { getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 import { markdownDocument } from "$lib/components/ContentfulRichText/__tests__/documents";
 import type { Document } from "@contentful/rich-text-types";
+import imagePropsFragment from "$lib/fragments/imageProps";
 import type { EntryQuery } from "./$queries.generated";
 
 const query = gql`
-  fragment ImageProps on Asset {
-    sys {
-      id
-    }
-    contentType
-    title
-    description
-    url
-    width
-    height
-  }
+  ${imagePropsFragment}
 
   query Entry {
     testRichText(id: "V7ibT9I8Vg99iKsDgLhsK") {
