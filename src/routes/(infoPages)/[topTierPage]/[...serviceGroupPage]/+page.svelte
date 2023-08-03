@@ -12,7 +12,6 @@
   import { afterUpdate } from "svelte";
 
   export let data;
-  console.log("here");
   $: ({
     serviceGroup: {
       title,
@@ -27,16 +26,13 @@
     childServiceEntries,
     childServiceGroups,
   } = data);
-  $: console.log("description");
-  // $: console.log(data);
-  // $: console.log("serviceEntries", JSON.stringify(childServiceEntries[1], null, 2));
 
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
     // We must manually add the required classes to achieve the desired styles.
-    // This wasn't always getting applied in `onMount`, so making sure it doesn't
-    // Happen prematurely by using `afterUpdate` instead
+    // This wasn't always getting applied in `onMount`, so we're making sure it doesn't
+    // happen prematurely by using `afterUpdate` instead.
     document
       .querySelectorAll(".service-entry-CTA p > a")
       .forEach((linkEl) => linkEl.classList.add("usa-button"));
@@ -95,7 +91,6 @@
 
           <!-- Don't accidentally show an empty contact card (as encountered on /about/contact/complaints) -->
           {#if item.contactInformationCollection && item.contactInformationCollection.items.filter((item) => !!item).length > 0}
-            {console.log(item.contactInformationCollection)}
             <ContactCard
               address={undefined}
               contacts={item.contactInformationCollection?.items}

@@ -73,7 +73,6 @@ const query = gql`
       # }
     }
   }
-  # 1L569xrvKtGUGBM7Jlwcah
   query ServiceGroupCollection($metadataID: String!) {
     serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
@@ -306,12 +305,10 @@ export const load = async ({
 }): Promise<ServiceGroupPage> => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
-  console.clear();
   // construct URL for matching later
   const path = `/${topTierPage}/${serviceGroupPage}`;
   fetchData: {
     const metadataID = pathsToIDs.get(path);
-    console.log(`metadataID: ${metadataID}`);
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
@@ -351,6 +348,7 @@ export const load = async ({
           const { url } = pageMetadataMap.get(id) ?? {};
           return { ...group, url };
         }) ?? [];
+
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
     const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
@@ -358,8 +356,6 @@ export const load = async ({
       descriptionBlurhashesPromise,
       Promise.all(childServiceEntriesPromises),
     ]);
-    // console.log("DESCRIPTION LINKS", JSON.stringify(serviceGroup.description?.links, null, 2));
-    console.log("DESCRIPTION LINKS", Object.keys(serviceGroup.description?.links, null, 2));
     const pageData = {
       serviceGroup: {
         ...serviceGroup,
