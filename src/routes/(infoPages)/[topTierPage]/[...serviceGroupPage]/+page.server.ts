@@ -204,6 +204,9 @@ const childServiceGroupsQuery = gql`
   query ServiceGroupChildGroups($ids: [String]!) {
     serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }) {
       items {
+        sys {
+          id
+        }
         pageMetadata {
           sys {
             id
@@ -263,6 +266,18 @@ export type ServiceGroupPage = {
   pageMetadataMap?: PageMetadataMap;
 };
 
+const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
+  if (order.length !== items.length) {
+    throw new Error("ID order array does not match the provided items");
+  }
+  const ids = items.map(fn);
+  const record = Object.fromEntries(ids.map((id, i) => [id, items[i]]));
+  if (!order.every((id) => record[id])) {
+    throw new Error("ID order array does not match the provided items");
+  }
+  return order.map((id) => record[id]);
+};
+
 export const load = async ({
   parent,
   params: { topTierPage, serviceGroupPage },
@@ -288,11 +303,14 @@ export const load = async ({
     if (!baseData) break fetchData;
     const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];
     if (!serviceGroup) break fetchData;
+
     const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
-    const descriptionBlurhashesPromise = getBlurhashMapFromRichText(serviceGroup?.description, {
-      fetch,
-    });
+    const descriptionBlurhashesPromise =
+      serviceGroup.description &&
+      getBlurhashMapFromRichText(serviceGroup.description, {
+        fetch,
+      });
 
     const childServiceEntryIDs =
       serviceGroup.serviceEntriesCollection?.items
@@ -325,9 +343,13 @@ export const load = async ({
         : { serviceGroupCollection: { items: [] } },
     ]);
 
-    const childServiceEntriesItems = childEntriesDataChunks
-      .map((dataChunk) => dataChunk?.serviceEntryCollection?.items ?? [])
-      .flat();
+    const childServiceEntriesItems = inOrder(
+      childEntriesDataChunks
+        .map((dataChunk) => dataChunk?.serviceEntryCollection?.items ?? [])
+        .flat(),
+      (item) => item?.sys?.id,
+      childServiceEntryIDs
+    );
 
     const childServiceEntriesPromise = Promise.all(
       childServiceEntriesItems?.map(async (entry) =>
@@ -347,14 +369,17 @@ export const load = async ({
       ) ?? []
     ).then((arr) => arr.flat());
 
-    const childServiceGroups =
+    const childServiceGroups = inOrder(
       childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
         if (!group) return [];
         const { id } = group.pageMetadata?.sys ?? {};
         if (!id) return [group];
         const { url } = pageMetadataMap.get(id) ?? {};
-        return { ...group, url };
-      }) ?? [];
+        return [{ ...group, url }];
+      }) ?? [],
+      (item) => item?.sys?.id,
+      childServiceGroupIDs
+    );
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
