@@ -15,7 +15,6 @@
   alt="Louisiana Department of Agriculture and Forestry Home"
   {width}
   {height}
-  fit={false}
   loading="eager"
   sources={[
     { type: "image/avif", srcset: [ldafLogoAvif, [ldafLogoAvif2x, width * 2]] },

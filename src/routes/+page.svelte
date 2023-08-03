@@ -53,7 +53,6 @@
               blurhash={item.heroImage.imageSource?.blurhash ?? undefined}
               width={item.heroImage.imageSource.width ?? undefined}
               height={item.heroImage.imageSource.height ?? undefined}
-              fit
               sizeType="card"
               loading={imageLoading}
             />
