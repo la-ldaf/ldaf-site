@@ -5,6 +5,7 @@
   import { linksKey, type LinksContext } from "../context";
   import { isEntryHyperlink } from "../predicates";
   import ContactCard from "$lib/components/ContactCard";
+  import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 
   export let node: NodeType;
   if (!isEntryHyperlink(node)) {
@@ -14,15 +15,16 @@
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for entry hyperlink");
-  const { id: entryId } = entryHyperlink.data.target.sys;
+  const { id: entryID } = entryHyperlink.data.target.sys;
 
-  const entry = linksContext.linksEntriesMaps.hyperlink.get(entryId);
+  const entry = linksContext.linksEntriesMaps.hyperlink.get(entryID);
 
-  let entryMetadata;
+  let entryMetadata: PageMetadataMapItem;
   if (entry?.__typename === "PageMetadata") {
-    entryMetadata = linksContext.pageMetadataMap.get(entryId);
-    if (!entryMetadata)
-      throw new Error(`the entry asset ${entryId} was not found in the pageMetadataMap`);
+    const entryMetadata = linksContext.pageMetadataMap.get(entryID);
+    if (!entryMetadata) {
+      throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
+    }
   }
 </script>
 

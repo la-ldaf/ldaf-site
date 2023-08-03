@@ -34,31 +34,37 @@ export type RenderableEntryBlock = { sys: Pick<Entry["sys"], "id">; __typename: 
 > &
   Partial<Pick<Contact, (typeof renderableEntryBlockContactKeys)[number]>>;
 
-export type RenderableHyperlink = RenderableAssetBlock;
+export type RenderableAssetHyperlink = RenderableAssetBlock;
+export type RenderableEntryHyperlink = RenderableEntryBlock;
 
 export type Links = {
   assets: {
     block?: (RenderableAssetBlock | null)[];
-    hyperlink?: (RenderableHyperlink | null)[];
+    hyperlink?: (RenderableAssetHyperlink | null)[];
   };
   entries: {
     block?: (RenderableEntryBlock | null)[];
-    hyperlink?: (RenderableHyperlink | null)[];
+    hyperlink?: (RenderableEntryHyperlink | null)[];
   };
 };
 
-export type LinksMap<T extends RenderableAssetBlock | RenderableEntryBlock | RenderableHyperlink> =
-  Map<string, T>;
+export type LinksMap<
+  T extends
+    | RenderableAssetBlock
+    | RenderableAssetHyperlink
+    | RenderableEntryBlock
+    | RenderableEntryHyperlink
+> = Map<string, T>;
 
 export type LinksContext = {
   pageMetadataMap: PageMetadataMap;
   links: Links;
   linksAssetsMaps: {
     block: LinksMap<RenderableAssetBlock>;
-    hyperlink: LinksMap<RenderableHyperlink>;
+    hyperlink: LinksMap<RenderableAssetHyperlink>;
   };
   linksEntriesMaps: {
     block: LinksMap<RenderableEntryBlock>;
-    hyperlink: LinksMap<RenderableHyperlink>;
+    hyperlink: LinksMap<RenderableEntryHyperlink>;
   };
 };
