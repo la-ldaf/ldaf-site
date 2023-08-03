@@ -1,4 +1,4 @@
-import type { GetSources } from "$lib/components/Image";
+import type { GetSources, Source } from "$lib/components/Image";
 import { defaultWidths, formats, quality } from "$lib/constants/images";
 
 const getURL = (url: string, format?: string, size?: number) =>
@@ -23,6 +23,12 @@ export const getSources: GetSources = (
     const shortFormat = format.slice("image/".length).replace(/^jpeg$/, "jpg");
     const fallback = getURL(url, shortFormat);
 
+    const includeFallback =
+      shortFormat !== "avif" ||
+      !srcWidth ||
+      !heightProportion ||
+      srcWidth * (srcWidth * heightProportion) <= maxAvifPixels;
+
     const filteredWidths =
       shortFormat === "avif" && heightProportion
         ? widths.filter((width) => {
@@ -32,15 +38,14 @@ export const getSources: GetSources = (
           })
         : widths;
 
+    const srcsetEntries = filteredWidths.map((width): [string, number] => [
+      getURL(url, shortFormat, width),
+      width,
+    ]);
+
     return {
       type: format,
-      srcset: [
-        fallback,
-        ...filteredWidths.map((width): [string, number] => [
-          getURL(url, shortFormat, width),
-          width,
-        ]),
-      ],
-    };
+      srcset: includeFallback ? [fallback, ...srcsetEntries] : srcsetEntries,
+    } satisfies Source;
   });
 };
