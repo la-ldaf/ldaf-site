@@ -21,17 +21,27 @@
 
   /*
    * TODO: Add support for the other types of entries that can be an "embedded-entry-block":
-   *    - Image wrapper
+   *    - Image wrapper (currently on `/food/local` under "Local Strawberries" service group )
    *    - Video Wrapper
    *    - Location
    */
-  if (entryBlock.__typename !== "Contact") {
-    throw new Error(`Entry block of type ${entryBlock.__typename} is not supported.`);
-  }
+  // if (entryBlock?.__typename !== "Contact") {
+  //   throw new Error(`Entry block of type ${entryBlock?.__typename} is not supported.`);
+  // }
 </script>
 
-{#if entryBlock.__typename === "Contact"}
+{#if entryBlock?.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entryBlock]} />
 {:else}
-  <p>{`Entry block of type ${entryBlock.__typename} is not supported.`}</p>
+  <span
+    >Entry block of type
+    <pre>{entryBlock.__typename}</pre>
+    is not supported
+  </span>
 {/if}
+
+<style>
+  pre {
+    display: inline-block;
+  }
+</style>
