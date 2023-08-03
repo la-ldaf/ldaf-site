@@ -22,7 +22,7 @@ describe("Header", () => {
   it("opens nav on menu button click and closes it on close button click", async () => {
     render(Header, {
       props: {
-        navItems: [{ id: "1", link: "/", name: "test" }],
+        primaryNavItems: [{ id: "1", link: "/", name: "test" }],
         secondaryNavItems: [{ id: "1", link: "/", name: "test" }],
         siteTitle: {
           wideTitleRow1: "test",

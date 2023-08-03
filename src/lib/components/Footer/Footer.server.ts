@@ -1,0 +1,106 @@
+import gql from "graphql-tag";
+import { print as printQuery } from "graphql";
+
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import getContentfulClient from "$lib/services/contentful";
+import { footerNavTestContent } from "./__tests__/FooterTestContent";
+
+import type { FooterNavQuery } from "./$queries.generated";
+import type { NavLinkType, NavMenuType } from "$lib/components/Header/Nav/types";
+import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
+
+const footerNavQuery = gql`
+  query FooterNav {
+    menuCollection(limit: 1, where: { menuType: "Footer Menu" }) {
+      items {
+        childrenCollection(limit: 5) {
+          items {
+            ... on Menu {
+              __typename
+              sys {
+                id
+              }
+              title
+              menuType
+              childrenCollection(limit: 10) {
+                items {
+                  ... on MenuItem {
+                    __typename
+                    sys {
+                      id
+                    }
+                    title
+                    internalLink {
+                      ... on PageMetadata {
+                        sys {
+                          # eslint-disable-next-line @graphql-eslint/selection-set-depth
+                          id
+                        }
+                      }
+                    }
+                    externalLink
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const loadFooterNav = async (pageMetadataMap: PageMetadataMap): Promise<NavMenuType[]> => {
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return footerNavTestContent;
+  const footerMenu: NavMenuType[] = [];
+  const client = getContentfulClient({
+    spaceID: CONTENTFUL_SPACE_ID,
+    token: CONTENTFUL_DELIVERY_API_TOKEN,
+  });
+  const data = await client.fetch<FooterNavQuery>(printQuery(footerNavQuery));
+  if (data?.menuCollection?.items?.length === 1) {
+    const subMenus = data.menuCollection.items[0]?.childrenCollection?.items;
+    if (subMenus) {
+      subMenus.forEach((subMenu) => {
+        const footerSubMenu: NavLinkType[] = [];
+        if (
+          subMenu &&
+          subMenu.__typename === "Menu" &&
+          subMenu.menuType === "Footer SubMenu" &&
+          subMenu.title
+        ) {
+          const subMenuItems = subMenu.childrenCollection?.items;
+          if (subMenuItems) {
+            subMenuItems.forEach((item) => {
+              if (
+                item &&
+                item.__typename === "MenuItem" &&
+                item.title &&
+                (item.internalLink || item.externalLink)
+              ) {
+                let link;
+                if (item.internalLink?.sys?.id) {
+                  link = pageMetadataMap.get(item.internalLink.sys.id)?.url;
+                } else if (item.externalLink) {
+                  link = item.externalLink;
+                }
+                link = link ?? "/";
+                footerSubMenu.push({
+                  id: item.sys.id,
+                  name: item.title,
+                  link,
+                });
+              }
+            });
+          }
+          footerMenu.push({
+            id: subMenu.sys.id,
+            name: subMenu.title,
+            children: footerSubMenu,
+          });
+        }
+      });
+    }
+  }
+  return footerMenu;
+};

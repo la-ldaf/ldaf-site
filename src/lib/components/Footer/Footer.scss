@@ -1,0 +1,22 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+.ldaf-footer {
+  position: sticky;
+  top: 100vh;
+
+  .ldaf-footer__primary-section {
+    background-color: $primary-dark;
+    .ldaf-footer__primary-link {
+      color: $accent-warm;
+    }
+    .ldaf-footer__secondary-link a {
+      color: $white;
+    }
+  }
+
+  .ldaf-footer__secondary-section {
+    background-color: $primary-darkest;
+  }
+}
