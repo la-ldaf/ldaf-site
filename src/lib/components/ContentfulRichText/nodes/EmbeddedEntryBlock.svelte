@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
-  import { linksKey, type LinksContext } from "../context";
+  import { linksKey, type LinksContext, imageSizeTypeKey } from "../context";
   import { isEntryBlock } from "../predicates";
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
@@ -38,6 +38,7 @@
     alt={entryBlock.linkedImage?.description ?? "Hero image"}
     width={entryBlock.linkedImage?.width ?? undefined}
     height={entryBlock.linkedImage?.height ?? undefined}
+    sizeType={getContext(imageSizeTypeKey)}
   />
 {:else}
   <span
