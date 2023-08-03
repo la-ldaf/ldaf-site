@@ -66,60 +66,61 @@
 
 {#if childServiceEntries.length > 0 || childServiceGroups.length > 0}
   <h2>{serviceListName}</h2>
+{/if}
 
-  {#if childServiceEntries.length > 0}
-    <Accordion multiselectable bordered>
-      {#each childServiceEntries as item}
-        <AccordionItem title={item?.entryTitle} id={item.sys.id}>
-          <ContentfulRichText
-            document={item?.description?.json}
-            links={item?.description?.links}
-            blurhashes={item?.description?.blurhashes}
-            {pageMetadataMap}
+{#if childServiceEntries.length > 0}
+  <Accordion multiselectable bordered>
+    {#each childServiceEntries as item}
+      <AccordionItem title={item?.entryTitle} id={item.sys.id}>
+        <ContentfulRichText
+          document={item?.description?.json}
+          links={item?.description?.links}
+          blurhashes={item?.description?.blurhashes}
+          {pageMetadataMap}
+        />
+        {#if item.serviceCtaCollection}
+          {#each item.serviceCtaCollection.items as ctaItem}
+            <span class="service-entry-CTA">
+              <ContentfulRichText
+                document={ctaItem?.callToActionDestination?.json}
+                links={ctaItem?.callToActionDestination?.links}
+                {pageMetadataMap}
+              />
+            </span>
+          {/each}
+        {/if}
+
+        <!-- .filter is to make sure there aren't any null 
+             contact items(caused by contacts in a draft state) -->
+        {#if (item?.contactInformationCollection?.items?.filter((item) => !!item) || []).length > 0}
+          {console.log(item.contactInformationCollection)}
+          <ContactCard
+            address={undefined}
+            contacts={item.contactInformationCollection?.items}
+            class="margin-top-4"
           />
-          {#if item.serviceCtaCollection}
-            {#each item.serviceCtaCollection.items as ctaItem}
-              <span class="service-entry-CTA">
-                <ContentfulRichText
-                  document={ctaItem?.callToActionDestination?.json}
-                  links={ctaItem?.callToActionDestination?.links}
-                  {pageMetadataMap}
-                />
-              </span>
-            {/each}
-          {/if}
+        {/if}
+      </AccordionItem>
+    {/each}
+  </Accordion>
+{/if}
 
-          <!-- .filter is to make sure there aren't any null 
-            contact items(caused by contacts in a draft state) -->
-          {#if (item?.contactInformationCollection?.items?.filter((item) => !!item) || []).length > 0}
-            <ContactCard
-              address={undefined}
-              contacts={item.contactInformationCollection?.items}
-              class="margin-top-4"
-            />
+{#if childServiceGroups.length > 0}
+  <ul class="service-group-list">
+    {#each childServiceGroups as item}
+      <Card class="service-group-card">
+        <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+        <svelte:fragment slot="body">
+          {#if item.subheading}
+            {item.subheading}
           {/if}
-        </AccordionItem>
-      {/each}
-    </Accordion>
-  {/if}
-
-  {#if childServiceGroups.length > 0}
-    <ul class="service-group-list">
-      {#each childServiceGroups as item}
-        <Card class="service-group-card">
-          <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-          <svelte:fragment slot="body">
-            {#if item.subheading}
-              {item.subheading}
-            {/if}
-          </svelte:fragment>
-          <Button slot="footer" isLink={true} href={item.url}>
-            <Icon src={arrowIcon} size={3} />
-          </Button>
-        </Card>
-      {/each}
-    </ul>
-  {/if}
+        </svelte:fragment>
+        <Button slot="footer" isLink={true} href={item.url}>
+          <Icon src={arrowIcon} size={3} />
+        </Button>
+      </Card>
+    {/each}
+  </ul>
 {/if}
 
 <div />
