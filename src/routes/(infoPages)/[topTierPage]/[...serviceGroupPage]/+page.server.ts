@@ -235,7 +235,7 @@ export const load = async ({
 
     const childServiceGroupIDs =
       serviceGroup.serviceEntriesCollection?.items
-        ?.filter((item): item is ChildServiceGroupStub => item?.__typename === "ServiceEntry")
+        ?.filter((item): item is ChildServiceGroupStub => item?.__typename === "ServiceGroup")
         ?.map(({ sys: { id } }) => id) ?? [];
 
     const [childEntriesDataChunks, childGroupsData] = await Promise.all([
