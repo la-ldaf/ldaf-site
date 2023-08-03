@@ -6,19 +6,23 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 
-import type { ServiceGroupCollectionQuery } from "./$queries.generated";
+import type {
+  ServiceGroupQuery,
+  ServiceGroupChildEntriesQuery,
+  ServiceGroupChildGroupsQuery,
+} from "./$queries.generated";
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
+import chunks from "$lib/util/chunks";
 import imagePropsFragment from "$lib/fragments/imageProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "../../../loadPageMetadataMap";
 
-// TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
-const query = gql`
+const baseQuery = gql`
   ${imagePropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroupCollection($metadataID: String!) {
+  query ServiceGroup($metadataID: String!) {
     serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         sys {
@@ -57,85 +61,18 @@ const query = gql`
             }
           }
         }
-        # TODO:  this limit needs to be higher to accommodate
-        # larger core content pages with many services.
-        # E.g. /animals/meat-poultry has 8 service entries
-        serviceEntriesCollection(limit: 8) {
+        serviceEntriesCollection(limit: 20) {
           items {
+            __typename
             ... on ServiceEntry {
               sys {
                 id
               }
-              __typename
-              entryTitle
-              description {
-                json
-                links {
-                  assets {
-                    block {
-                      ...ImageProps
-                    }
-                    hyperlink {
-                      ...ImageProps
-                    }
-                  }
-                  entries {
-                    block {
-                      ...EntryProps
-                    }
-                    hyperlink {
-                      ...EntryProps
-                    }
-                  }
-                }
-              }
-              serviceCtaCollection {
-                items {
-                  callToActionDestination {
-                    json
-                    links {
-                      assets {
-                        block {
-                          ...ImageProps
-                        }
-                        hyperlink {
-                          ...ImageProps
-                        }
-                      }
-                      entries {
-                        block {
-                          ...EntryProps
-                        }
-                        hyperlink {
-                          ...EntryProps
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              contactInformationCollection(limit: 5) {
-                items {
-                  ... on Contact {
-                    sys {
-                      id
-                    }
-                    entityName
-                    phone
-                    email
-                  }
-                }
-              }
             }
             ... on ServiceGroup {
-              __typename
-              pageMetadata {
-                sys {
-                  id
-                }
+              sys {
+                id
               }
-              title
-              subheading
             }
           }
         }
@@ -188,21 +125,122 @@ const query = gql`
   }
 `;
 
+const childServiceEntriesQuery = gql`
+  ${imagePropsFragment}
+  ${entryPropsFragment}
+
+  query ServiceGroupChildEntries($ids: [String]!) {
+    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+      items {
+        sys {
+          id
+        }
+        __typename
+        entryTitle
+        description {
+          json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
+        }
+        serviceCtaCollection {
+          items {
+            callToActionDestination {
+              json
+              links {
+                assets {
+                  block {
+                    ...ImageProps
+                  }
+                  hyperlink {
+                    ...ImageProps
+                  }
+                }
+                entries {
+                  block {
+                    ...EntryProps
+                  }
+                  hyperlink {
+                    ...EntryProps
+                  }
+                }
+              }
+            }
+          }
+        }
+        contactInformationCollection(limit: 5) {
+          items {
+            ... on Contact {
+              sys {
+                id
+              }
+              entityName
+              phone
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const childServiceGroupsQuery = gql`
+  query ServiceGroupChildGroups($ids: [String]!) {
+    serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+      items {
+        pageMetadata {
+          sys {
+            id
+          }
+        }
+        __typename
+        title
+        subheading
+      }
+    }
+  }
+`;
+
 type ServiceGroup = ExtractQueryType<
-  ServiceGroupCollectionQuery,
+  ServiceGroupQuery,
   ["serviceGroupCollection", "items", number]
 >;
 
 type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
 
-type ChildServiceEntryOrGroup = ExtractQueryType<
+type ChildServiceEntryOrGroupStub = ExtractQueryType<
   ServiceGroup,
   ["serviceEntriesCollection", "items", number]
 >;
 
-type ChildServiceEntry = Extract<ChildServiceEntryOrGroup, { __typename: "ServiceEntry" }>;
+type ChildServiceEntryStub = Extract<ChildServiceEntryOrGroupStub, { __typename: "ServiceEntry" }>;
+type ChildServiceGroupStub = Extract<ChildServiceEntryOrGroupStub, { __typename: "ServiceGroup" }>;
 
-type ChildServiceGroup = Extract<ChildServiceEntryOrGroup, { __typename: "ServiceGroup" }>;
+type ChildServiceEntry = ExtractQueryType<
+  ServiceGroupChildEntriesQuery,
+  ["serviceEntryCollection", "items", number]
+>;
+
+type ChildServiceGroup = ExtractQueryType<
+  ServiceGroupChildGroupsQuery,
+  ["serviceGroupCollection", "items", number]
+>;
 
 export type ServiceGroupPage = {
   serviceGroup: ServiceGroup & {
@@ -222,7 +260,7 @@ export type ServiceGroupPage = {
   })[];
   childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
   pageMetadata?: ServiceGroupMetadata;
-  pageMetadataMap: PageMetadataMap;
+  pageMetadataMap?: PageMetadataMap;
 };
 
 export const load = async ({
@@ -243,47 +281,90 @@ export const load = async ({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
     });
-    const data = await client.fetch<ServiceGroupCollectionQuery>(printQuery(query), {
+
+    const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
       variables: { metadataID },
     });
-    if (!data) break fetchData;
-    const [serviceGroup] = data?.serviceGroupCollection?.items ?? [];
+    if (!baseData) break fetchData;
+    const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];
     if (!serviceGroup) break fetchData;
     const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
     const descriptionBlurhashesPromise = getBlurhashMapFromRichText(serviceGroup?.description, {
       fetch,
     });
-    const childServiceEntriesPromises =
+
+    const childServiceEntryIDs =
       serviceGroup.serviceEntriesCollection?.items
-        .filter((item): item is ChildServiceEntry => item?.__typename === "ServiceEntry")
-        .map(async (entry) => ({
-          ...entry,
-          description: entry.description
-            ? {
-                ...entry.description,
-                blurhashes: await getBlurhashMapFromRichText(entry?.description, { fetch }),
-              }
-            : undefined,
-        })) ?? [];
+        ?.filter((item): item is ChildServiceEntryStub => item?.__typename === "ServiceEntry")
+        ?.map(({ sys: { id } }) => id) ?? [];
+
+    const childServiceEntryIDChunks = chunks(childServiceEntryIDs, 10);
+
+    const childServiceGroupIDs =
+      serviceGroup.serviceEntriesCollection?.items
+        ?.filter((item): item is ChildServiceGroupStub => item?.__typename === "ServiceGroup")
+        ?.map(({ sys: { id } }) => id) ?? [];
+
+    const [childEntriesDataChunks, childGroupsData] = await Promise.all([
+      Promise.all(
+        childServiceEntryIDChunks.flatMap((chunk) =>
+          chunk.length > 0
+            ? [
+                client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
+                  variables: { ids: chunk },
+                }),
+              ]
+            : []
+        )
+      ),
+      childServiceGroupIDs.length > 0
+        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
+            variables: { ids: childServiceGroupIDs },
+          })
+        : { serviceGroupCollection: { items: [] } },
+    ]);
+
+    const childServiceEntriesItems = childEntriesDataChunks
+      .map((dataChunk) => dataChunk?.serviceEntryCollection?.items ?? [])
+      .flat();
+
+    const childServiceEntriesPromise = Promise.all(
+      childServiceEntriesItems?.map(async (entry) =>
+        entry
+          ? [
+              {
+                ...entry,
+                description: entry.description
+                  ? {
+                      ...entry.description,
+                      blurhashes: await getBlurhashMapFromRichText(entry?.description, { fetch }),
+                    }
+                  : undefined,
+              },
+            ]
+          : []
+      ) ?? []
+    ).then((arr) => arr.flat());
+
     const childServiceGroups =
-      serviceGroup.serviceEntriesCollection?.items
-        .filter((item): item is ChildServiceGroup => item?.__typename === "ServiceGroup")
-        .map((group) => {
-          const { id } = group?.pageMetadata?.sys ?? {};
-          if (!id) return group;
-          const { url } = pageMetadataMap.get(id) ?? {};
-          return { ...group, url };
-        }) ?? [];
+      childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
+        if (!group) return [];
+        const { id } = group.pageMetadata?.sys ?? {};
+        if (!id) return [group];
+        const { url } = pageMetadataMap.get(id) ?? {};
+        return { ...group, url };
+      }) ?? [];
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
     const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
       heroImageBlurhashPromise,
       descriptionBlurhashesPromise,
-      Promise.all(childServiceEntriesPromises),
+      childServiceEntriesPromise,
     ]);
-    const pageData = {
+
+    return {
       serviceGroup: {
         ...serviceGroup,
         description: serviceGroup.description
@@ -306,7 +387,6 @@ export const load = async ({
       childServiceEntries,
       childServiceGroups,
     };
-    return pageData;
   }
   throw error(404);
 };
