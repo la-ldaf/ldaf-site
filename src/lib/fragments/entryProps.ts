@@ -2,10 +2,12 @@ import gql from "graphql-tag";
 export default gql`
   fragment EntryProps on Entry {
     __typename
+
     ... on PageMetadata {
       sys {
         id
       }
+      __typename
     }
 
     ... on ImageWrapper {

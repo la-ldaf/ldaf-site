@@ -2,40 +2,36 @@
   import { getContext } from "svelte";
   import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
   import { linksKey, type LinksContext } from "../context";
-  export let node: NodeType;
   import { isEntryBlock } from "../predicates";
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
   import Image from "$lib/components/Image/Image.svelte";
   import Error from "../../../../routes/+error.svelte";
 
+  export let node: NodeType;
   if (!isEntryBlock(node)) {
     throw new Error("Node is not an embedded entry block");
   }
-  let entry: EntryLinkBlock = node;
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for embedded entry block");
-  console.log(entry);
+
+  let entry: EntryLinkBlock = node;
   const entryId = entry.data.target.sys.id;
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
-  console.log(entryBlock);
+
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
 
   /*
    * TODO: Add support for the other types of entries that can be an "embedded-entry-block":
-   *    - Image wrapper (currently on `/food/local` under "Local Strawberries" service group )
    *    - Video Wrapper
    *    - Location
    */
-  // if (entryBlock?.__typename !== "Contact") {
-  //   throw new Error(`Entry block of type ${entryBlock?.__typename} is not supported.`);
-  // }
 </script>
 
 {#if entryBlock?.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entryBlock]} />
-{:else if entryBlock?.__typename === "ImageWrapper"}
+{:else if entryBlock?.__typename === "ImageWrapper" && entryBlock?.linkedImage?.url}
   <Image
     src={entryBlock?.linkedImage?.url}
     sources={getSources}
