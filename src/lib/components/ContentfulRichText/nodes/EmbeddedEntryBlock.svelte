@@ -1,10 +1,12 @@
 <script lang="ts">
-  import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
   import { getContext } from "svelte";
+  import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
   import { linksKey, type LinksContext } from "../context";
   export let node: NodeType;
   import { isEntryBlock } from "../predicates";
+  import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
+  import Image from "$lib/components/Image/Image.svelte";
   import Error from "../../../../routes/+error.svelte";
 
   if (!isEntryBlock(node)) {
@@ -14,9 +16,10 @@
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for embedded entry block");
-
+  console.log(entry);
   const entryId = entry.data.target.sys.id;
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
+  console.log(entryBlock);
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
 
   /*
@@ -32,6 +35,15 @@
 
 {#if entryBlock?.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entryBlock]} />
+{:else if entryBlock?.__typename === "ImageWrapper"}
+  <Image
+    src={entryBlock?.linkedImage?.url}
+    sources={getSources}
+    blurhash={entryBlock?.linkedImage?.blurhash ?? undefined}
+    alt={entryBlock.linkedImage?.description ?? "Hero image"}
+    width={entryBlock.linkedImage?.width ?? undefined}
+    height={entryBlock.linkedImage?.height ?? undefined}
+  />
 {:else}
   <span
     >Entry block of type
