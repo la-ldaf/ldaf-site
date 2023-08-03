@@ -36,7 +36,7 @@ test("nav items can be expanded and collapsed", async ({ page }) => {
   // expect focus loss with mouse to collapse menu
   await navMenuButton.click();
   await page
-    .getByRole("heading", { name: "Hello There." })
+    .getByRole("heading", { name: "Department of Agriculture and Forestry\nState of Louisiana" })
     // Without forcing the click, PlayWright will return "subtree intercepts pointer events" error,
     //   which is rather amusing because that error means that this is working as intended.
     .click({ force: true });
