@@ -20,13 +20,15 @@
 
   export let src: string;
 
-  const getSrcsetAttr = ([defaultSrc, ...widthsOrDPIStrings]: Srcset) =>
-    [
-      ...widthsOrDPIStrings.map(
-        ([source, sourceWidthOrDPIString]) => `${source} ${sourceWidthOrDPIString}w`
-      ),
-      width ? `${defaultSrc} ${width}w` : defaultSrc,
+  const getSrcsetAttr = (srcset: Srcset): string | undefined => {
+    if (srcset.length === 0) return;
+    const hasFallback = typeof srcset[0] === "string";
+    const sourcesAndWidths = hasFallback ? srcset.slice(1) : srcset;
+    return [
+      ...sourcesAndWidths.map(([source, width]) => `${source} ${width}w`),
+      ...(hasFallback ? [`${srcset[0]} ${width}w`] : []),
     ].join(", ");
+  };
 
   export let sources: Sources | GetSources | undefined = undefined;
 
