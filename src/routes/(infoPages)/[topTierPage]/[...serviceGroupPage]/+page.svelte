@@ -89,8 +89,10 @@
             {/each}
           {/if}
 
-          <!-- Don't accidentally show an empty contact card (as encountered on /about/contact/complaints) -->
-          {#if item.contactInformationCollection && item.contactInformationCollection.items.filter((item) => !!item).length > 0}
+          <!-- .filter is to make sure there aren't any null 
+            contact items(caused by contacts in a draft state) -->
+          {#if (item?.contactInformationCollection?.items?.filter((item) => !!item) || []).length > 0}
+            {console.log(item.contactInformationCollection)}
             <ContactCard
               address={undefined}
               contacts={item.contactInformationCollection?.items}

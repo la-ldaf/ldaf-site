@@ -9,70 +9,15 @@ import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashe
 import type { ServiceGroupCollectionQuery } from "./$queries.generated";
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
+import imagePropsFragment from "$lib/fragments/imageProps";
+import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "../../../loadPageMetadataMap";
 
 // TODO: Raise limit filter as needed. Default is 100; might need to paginate above that.
 const query = gql`
-  fragment ImageProps on Asset {
-    sys {
-      id
-    }
-    contentType
-    title
-    description
-    url
-    width
-    height
-  }
+  ${imagePropsFragment}
+  ${entryPropsFragment}
 
-  fragment EntryProps on Entry {
-    __typename
-    ... on PageMetadata {
-      sys {
-        id
-      }
-    }
-
-    ... on ImageWrapper {
-      sys {
-        id
-      }
-      __typename
-      internalTitle
-      altText
-      linkedImage {
-        title
-        description
-        contentType
-        fileName
-        size
-        url
-        width
-        height
-      }
-      imageCategory {
-        categoryName
-        categoryDescription
-      }
-    }
-    ... on Contact {
-      sys {
-        id
-      }
-      __typename
-      entityName
-      phoneExt
-      email
-      # location {
-      #   name
-      #   streetAddress1
-      #   streetAddress2
-      #   city
-      #   state
-      #   zip
-      # }
-    }
-  }
   query ServiceGroupCollection($metadataID: String!) {
     serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
@@ -104,15 +49,7 @@ const query = gql`
             }
             entries {
               block {
-                __typename
-                ... on Contact {
-                  sys {
-                    id
-                  }
-                  entityName
-                  phone
-                  email
-                }
+                ...EntryProps
               }
               hyperlink {
                 ...EntryProps
@@ -136,11 +73,9 @@ const query = gql`
                 links {
                   assets {
                     block {
-                      # eslint-disable-next-line @graphql-eslint/selection-set-depth
                       ...ImageProps
                     }
                     hyperlink {
-                      # eslint-disable-next-line @graphql-eslint/selection-set-depth
                       ...ImageProps
                     }
                   }
@@ -229,15 +164,7 @@ const query = gql`
             }
             entries {
               block {
-                __typename
-                ... on Contact {
-                  sys {
-                    id
-                  }
-                  entityName
-                  phone
-                  email
-                }
+                ...EntryProps
               }
               hyperlink {
                 ...EntryProps
