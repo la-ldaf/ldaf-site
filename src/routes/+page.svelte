@@ -43,11 +43,12 @@
         {#if item?.heroImage?.imageSource?.url}
           <Card class={`usa-card--${cardSize}`}>
             <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+            <!-- TODO: After merging #348, set Image sizeType="card" -->
             <Image
               slot="image"
               src={item.heroImage.imageSource.url}
               alt={item.heroImage.imageSource.title || "Card image"}
-              sources={getSources(item.heroImage.imageSource.url)}
+              sources={getSources}
               blurhash={item.heroImage.imageSource?.blurhash ?? undefined}
               width={item.heroImage.imageSource.width ?? undefined}
               height={item.heroImage.imageSource.height ?? undefined}
