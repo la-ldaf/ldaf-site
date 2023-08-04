@@ -19,12 +19,10 @@
 
   const entry = linksContext.linksEntriesMaps.hyperlink.get(entryID);
 
-  let entryMetadata: PageMetadataMapItem;
-  if (entry?.__typename === "PageMetadata") {
-    const entryMetadata = linksContext.pageMetadataMap.get(entryID);
-    if (!entryMetadata) {
-      throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
-    }
+  const entryMetadata =
+    entry?.__typename === "PageMetadata" && linksContext.pageMetadataMap.get(entryID);
+  if (!entryMetadata) {
+    throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
   }
 </script>
 
