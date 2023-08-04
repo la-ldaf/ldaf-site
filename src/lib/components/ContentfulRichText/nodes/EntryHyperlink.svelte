@@ -5,6 +5,7 @@
   import { getContext } from "svelte";
   import { linksKey, type LinksContext } from "../context";
   import { isEntryHyperlink } from "../predicates";
+  import Link from "$lib/components/Link/Link.svelte";
   import ContactCard from "$lib/components/ContactCard";
 
   export let node: NodeType;
@@ -29,9 +30,9 @@
 </script>
 
 {#if entry?.__typename === "PageMetadata"}
-  <a href={entryMetadata?.url}
-    >{#each entryHyperlink.content as subNode}<Node node={subNode} />{/each}</a
-  >
+  <Link href={entryMetadata?.url}
+    >{#each entryHyperlink.content as subNode}<Node node={subNode} />{/each}
+  </Link>
 {:else if entry?.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entry]} />
 {:else}

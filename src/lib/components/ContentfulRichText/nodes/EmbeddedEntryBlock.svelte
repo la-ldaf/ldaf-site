@@ -20,12 +20,6 @@
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
 
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
-
-  /*
-   * TODO: Add support for the other types of entries that can be an "embedded-entry-block":
-   *    - Video Wrapper
-   *    - Location
-   */
 </script>
 
 {#if entryBlock?.__typename === "Contact"}
@@ -41,6 +35,13 @@
     sizeType={getContext(imageSizeTypeKey)}
   />
 {:else}
+  <!--
+    TODO: Add support for the other types of
+    entries that can be an "embedded-entry-block":
+      - Video Wrapper
+      - Location
+      - Anything else?
+  -->
   <span
     >Entry block of type
     <pre>{entryBlock.__typename}</pre>
