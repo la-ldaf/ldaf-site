@@ -20,11 +20,16 @@
   .ldaf-footer__secondary-section {
     background-color: $primary-darkest;
     color: $accent-warm;
-    .usa-social-link__icon {
-      /* TODO: Handle Icon coloring separately once https://ldaf.atlassian.net/browse/LDAF-327 is done. */
-      /* Filter generated based on hex for $$accent-warm using https://isotropic.co/tool/hex-color-to-css-filter/ */
-      filter: invert(84%) sepia(30%) saturate(1103%) hue-rotate(334deg) brightness(104%)
-        contrast(101%);
+    .usa-social-link {
+      &:hover {
+        background-color: $primary-dark;
+      }
+      .usa-social-link__icon {
+        /* TODO: Handle Icon coloring separately once https://ldaf.atlassian.net/browse/LDAF-327 is done. */
+        /* Filter generated based on hex for $$accent-warm using https://isotropic.co/tool/hex-color-to-css-filter/ */
+        filter: invert(84%) sepia(30%) saturate(1103%) hue-rotate(334deg) brightness(104%)
+          contrast(101%);
+      }
     }
     .usa-footer__address hr {
       border: none;
