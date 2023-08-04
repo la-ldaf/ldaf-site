@@ -4,8 +4,7 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 
 export const GET = (async () => {
   const includeBreadcrumbs = false;
-  const { pageMetadataMap /*, pathsToIDs */ } = await loadPageMetadataMap(includeBreadcrumbs);
+  const { pageMetadataMap } = await loadPageMetadataMap(includeBreadcrumbs);
 
-  // return json(Object.fromEntries(pageMetadataMap));
   return json(Array.from(pageMetadataMap.values()));
 }) satisfies RequestHandler;
