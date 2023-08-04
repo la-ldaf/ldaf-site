@@ -34,14 +34,21 @@
       margin-bottom: 0.5rem;
     }
     .usa-social-link {
+      background-color: transparent;
       &:hover {
-        background-color: $primary-dark;
+        background-color: transparent;
       }
       .usa-social-link__icon {
         /* TODO: Handle Icon coloring separately once https://ldaf.atlassian.net/browse/LDAF-327 is done. */
-        /* Filter generated based on hex for $$accent-warm using https://isotropic.co/tool/hex-color-to-css-filter/ */
+        /* Filters generated based on hexes using https://isotropic.co/tool/hex-color-to-css-filter/ */
+        // $accent-warm
         filter: invert(84%) sepia(30%) saturate(1103%) hue-rotate(334deg) brightness(104%)
           contrast(101%);
+        &:hover {
+          // $accent-dark
+          filter: invert(64%) sepia(89%) saturate(1170%) hue-rotate(0deg) brightness(102%)
+            contrast(100%);
+        }
       }
     }
     .ldaf-footer__address-location {
