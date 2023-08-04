@@ -23,45 +23,41 @@
   </div>
   <div class="usa-footer__primary-section ldaf-footer__primary-section">
     <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="tablet:grid-col-12">
-          <nav class="usa-footer__nav" aria-label="Footer navigation">
-            <div class="grid-row grid-gap-4">
-              {#each navItems as subMenu (subMenu.id)}
-                {@const { name, children } = subMenu}
-                <div class="mobile-lg:grid-col-6 desktop:grid-col">
-                  <section
-                    class="usa-footer__primary-content usa-footer__primary-content--collapsible"
-                  >
-                    <h4 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h4>
-                    <ul class="usa-list usa-list--unstyled">
-                      {#if children}
-                        {#each children as item (item.id)}
-                          <li class="usa-footer__secondary-link ldaf-footer__secondary-link">
-                            <Link href={item.link}>{item.name}</Link>
-                          </li>
-                        {/each}
-                      {/if}
-                    </ul>
-                  </section>
-                </div>
-              {/each}
+      <nav class="usa-footer__nav" aria-label="Footer navigation">
+        <div class="grid-row grid-gap-4">
+          {#each navItems as subMenu (subMenu.id)}
+            {@const { name, children } = subMenu}
+            <div class="mobile-lg:grid-col-6 tablet:grid-col-4 desktop:grid-col">
+              <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
+                <h4 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h4>
+                <ul class="usa-list usa-list--unstyled">
+                  {#if children}
+                    {#each children as item (item.id)}
+                      <li class="usa-footer__secondary-link ldaf-footer__secondary-link">
+                        <Link href={item.link}>{item.name}</Link>
+                      </li>
+                    {/each}
+                  {/if}
+                </ul>
+              </section>
             </div>
-          </nav>
+          {/each}
         </div>
-      </div>
+      </nav>
     </div>
   </div>
   <div class="usa-footer__secondary-section ldaf-footer__secondary-section">
     <div class="grid-container">
       <div class="grid-row grid-gap">
-        <div class="usa-footer__logo grid-row mobile-lg:grid-col-8 mobile-lg:grid-gap-2">
-          <div class="mobile-lg:grid-col-auto">
+        <div
+          class="usa-footer__logo ldaf-footer__logo grid-row tablet:grid-col-6 desktop:grid-col-8 grid-gap-2"
+        >
+          <div class="tablet:grid-col-auto">
             <div class="usa-footer__logo-img">
               <Logo />
             </div>
           </div>
-          <div class="mobile-lg:grid-col-auto">
+          <div class="tablet:grid-col-auto ldaf-footer__logo-heading-container">
             <p class="usa-footer__logo-heading ldaf-footer__logo-heading">
               {siteTitle.wideTitleRow1}
             </p>
@@ -70,7 +66,7 @@
             </p>
           </div>
         </div>
-        <div class="usa-footer__contact-links mobile-lg:grid-col-4">
+        <div class="usa-footer__contact-links tablet:grid-col-6 desktop:grid-col-4">
           <div class="usa-footer__social-links grid-row grid-gap-1">
             <div class="grid-col-auto">
               <a class="usa-social-link" href="https://www.facebook.com/LaAgandForestry/">
@@ -93,13 +89,15 @@
               Baton Rouge, LA 70806
               <hr />
             </div>
-            <div class="grid-row grid-gap 1">
+            <div class="ldaf-footer__address-phone grid-row grid-gap">
               <div class="grid-col-6 text-left">Emergencies:</div>
-              <div class="grid-col-6"><Link href="tel:18554525323">1-855-452-5323</Link></div>
+              <div class="grid-col-6 text-right">
+                <Link href="tel:18554525323">1-855-452-5323</Link>
+              </div>
             </div>
-            <div class="grid-row grid-gap 1">
-              <div class="grid-col-6 text-left">Non-emergencies:</div>
-              <div class="grid-col-6">
+            <div class="ldaf-footer__address-phone grid-row grid-gap">
+              <div class="grid-col-6 text-left ldaf-footer__nowrap">Non-emergencies:</div>
+              <div class="grid-col-6 text-right">
                 <Link href="tel:18669272476">1-866-927-2476</Link><br />or
                 <Link href="tel:12559221234">(255) 922-1234</Link>
               </div>
@@ -107,11 +105,15 @@
           </address>
         </div>
       </div>
-      <div class="grid-row margin-top-2">
+      <div class="grid-row ldaf-footer__copyright">
         <div class="grid-col text-center">
-          ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved -
-          <Link href="/about/privacy-policy">Privacy Policy</Link> |
-          <Link href="/about/terms-of-use">Terms Of Use</Link>
+          ©2023 Louisiana Department of Agriculture and Forestry.
+          <span class="ldaf-footer__nowrap">All rights reserved</span>
+          <span class="ldaf-footer__nowrap">
+            -
+            <Link href="/about/privacy-policy">Privacy Policy</Link> |
+            <Link href="/about/terms-of-use">Terms Of Use</Link>
+          </span>
         </div>
       </div>
     </div>
