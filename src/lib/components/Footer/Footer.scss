@@ -20,6 +20,19 @@
   .ldaf-footer__secondary-section {
     background-color: $primary-darkest;
     color: $accent-warm;
+
+    .usa-link {
+      color: $accent-warm;
+    }
+
+    .ldaf-footer__logo-heading {
+      line-height: 1;
+      margin-bottom: 0rem;
+    }
+    .ldaf-footer__logo-subheading {
+      margin-top: 0rem;
+      margin-bottom: 0.5rem;
+    }
     .usa-social-link {
       &:hover {
         background-color: $primary-dark;
@@ -31,12 +44,14 @@
           contrast(101%);
       }
     }
-    .usa-footer__address hr {
-      border: none;
-      border-top: 2px solid $accent-warm;
-    }
-    .ldaf-footer__copyright a {
-      color: $accent-warm;
+    .ldaf-footer__address-location {
+      margin-left: auto;
+      margin-right: 0;
+      width: fit-content;
+      hr {
+        border: none;
+        border-top: 2px solid $accent-warm;
+      }
     }
   }
 }

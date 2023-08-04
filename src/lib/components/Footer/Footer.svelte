@@ -31,10 +31,7 @@
                 {@const { name, children } = subMenu}
                 <div class="mobile-lg:grid-col-6 desktop:grid-col">
                   <section
-                    class="
-                    usa-footer__primary-content
-                    usa-footer__primary-content--collapsible
-                  "
+                    class="usa-footer__primary-content usa-footer__primary-content--collapsible"
                   >
                     <h4 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h4>
                     <ul class="usa-list usa-list--unstyled">
@@ -58,21 +55,19 @@
   <div class="usa-footer__secondary-section ldaf-footer__secondary-section">
     <div class="grid-container">
       <div class="grid-row grid-gap">
-        <div
-          class="
-            usa-footer__logo
-            grid-row
-            mobile-lg:grid-col-8 mobile-lg:grid-gap-2
-          "
-        >
+        <div class="usa-footer__logo grid-row mobile-lg:grid-col-8 mobile-lg:grid-gap-2">
           <div class="mobile-lg:grid-col-auto">
             <div class="usa-footer__logo-img">
               <Logo />
             </div>
           </div>
           <div class="mobile-lg:grid-col-auto">
-            <p class="usa-footer__logo-heading">{siteTitle.wideTitleRow1}</p>
-            <p>{siteTitle.wideTitleRow2}</p>
+            <p class="usa-footer__logo-heading ldaf-footer__logo-heading">
+              {siteTitle.wideTitleRow1}
+            </p>
+            <p class="ldaf-footer__logo-subheading">
+              {siteTitle.wideTitleRow2}
+            </p>
           </div>
         </div>
         <div class="usa-footer__contact-links mobile-lg:grid-col-4">
@@ -92,26 +87,31 @@
             </div>
           </div>
           <address class="usa-footer__address">
-            <div>5835 Florida Blvd</div>
-            <div>Baton Rouge, LA 70806</div>
-            <hr />
-            <div class="grid-row grid-gap 1">
-              <div class="grid-col-6">Emergencies:</div>
-              <div class="grid-col-6">1-855-452-5323</div>
+            <div class="ldaf-footer__address-location">
+              5835 Florida Blvd
+              <br />
+              Baton Rouge, LA 70806
+              <hr />
             </div>
             <div class="grid-row grid-gap 1">
-              <div class="grid-col-6">Non-emergencies:</div>
-              <div class="grid-col-6">1-866-927-2476<br />or (255) 922-1234</div>
+              <div class="grid-col-6 text-left">Emergencies:</div>
+              <div class="grid-col-6"><Link href="tel:18554525323">1-855-452-5323</Link></div>
+            </div>
+            <div class="grid-row grid-gap 1">
+              <div class="grid-col-6 text-left">Non-emergencies:</div>
+              <div class="grid-col-6">
+                <Link href="tel:18669272476">1-866-927-2476</Link><br />or
+                <Link href="tel:12559221234">(255) 922-1234</Link>
+              </div>
             </div>
           </address>
         </div>
       </div>
       <div class="grid-row margin-top-2">
-        <div class="grid-col ldaf-footer__copyright text-center">
-          ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved - <a
-            href="/about/privacy-policy">Privacy Policy</a
-          >
-          | <a href="/about/terms-of-use">Terms Of Use</a>
+        <div class="grid-col text-center">
+          ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved -
+          <Link href="/about/privacy-policy">Privacy Policy</Link> |
+          <Link href="/about/terms-of-use">Terms Of Use</Link>
         </div>
       </div>
     </div>
