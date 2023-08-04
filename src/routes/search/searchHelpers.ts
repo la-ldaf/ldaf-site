@@ -23,7 +23,8 @@ const getHighlightOrSnippetResultValue = (
 };
 
 export const searchHitsTemplate: TemplateWithBindEvent<Hit<{ url?: string }>> = (hit) => {
-  // hit._highlightResult is will only ever
+  // hit._highlightResult is will only ever contain searchableAttributes that we designate
+  // Docs: https://www.algolia.com/doc/api-reference/api-parameters/searchableAttributes/
   return `
     <div>
       <article>
