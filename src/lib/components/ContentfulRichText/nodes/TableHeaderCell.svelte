@@ -7,7 +7,7 @@
 
   let tableHeaderCell: TableHeaderCell;
   if (!isTableHeaderCell(node)) {
-    throw new Error("node is not a paragraph");
+    throw new Error("node is not a table header cell");
   }
   tableHeaderCell = node;
 </script>

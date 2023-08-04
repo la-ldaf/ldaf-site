@@ -7,19 +7,13 @@
   const component = nodes[node.nodeType];
 
   if (!component) {
-    // throw new Error(`unsupported nodeType ${node.nodeType}`);
+    console.warn(`unsupported nodeType ${node.nodeType}`);
   }
 </script>
 
 {#if component}
   <svelte:component this={component} {node} />
 {:else}
-  Node type <pre>{node.nodeType}</pre>
-  is not supported
+  <!-- TODO: Remove before launch -->
+  <p>Unsupported Rich Text nodeType ${node.nodeType}</p>
 {/if}
-
-<style>
-  pre {
-    display: inline-block;
-  }
-</style>

@@ -72,6 +72,10 @@ const markdownToDocumentAndLinks = async (
       hyperlink: [],
       block: [],
     },
+    entries: {
+      hyperlink: [],
+      block: [],
+    },
   };
 
   const addedAssets = new Set<string>();

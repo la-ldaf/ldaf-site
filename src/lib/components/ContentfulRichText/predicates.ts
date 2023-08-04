@@ -17,6 +17,9 @@ import {
   type Quote,
   type AssetLinkBlock,
   type AssetHyperlink,
+  type EntryLinkBlock,
+  type EntryHyperlink,
+  type EntryLinkInline,
 } from "@contentful/rich-text-types";
 
 import type { HeadingLevel, HeadingTypeByLevel } from "./headings";
@@ -69,5 +72,14 @@ export const isTableCell = (n: unknown): n is TableCell =>
 export const isAssetBlock = (n: unknown): n is AssetLinkBlock =>
   isNode(n) && n.nodeType === BLOCKS.EMBEDDED_ASSET;
 
+export const isEntryBlock = (n: unknown): n is EntryLinkBlock =>
+  isNode(n) && n.nodeType === BLOCKS.EMBEDDED_ENTRY;
+
 export const isAssetHyperlink = (n: unknown): n is AssetHyperlink =>
   isNode(n) && n.nodeType === INLINES.ASSET_HYPERLINK;
+
+export const isEntryHyperlink = (n: unknown): n is EntryHyperlink =>
+  isNode(n) && n.nodeType === INLINES.ENTRY_HYPERLINK;
+
+export const isEmbeddedEntry = (n: unknown): n is EntryLinkInline =>
+  isNode(n) && n.nodeType === INLINES.EMBEDDED_ENTRY;

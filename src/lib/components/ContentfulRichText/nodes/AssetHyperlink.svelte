@@ -15,9 +15,11 @@
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for asset hyperlink");
+
   const { id: assetID } = assetHyperlink.data.target.sys;
   const link = linksContext.linksAssetsMaps.hyperlink.get(assetID);
   if (!link) throw new Error(`the asset ${assetID} was not found in the context`);
+
   const { url } = link;
   if (!url) {
     throw new Error(`the asset ${assetID} was found in the context but did not have a source URL`);

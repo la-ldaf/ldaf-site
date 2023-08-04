@@ -9,9 +9,8 @@
 
   export let node: NodeType;
 
-  let asset: AssetLinkBlock;
   if (!isAssetBlock(node)) throw new Error("node is not an embedded asset");
-  asset = node;
+  let asset: AssetLinkBlock = node;
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for embedded asset node");
