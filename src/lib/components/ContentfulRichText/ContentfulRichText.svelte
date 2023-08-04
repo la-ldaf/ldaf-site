@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { setContext } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { error } from "@sveltejs/kit";
   import { isDocument } from "$lib/components/ContentfulRichText/predicates";
+  import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
   import Node from "./nodes/Node.svelte";
   import type { Document } from "@contentful/rich-text-types";
   import type { Links } from "./types";
+  import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
   import {
     linksKey,
     createLinksContext,
@@ -17,7 +19,11 @@
   export let document: Document;
 
   export let links: Links | undefined = undefined;
-  $: setContext<LinksContext | undefined>(linksKey, links ? createLinksContext(links) : links);
+  $: pageMetadataMap = getContext<PageMetadataMap>(pageMetadataMapKey);
+  $: setContext<LinksContext | undefined>(
+    linksKey,
+    links ? createLinksContext(links, pageMetadataMap) : links
+  );
 
   export let blurhashes: Record<string, string> | null | undefined = undefined;
   $: setContext<Record<string, string> | null | undefined>(blurhashesKey, blurhashes);

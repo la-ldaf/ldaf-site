@@ -7,7 +7,7 @@
 
   let ol: OrderedList;
   if (!isOrderedList(node)) {
-    throw new Error("node is not a paragraph");
+    throw new Error("node is not an ordered list");
   }
   ol = node;
 </script>

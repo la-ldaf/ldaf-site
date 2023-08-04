@@ -9,9 +9,9 @@
   import Icon from "$lib/components/Icon";
   import { url as arrowIcon } from "$icons/arrow_forward";
   import Image from "$lib/components/Image";
+  import { afterUpdate } from "svelte";
 
   export let data;
-
   $: ({
     serviceGroup: {
       title,
@@ -25,6 +25,17 @@
     childServiceEntries,
     childServiceGroups,
   } = data);
+
+  afterUpdate(() => {
+    // Call To Actions within service entry accordions are rich text,
+    // leaving no way to designate additional formatting/styling for them.
+    // We must manually add the required classes to achieve the desired styles.
+    // This wasn't always getting applied in `onMount`, so we're making sure it doesn't
+    // happen prematurely by using `afterUpdate` instead.
+    document
+      .querySelectorAll(".service-entry-CTA p > a")
+      .forEach((linkEl) => linkEl.classList.add("usa-button"));
+  });
 </script>
 
 {#if heroImage && heroImage?.imageSource?.url}
@@ -56,7 +67,7 @@
 {/if}
 
 {#if childServiceEntries.length > 0}
-  <Accordion multiselectable>
+  <Accordion multiselectable bordered>
     {#each childServiceEntries as item}
       <AccordionItem title={item?.entryTitle} id={item.sys.id}>
         <ContentfulRichText
@@ -64,6 +75,26 @@
           links={item?.description?.links}
           blurhashes={item?.description?.blurhashes}
         />
+        {#if item.serviceCtaCollection}
+          {#each item.serviceCtaCollection.items as ctaItem}
+            <span class="service-entry-CTA">
+              <ContentfulRichText
+                document={ctaItem?.callToActionDestination?.json}
+                links={ctaItem?.callToActionDestination?.links}
+              />
+            </span>
+          {/each}
+        {/if}
+
+        <!-- .filter is to make sure there aren't any null 
+             contact items(caused by contacts in a draft state) -->
+        {#if (item?.contactInformationCollection?.items?.filter((item) => !!item) || []).length > 0}
+          <ContactCard
+            address={undefined}
+            contacts={item.contactInformationCollection?.items}
+            class="margin-top-4"
+          />
+        {/if}
       </AccordionItem>
     {/each}
   </Accordion>
@@ -93,7 +124,6 @@
   <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />
 {/if}
 
-<!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
   <ContentfulRichText

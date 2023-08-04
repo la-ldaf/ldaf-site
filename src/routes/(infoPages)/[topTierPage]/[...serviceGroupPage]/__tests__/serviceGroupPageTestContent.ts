@@ -21,6 +21,7 @@ export default {
       json: documentWithParagraphData.documentWithParagraph.document,
       links: {
         assets: { block: [], hyperlink: [] },
+        entries: { block: [], hyperlink: [] },
       },
     },
     contactInfoCollection: {
@@ -43,6 +44,7 @@ export default {
       json: documentWithParagraphData.documentWithParagraph.document,
       links: {
         assets: { block: [], hyperlink: [] },
+        entries: { block: [], hyperlink: [] },
       },
     },
     serviceListName: "Sample service list name",
@@ -55,6 +57,7 @@ export default {
       description: {
         links: {
           assets: { block: [], hyperlink: [] },
+          entries: { block: [], hyperlink: [] },
         },
         json: {
           data: {},

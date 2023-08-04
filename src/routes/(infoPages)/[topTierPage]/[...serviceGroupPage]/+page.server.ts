@@ -15,9 +15,13 @@ import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent
 import type { ExtractQueryType } from "$lib/util/types";
 import chunks from "$lib/util/chunks";
 import imagePropsFragment from "$lib/fragments/imageProps";
+import entryPropsFragment from "$lib/fragments/entryProps";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const baseQuery = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
   ${imagePropsFragment}
+  ${entryPropsFragment}
 
   query ServiceGroup($metadataID: String!) {
     serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
@@ -46,6 +50,14 @@ const baseQuery = gql`
               }
               hyperlink {
                 ...ImageProps
+              }
+            }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
               }
             }
           }
@@ -88,6 +100,14 @@ const baseQuery = gql`
                 ...ImageProps
               }
             }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
           }
         }
         serviceListName
@@ -104,10 +124,13 @@ const baseQuery = gql`
       }
     }
   }
+  # eslint-enable @graphql-eslint/selection-set-depth
 `;
 
 const childServiceEntriesQuery = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
   ${imagePropsFragment}
+  ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!) {
     serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
@@ -115,6 +138,7 @@ const childServiceEntriesQuery = gql`
         sys {
           id
         }
+        __typename
         entryTitle
         description {
           json
@@ -127,11 +151,57 @@ const childServiceEntriesQuery = gql`
                 ...ImageProps
               }
             }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
+        }
+        serviceCtaCollection {
+          items {
+            callToActionDestination {
+              json
+              links {
+                assets {
+                  block {
+                    ...ImageProps
+                  }
+                  hyperlink {
+                    ...ImageProps
+                  }
+                }
+                entries {
+                  block {
+                    ...EntryProps
+                  }
+                  hyperlink {
+                    ...EntryProps
+                  }
+                }
+              }
+            }
+          }
+        }
+        contactInformationCollection(limit: 5) {
+          items {
+            ... on Contact {
+              sys {
+                id
+              }
+              entityName
+              phone
+              email
+            }
           }
         }
       }
     }
   }
+  # eslint-enable @graphql-eslint/selection-set-depth
 `;
 
 const childServiceGroupsQuery = gql`
@@ -146,6 +216,7 @@ const childServiceGroupsQuery = gql`
             id
           }
         }
+        __typename
         title
         subheading
       }
@@ -196,6 +267,7 @@ export type ServiceGroupPage = {
   })[];
   childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
   pageMetadata?: ServiceGroupMetadata;
+  pageMetadataMap?: PageMetadataMap;
 };
 
 const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
@@ -343,6 +415,7 @@ export const load = async ({
           : undefined,
       },
       pageMetadata,
+      pageMetadataMap,
       childServiceEntries,
       childServiceGroups,
     };

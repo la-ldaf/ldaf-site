@@ -7,7 +7,7 @@
 
   let ul: UnorderedList;
   if (!isUnorderedList(node)) {
-    throw new Error("node is not a paragraph");
+    throw new Error("node is not an unordered list");
   }
   ul = node;
 </script>
