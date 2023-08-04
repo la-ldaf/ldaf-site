@@ -23,10 +23,12 @@
 
   let entryMetadata: PageMetadataMapItem;
   if (entry?.__typename === "PageMetadata") {
-    entryMetadata = linksContext.pageMetadataMap.get(entryID);
-    if (!entryMetadata) {
+    linksContext.pageMetadataMap.get(entryID);
+    const meta = linksContext.pageMetadataMap.get(entryID);
+    if (!meta) {
       throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
     }
+    entryMetadata = meta;
   }
 </script>
 
