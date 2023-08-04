@@ -22,7 +22,6 @@
       contactInfoCollection,
       additionalResources,
     },
-    pageMetadataMap,
     childServiceEntries,
     childServiceGroups,
   } = data);
