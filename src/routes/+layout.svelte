@@ -52,12 +52,7 @@
     bind:navMenuExpanded
   />
   <slot />
-  <!-- <footer class="usa-footer ldaf-footer--main padding-top-7 padding-bottom-1 text-center">
-    ©2023 Louisiana Department of Agriculture and Forestry. All rights reserved
-  </footer> -->
-  <Footer navItems={footerNavItems} />
-  <!-- TODO: reinstate <Identifier /> once designed and implemented -->
-  <!-- (or remove if encapsulated by footer) -->
+  <Footer navItems={footerNavItems} {siteTitle} />
 </RootIntersectionObserver>
 
 <BlurhashRenderer />
