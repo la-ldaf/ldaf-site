@@ -7,7 +7,7 @@ import { footerNavTestContent } from "./__tests__/FooterTestContent";
 
 import type { FooterNavQuery } from "./$queries.generated";
 import type { NavLinkType, NavMenuType } from "$lib/components/Header/Nav/types";
-import type { PageMetadataMap } from "../../../routes/loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const footerNavQuery = gql`
   query FooterNav {
