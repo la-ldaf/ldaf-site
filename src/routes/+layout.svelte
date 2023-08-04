@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { NavItemType, NavLinkType } from "$lib/components/Header/Nav";
-  import type { SiteTitleType } from "$lib/components/Header/Title";
   import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
   import { setContext } from "svelte";

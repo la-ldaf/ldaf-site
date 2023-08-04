@@ -5,7 +5,6 @@
   import { linksKey, type LinksContext } from "../context";
   import { isEntryHyperlink } from "../predicates";
   import ContactCard from "$lib/components/ContactCard";
-  import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 
   export let node: NodeType;
   if (!isEntryHyperlink(node)) {

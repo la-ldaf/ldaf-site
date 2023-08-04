@@ -19,6 +19,7 @@ import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const baseQuery = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
   ${imagePropsFragment}
   ${entryPropsFragment}
 
@@ -123,9 +124,11 @@ const baseQuery = gql`
       }
     }
   }
+  # eslint-enable @graphql-eslint/selection-set-depth
 `;
 
 const childServiceEntriesQuery = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
   ${imagePropsFragment}
   ${entryPropsFragment}
 
@@ -198,6 +201,7 @@ const childServiceEntriesQuery = gql`
       }
     }
   }
+  # eslint-enable @graphql-eslint/selection-set-depth
 `;
 
 const childServiceGroupsQuery = gql`

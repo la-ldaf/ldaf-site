@@ -124,7 +124,6 @@
   <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />
 {/if}
 
-<!-- TODO: Is this where Related Links will get stored? -->
 {#if additionalResources}
   <h2>Related links</h2>
   <ContentfulRichText
