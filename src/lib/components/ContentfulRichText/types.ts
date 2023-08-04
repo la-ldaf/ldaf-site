@@ -10,6 +10,8 @@ export const renderableAssetBlockRequiredKeys = [
   "contentType",
 ] as const satisfies readonly (keyof AssetWithMaybeBlurhash)[];
 
+type RenderableAssetBlockRequiredKey = (typeof renderableAssetBlockRequiredKeys)[number];
+
 export const renderableAssetBlockOptionalKeys = [
   "title",
   "description",
@@ -18,12 +20,15 @@ export const renderableAssetBlockOptionalKeys = [
   "blurhash",
 ] as const satisfies readonly (keyof AssetWithMaybeBlurhash)[];
 
+type RenderableAssetBlockOptionalKey = (typeof renderableAssetBlockOptionalKeys)[number];
+
 export const renderableEntryBlockImageWrapperKeys = [
   "internalTitle",
   "altText",
   "linkedImage",
-  "imageCategory",
 ] as const satisfies readonly (keyof ImageWrapper)[];
+
+type RenderableEntryBlockImageWrapperKey = (typeof renderableEntryBlockImageWrapperKeys)[number];
 
 export const renderableEntryBlockContactKeys = [
   "entityName",
@@ -31,22 +36,24 @@ export const renderableEntryBlockContactKeys = [
   "email",
 ] as const satisfies readonly (keyof Contact)[];
 
-export type RenderableAssetBlock = { sys: Pick<Asset["sys"], "id"> } & Pick<
+type RenderableEntryBlockContactKey = (typeof renderableEntryBlockContactKeys)[number];
+
+export type RenderableAssetBlock = { sys: Pick<AssetWithMaybeBlurhash["sys"], "id"> } & Pick<
   AssetWithMaybeBlurhash,
-  (typeof renderableAssetBlockRequiredKeys)[number]
+  RenderableAssetBlockRequiredKey
 > &
-  Partial<Pick<AssetWithMaybeBlurhash, (typeof renderableAssetBlockOptionalKeys)[number]>>;
+  Partial<Pick<AssetWithMaybeBlurhash, RenderableAssetBlockOptionalKey>>;
 
 type RenderableImageWrapper = Pick<
   ImageWrapper,
-  (typeof renderableEntryBlockImageWrapperKeys)[number]
+  Exclude<RenderableEntryBlockImageWrapperKey, "linkedImage">
 > & {
   linkedImage?: RenderableAssetBlock | null | undefined;
 };
 
 export type RenderableEntryBlock = { sys: Pick<Entry["sys"], "id">; __typename: string } & Partial<
-  Pick<RenderableImageWrapper, (typeof renderableEntryBlockImageWrapperKeys)[number]> &
-    Pick<Contact, (typeof renderableEntryBlockContactKeys)[number]>
+  Pick<RenderableImageWrapper, RenderableEntryBlockImageWrapperKey> &
+    Pick<Contact, RenderableEntryBlockContactKey>
 >;
 
 export type RenderableAssetHyperlink = RenderableAssetBlock;

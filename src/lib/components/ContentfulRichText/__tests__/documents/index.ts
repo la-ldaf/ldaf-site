@@ -11,7 +11,7 @@ type Case = { document: Document; links: Links; expectedHTML: string };
 
 export const documentWithParagraph: Case = {
   document: documentWithParagraphData as Document,
-  links: { assets: { hyperlink: [], block: [] } },
+  links: { assets: { hyperlink: [], block: [] }, entries: { hyperlink: [], block: [] } },
   expectedHTML: documentWithParagraphExpected,
 };
 

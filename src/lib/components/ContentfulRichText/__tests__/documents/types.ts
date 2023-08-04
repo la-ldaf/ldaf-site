@@ -20,4 +20,8 @@ export type Links = {
     hyperlink: Link[];
     block: Link[];
   };
+  entries: {
+    hyperlink: never[];
+    block: never[];
+  };
 };

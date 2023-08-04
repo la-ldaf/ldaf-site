@@ -2,22 +2,17 @@ import gql from "graphql-tag";
 export default gql`
   fragment EntryProps on Entry {
     __typename
-
-    ... on PageMetadata {
-      sys {
-        id
-      }
-      __typename
+    sys {
+      id
     }
 
     ... on ImageWrapper {
-      sys {
-        id
-      }
-      __typename
       internalTitle
       altText
       linkedImage {
+        sys {
+          id
+        }
         title
         description
         contentType
@@ -32,22 +27,19 @@ export default gql`
         categoryDescription
       }
     }
+
     ... on Contact {
-      sys {
-        id
-      }
-      __typename
       entityName
       phoneExt
       email
-      # location {
-      #   name
-      #   streetAddress1
-      #   streetAddress2
-      #   city
-      #   state
-      #   zip
-      # }
+      location {
+        name
+        streetAddress1
+        streetAddress2
+        city
+        state
+        zip
+      }
     }
   }
 `;
