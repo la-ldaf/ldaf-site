@@ -5,7 +5,7 @@
   import { getContext } from "svelte";
   import { linksKey, type LinksContext } from "../context";
   import { isEntryHyperlink } from "../predicates";
-  import Link from "$lib/components/Link/Link.svelte";
+  import Link from "$lib/components/Link";
   import ContactCard from "$lib/components/ContactCard";
 
   export let node: NodeType;
@@ -16,13 +16,14 @@
 
   const linksContext = getContext<LinksContext | undefined>(linksKey);
   if (!linksContext) throw new Error("no context was provided for entry hyperlink");
+
   const { id: entryID } = entryHyperlink.data.target.sys;
 
   const entry = linksContext.linksEntriesMaps.hyperlink.get(entryID);
 
   let entryMetadata: PageMetadataMapItem;
   if (entry?.__typename === "PageMetadata") {
-    const entryMetadata = linksContext.pageMetadataMap.get(entryID);
+    entryMetadata = linksContext.pageMetadataMap.get(entryID);
     if (!entryMetadata) {
       throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
     }
