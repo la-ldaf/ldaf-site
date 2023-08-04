@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  import { PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
   import { goto } from "$app/navigation";
   import { url as searchIcon } from "$icons/search--white";
   import Button from "$lib/components/Button";
@@ -28,8 +29,7 @@
     e.preventDefault();
     dispatch("submit", { searchTerm });
     if (browser) {
-      // TODO: update this to the LDAF index when ready.
-      const algoliaIndex = "media-sample-data";
+      const algoliaIndex = PUBLIC_ALGOLIA_INDEX;
       goto(`/search/?${algoliaIndex}[query]=${encodeURI(searchTerm)}`);
     }
   };

@@ -22,21 +22,21 @@ const getHighlightOrSnippetResultValue = (
   return getHighlightOrSnippetResultValue(result, depth + 1);
 };
 
-export const searchHitsTemplate: TemplateWithBindEvent<Hit<{ permalink?: string }>> = (hit) =>
-  // Note: under the post-excerpt div, replaced hit._highlightResult.content.value with
-  // hit._snippetResult.content.value, which seems more concise. Could be subject to change.
-  `
+export const searchHitsTemplate: TemplateWithBindEvent<Hit<{ url?: string }>> = (hit) => {
+  // hit._highlightResult is will only ever
+  return `
     <div>
       <article>
         <div class="post-content">
           <h2 class="entry-title">
-            <a class="usa-link" href="${hit.permalink}" rel="bookmark">
-              ${getHighlightOrSnippetResultValue(hit._highlightResult?.post_title)}
+            <a class="usa-link" href="${hit.url}" rel="bookmark">
+              ${getHighlightOrSnippetResultValue(hit._highlightResult?.metaTitle)}
             </a>
           </h2>
           <div class="post-excerpt">
-            ${getHighlightOrSnippetResultValue(hit._highlightResult?.content)}
+            ${getHighlightOrSnippetResultValue(hit._highlightResult?.metaDescription)}
           </div>
         </div>
       </article>
     </div>`;
+};

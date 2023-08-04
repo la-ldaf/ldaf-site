@@ -7,13 +7,16 @@
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
   import { searchHitsTemplate } from "./searchHelpers";
 
-  import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY } from "$env/static/public";
+  import {
+    PUBLIC_ALGOLIA_APP_ID,
+    PUBLIC_ALGOLIA_API_KEY,
+    PUBLIC_ALGOLIA_INDEX,
+  } from "$env/static/public";
 
   onMount(() => {
     const search = instantsearch({
       searchClient: algoliasearch(PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY),
-      // TODO: change this the "contentful" index when ready (name subject to change)
-      indexName: "media-sample-data",
+      indexName: PUBLIC_ALGOLIA_INDEX,
       routing: true,
       searchFunction(helper) {
         const searchUI = document.querySelectorAll(".stats, .hits, .pagination");
