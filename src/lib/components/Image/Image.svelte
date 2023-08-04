@@ -16,7 +16,8 @@
   export let preserveAspectRatio = true;
 
   // The size type of the image
-  export let sizeType: SizeType = "full-bleed";
+  export let sizeType;
+  export let neverUpscaleImage = sizeType !== "full-bleed";
 
   export let src: string;
 
@@ -151,7 +152,17 @@
     window.drawBlurhash(thisBg, blurhash);
   }
 
-  const imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
+  $: imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
+
+  const getContainerStyleProps = (width: number, height: number, fit: boolean, preserveAspectRatio: boolean, neverUpscaleImage: boolean) => {
+    [
+      ...(width && neverUpscaleImage ? [`max-width: ${width}px`] : []),
+      ...(height && neverUpscaleImage ? [`max-height: ${height}px`] : []),
+      ...(fit && preserveAspectRatio && width && height ? [`aspect-ratio: ${width} / ${height}`] : []),
+    ].join("; ")
+  }
+
+  $: styleProp =
 </script>
 
 {#key src}
