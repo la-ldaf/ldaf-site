@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Node as NodeType, EntryHyperlink } from "@contentful/rich-text-types";
+  import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
   import Node from "./Node.svelte";
   import { getContext } from "svelte";
   import { linksKey, type LinksContext } from "../context";
@@ -18,15 +19,17 @@
 
   const entry = linksContext.linksEntriesMaps.hyperlink.get(entryID);
 
-  const entryMetadata =
-    entry?.__typename === "PageMetadata" && linksContext.pageMetadataMap.get(entryID);
-  if (!entryMetadata) {
-    throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
+  let entryMetadata: PageMetadataMapItem;
+  if (entry?.__typename === "PageMetadata") {
+    const entryMetadata = linksContext.pageMetadataMap.get(entryID);
+    if (!entryMetadata) {
+      throw new Error(`the entry asset ${entryID} was not found in the pageMetadataMap`);
+    }
   }
 </script>
 
 {#if entry?.__typename === "PageMetadata"}
-  <a href={entryMetadata.url}
+  <a href={entryMetadata?.url}
     >{#each entryHyperlink.content as subNode}<Node node={subNode} />{/each}</a
   >
 {:else if entry?.__typename === "Contact"}
