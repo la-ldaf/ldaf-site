@@ -16,7 +16,7 @@
   export let preserveAspectRatio = true;
 
   // The size type of the image
-  export let sizeType: SizeType;
+  export let sizeType: SizeType | "static";
   export let neverUpscaleImage = sizeType !== "full-bleed";
 
   export let src: string;
@@ -43,13 +43,22 @@
     return unfilteredWidthsAndDoubleWidths.filter((w) => w <= imageWidth);
   };
 
-  $: resolvedSources = sources
-    ? Array.isArray(sources)
-      ? sources
-      : sources(src, { widths: getWidths(sizeType), srcWidth: width, srcHeight: height })
-    : undefined;
+  const getResolvedSources = (
+    src: string,
+    sources: Sources | GetSources | undefined,
+    sizeType: SizeType | "static"
+  ): Sources => {
+    if (!sources) return [];
+    if (Array.isArray(sources)) return sources;
+    if (sizeType === "static" && !width) return [{ srcset: [src] }];
+    const widths = sizeType == "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType);
+    return sources(src, { widths, srcWidth: width, srcHeight: height });
+  };
 
-  const getSizesAttr = (sizeType: SizeType) => {
+  $: resolvedSources = getResolvedSources(src, sources, sizeType);
+
+  const getSizesAttr = (sizeType: SizeType | "static") => {
+    if (sizeType === "static") return `${width}px`;
     const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
     let lastSize: number = 0;
     const screenSizesAndSizes: [number, number][] = [];
