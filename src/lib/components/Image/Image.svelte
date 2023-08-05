@@ -154,15 +154,22 @@
 
   $: imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
 
-  const getContainerStyleProps = (width: number, height: number, fit: boolean, preserveAspectRatio: boolean, neverUpscaleImage: boolean) => {
+  const getContainerStyleProps = (
+    width: number | undefined,
+    height: number | undefined,
+    fit: boolean,
+    preserveAspectRatio: boolean,
+    neverUpscaleImage: boolean
+  ) =>
     [
       ...(width && neverUpscaleImage ? [`max-width: ${width}px`] : []),
       ...(height && neverUpscaleImage ? [`max-height: ${height}px`] : []),
-      ...(fit && preserveAspectRatio && width && height ? [`aspect-ratio: ${width} / ${height}`] : []),
-    ].join("; ")
-  }
+      ...(fit && preserveAspectRatio && width && height
+        ? [`aspect-ratio: ${width} / ${height}`]
+        : []),
+    ].join("; ");
 
-  $: styleProp =
+  $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, neverUpscaleImage);
 </script>
 
 {#key src}
@@ -182,9 +189,7 @@
         className
       )}
       bind:this={thisContainer}
-      {...fit && preserveAspectRatio && width && height
-        ? { style: `aspect-ratio: ${width} / ${height}` }
-        : {}}
+      style={styleProp}
     >
       {#if loading === "lazy"}
         <noscript>
