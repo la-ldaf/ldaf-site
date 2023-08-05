@@ -16,7 +16,7 @@
   export let preserveAspectRatio = true;
 
   // The size type of the image
-  export let sizeType: SizeType | "static";
+  export let sizeType: SizeType | "static" = "static";
   export let neverUpscaleImage = sizeType !== "full-bleed";
 
   export let src: string;
