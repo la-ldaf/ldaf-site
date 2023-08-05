@@ -13,4 +13,4 @@ export const months = [
   "December",
 ];
 
-const shortMonths = months.map((month) => (month.length <= 4 ? month : month.slice(3)));
+export const shortMonths = months.map((month) => (month.length <= 4 ? month : month.slice(3)));

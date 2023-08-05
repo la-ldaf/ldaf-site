@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<style lang="scss">
+<style>
   .event {
     display: flex;
     flex-direction: row;

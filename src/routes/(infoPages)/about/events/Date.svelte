@@ -14,8 +14,7 @@
   <div class="event-date-day">{day}</div>
 </div>
 
-<style lang="scss">
-  $gray: #757473;
+<style>
   .event-date {
     display: flex;
     flex-direction: column;
@@ -23,7 +22,7 @@
     width: 78px;
     height: calc(39px * 2 + 2px);
     font-size: 18px;
-    border: 1px solid $gray;
+    border: 1px solid #757473;
     flex-shrink: 0;
   }
 
@@ -39,11 +38,11 @@
   }
 
   .event-date-month {
-    background-color: $gray;
+    background-color: #757473;
     color: #fff;
   }
 
   .event-date-day {
-    color: $gray;
+    color: #757473;
   }
 </style>

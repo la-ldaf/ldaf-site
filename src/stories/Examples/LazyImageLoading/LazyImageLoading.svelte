@@ -59,7 +59,7 @@
   </div>
 </RootIntersectionObserver>
 
-<style lang="scss">
+<style>
   .container {
     width: 50%;
     margin-left: auto;

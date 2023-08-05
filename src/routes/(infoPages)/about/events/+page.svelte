@@ -17,7 +17,7 @@
   {totalEvents}
 </div>
 
-<style lang="scss">
+<style>
   .events {
     margin-top: 32px;
     display: flex;
