@@ -100,9 +100,7 @@ const constructBreadcrumbs = (
   return breadcrumbs;
 };
 
-export const loadPageMetadataMap = async (
-  includeBreadcrumbs = true
-): Promise<{
+export const loadPageMetadataMap = async ({ includeBreadcrumbs = true } = {}): Promise<{
   pageMetadataMap: PageMetadataMap;
   pathsToIDs: Map<string, string>;
 }> => {
