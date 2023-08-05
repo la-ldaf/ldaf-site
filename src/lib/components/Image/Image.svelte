@@ -58,7 +58,10 @@
   $: resolvedSources = getResolvedSources(src, sources, sizeType);
 
   const getSizesAttr = (sizeType: SizeType | "static") => {
-    if (sizeType === "static") return `${width}px`;
+    // 100vw in the following line is technically a lie but the worst it will do is load a slightly
+    // larger version of an image explicitly marked "static", all of which should have sources
+    // explicitly specified in the code.
+    if (sizeType === "static") return `(max-width: ${width}px) 100vw, ${width}px`;
     const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
     let lastSize: number = 0;
     const screenSizesAndSizes: [number, number][] = [];
