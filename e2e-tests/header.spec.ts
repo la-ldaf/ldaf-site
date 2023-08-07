@@ -47,7 +47,7 @@ test("nav items can be expanded and collapsed", async ({ page }) => {
 test("mobile menu is closed on route change", async ({ page }) => {
   await page.setViewportSize({ width: 400, height: 850 });
   await page.goto("/news");
-  const mobileMenuButton = page.getByRole("button", { name: "Menu" });
+  const mobileMenuButton = page.getByRole("button", { name: "Menu" }).first();
   const mobileMenuItem = page.getByText("Animals", { exact: true });
   // open the mobile menu
   await expect(mobileMenuButton).toBeVisible();
