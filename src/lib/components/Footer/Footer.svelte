@@ -42,7 +42,9 @@
 
 <footer class="usa-footer usa-footer--big ldaf-footer">
   <!-- TODO: Perform a quick scroll animation to avoid disorienting the user. -->
-  <!-- TODO: Shift focus back to top. -->
+  <!-- TODO: Return to top will always scroll user to top, but will only shift
+             focus if the URL doesn't already include #top.
+             Shift focus back to top if user hits this more than once. -->
   <div class="grid-container usa-footer__return-to-top">
     <a href="#top">Return to top</a>
   </div>
@@ -59,7 +61,6 @@
                 {#if innerWidth < MOBILE_BREAKPOINT}
                   <button
                     class="usa-footer__primary-link usa-footer__primary-link--button ldaf-footer__primary-link"
-                    data-tag="H4"
                     aria-controls="usa-footer-menu-list-{subMenu.id}"
                     aria-expanded={i === expandedIndex}
                     type="button"
@@ -69,7 +70,8 @@
                     {name}
                   </button>
                 {:else}
-                  <h4 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h4>
+                  <!-- TODO: Programmatically determine appropriate heading level. -->
+                  <h2 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h2>
                 {/if}
                 <ul id="usa-footer-menu-list-{subMenu.id}" class="usa-list usa-list--unstyled">
                   {#if children}

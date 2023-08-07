@@ -40,7 +40,11 @@
 </script>
 
 <RootIntersectionObserver enabled={intersectionObserverSupport && !lazyImageLoadingSupport}>
+  <!-- Target for the "Return to top" link in the footer. -->
   <div id="top" />
+  <!-- TODO: Skip nav will always scroll user to main, but will only shift
+             focus if the URL doesn't already include #main-content.
+             Shift focus back to main if user hits this more than once. -->
   <a class="usa-skipnav" href="#main-content">Skip to main content</a>
   <div class="usa-overlay" />
   <Header
