@@ -4,17 +4,19 @@
   import { url as facebookIcon } from "$icons/facebook";
   import { url as youtubeIcon } from "$icons/youtube";
 
-  import { afterNavigate } from "$app/navigation";
-
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
   import Logo from "$lib/components/Header/Logo";
 
+  import type { AfterNavigate } from "@sveltejs/kit";
   import type { NavMenuType } from "$lib/components/Header/Nav";
   import type { SiteTitleType } from "$lib/components/Header/Title";
 
   export let navItems: NavMenuType[] = [];
   export let siteTitle: SiteTitleType;
+  // we provide this from a parent component so that we can render the component in Storybook
+  export let afterNavigate: undefined | ((callback: (navigation: AfterNavigate) => void) => void) =
+    undefined;
 
   // Quickest way to implement the accordions was to replicate what USWDS was
   //   doing, which is to use buttons on mobile and headings on larger screens.
@@ -33,7 +35,7 @@
     (event.key === "Enter" || event.key === " ") && toggle(i);
   const handleMouseDown = (i: number) => toggle(i);
 
-  afterNavigate(() => (expandedIndex = undefined));
+  if (afterNavigate) afterNavigate(() => (expandedIndex = undefined));
 </script>
 
 <svelte:window bind:innerWidth />

@@ -2,8 +2,9 @@
   import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
   import { setContext } from "svelte";
-  import { navigating } from "$app/stores";
-  import { page } from "$app/stores";
+  import { afterNavigate } from "$app/navigation";
+  import { navigating, page } from "$app/stores";
+
   import "../app.scss";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
@@ -49,7 +50,7 @@
     bind:navMenuExpanded
   />
   <slot />
-  <Footer navItems={footerNavItems} {siteTitle} />
+  <Footer navItems={footerNavItems} {siteTitle} {afterNavigate} />
 </RootIntersectionObserver>
 
 <BlurhashRenderer />
