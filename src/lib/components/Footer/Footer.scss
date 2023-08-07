@@ -14,6 +14,9 @@
     background-color: $primary-dark;
     .ldaf-footer__nav {
       border-bottom-color: $white;
+      @include at-media("mobile-lg") {
+        border-bottom: none;
+      }
     }
     .ldaf-footer__primary-content {
       border-top-color: $white;
