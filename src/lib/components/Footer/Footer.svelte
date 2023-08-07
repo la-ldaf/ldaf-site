@@ -4,6 +4,8 @@
   import { url as facebookIcon } from "$icons/facebook";
   import { url as youtubeIcon } from "$icons/youtube";
 
+  import { afterNavigate } from "$app/navigation";
+
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
   import Logo from "$lib/components/Header/Logo";
@@ -13,7 +15,28 @@
 
   export let navItems: NavMenuType[] = [];
   export let siteTitle: SiteTitleType;
+
+  // Quickest way to implement the accordions was to replicate what USWDS was
+  //   doing, which is to use buttons on mobile and headings on larger screens.
+  const MOBILE_BREAKPOINT = 480;
+  $: innerWidth = 0;
+
+  // TODO: Logic for accordions here is very similar to that in
+  //       Header/Nav/NavMenu; we should make it reusable.
+  let expandedIndex: number | undefined = undefined;
+
+  const toggle = (i: number) => {
+    expandedIndex = expandedIndex === i ? undefined : i;
+  };
+
+  const handleKeyDown = (event: KeyboardEvent, i: number) =>
+    (event.key === "Enter" || event.key === " ") && toggle(i);
+  const handleMouseDown = (i: number) => toggle(i);
+
+  afterNavigate(() => (expandedIndex = undefined));
 </script>
+
+<svelte:window bind:innerWidth />
 
 <footer class="usa-footer usa-footer--big ldaf-footer">
   <!-- TODO: Perform a quick scroll animation to avoid disorienting the user. -->
@@ -23,14 +46,30 @@
   </div>
   <div class="usa-footer__primary-section ldaf-footer__primary-section">
     <div class="grid-container">
-      <nav class="usa-footer__nav" aria-label="Footer navigation">
+      <nav class="usa-footer__nav ldaf-footer__nav" aria-label="Footer navigation">
         <div class="grid-row grid-gap-4">
-          {#each navItems as subMenu (subMenu.id)}
+          {#each navItems as subMenu, i (subMenu.id)}
             {@const { name, children } = subMenu}
             <div class="mobile-lg:grid-col-6 tablet:grid-col-4 desktop:grid-col">
-              <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
-                <h4 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h4>
-                <ul class="usa-list usa-list--unstyled">
+              <section
+                class="usa-footer__primary-content usa-footer__primary-content--collapsible ldaf-footer__primary-content"
+              >
+                {#if innerWidth < MOBILE_BREAKPOINT}
+                  <button
+                    class="usa-footer__primary-link usa-footer__primary-link--button ldaf-footer__primary-link"
+                    data-tag="H4"
+                    aria-controls="usa-footer-menu-list-{subMenu.id}"
+                    aria-expanded={i === expandedIndex}
+                    type="button"
+                    on:keydown={(e) => handleKeyDown(e, i)}
+                    on:mousedown={() => handleMouseDown(i)}
+                  >
+                    {name}
+                  </button>
+                {:else}
+                  <h4 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h4>
+                {/if}
+                <ul id="usa-footer-menu-list-{subMenu.id}" class="usa-list usa-list--unstyled">
                   {#if children}
                     {#each children as item (item.id)}
                       <li class="usa-footer__secondary-link ldaf-footer__secondary-link">
