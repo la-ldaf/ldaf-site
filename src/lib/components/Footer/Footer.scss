@@ -21,6 +21,7 @@
     .ldaf-footer__primary-link {
       background-color: inherit;
       color: $accent-warm;
+      @include u-font("sans", "sm");
     }
     .ldaf-footer__secondary-link a {
       color: $white;
