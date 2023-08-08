@@ -39,6 +39,6 @@
   }
 </script>
 
-{#each document.content as subNode (crypto.randomUUID())}
+{#each document.content as subNode}
   <Node node={subNode} />
 {/each}
