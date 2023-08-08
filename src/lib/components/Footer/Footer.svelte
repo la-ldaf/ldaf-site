@@ -52,8 +52,7 @@
     <div class="grid-container">
       <nav class="usa-footer__nav ldaf-footer__nav" aria-label="Footer navigation">
         <div class="grid-row grid-gap-4">
-          {#each navItems as subMenu, i (subMenu.id)}
-            {@const { name, children } = subMenu}
+          {#each navItems as { name, children, id }, i (id)}
             <div class="mobile-lg:grid-col-6 tablet:grid-col-4 desktop:grid-col">
               <section
                 class="usa-footer__primary-content usa-footer__primary-content--collapsible ldaf-footer__primary-content"
@@ -61,7 +60,7 @@
                 {#if innerWidth < MOBILE_BREAKPOINT}
                   <button
                     class="usa-footer__primary-link usa-footer__primary-link--button ldaf-footer__primary-link"
-                    aria-controls="usa-footer-menu-list-{subMenu.id}"
+                    aria-controls="usa-footer-menu-list-{id}"
                     aria-expanded={i === expandedIndex}
                     type="button"
                     on:keydown={(e) => handleKeyDown(e, i)}
@@ -73,7 +72,7 @@
                   <!-- TODO: Programmatically determine appropriate heading level. -->
                   <h2 class="usa-footer__primary-link ldaf-footer__primary-link">{name}</h2>
                 {/if}
-                <ul id="usa-footer-menu-list-{subMenu.id}" class="usa-list usa-list--unstyled">
+                <ul id="usa-footer-menu-list-{id}" class="usa-list usa-list--unstyled">
                   {#if children}
                     {#each children as item (item.id)}
                       <li class="usa-footer__secondary-link ldaf-footer__secondary-link">
@@ -89,6 +88,7 @@
       </nav>
     </div>
   </div>
+  <!-- TODO: Move hard-coded content below into Contentful. -->
   <div class="usa-footer__secondary-section ldaf-footer__secondary-section">
     <div class="grid-container">
       <div class="grid-row grid-gap">
