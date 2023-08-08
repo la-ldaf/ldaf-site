@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./Pagination.scss";
   export let currentPage: number;
   export let totalPages: number;
   export let getPageLink: (page: number) => string;
@@ -48,74 +49,29 @@
   );
 </script>
 
-<div class="pagination">
+<div class="ldaf-pagination">
   {#if currentPage > 1}
-    <div class="pagination-previous-button">
+    <div class="ldaf-pagination__previous-button">
       <a href={getPageLink(currentPage - 1)}>{"<"} Previous</a>
     </div>
   {/if}
-  <div class="pagination-buttons">
+  <div class="ldaf-pagination__numeric-buttons">
     {#each shownPageLinkNumbersWithLastNumber as [pageLinkNumber, lastPageLinkNumber]}
       {#if lastPageLinkNumber && pageLinkNumber - lastPageLinkNumber > 1}
-        <div class="pagination-button pagination-ellipsis">…</div>
+        <div class="ldaf-pagination__numeric-button ldaf-pagination__ellipsis">…</div>
       {/if}
       <a
         href={getPageLink(pageLinkNumber)}
-        class="pagination-button"
-        class:first-pagination-button={pageLinkNumber === 1}
-        class:selected-pagination-button={pageLinkNumber === currentPage}
-        class:last-pagination-button={pageLinkNumber === totalPages}
+        class="ldaf-pagination__numeric-button"
+        class:ldaf-pagination__numeric-button--selected={pageLinkNumber === currentPage}
       >
         {pageLinkNumber}
       </a>
     {/each}
   </div>
   {#if currentPage < totalPages}
-    <div class="pagination-next-button">
+    <div class="ldaf-pagination__next-button">
       <a href={getPageLink(currentPage + 1)}>Next ></a>
     </div>
   {/if}
 </div>
-
-<style>
-  .pagination {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-  }
-
-  .pagination-next-button,
-  .pagination-previous-button {
-    display: flex;
-    height: 40px;
-    align-items: center;
-  }
-
-  .pagination-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 7px;
-  }
-
-  .pagination-button {
-    display: flex;
-    width: 40px;
-    height: 40px;
-    color: #757473;
-    border: 1px solid #dfe1e2;
-    border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-  }
-
-  .pagination-ellipsis {
-    border: none;
-  }
-
-  .selected-pagination-button {
-    background: #171717;
-    border: 1px solid #171717;
-    color: #fff;
-  }
-</style>
