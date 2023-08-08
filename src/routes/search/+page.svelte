@@ -17,7 +17,27 @@
     const search = instantsearch({
       searchClient: algoliasearch(PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY),
       indexName: PUBLIC_ALGOLIA_INDEX,
-      routing: true,
+      routing: {
+        stateMapping: {
+          stateToRoute(uiState) {
+            const indexUiState = uiState[PUBLIC_ALGOLIA_INDEX];
+            return {
+              q: indexUiState.query,
+              page: indexUiState.page,
+            };
+          },
+          routeToState(routeState) {
+            return {
+              [PUBLIC_ALGOLIA_INDEX]: {
+                query: routeState.q,
+                page: routeState.page,
+              },
+            };
+          },
+        },
+      },
+      // TODO: searchFunction is being deprecated, replace with onStateChange
+      // https://www.algolia.com/doc/api-reference/widgets/instantsearch/js/#widget-param-onstatechange
       searchFunction(helper) {
         const searchUI = document.querySelectorAll(".stats, .hits, .pagination");
 
@@ -42,7 +62,7 @@
       hits({
         container: ".hits",
         templates: {
-          empty: "No results found.",
+          empty: () => "No results found.",
           item: searchHitsTemplate,
         },
       }),
@@ -97,8 +117,8 @@
           link: "usa-pagination__button", // the link elements.
         },
         templates: {
-          next: "Next",
-          previous: "Previous",
+          next: () => "Next",
+          previous: () => "Previous",
         },
       }),
     ]);
