@@ -26,7 +26,7 @@ export default {
             blurhash: null,
           },
         },
-        url: "/test-contentful-content",
+        url: "/.build-info",
       },
     ],
   },
