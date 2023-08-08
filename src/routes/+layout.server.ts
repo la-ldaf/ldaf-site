@@ -1,22 +1,28 @@
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
 import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.server";
+import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
 export const load = async () => {
   const pageMetadataMapPromise = loadPageMetadataMap();
-  const navItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
+  const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
     loadMainNav(pageMetadataMap)
   );
-  const sideNavMapPromise = Promise.all([pageMetadataMapPromise, navItemsPromise]).then(
-    ([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems)
+  const footerNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
+    loadFooterNav(pageMetadataMap)
   );
+  const sideNavMapPromise = Promise.all([
+    pageMetadataMapPromise,
+    headerPrimaryNavItemsPromise,
+  ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
   return {
     pageMetadataMap: pageMetadataMapPromise.then(({ pageMetadataMap }) => pageMetadataMap),
     pathsToIDs: pageMetadataMapPromise.then(({ pathsToIDs }) => pathsToIDs),
     siteTitle: loadSiteTitle(),
-    navItems: navItemsPromise,
-    secondaryNavItems: loadSecondaryNav(),
+    headerPrimaryNavItems: headerPrimaryNavItemsPromise,
+    headerSecondaryNavItems: loadSecondaryNav(),
+    footerNavItems: footerNavItemsPromise,
     sideNavMap: sideNavMapPromise,
   };
 };

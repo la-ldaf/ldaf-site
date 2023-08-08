@@ -19,7 +19,7 @@
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
   import Logo from "./Logo";
 
-  export let navItems: NavItemType[] = [];
+  export let primaryNavItems: NavItemType[] = [];
   export let siteTitle: SiteTitleType;
   export let secondaryNavItems: NavLinkType[] = [];
 
@@ -69,7 +69,7 @@
         <span class="text-italic">{siteTitle.commissionerRow2}</span>
       </div>
 
-      <Nav items={navItems} />
+      <Nav items={primaryNavItems} />
 
       <!-- TODO: Extend <Nav/> to cover secondary nav or build out component with shared dependencies. -->
       <div
