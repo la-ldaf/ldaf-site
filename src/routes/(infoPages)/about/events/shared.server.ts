@@ -48,7 +48,10 @@ export const query = gql`
   }
 `;
 
-export const loadEventsPage = async ({ params: { page } }: Parameters<PageServerLoad>[0]) => {
+export const loadEventsPage = async ({
+  params: { page },
+}: Pick<Parameters<PageServerLoad>[0], "params">) => {
+  const pageNumber = parseInt(page);
   fetchData: {
     if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) break fetchData;
     const client = getContentfulClient({
@@ -58,11 +61,13 @@ export const loadEventsPage = async ({ params: { page } }: Parameters<PageServer
     const eventsData = await client.fetch<EventsQuery>(printQuery(query), {
       variables: {
         limit,
-        skip: limit * Math.max(page - 1, 0),
+        skip: limit * Math.max(pageNumber - 1, 0),
       },
     });
     if (eventsData.eventEntryCollection.items.length === 0) break fetchData;
     return {
+      currentPageNumber: pageNumber,
+      totalPages: Math.ceil(eventsData.eventEntryCollection.total / limit),
       events: eventsData.eventEntryCollection.items,
       totalEvents: eventsData.eventEntryCollection.total,
     };
