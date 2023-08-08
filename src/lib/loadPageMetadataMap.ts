@@ -3,6 +3,7 @@ import { print as printQuery } from "graphql";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
+import type { Breadcrumb, BreadcrumbsType } from "$lib/components/Breadcrumbs";
 
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
 
@@ -12,18 +13,12 @@ export type PageMetadataMapItem = NonNullable<
 >["items"][number] & {
   children?: string[];
   url?: string | null;
-  breadcrumbs?: Breadcrumbs;
+  breadcrumbs?: BreadcrumbsType;
 };
 
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
 // might want to move this type def if we want to use it elsewhere
-type Breadcrumb = {
-  id: string;
-  title: string | null | undefined;
-  link: string | null | undefined;
-};
-type Breadcrumbs = Array<Breadcrumb>;
 
 const query = gql`
   query PageMetadataCollection {
@@ -81,8 +76,8 @@ const constructFullPathFromMap = (
 const constructBreadcrumbs = (
   pageMetadataMap: PageMetadataMap,
   metadata: PageMetadataMapItem,
-  breadcrumbs: Breadcrumbs = []
-): Breadcrumbs => {
+  breadcrumbs: BreadcrumbsType = []
+): BreadcrumbsType => {
   breadcrumbs.unshift({
     id: metadata.sys.id,
     title: metadata.title,

@@ -8,8 +8,8 @@
   import warn from "$lib/util/warn";
   import type { Loading, LazyLoading, Color, Sources, GetSources, Srcset } from "./types";
 
-  export let height: number | undefined = undefined;
-  export let width: number | undefined = undefined;
+  export let height: number | null | undefined = undefined;
+  export let width: number | null | undefined = undefined;
 
   // Whether the image should fit its container
   export let fit = true;
