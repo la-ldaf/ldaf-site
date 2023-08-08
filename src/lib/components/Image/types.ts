@@ -16,7 +16,11 @@ export type Sources = Source[];
 
 export type GetSources = (
   url: string,
-  options?: { widths: number[]; srcWidth?: number; srcHeight?: number }
+  options?: {
+    widths: number[];
+    srcWidth?: number | null | undefined;
+    srcHeight?: number | null | undefined;
+  }
 ) => Sources;
 
 export type FixedImage = { format: Format; size: number | "original"; src: string };

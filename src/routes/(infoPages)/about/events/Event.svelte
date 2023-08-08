@@ -5,14 +5,20 @@
 </script>
 
 <div class="event">
-  <Date dateString={event.eventDateAndTime} />
+  {#if event?.eventDateAndTime}
+    <Date dateString={event.eventDateAndTime} />
+  {/if}
   <div class="event-details">
-    <h2 class="event-title">
-      {event.shortTitle}
-    </h2>
-    <p class="event-description">
-      {event.eventDescription}
-    </p>
+    {#if event?.shortTitle}
+      <h2 class="event-title">
+        {event.shortTitle}
+      </h2>
+    {/if}
+    {#if event?.eventDescription}
+      <p class="event-description">
+        {event.eventDescription}
+      </p>
+    {/if}
   </div>
 </div>
 
