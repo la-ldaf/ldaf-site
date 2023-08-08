@@ -120,6 +120,7 @@
     }
     .ldaf-footer__copyright {
       margin-top: 2rem;
+      @include u-font("sans", "3xs");
     }
   }
 }
