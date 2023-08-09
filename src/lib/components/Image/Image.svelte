@@ -173,8 +173,8 @@
   $: imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
 
   const getContainerStyleProps = (
-    width: number | undefined,
-    height: number | undefined,
+    width: number | null | undefined,
+    height: number | null | undefined,
     fit: boolean,
     preserveAspectRatio: boolean,
     canUpscaleImage: boolean
