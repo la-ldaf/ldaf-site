@@ -21,16 +21,20 @@
       indexName: PUBLIC_ALGOLIA_INDEX,
       routing: {
         // The default instantsearch router uses history.pushState, which
-        // messes with SvelteKit's router and leads to all sorts of navigation
-        // problems. We still use all the other built-in functionality, but
-        // override the `push` functionality with SvelteKit's.
+        //   messes with SvelteKit's router and leads to all sorts of
+        //   navigation problems. We still use all the other built-in
+        //   functionality, but override the `push` functionality with
+        //   SvelteKit's.
         router: history({
+          // https://github.com/algolia/instantsearch/blob/69ec7deba05a60a223b833c6a117d5a0f2e83012/packages/instantsearch.js/src/lib/routers/history.ts#L117
           push: (url) => {
             goto(url);
           },
         }),
+        // Following is roughly adapted from this example:
+        //   https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/js/#example-of-implementation
         // For some reason setting `router` above locks us into a much more
-        // rigid type definition for `stateMapping`, which is not necessary.
+        //   rigid type definition for `stateMapping`, which is not necessary.
         // TODO: Look into how we can get TS passing here; might rely on an
         //       an update to instantsearch.
         stateMapping: {
