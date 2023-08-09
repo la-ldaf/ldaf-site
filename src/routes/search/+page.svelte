@@ -2,8 +2,10 @@
   import "./search-page.scss";
   import LoadingSpinner from "$lib/components/LoadingSpinner";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
+  import { history } from "instantsearch.js/es/lib/routers";
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
   import { searchHitsTemplate } from "./searchHelpers";
 
@@ -18,7 +20,22 @@
       searchClient: algoliasearch(PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY),
       indexName: PUBLIC_ALGOLIA_INDEX,
       routing: {
+        // The default instantsearch router uses history.pushState, which
+        // messes with SvelteKit's router and leads to all sorts of navigation
+        // problems. We still use all the other built-in functionality, but
+        // override the `push` functionality with SvelteKit's.
+        router: history({
+          push: (url) => {
+            goto(url);
+          },
+        }),
+        // For some reason setting `router` above locks us into a much more
+        // rigid type definition for `stateMapping`, which is not necessary.
+        // TODO: Look into how we can get TS passing here; might rely on an
+        //       an update to instantsearch.
         stateMapping: {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           stateToRoute(uiState) {
             const indexUiState = uiState[PUBLIC_ALGOLIA_INDEX];
             return {
@@ -26,6 +43,8 @@
               page: indexUiState.page,
             };
           },
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           routeToState(routeState) {
             return {
               [PUBLIC_ALGOLIA_INDEX]: {
