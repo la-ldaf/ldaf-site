@@ -1,6 +1,5 @@
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
-import type { ContentfulClient } from "$lib/services/contentful";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import type { EventsQuery } from "./$queries.generated";
