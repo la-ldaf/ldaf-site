@@ -1,22 +1,14 @@
 <script lang="ts">
   import "./Header.scss";
   import { url as closeIcon } from "$icons/close";
-  import headerBg from "$lib/assets/header-background-optimized.jpg?quality=85&imagetools";
-  import headerBgBlurhash, {
-    width as headerBgWidth,
-    height as headerBgHeight,
-  } from "$lib/assets/header-background-optimized.jpg?blurhash";
-  import headerBgWebp from "$lib/assets/header-background-optimized.jpg?quality=85&format=webp&imagetools";
-  import headerBgAvif from "$lib/assets/header-background-optimized.jpg?quality=85&format=avif&imagetools";
-
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
   import Search from "$lib/components/Search";
   import { page } from "$app/stores";
-  import Image from "$lib/components/Image";
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
+  import HeaderBackgroundImage from "./HeaderBackgroundImage.svelte";
   import Logo from "./Logo";
 
   export let primaryNavItems: NavItemType[] = [];
@@ -34,21 +26,7 @@
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="ldaf-header usa-header usa-header--extended">
-  <Image
-    class="ldaf-header-bg-img"
-    src={headerBg}
-    sources={[
-      { type: "image/avif", srcset: [headerBgAvif] },
-      { type: "image/webp", srcset: [headerBgWebp] },
-      { type: "image/jpeg", srcset: [headerBg] },
-    ]}
-    blurhash={headerBgBlurhash}
-    alt=""
-    width={headerBgWidth}
-    height={headerBgHeight}
-    canUpscaleImage
-    fit
-  />
+  <HeaderBackgroundImage class="ldaf-header-bg-img" />
   <div class="ldaf-nav usa-navbar">
     <Title {siteTitle} />
     <!--TODO: Replace with content from CMS. -->
