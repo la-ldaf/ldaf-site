@@ -46,7 +46,7 @@
     alt=""
     width={headerBgWidth}
     height={headerBgHeight}
-    neverUpscaleImage={false}
+    canUpscaleImage={true}
     fit
   />
   <div class="ldaf-nav usa-navbar">

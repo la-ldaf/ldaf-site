@@ -17,7 +17,7 @@
 
   // The size type of the image
   export let sizeType: SizeType | "static" = "static";
-  export let neverUpscaleImage = sizeType !== "full-bleed";
+  export let canUpscaleImage = sizeType === "full-bleed";
 
   export let src: string;
 
@@ -171,17 +171,17 @@
     height: number | undefined,
     fit: boolean,
     preserveAspectRatio: boolean,
-    neverUpscaleImage: boolean
+    canUpscaleImage: boolean
   ) =>
     [
-      ...(width && neverUpscaleImage ? [`max-width: ${width}px`] : []),
-      ...(height && neverUpscaleImage ? [`max-height: ${height}px`] : []),
+      ...(width && !canUpscaleImage ? [`max-width: ${width}px`] : []),
+      ...(height && !canUpscaleImage ? [`max-height: ${height}px`] : []),
       ...(fit && preserveAspectRatio && width && height
         ? [`aspect-ratio: ${width} / ${height}`]
         : []),
     ].join("; ");
 
-  $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, neverUpscaleImage);
+  $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
 </script>
 
 {#key src}
