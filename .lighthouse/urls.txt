@@ -1,3 +1,0 @@
-http://localhost:4173
-http://localhost:4173/land
-http://localhost:4173/land/indian-creek

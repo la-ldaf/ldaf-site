@@ -135,6 +135,12 @@ jobs:
     runs-on: "ubuntu-latest"
     timeout-minutes: 60
     steps:
+      - name: Capture Vercel preview URL
+        id: vercel_preview_url
+        uses: aaron-binary/vercel-preview-url-action@v0.0.3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -148,15 +154,17 @@ jobs:
           cache: npm
 
       - name: Install
+        run: npm i -g lighthouse lighthouse-batch
+
+      - name: Construct URLs to test
         run: |
-          npm ci
-          npm i -g lighthouse lighthouse-batch
+          while IFS="" read -r path || [ -n "$path" ]
+          do
+            echo "${{ steps.vercel_preview_url.outputs.vercel_preview_url }}${path}" >> .lighthouse/urls.txt
+          done < .lighthouse/paths.txt
 
       - name: Generate Lighthouse reports
         run: |
-          npm run build
-          npm run preview &
-          sleep 5
           lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\""
           lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --preset=desktop"
 
