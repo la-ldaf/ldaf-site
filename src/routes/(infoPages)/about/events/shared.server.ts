@@ -6,6 +6,7 @@ import type { EventsQuery } from "./$queries.generated";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./page/[page]/$types";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import { events as testEvents, pages as testEventPages } from "./__tests__/eventsTestContent";
 
 const limit = 20;
 
@@ -63,7 +64,22 @@ export const loadEventsPage = async ({
       : {};
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
-    if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) break fetchData;
+    const breadcrumbs = [
+      ...aboutPageBreadcrumbs,
+      { title: "Events", link: "/about/events" },
+      ...(pageNumber > 1
+        ? [{ title: `Page ${pageNumber}`, link: `/about/events/page/${pageNumber}` }]
+        : []),
+    ];
+    if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+      return {
+        currentPageNumber: pageNumber,
+        totalPages: Math.ceil(testEvents.length / limit),
+        events: testEventPages[pageNumber - 1].items,
+        totalEvents: testEvents.length,
+        breadcrumbs,
+      };
+    }
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -85,7 +101,7 @@ export const loadEventsPage = async ({
       totalPages: Math.ceil(eventsData.eventEntryCollection.total / limit),
       events: eventsData.eventEntryCollection.items,
       totalEvents: eventsData.eventEntryCollection.total,
-      breadcrumbs: [...aboutPageBreadcrumbs, { title: "Events", link: "/about/events" }],
+      breadcrumbs,
     };
   }
   throw error(404);

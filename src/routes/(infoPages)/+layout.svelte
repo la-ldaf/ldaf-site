@@ -13,7 +13,7 @@
   $: breadcrumbs = $page.data.breadcrumbs ?? pageMetadata.breadcrumbs;
 
   $: topTierSlug = pathname.split("/")[1];
-  $: sideNavTree = sideNavMap.get(topTierSlug).children;
+  $: sideNavTree = sideNavMap.get(topTierSlug)?.children ?? [];
 </script>
 
 <div class="grid-container">
