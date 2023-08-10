@@ -28,3 +28,5 @@ vi.mock("$app/stores", (): typeof stores => {
     updated: mockedStores.updated,
   };
 });
+
+vi.mock("$lib/components/Header/HeaderBackgroundImage.svelte");
