@@ -21,6 +21,10 @@
   const storybookUrl = `https://storybook-${VERCEL_GIT_PULL_REQUEST_ID}-ldaf.vercel.app`;
 </script>
 
+<svelte:head>
+  <meta name="robots" content="noindex nofollow" />
+</svelte:head>
+
 <div class="usa-section grid-container">
   <main id="main-content">
     <p>
