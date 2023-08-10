@@ -54,13 +54,15 @@
   // Safari doesn't assign focus to <button> and <a> elements, so the focusout event doesn't close
   //   menus unless the user is keyboard navigating.
   // These additional checks should be redundant on other browsers but will ensure we close the menu
-  //   in Safari.
+  //   in Safari when the user clicks out or navigates to a new page.
   let menuElement: HTMLDivElement;
   const handleClickOnBody = ({ target }: MouseEvent) => {
-    if (menuElement && target instanceof HTMLElement && menuElement.contains(target)) return;
-    dispatch("close");
+    if (expanded) {
+      if (menuElement && target instanceof HTMLElement && menuElement.contains(target)) return;
+      dispatch("close");
+    }
   };
-  afterNavigate(() => dispatch("close"));
+  afterNavigate(() => expanded && dispatch("close"));
 </script>
 
 <svelte:body on:click={handleClickOnBody} />
