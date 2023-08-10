@@ -56,7 +56,7 @@
   // These additional checks should be redundant on other browsers but will ensure we close the menu
   //   in Safari when the user clicks out or navigates to a new page.
   let menuElement: HTMLDivElement;
-  const handleClickOnBody = ({ target }: MouseEvent) => {
+  const handleMouseDownOnBody = ({ target }: MouseEvent) => {
     if (expanded) {
       if (menuElement && target instanceof HTMLElement && menuElement.contains(target)) return;
       dispatch("close");
@@ -65,7 +65,7 @@
   afterNavigate(() => expanded && dispatch("close"));
 </script>
 
-<svelte:body on:click={handleClickOnBody} />
+<svelte:body on:mousedown={handleMouseDownOnBody} />
 
 <!-- TODO: This div is necessary for handling focus loss, but it breaks the styling for a menu
            being marked with an underline as the active / current nav item. -->
