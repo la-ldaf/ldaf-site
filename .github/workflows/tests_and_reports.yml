@@ -170,7 +170,7 @@ jobs:
       - name: Generate Lighthouse reports
         run: |
           lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8"
-          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8" --preset=desktop"
+          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8 --preset=desktop"
 
       - name: Copy landing page for reports summary
         run: cp .lighthouse/index.html lighthouse-reports/index.html
