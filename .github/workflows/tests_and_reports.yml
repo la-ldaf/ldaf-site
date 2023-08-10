@@ -136,10 +136,11 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Capture Vercel preview URL
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
         id: vercel_preview_url
-        uses: aaron-binary/vercel-preview-url-action@v0.0.3
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 60
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -160,7 +161,7 @@ jobs:
         run: |
           while IFS="" read -r path || [ -n "$path" ]
           do
-            echo "${{ steps.vercel_preview_url.outputs.vercel_preview_url }}${path}" >> .lighthouse/urls.txt
+            echo "${{ steps.vercel_preview_url.outputs.url }}${path}" >> .lighthouse/urls.txt
           done < .lighthouse/paths.txt
 
       - name: Generate Lighthouse reports
