@@ -72,7 +72,7 @@
           for (let report of reports) {
             const { name, html, score, detail } = report;
             // Transform name into something more readable.
-            const route = name.replace(/^ldaf-.*-ldaf\/vercel_app/, "").replaceAll("_", "/");
+            const route = name.replace(/^ldaf-.*-ldaf_vercel_app/, "").replaceAll("_", "/");
             const { performance, accessibility, "best-practices": bestPractices, seo } = detail;
             htmlString += `
           <li>
