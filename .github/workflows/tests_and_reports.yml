@@ -140,7 +140,10 @@ jobs:
         id: vercel_preview_url
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 60
+          # Check once a minute
+          check_interval: 60
+          # Timeout after 30 minutes
+          max_timeout: 1800
 
       - name: Checkout
         uses: actions/checkout@v3
