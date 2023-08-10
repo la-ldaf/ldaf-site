@@ -7,22 +7,29 @@
   const getSrcset = (urls: string[]): [string, number][] =>
     urls.map((url, i) => [url, displayedWidths[i]]);
 
-  import jpegFallback from "$lib/assets/header-bg-original.jpg?quality=85&aspect=2.07:1&metadata&imagetools";
+  import jpegFallback from "$lib/assets/header-bg-original.jpg?quality=85&aspect=2.07:1&imagetools";
   import {
     width,
     height,
   } from "$lib/assets/header-bg-original.jpg?quality=85&aspect=2.0.7:1&as=meta:width;height&imagetoolsMetadata";
 
-  import jpegURLs from "$lib/assets/header-bg-original.jpg?quality=85&aspect=2.07:1&w=307;384;410;432;576;614;788;1152&imagetoolsMultiple";
-  const jpegSrcset: Srcset = [jpegFallback, ...getSrcset(jpegURLs)];
+  import resizedURLs from "$lib/assets/header-bg-original.jpg?quality=85&aspect=2.07:1&w=307;384;410;432;576;614;788;1152&format=jpeg;webp;avif&imagetoolsMultiple";
+
+  const [resizedJPEGs, resizedWebPs, resizedAVIFs] = resizedURLs.reduce(
+    (acc, url, i) => {
+      acc[i % 3].push(url);
+      return acc;
+    },
+    [[], [], []] as [string[], string[], string[]]
+  );
+
+  const jpegSrcset: Srcset = [jpegFallback, ...getSrcset(resizedJPEGs)];
 
   import webpFallback from "$lib/assets/header-bg-original.jpg?format=webp&quality=85&aspect=2.07:1&imagetools";
-  import webpURLs from "$lib/assets/header-bg-original.jpg?format=webp&quality=85&aspect=2.07:1&w=307;384;410;432;576;614;788;1152&imagetoolsMultiple";
-  const webpSrcset: Srcset = [webpFallback, ...getSrcset(webpURLs)];
+  const webpSrcset: Srcset = [webpFallback, ...getSrcset(resizedWebPs)];
 
   import avifFallback from "$lib/assets/header-bg-original.jpg?format=avif&quality=85&aspect=2.07:1&imagetools";
-  import avifURLs from "$lib/assets/header-bg-original.jpg?format=avif&quality=85&aspect=2.07:1&w=307;384;410;432;576;614;788;1152&imagetoolsMultiple";
-  const avifSrcset: Srcset = [avifFallback, ...getSrcset(avifURLs)];
+  const avifSrcset: Srcset = [avifFallback, ...getSrcset(resizedAVIFs)];
 
   import blurhash from "$lib/assets/header-bg-original.jpg?blurhash";
 
