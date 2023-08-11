@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageServerData } from "./$types";
-  import DateComponent from "./Date.svelte";
+  import DateComponent from "$lib/components/Date";
   export let event: PageServerData["events"][number];
   $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
 </script>

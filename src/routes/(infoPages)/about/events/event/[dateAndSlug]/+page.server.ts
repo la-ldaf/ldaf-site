@@ -17,16 +17,28 @@ const query = gql`
         sys {
           id
         }
+        slug
         shortTitle
+        internalName
         eventDescription
         eventDateAndTime
         eventDocumentsCollection {
           items {
+            __typename
             ... on DocumentWrapper {
+              sys {
+                id
+              }
               docWrapperName
               documentDescription
+              wrappedDocumentName {
+                url
+              }
             }
             ... on Contact {
+              sys {
+                id
+              }
               entityName
               phone
               phoneExt
