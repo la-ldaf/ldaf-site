@@ -6,7 +6,7 @@
 </script>
 
 <Link
-  href={`https://www.youtube.com/channel/${PUBLIC_YOUTUBE_CHANNEL_ID}`}
+  href={`https://www.youtube.com/channel/${PUBLIC_YOUTUBE_CHANNEL_ID}?sub_confirmation=1&feature=subscribe-embed-click`}
   class="youtube-subscribe-link"
 >
   <Icon src={youtubeIcon} class="youtube-subscribe-icon" />
