@@ -168,6 +168,11 @@ jobs:
           done < .lighthouse/paths.txt
 
       - name: Generate Lighthouse reports
+        # Run twice, once for mobile and once for desktop.
+        # Ignore the PWA category by only selecting the other four.
+        # When running without the increased throttling modifier, we were getting warnings on
+        #   reports that the GitHub Actions runner couldn't keep up. Increasing this to 8 from the
+        #   base of 4 seems to fix the issue.
         run: |
           lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8"
           lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8 --preset=desktop"
