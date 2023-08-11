@@ -9,7 +9,7 @@ describe("Breadcrumbs", () => {
   it("renders", async () => {
     render(Breadcrumbs, {
       props: {
-        path: breadcrumbsTestContent,
+        breadcrumbs: breadcrumbsTestContent,
       },
     });
     const link = screen.getByText("Breadcrumb 0").parentElement;

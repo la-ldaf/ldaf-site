@@ -2,13 +2,10 @@
 <!-- TODO: https://ldaf.atlassian.net/browse/LDAF-293 -->
 <script lang="ts">
   import Link from "$lib/components/Link";
-  export let path: {
-    id: string;
-    title: string;
-    link: string;
-  }[];
-  $: currentPage = path[path.length - 1];
-  $: previousPages = path.slice(0, -1);
+  import type { Breadcrumbs } from "./types";
+  export let breadcrumbs: Breadcrumbs;
+  $: currentPage = breadcrumbs[breadcrumbs.length - 1];
+  $: previousPages = breadcrumbs.slice(0, -1);
 </script>
 
 <nav class="usa-breadcrumb usa-breadcrumb--wrap" aria-label="Breadcrumbs">
