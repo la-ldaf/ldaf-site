@@ -7,7 +7,6 @@ import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./page/[page]/$types";
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import { events as testEvents, pages as testEventPages } from "./__tests__/eventsTestContent";
-import { zonedTimeToUtc } from "date-fns-tz";
 import { eventIANATimezone } from "$lib/constants/date";
 import { zonedStartOfDay } from "$lib/util/dates";
 

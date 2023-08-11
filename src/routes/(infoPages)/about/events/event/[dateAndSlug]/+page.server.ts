@@ -8,6 +8,7 @@ import type { EventQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
 import { eventIANATimezone } from "$lib/constants/date";
 import { zonedEndOfDay, zonedStartOfDay } from "$lib/util/dates";
+import zonedTimeToUtc from "date-fns-tz/zonedTimeToUtc";
 
 const query = gql`
   query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
