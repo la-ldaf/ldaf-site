@@ -3,8 +3,8 @@
 
   import { afterUpdate } from "svelte";
 
-  import { PUBLIC_YOUTUBE_CHANNEL_ID } from "$env/static/public";
   import getYoutubeVideoData from "$lib/services/youtube";
+  import YoutubeSubscribeLink from "$lib/components/YoutubeSubscribeLink";
 
   type VideoCardVariation = "hero" | "primary" | "secondary" | "tertiary";
   interface $$Props {
@@ -37,7 +37,6 @@
 
   $: title = customTitle;
   $: description = customDescription;
-  $: loadSubscribeButton = false;
 
   afterUpdate(async () => {
     if (youtubeVideoId && (!customTitle || !customDescription)) {
@@ -52,7 +51,6 @@
         description = snippet.description.split("\n")[0];
       }
     }
-    loadSubscribeButton = true;
   });
 </script>
 
@@ -76,16 +74,7 @@
       {#if description}
         <p class="ldaf-video-description">{description}</p>
       {/if}
-      <!-- https://developers.google.com/youtube/youtube_subscribe_button -->
-      {#if loadSubscribeButton}
-        <script src="https://apis.google.com/js/platform.js"></script>
-        <div
-          class="g-ytsubscribe"
-          data-channelid={PUBLIC_YOUTUBE_CHANNEL_ID}
-          data-layout="default"
-          data-count="hidden"
-        />
-      {/if}
+      <YoutubeSubscribeLink />
     </div>
   </div>
 {/if}

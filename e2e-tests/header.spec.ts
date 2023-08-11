@@ -44,6 +44,7 @@ test("nav items can be expanded and collapsed", async ({ page }) => {
 });
 
 // Following test cannot be run as a component unit test since it relies on navigation.
+// TODO: This actually goes to a 404 currently, but still works since the header menu still loads.
 test("mobile menu is closed on route change", async ({ page }) => {
   await page.setViewportSize({ width: 400, height: 850 });
   await page.goto("/news");
