@@ -10,6 +10,7 @@ import { events as testEvents, pages as testEventPages } from "./__tests__/event
 
 const limit = 20;
 
+// TODO: filter to only future events. this will require thinking about timezones
 export const query = gql`
   query Events($limit: Int = 20, $skip: Int = 0) {
     eventEntryCollection(limit: $limit, skip: $skip, order: [eventDateAndTime_ASC]) {

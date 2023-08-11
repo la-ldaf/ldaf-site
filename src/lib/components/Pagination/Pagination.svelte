@@ -1,4 +1,5 @@
 <script lang="ts">
+  // TODO: use USWDS Pagination component styles
   import "./Pagination.scss";
   import { createEventDispatcher } from "svelte";
   export let currentPage: number;

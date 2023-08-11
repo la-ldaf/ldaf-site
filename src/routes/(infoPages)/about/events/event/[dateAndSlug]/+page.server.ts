@@ -61,6 +61,8 @@ const query = gql`
 `;
 
 export const load = (async ({ params: { dateAndSlug }, parent }) => {
+  // TODO: think about timezones
+
   // dateAndSlug should be constructed like 2023-08-10-some-slug
   const [_, dateString, slug] = dateAndSlug.match(/(\d{4}-\d{2}-\d{2})-([a-z1-9-]+)/) ?? [];
   if (!dateString || !slug) throw error(404);
