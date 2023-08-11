@@ -39,6 +39,8 @@
   }
 </script>
 
-{#each document.content as subNode}
-  <Node node={subNode} />
-{/each}
+{#key document}
+  {#each document.content as subNode}
+    <Node node={subNode} />
+  {/each}
+{/key}
