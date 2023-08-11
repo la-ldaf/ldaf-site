@@ -43,7 +43,16 @@
     <slot>Link</slot>
   </Link>
 {:else}
-  <button {type} {disabled} aria-disabled={disabled} class={classes} on:click>
+  <button
+    {...$$restProps}
+    {type}
+    {disabled}
+    aria-disabled={disabled}
+    class={classes}
+    on:click
+    on:keydown
+    on:mousedown
+  >
     <slot>Button</slot>
   </button>
 {/if}

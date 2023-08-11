@@ -64,6 +64,7 @@
               alt="Primary view placeholder"
               width={imageWidth}
               height={imageHeight}
+              sizeType="card"
               mean={imageMean}
               blurhash={imageBlurhash}
             />
