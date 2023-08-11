@@ -1,18 +1,25 @@
 <script lang="ts">
   import type { PageServerData } from "./$types";
-  import Date from "./Date.svelte";
+  import DateComponent from "./Date.svelte";
   export let event: PageServerData["events"][number];
+  $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
 </script>
 
 <div class="event">
   {#if event?.eventDateAndTime}
-    <Date dateString={event.eventDateAndTime} />
+    <DateComponent dateString={event.eventDateAndTime} />
   {/if}
   <div class="event-details">
     {#if event?.shortTitle}
-      <h2 class="event-title">
-        {event.shortTitle}
-      </h2>
+      <a
+        href={date && event?.slug
+          ? `/about/events/event/${date.toISOString().split("T")[0]}-${event.slug}`
+          : undefined}
+      >
+        <h2 class="event-title">
+          {event.shortTitle}
+        </h2>
+      </a>
     {/if}
     {#if event?.eventDescription}
       <p class="event-description">
