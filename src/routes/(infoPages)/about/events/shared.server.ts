@@ -5,7 +5,7 @@ import { print as printQuery } from "graphql";
 import type { EventsQuery } from "./$queries.generated";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./page/[page]/$types";
-import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import { events as testEvents, pages as testEventPages } from "./__tests__/eventsTestContent";
 
 const limit = 20;
@@ -50,35 +50,36 @@ export const query = gql`
   }
 `;
 
+export const loadBaseBreadcrumbs = async ({
+  parent,
+}: Pick<Parameters<PageServerLoad>[0], "parent">): Promise<Breadcrumbs> => {
+  const { pageMetadataMap, pathsToIDs } = await parent();
+  const aboutPageMetadataID = pathsToIDs.get("/about");
+  if (!aboutPageMetadataID) return [];
+  const { breadcrumbs } = pageMetadataMap.get(aboutPageMetadataID) ?? {};
+  return [...(breadcrumbs ?? []), { title: "Events", link: "/about/events" }];
+};
+
 export const loadEventsPage = async ({
   parent,
   params: { page },
 }: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
   fetchData: {
-    const {
-      pageMetadataMap,
-      pathsToIDs,
-    }: { pageMetadataMap: PageMetadataMap; pathsToIDs: Map<string, string> } = await parent();
-    const aboutPageMetadataID = pathsToIDs.get("/about");
-    const { breadcrumbs: aboutPageBreadcrumbs = [] } = aboutPageMetadataID
-      ? pageMetadataMap.get(aboutPageMetadataID) ?? {}
-      : {};
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
-    const breadcrumbs = [
-      ...aboutPageBreadcrumbs,
-      { title: "Events", link: "/about/events" },
+    const breadcrumbsPromise = loadBaseBreadcrumbs({ parent }).then((baseBreadcrumbs) => [
+      ...baseBreadcrumbs,
       ...(pageNumber > 1
         ? [{ title: `Page ${pageNumber}`, link: `/about/events/page/${pageNumber}` }]
         : []),
-    ];
+    ]);
     if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
       return {
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testEvents.length / limit),
         events: testEventPages[pageNumber - 1].items,
         totalEvents: testEvents.length,
-        breadcrumbs,
+        breadcrumbs: breadcrumbsPromise,
       };
     }
     const client = getContentfulClient({
@@ -102,7 +103,7 @@ export const loadEventsPage = async ({
       totalPages: Math.ceil(eventsData.eventEntryCollection.total / limit),
       events: eventsData.eventEntryCollection.items,
       totalEvents: eventsData.eventEntryCollection.total,
-      breadcrumbs,
+      breadcrumbs: breadcrumbsPromise,
     };
   }
   throw error(404);

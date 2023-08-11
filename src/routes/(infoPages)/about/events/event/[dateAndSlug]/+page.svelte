@@ -10,10 +10,8 @@
 
 <div class="ldaf-event-page__header">
   <DateComponent dateString={data.event.eventDateAndTime} />
-  <h1 class="ldaf-event-page__header__h1">{data.event.internalName}</h1>
+  <h1 class="ldaf-event-page__header__h1">{data.event.shortTitle}</h1>
 </div>
-
-<h2 class="ldaf-event-page__subtitle">{data.event.shortTitle}</h2>
 
 <p>{data.event.eventDescription}</p>
 
@@ -53,11 +51,5 @@
     margin: 0;
     margin-bottom: 16px;
     line-height: 47px;
-  }
-  .ldaf-event-page__subtitle {
-    margin-top: 0;
-    font-family: "Source Sans Pro";
-    font-weight: 300;
-    font-size: 22px;
   }
 </style>

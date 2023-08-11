@@ -6,6 +6,7 @@ import { day } from "$lib/constants/date";
 import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
 import type { EventQuery } from "./$queries.generated";
+import { loadBaseBreadcrumbs } from "../../shared.server";
 
 const query = gql`
   query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
@@ -59,7 +60,7 @@ const query = gql`
   }
 `;
 
-export const load = (async ({ params: { dateAndSlug } }) => {
+export const load = (async ({ params: { dateAndSlug }, parent }) => {
   // dateAndSlug should be constructed like 2023-08-10-some-slug
   const [_, dateString, slug] = dateAndSlug.match(/(\d{4}-\d{2}-\d{2})-([a-z1-9-]+)/) ?? [];
   if (!dateString || !slug) throw error(404);
@@ -68,6 +69,7 @@ export const load = (async ({ params: { dateAndSlug } }) => {
   const dateEnd = new Date(date.getTime() + 1 * day).toISOString();
   // TODO: example contents
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) throw error(404);
+  const baseBreadcrumbsPromise = loadBaseBreadcrumbs({ parent });
   const client = getContentfulClient({
     spaceID: CONTENTFUL_SPACE_ID,
     token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -77,10 +79,20 @@ export const load = (async ({ params: { dateAndSlug } }) => {
     dateEnd,
     slug,
   };
-  const eventData = await client.fetch<EventQuery>(printQuery(query), {
+  const eventDataPromise = client.fetch<EventQuery>(printQuery(query), {
     variables,
   });
+  const [baseBreadcrumbs, eventData] = await Promise.all([
+    baseBreadcrumbsPromise,
+    eventDataPromise,
+  ]);
   const [event] = eventData?.eventEntryCollection?.items ?? [];
   if (!event) throw error(404);
-  return { event };
+  return {
+    event,
+    breadcrumbs: [
+      ...baseBreadcrumbs,
+      { title: event.shortTitle, link: `/about/events/event/${dateAndSlug}` },
+    ],
+  };
 }) satisfies PageServerLoad;
