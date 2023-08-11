@@ -18,6 +18,7 @@ export const query = gql`
         sys {
           id
         }
+        slug
         internalName
         shortTitle
         eventDescription

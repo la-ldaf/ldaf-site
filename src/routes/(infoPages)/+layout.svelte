@@ -10,14 +10,14 @@
   $: ({ pathname } = $page.url);
   $: ({ pageMetadata, sideNavMap, __typename, topTierPage } = $page.data);
 
-  $: breadcrumbs = $page.data.breadcrumbs ?? pageMetadata.breadcrumbs;
+  $: breadcrumbs = $page.data?.breadcrumbs ?? pageMetadata?.breadcrumbs ?? [];
 
   $: topTierSlug = pathname.split("/")[1];
   $: sideNavTree = sideNavMap.get(topTierSlug)?.children ?? [];
 </script>
 
 <div class="grid-container">
-  <Breadcrumbs path={breadcrumbs ?? []} />
+  <Breadcrumbs path={breadcrumbs} />
 </div>
 <!-- Top Tier pages have a slightly different layout, with a hero image and title above the rest of the layout. -->
 {#if __typename === "TopTier"}
