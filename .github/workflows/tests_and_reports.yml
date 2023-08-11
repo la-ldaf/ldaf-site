@@ -135,6 +135,16 @@ jobs:
     runs-on: "ubuntu-latest"
     timeout-minutes: 60
     steps:
+      - name: Capture Vercel preview URL
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        id: vercel_preview_url
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Check once a minute
+          check_interval: 60
+          # Timeout after 30 minutes
+          max_timeout: 1800
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -148,17 +158,24 @@ jobs:
           cache: npm
 
       - name: Install
+        run: npm i -g lighthouse lighthouse-batch
+
+      - name: Construct URLs to test
         run: |
-          npm ci
-          npm i -g lighthouse lighthouse-batch
+          while IFS="" read -r path || [ -n "$path" ]
+          do
+            echo "${{ steps.vercel_preview_url.outputs.url }}${path}" >> .lighthouse/urls.txt
+          done < .lighthouse/paths.txt
 
       - name: Generate Lighthouse reports
+        # Run twice, once for mobile and once for desktop.
+        # Ignore the PWA category by only selecting the other four.
+        # When running without the increased throttling modifier, we were getting warnings on
+        #   reports that the GitHub Actions runner couldn't keep up. Increasing this to 8 from the
+        #   base of 4 seems to fix the issue.
         run: |
-          npm run build
-          npm run preview &
-          sleep 5
-          lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\""
-          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --preset=desktop"
+          lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8"
+          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8 --preset=desktop"
 
       - name: Copy landing page for reports summary
         run: cp .lighthouse/index.html lighthouse-reports/index.html
