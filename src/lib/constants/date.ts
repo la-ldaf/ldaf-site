@@ -18,4 +18,17 @@ export const months = [
   "December",
 ];
 
-export const shortMonths = months.map((month) => (month.length <= 4 ? month : month.slice(0, 3)));
+export const shortMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec",
+];
