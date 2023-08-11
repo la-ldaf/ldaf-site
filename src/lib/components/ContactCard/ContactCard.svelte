@@ -50,8 +50,10 @@
       </svelte:fragment>
     </Section>
   {/if}
-  {#if validContacts}
-    <strong class="display-block margin-bottom-1">Contact</strong>
+  {#if validContacts && validContacts.length > 0}
+    {#if address}
+      <strong class="display-block margin-bottom-1">Contact</strong>
+    {/if}
     {#each validContacts as { sys, entityName, phone, phoneExt, email } (sys.id)}
       <Section>
         <svelte:fragment slot="label">{entityName}</svelte:fragment>

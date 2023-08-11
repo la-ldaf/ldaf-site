@@ -4,6 +4,7 @@ import { print as printQuery } from "graphql";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 
+import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
 
 // extend the type of the items we get back from the query so we can add children and a full URL
@@ -16,14 +17,6 @@ export type PageMetadataMapItem = NonNullable<
 };
 
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
-
-// might want to move this type def if we want to use it elsewhere
-type Breadcrumb = {
-  id: string;
-  title: string | null | undefined;
-  link: string | null | undefined;
-};
-type Breadcrumbs = Array<Breadcrumb>;
 
 const query = gql`
   query PageMetadataCollection {

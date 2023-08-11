@@ -107,7 +107,7 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
     const heroImageURL = matchedTopTier.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL
       ? getBlurhash(heroImageURL, { fetch })
-      : Promise.resolve();
+      : Promise.resolve(undefined);
 
     // Get the URLs for these features from the pageMetadataMap
     const featuredServicesPromises =
