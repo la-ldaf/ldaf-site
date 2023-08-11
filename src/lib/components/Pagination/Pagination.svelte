@@ -52,7 +52,7 @@
   );
 
   const handleClickForPage = (page: number) => (e: MouseEvent) => {
-    const succeeded = dispatch("paginationClick", { page });
+    const succeeded = dispatch("paginationClick", { page }, { cancelable: true });
     if (!succeeded) e.preventDefault();
   };
 </script>
