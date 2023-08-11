@@ -4,7 +4,7 @@ import { print as printQuery } from "graphql";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 
-import type { Breadcrumb, Breadcrumbs } from "$lib/components/Breadcrumbs";
+import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
 
 // extend the type of the items we get back from the query so we can add children and a full URL
