@@ -10,7 +10,7 @@
   class="youtube-subscribe-link"
 >
   <Icon src={youtubeIcon} class="youtube-subscribe-icon" />
-  YouTube
+  Subscribe on YouTube
 </Link>
 
 <style>
