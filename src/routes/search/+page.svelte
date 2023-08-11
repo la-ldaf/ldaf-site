@@ -92,7 +92,7 @@
       searchBox({
         container: ".searchbox",
         placeholder: "Search LDAF",
-        autofocus: false,
+        autofocus: true,
         showReset: false,
         cssClasses: {
           // root: // the root element of the widget.
