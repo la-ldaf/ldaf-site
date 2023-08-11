@@ -1,7 +1,5 @@
-import utcToZonedTime from "date-fns-tz/utcToZonedTime/index";
-import zonedTimeToUtc from "date-fns-tz/zonedTimeToUtc/index";
-import startOfDay from "date-fns/startOfDay/index";
-import endOfDay from "date-fns/endOfDay/index";
+import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { startOfDay, endOfDay } from "date-fns";
 
 type Dateable = Date | string | number;
 
