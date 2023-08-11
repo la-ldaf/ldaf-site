@@ -28,9 +28,7 @@
     e.preventDefault();
     dispatch("submit", { searchTerm });
     if (browser) {
-      // TODO: update this to the LDAF index when ready.
-      const algoliaIndex = "media-sample-data";
-      goto(`/search/?${algoliaIndex}[query]=${encodeURI(searchTerm)}`);
+      goto(`/search/?q=${encodeURI(searchTerm)}`);
     }
   };
 </script>
