@@ -57,10 +57,16 @@
 
   $: resolvedSources = getResolvedSources(src, sources, sizeType);
 
-  const getSizesAttr = (sizeType: SizeType | "static") => {
+  let overrideSizes: string | undefined = undefined;
+  export { overrideSizes as sizes };
+
+  const getSizesAttr = (sizeType: SizeType | "static", fit: boolean) => {
     // 100vw in the following line is technically a lie but the worst it will do is load a slightly
     // larger version of an image explicitly marked "static", all of which should have sources
     // explicitly specified in the code.
+    if (overrideSizes) return overrideSizes;
+    if (!fit) return `${width}px`;
+    if (sizeType === "full-bleed") return "100vw";
     if (sizeType === "static") return `(max-width: ${width}px) 100vw, ${width}px`;
     const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
     let lastSize: number = 0;
@@ -74,7 +80,7 @@
     const maxSize = lastSize;
     const sizeStrings: string[] = [];
     for (const [screenSize, size] of screenSizesAndSizes) {
-      if (sizeType === "full-bleed" || size < maxSize) {
+      if (size < maxSize) {
         sizeStrings.push(`(max-width: ${screenSize}px) ${size}px`);
         continue;
       }
@@ -215,11 +221,7 @@
               {media}
               {type}
               srcset={getSrcsetAttr(srcset)}
-              sizes={fit
-                ? sizeType === "full-bleed"
-                  ? "100vw"
-                  : getSizesAttr(sizeType)
-                : `${width}px`}
+              sizes={getSizesAttr(sizeType, fit)}
             />
           {/each}
         {/if}

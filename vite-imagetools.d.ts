@@ -3,6 +3,11 @@ declare module "*&imagetools" {
   export default src;
 }
 
+declare module "*&imagetoolsMultiple" {
+  const urls: string[];
+  export default urls;
+}
+
 declare module "*&imagetoolsMetadata" {
   export const src: string;
   export const width: number;
