@@ -26,7 +26,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const navItems = [
+const primaryNavItems = [
   { id: genId(), name: "NavItem", link: "/nav-item" },
   { id: genId(), name: "Active NavItem", link: "/active-nav-item", current: true },
   {
@@ -90,7 +90,7 @@ export const Desktop: Story = {
       defaultViewport: "desktop",
     },
   },
-  args: { navItems, secondaryNavItems, siteTitle },
+  args: { primaryNavItems, secondaryNavItems, siteTitle },
 };
 
 export const Mobile: Story = {
@@ -104,5 +104,5 @@ export const Mobile: Story = {
       defaultViewport: "mobile2",
     },
   },
-  args: { navItems, secondaryNavItems, siteTitle },
+  args: { primaryNavItems, secondaryNavItems, siteTitle },
 };

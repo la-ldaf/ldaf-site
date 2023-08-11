@@ -16,7 +16,8 @@
   export let preserveAspectRatio = true;
 
   // The size type of the image
-  export let sizeType: SizeType = "full-bleed";
+  export let sizeType: SizeType | "static" = "static";
+  export let canUpscaleImage = sizeType === "full-bleed";
 
   export let src: string;
 
@@ -42,13 +43,31 @@
     return unfilteredWidthsAndDoubleWidths.filter((w) => w <= imageWidth);
   };
 
-  $: resolvedSources = sources
-    ? Array.isArray(sources)
-      ? sources
-      : sources(src, { widths: getWidths(sizeType), srcWidth: width, srcHeight: height })
-    : undefined;
+  const getResolvedSources = (
+    src: string,
+    sources: Sources | GetSources | undefined,
+    sizeType: SizeType | "static"
+  ): Sources => {
+    if (!sources) return [];
+    if (Array.isArray(sources)) return sources;
+    if (sizeType === "static" && !width) return [{ srcset: [src] }];
+    const widths = sizeType == "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType);
+    return sources(src, { widths, srcWidth: width, srcHeight: height });
+  };
 
-  const getSizesAttr = (sizeType: SizeType) => {
+  $: resolvedSources = getResolvedSources(src, sources, sizeType);
+
+  let overrideSizes: string | undefined = undefined;
+  export { overrideSizes as sizes };
+
+  const getSizesAttr = (sizeType: SizeType | "static", fit: boolean) => {
+    // 100vw in the following line is technically a lie but the worst it will do is load a slightly
+    // larger version of an image explicitly marked "static", all of which should have sources
+    // explicitly specified in the code.
+    if (overrideSizes) return overrideSizes;
+    if (!fit) return `${width}px`;
+    if (sizeType === "full-bleed") return "100vw";
+    if (sizeType === "static") return `(max-width: ${width}px) 100vw, ${width}px`;
     const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
     let lastSize: number = 0;
     const screenSizesAndSizes: [number, number][] = [];
@@ -61,7 +80,7 @@
     const maxSize = lastSize;
     const sizeStrings: string[] = [];
     for (const [screenSize, size] of screenSizesAndSizes) {
-      if (sizeType === "full-bleed" || size < maxSize) {
+      if (size < maxSize) {
         sizeStrings.push(`(max-width: ${screenSize}px) ${size}px`);
         continue;
       }
@@ -151,7 +170,24 @@
     window.drawBlurhash(thisBg, blurhash);
   }
 
-  const imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
+  $: imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
+
+  const getContainerStyleProps = (
+    width: number | undefined,
+    height: number | undefined,
+    fit: boolean,
+    preserveAspectRatio: boolean,
+    canUpscaleImage: boolean
+  ) =>
+    [
+      ...(width && !canUpscaleImage ? [`max-width: ${width}px`] : []),
+      ...(height && !canUpscaleImage ? [`max-height: ${height}px`] : []),
+      ...(fit && preserveAspectRatio && width && height
+        ? [`aspect-ratio: ${width} / ${height}`]
+        : []),
+    ].join("; ");
+
+  $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
 </script>
 
 {#key src}
@@ -171,9 +207,7 @@
         className
       )}
       bind:this={thisContainer}
-      {...fit && preserveAspectRatio && width && height
-        ? { style: `aspect-ratio: ${width} / ${height}` }
-        : {}}
+      style={styleProp}
     >
       {#if loading === "lazy"}
         <noscript>
@@ -187,11 +221,7 @@
               {media}
               {type}
               srcset={getSrcsetAttr(srcset)}
-              sizes={fit
-                ? sizeType === "full-bleed"
-                  ? "100vw"
-                  : getSizesAttr(sizeType)
-                : `${width}px`}
+              sizes={getSizesAttr(sizeType, fit)}
             />
           {/each}
         {/if}

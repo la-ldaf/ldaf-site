@@ -26,8 +26,14 @@ export default {
             blurhash: null,
           },
         },
-        url: "/test-contentful-content",
+        url: "/.build-info",
       },
     ],
+  },
+  pageMetadata: {
+    sys: { id: "0" },
+    url: "/",
+    metaTitle: "Home",
+    metaDescription: "Description of home page.",
   },
 } satisfies HomePage;

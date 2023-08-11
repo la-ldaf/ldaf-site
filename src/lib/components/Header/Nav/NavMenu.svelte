@@ -1,8 +1,11 @@
 <script lang="ts">
-  import Link from "$lib/components/Link/Link.svelte";
+  import Button from "$lib/components/Button";
+  import Link from "$lib/components/Link";
   import chunk from "lodash/chunk";
   import classNames from "$lib/util/classNames";
   import { createEventDispatcher } from "svelte";
+  import { afterNavigate } from "$app/navigation";
+
   import type { NavMenuProps, NavLinkType } from "./types";
   type $$Props = NavMenuProps;
 
@@ -47,13 +50,27 @@
     if (relatedTarget instanceof HTMLElement && currentTarget?.contains(relatedTarget)) return;
     dispatch("close");
   };
+
+  // Safari doesn't assign focus to <button> and <a> elements, so the focusout event doesn't close
+  //   menus unless the user is keyboard navigating.
+  // These additional checks should be redundant on other browsers but will ensure we close the menu
+  //   in Safari when the user clicks out or navigates to a new page.
+  let menuElement: HTMLDivElement;
+  const handleMouseDownOnBody = ({ target }: MouseEvent) => {
+    if (expanded) {
+      if (menuElement && target instanceof HTMLElement && menuElement.contains(target)) return;
+      dispatch("close");
+    }
+  };
+  afterNavigate(() => expanded && dispatch("close"));
 </script>
+
+<svelte:body on:mousedown={handleMouseDownOnBody} />
 
 <!-- TODO: This div is necessary for handling focus loss, but it breaks the styling for a menu
            being marked with an underline as the active / current nav item. -->
-<div on:focusout={handleDropdownFocusLoss}>
-  <button
-    type="button"
+<div bind:this={menuElement} on:focusout={handleDropdownFocusLoss}>
+  <Button
     class={buttonClassNames}
     aria-expanded={expanded}
     aria-controls="extended-mega-nav-section-{id}"
@@ -62,7 +79,7 @@
   >
     <!-- Extra <span/> element is necessary for expand icons to load. -->
     <span><slot /></span>
-  </button>
+  </Button>
   {#if columns <= 1}
     <!-- Basic Menu Layout-->
     <ul id="extended-mega-nav-section-{id}" class="usa-nav__submenu" hidden={!expanded}>

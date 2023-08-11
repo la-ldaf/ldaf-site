@@ -2,6 +2,8 @@
   $theme-show-notifications: false
 );
 
+$header-height-without-navbar: 148px;
+
 .ldaf-header {
   position: relative;
   background: linear-gradient(to right, transparent, $primary-darkest 30%);
@@ -11,6 +13,7 @@
   position: absolute;
   width: 30%;
   height: 100%;
+  max-height: $header-height-without-navbar;
   z-index: -1;
 }
 
@@ -35,7 +38,7 @@
   }
 
   .ldaf-nav.usa-navbar {
-    height: 148px;
+    height: $header-height-without-navbar;
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -10,11 +10,6 @@ body {
   min-height: 100vh;
 }
 
-footer.ldaf-footer--main {
-  position: sticky;
-  top: 100vh;
-}
-
 /* For some reason the border between the header and the rest of the page is
     placed on the next sibling of the header, but only if it's a .usa-section
     or <main>, presumably since those are full-width elements. Since there's no

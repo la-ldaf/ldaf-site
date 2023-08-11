@@ -42,7 +42,7 @@ const query = gql`
             }
           }
         }
-        # Additional fields for search
+        # Additional fields for search and setting <title> and <meta> tags in the <head>
         metaTitle
         metaDescription
       }

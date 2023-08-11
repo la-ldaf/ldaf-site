@@ -4,4 +4,4 @@
 </script>
 
 <h1>{pageMetadata?.title}</h1>
-<p>This is a stub for the Offices Aggregation page!</p>
+<p>This is a stub for the Events Aggregation page!</p>
