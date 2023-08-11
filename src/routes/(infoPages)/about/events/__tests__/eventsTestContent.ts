@@ -1,7 +1,7 @@
 import { day } from "$lib/constants/date";
 import slugify from "$lib/util/slugify";
 import type { ExtractQueryType } from "$lib/util/types";
-import { chunk } from "lodash";
+import chunk from "lodash/chunk";
 import type { EventsQuery } from "../$queries.generated";
 
 type EventCollection = ExtractQueryType<EventsQuery, ["eventEntryCollection"]>;
