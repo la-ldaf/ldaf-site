@@ -7,6 +7,7 @@ import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 
 import type { HomeCollectionQuery } from "./$queries.generated";
+import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
 
@@ -78,6 +79,7 @@ export type HomePage = {
       };
     })[];
   };
+  pageMetadata: PageMetadataMapItem;
 };
 
 export const load = async ({ parent, fetch }): Promise<HomePage> => {
@@ -87,6 +89,8 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
     // Based on how we construct URLs, we should only ever have one entry with the root path (and regardless, the key is unique).
     const metadataID = pathsToIDs.get("/");
     if (!metadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -117,7 +121,7 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
         };
       }) ?? [];
     const featuredServices = await Promise.all(featuredServicesPromises);
-    return { homePage: { ...home, featuredServices } };
+    return { homePage: { ...home, featuredServices }, pageMetadata };
   }
   // TODO: We really shouldn't 404 on the home page.
   throw error(404);

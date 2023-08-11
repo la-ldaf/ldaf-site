@@ -42,6 +42,8 @@ const query = gql`
             }
           }
         }
+        metaTitle
+        metaDescription
       }
     }
   }
