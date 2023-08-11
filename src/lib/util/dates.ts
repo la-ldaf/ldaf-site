@@ -3,6 +3,7 @@ import { startOfDay, endOfDay } from "date-fns";
 
 type Dateable = Date | string | number;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const calcZonedDate = <F extends (...args: any[]) => Date>(
   date: Dateable,
   tz: string,

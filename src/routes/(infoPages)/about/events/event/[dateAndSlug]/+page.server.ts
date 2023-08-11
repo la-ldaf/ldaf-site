@@ -2,14 +2,12 @@ import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID } from "$env/static/private";
-import { day } from "$lib/constants/date";
 import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
 import type { EventQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
 import { eventIANATimezone } from "$lib/constants/date";
 import { zonedEndOfDay, zonedStartOfDay } from "$lib/util/dates";
-import zonedTimeToUtc from "date-fns-tz/zonedTimeToUtc";
 
 const query = gql`
   query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
