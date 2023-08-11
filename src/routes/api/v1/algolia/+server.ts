@@ -4,5 +4,6 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 
 export const GET = (async () => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
-  return json(Array.from(pageMetadataMap.values()));
+  // exclude the home page and pages where we can't determine the URL
+  return json(Array.from(pageMetadataMap.values()).filter((page) => page.url && !page.isRoot));
 }) satisfies RequestHandler;
