@@ -5,7 +5,7 @@ import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID } from "$env/static/
 import { day } from "$lib/constants/date";
 import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
-import type EventQuery from "./$queries.generated";
+import type { EventQuery } from "./$queries.generated";
 
 const query = gql`
   query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
