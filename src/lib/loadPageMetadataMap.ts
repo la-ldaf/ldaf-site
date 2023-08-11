@@ -42,6 +42,7 @@ const query = gql`
             }
           }
         }
+        # Additional fields for search and setting <title> and <meta> tags in the <head>
         metaTitle
         metaDescription
       }
@@ -99,7 +100,7 @@ const constructBreadcrumbs = (
   return breadcrumbs;
 };
 
-export const loadPageMetadataMap = async (): Promise<{
+export const loadPageMetadataMap = async ({ includeBreadcrumbs = true } = {}): Promise<{
   pageMetadataMap: PageMetadataMap;
   pathsToIDs: Map<string, string>;
 }> => {
@@ -147,10 +148,12 @@ export const loadPageMetadataMap = async (): Promise<{
         pageMetadataMap.set(page.sys.id, page);
         if (page.url) pathsToIDs.set(page.url, page.sys.id);
       });
-      // construct breadcrumbs for each page
-      [...pageMetadataMap].forEach(([_, page]) => {
-        page.breadcrumbs = constructBreadcrumbs(pageMetadataMap, page);
-      });
+      if (includeBreadcrumbs) {
+        // construct breadcrumbs for each page'
+        [...pageMetadataMap].forEach(([_, page]) => {
+          page.breadcrumbs = constructBreadcrumbs(pageMetadataMap, page);
+        });
+      }
     }
   }
   return { pageMetadataMap, pathsToIDs };

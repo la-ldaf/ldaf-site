@@ -2,19 +2,65 @@
   import "./search-page.scss";
   import LoadingSpinner from "$lib/components/LoadingSpinner";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
   import algoliasearch from "algoliasearch";
   import instantsearch from "instantsearch.js";
+  import { history } from "instantsearch.js/es/lib/routers";
   import { configure, hits, searchBox, stats, pagination } from "instantsearch.js/es/widgets";
   import { searchHitsTemplate } from "./searchHelpers";
 
-  import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY } from "$env/static/public";
+  import {
+    PUBLIC_ALGOLIA_APP_ID,
+    PUBLIC_ALGOLIA_API_KEY,
+    PUBLIC_ALGOLIA_INDEX,
+  } from "$env/static/public";
 
   onMount(() => {
     const search = instantsearch({
       searchClient: algoliasearch(PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_API_KEY),
-      // TODO: change this the "contentful" index when ready (name subject to change)
-      indexName: "media-sample-data",
-      routing: true,
+      indexName: PUBLIC_ALGOLIA_INDEX,
+      routing: {
+        // The default instantsearch router uses history.pushState, which
+        //   messes with SvelteKit's router and leads to all sorts of
+        //   navigation problems. We still use all the other built-in
+        //   functionality, but override the `push` functionality with
+        //   SvelteKit's.
+        router: history({
+          // https://github.com/algolia/instantsearch/blob/69ec7deba05a60a223b833c6a117d5a0f2e83012/packages/instantsearch.js/src/lib/routers/history.ts#L117
+          push: (url) => {
+            goto(url);
+          },
+        }),
+        // Following is roughly adapted from this example:
+        //   https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/js/#example-of-implementation
+        // For some reason setting `router` above locks us into a much more
+        //   rigid type definition for `stateMapping`, which is not necessary.
+        // TODO: Look into how we can get TS passing here; might rely on an
+        //       an update to instantsearch.
+        stateMapping: {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          stateToRoute(uiState) {
+            const indexUiState = uiState[PUBLIC_ALGOLIA_INDEX];
+            return {
+              q: indexUiState.query,
+              page: indexUiState.page,
+            };
+          },
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          routeToState(routeState) {
+            return {
+              [PUBLIC_ALGOLIA_INDEX]: {
+                query: routeState.q,
+                page: routeState.page,
+              },
+            };
+          },
+        },
+      },
+      // TODO: searchFunction is being deprecated, replace with onStateChange
+      // https://www.algolia.com/doc/api-reference/widgets/instantsearch/js/#widget-param-onstatechange
       searchFunction(helper) {
         const searchUI = document.querySelectorAll(".stats, .hits, .pagination");
 
@@ -39,14 +85,14 @@
       hits({
         container: ".hits",
         templates: {
-          empty: "No results found.",
+          empty: () => "No results found.",
           item: searchHitsTemplate,
         },
       }),
       searchBox({
         container: ".searchbox",
         placeholder: "Search LDAF",
-        autofocus: false,
+        autofocus: true,
         showReset: false,
         cssClasses: {
           // root: // the root element of the widget.
@@ -94,8 +140,8 @@
           link: "usa-pagination__button", // the link elements.
         },
         templates: {
-          next: "Next",
-          previous: "Previous",
+          next: () => "Next",
+          previous: () => "Previous",
         },
       }),
     ]);
