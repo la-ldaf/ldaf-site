@@ -2,7 +2,7 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 
 // https://kit.svelte.dev/docs/seo#manual-setup-sitemaps
 export async function GET() {
-  const { pathsToIDs } = await loadPageMetadataMap();
+  const { pathsToIDs } = await loadPageMetadataMap({ includeBreadcrumbs: false });
   const urls = [...pathsToIDs]
     .map(([path, _]) => `<url><loc>https://ldaf.la.gov${path}</loc></url>`)
     .sort()
