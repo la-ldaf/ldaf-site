@@ -12,7 +12,7 @@ const limit = 20;
 
 export const query = gql`
   query Events($limit: Int = 20, $skip: Int = 0) {
-    eventEntryCollection(limit: $limit, skip: $skip, order: [eventDateAndTime_DESC]) {
+    eventEntryCollection(limit: $limit, skip: $skip, order: [eventDateAndTime_ASC]) {
       total
       items {
         sys {
