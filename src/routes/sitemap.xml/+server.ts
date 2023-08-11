@@ -4,7 +4,12 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 export async function GET() {
   const { pathsToIDs } = await loadPageMetadataMap({ includeBreadcrumbs: false });
   const urls = [...pathsToIDs]
-    .map(([path, _]) => `<url><loc>https://ldaf.la.gov${path}</loc></url>`)
+    .map(
+      ([path, _]) => `<url>
+        <loc>https://ldaf.la.gov${path}</loc>
+        <changefreq>daily</changefreq>
+      </url>`
+    )
     .sort()
     .join("");
   // TODO: Include tags other than just <loc> within <url>, like:
