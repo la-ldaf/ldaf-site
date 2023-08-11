@@ -1,0 +1,40 @@
+.ldaf-pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.ldaf-pagination__next-button,
+.ldaf-pagination__previous-button {
+  display: flex;
+  height: 40px;
+  align-items: center;
+}
+
+.ldaf-pagination__numeric-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
+}
+
+.ldaf-pagination__numeric-button {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  color: #757473;
+  border: 1px solid #dfe1e2;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.ldaf-pagination__ellipsis {
+  border: none;
+}
+
+.ldaf-pagination__numeric-button--selected {
+  background: #171717;
+  border: 1px solid #171717;
+  color: #fff;
+}

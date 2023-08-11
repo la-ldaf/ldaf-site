@@ -8,8 +8,8 @@
   import warn from "$lib/util/warn";
   import type { Loading, LazyLoading, Color, Sources, GetSources, Srcset } from "./types";
 
-  export let height: number | undefined = undefined;
-  export let width: number | undefined = undefined;
+  export let height: number | null | undefined = undefined;
+  export let width: number | null | undefined = undefined;
 
   // Whether the image should fit its container
   export let fit = true;
@@ -92,7 +92,7 @@
 
   export let alt: string;
   export let loading: Loading = "lazy";
-  export let blurhash: undefined | string = undefined;
+  export let blurhash: string | null | undefined = undefined;
   export let mean: undefined | Color = undefined;
   let className: string | undefined = undefined;
   export { className as class };
@@ -173,8 +173,8 @@
   $: imgProps = { class: imageClass, width, height, border: 0, ...$$restProps };
 
   const getContainerStyleProps = (
-    width: number | undefined,
-    height: number | undefined,
+    width: number | null | undefined,
+    height: number | null | undefined,
     fit: boolean,
     preserveAspectRatio: boolean,
     canUpscaleImage: boolean

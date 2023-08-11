@@ -985,6 +985,8 @@ export enum CategoryLinkingCollectionsEventEntryCollectionOrder {
   InternalNameDesc = 'internalName_DESC',
   ShortTitleAsc = 'shortTitle_ASC',
   ShortTitleDesc = 'shortTitle_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -1267,6 +1269,8 @@ export enum ContactLinkingCollectionsEventEntryCollectionOrder {
   InternalNameDesc = 'internalName_DESC',
   ShortTitleAsc = 'shortTitle_ASC',
   ShortTitleDesc = 'shortTitle_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -1726,6 +1730,8 @@ export enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   InternalNameDesc = 'internalName_DESC',
   ShortTitleAsc = 'shortTitle_ASC',
   ShortTitleDesc = 'shortTitle_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -2049,6 +2055,7 @@ export type EventEntry = Entry & {
   internalName?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<EventEntryLinkingCollections>;
   shortTitle?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   sys: Sys;
 };
 
@@ -2106,6 +2113,12 @@ export type EventEntryLinkedFromArgs = {
 
 /** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryShortTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntrySlugArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2202,6 +2215,13 @@ export type EventEntryFilter = {
   shortTitle_not?: InputMaybe<Scalars['String']['input']>;
   shortTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
   shortTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  slug_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
 };
 
@@ -2258,6 +2278,8 @@ export enum EventEntryOrder {
   InternalNameDesc = 'internalName_DESC',
   ShortTitleAsc = 'shortTitle_ASC',
   ShortTitleDesc = 'shortTitle_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',

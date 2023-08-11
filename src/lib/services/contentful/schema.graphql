@@ -613,6 +613,8 @@ enum CategoryLinkingCollectionsEventEntryCollectionOrder {
   internalName_DESC
   shortTitle_ASC
   shortTitle_DESC
+  slug_ASC
+  slug_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -794,6 +796,8 @@ enum ContactLinkingCollectionsEventEntryCollectionOrder {
   internalName_DESC
   shortTitle_ASC
   shortTitle_DESC
+  slug_ASC
+  slug_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1140,6 +1144,8 @@ enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   internalName_DESC
   shortTitle_ASC
   shortTitle_DESC
+  slug_ASC
+  slug_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1380,6 +1386,7 @@ type EventEntry implements Entry {
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): EventEntryLinkingCollections
   shortTitle(locale: String): String
+  slug(locale: String): String
   sys: Sys!
 }
 
@@ -1473,6 +1480,13 @@ input EventEntryFilter {
   shortTitle_not: String
   shortTitle_not_contains: String
   shortTitle_not_in: [String]
+  slug: String
+  slug_contains: String
+  slug_exists: Boolean
+  slug_in: [String]
+  slug_not: String
+  slug_not_contains: String
+  slug_not_in: [String]
   sys: SysFilter
 }
 
@@ -1511,6 +1525,8 @@ enum EventEntryOrder {
   internalName_DESC
   shortTitle_ASC
   shortTitle_DESC
+  slug_ASC
+  slug_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
