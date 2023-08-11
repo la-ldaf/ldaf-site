@@ -10,7 +10,7 @@
   $: ({ pathname } = $page.url);
   $: ({ pageMetadata, sideNavMap, __typename, topTierPage } = $page.data);
 
-  $: breadcrumbs = $page.data?.breadcrumbs ?? pageMetadata?.breadcrumbs ?? [];
+  $: breadcrumbs = pageMetadata?.breadcrumbs ?? [];
 
   $: topTierSlug = pathname.split("/")[1];
   $: sideNavTree = sideNavMap.get(topTierSlug)?.children ?? [];

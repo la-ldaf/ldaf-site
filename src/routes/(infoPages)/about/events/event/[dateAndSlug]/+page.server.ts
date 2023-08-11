@@ -90,9 +90,12 @@ export const load = (async ({ params: { dateAndSlug }, parent }) => {
   if (!event) throw error(404);
   return {
     event,
-    breadcrumbs: [
-      ...baseBreadcrumbs,
-      { title: event.shortTitle, link: `/about/events/event/${dateAndSlug}` },
-    ],
+    pageMetadata: {
+      metaTitle: `Event - ${event.shortTitle}`,
+      breadcrumbs: [
+        ...baseBreadcrumbs,
+        { title: event.shortTitle, link: `/about/events/event/${dateAndSlug}` },
+      ],
+    },
   };
 }) satisfies PageServerLoad;

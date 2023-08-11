@@ -99,11 +99,14 @@ export const loadEventsPage = async ({
       break fetchData;
     }
     return {
+      pageMetadata: {
+        metaTitle: pageNumber <= 1 ? "Events" : `Events - page ${pageNumber}`,
+        breadcrumbs: await breadcrumbsPromise,
+      },
       currentPageNumber: pageNumber,
       totalPages: Math.ceil(eventsData.eventEntryCollection.total / limit),
       events: eventsData.eventEntryCollection.items,
       totalEvents: eventsData.eventEntryCollection.total,
-      breadcrumbs: breadcrumbsPromise,
     };
   }
   throw error(404);
