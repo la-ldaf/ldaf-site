@@ -6,7 +6,7 @@ export async function GET() {
   const urls = [...pathsToIDs]
     .map(
       ([path, _]) => `<url>
-        <loc>https://ldaf.la.gov${path}</loc>
+        <loc>https://www.ldaf.la.gov${path}</loc>
         <changefreq>daily</changefreq>
       </url>`
     )
