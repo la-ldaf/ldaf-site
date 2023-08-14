@@ -10,7 +10,7 @@
 
   // TODO: Find a way to better support <slot/> in Storybook.
   export let slottedContent = "Link";
-  export let href = "http://www.ldaf.la.gov";
+  export let href = "https://www.ldaf.la.gov";
   let className = "";
   export { className as class };
   export let external = false;
