@@ -3,7 +3,9 @@ import { KV_URL } from "$env/static/private";
 import { sequence } from "@sveltejs/kit/hooks";
 import { createClient } from "$lib/services/server/kv";
 
-const handleSetupRedisClient = (async ({ event, resolve }) => {
+const kvClients = Map<string>;
+
+const handleSetupKVClient = (async ({ event, resolve }) => {
   // we intentionally don't await this promise here, so that other things can happen while redis is
   // initializing. Anything that needs redis can await the promise by calling
   // event.locals.getKVClient and awaiting the result. If nothing awaits the promise
@@ -25,4 +27,4 @@ const handlePreload = (async ({ event, resolve }) => {
   return response;
 }) satisfies Handle;
 
-export const handle = sequence(handleSetupRedisClient, handlePreload);
+export const handle = sequence(handleSetupKVClient, handlePreload);

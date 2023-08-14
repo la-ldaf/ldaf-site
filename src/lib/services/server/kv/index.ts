@@ -1,4 +1,4 @@
-import { createClient as createRedisClient } from "redis";
+import { createClient as createRedisClient, type RedisClientType } from "redis";
 
 export type Client = {
   getBlurhashByURL: (url: string) => Promise<string | null>;
@@ -11,37 +11,78 @@ const keys = {
   blurhashByURL: "blurhashByURL",
 };
 
+type ClientOptions = {
+  url: string;
+};
+
+type ClientOptionsInit = Partial<ClientOptions>;
+
+const getClientKey = (options: ClientOptions) => options.url;
+const clients = new Map<string, Client>();
+
+const defaultURL = "redis://localhost";
+
 export const createClient = async ({
-  url = "redis://localhost",
-}: { url?: string } = {}): Promise<Client> => {
+  url = defaultURL,
+}: ClientOptionsInit = {}): Promise<Client> => {
   const parsedURL = new URL(url);
+
   // "localhost" is the hostname used when running a redis server locally on the dev machine. "kv"
   // is the hostname used when running in Docker
   const useTLS = !(parsedURL.hostname === "localhost" || parsedURL.hostname === "kv");
-  let redisClientError: undefined | unknown;
   const redisClient = createRedisClient<None, None, None>({
     url,
     socket: { tls: useTLS },
   });
+
   redisClient.on("error", (err) => {
     console.error(err);
-    redisClientError = err;
   });
-  try {
-    await redisClient.connect();
-  } catch (err) {
-    console.error(err);
-    redisClientError = err;
-  }
+
+  const tryToConnect = async () => {
+    if (redisClient.isOpen) return;
+    try {
+      await redisClient.connect();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  tryToConnect();
+
   return {
     getBlurhashByURL: async (url) => {
-      if (redisClientError) throw redisClientError;
-      return redisClient.get(`${keys.blurhashByURL}:${url}`);
+      try {
+        await tryToConnect();
+        return await redisClient.get(`${keys.blurhashByURL}:${url}`);
+      } catch (err) {
+        // TODO: better logging
+        console.error(err);
+        return null;
+      }
     },
     setBlurhashByURL: async (url, blurhash) => {
-      if (redisClientError) throw redisClientError;
-      const result = await redisClient.set(`${keys.blurhashByURL}:${url}`, blurhash);
-      if (result !== "OK") throw new Error("could not set blurhash in KV store");
+      try {
+        await tryToConnect();
+        const result = await redisClient.set(`${keys.blurhashByURL}:${url}`, blurhash);
+        if (result !== "OK") {
+          // TODO: better logging
+          console.error(new Error("could not set blurhash in KV store"));
+        }
+      } catch (err) {
+        // TODO: better logging
+        console.error(err);
+      }
     },
   };
+};
+
+export const getClient = async ({ url = "redis://localhost" }: ClientOptionsInit = {}) => {
+  const clientOptions = { url };
+  const key = getClientKey(clientOptions);
+  const existingClient = clients.get(key);
+  if (existingClient) return existingClient;
+  const newClient = await createClient(clientOptions);
+  clients.set(key, newClient);
+  return newClient;
 };
