@@ -1,4 +1,4 @@
-import { createClient as createRedisClient, type RedisClientType } from "redis";
+import { createClient as createRedisClient } from "redis";
 
 export type Client = {
   getBlurhashByURL: (url: string) => Promise<string | null>;
