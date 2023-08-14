@@ -62,7 +62,7 @@
     <meta name="twitter:description" content={pageMetadata.metaDescription} />
   {/if}
   {#if pageMetadata?.url}
-    <meta name="og:url" content={`https://ldaf.la.gov${pageMetadata.url}`} />
+    <meta name="og:url" content={`https://www.ldaf.la.gov${pageMetadata.url}`} />
   {/if}
   <meta name="og:site_name" content="Louisiana Department of Agriculture and Forestry" />
   <!-- TODO: We could use our Contentful content types here instead. -->
