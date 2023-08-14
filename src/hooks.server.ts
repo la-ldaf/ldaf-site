@@ -1,9 +1,7 @@
 import type { Handle } from "@sveltejs/kit";
 import { KV_URL } from "$env/static/private";
 import { sequence } from "@sveltejs/kit/hooks";
-import { createClient } from "$lib/services/server/kv";
-
-const kvClients = Map<string>;
+import { getClient } from "$lib/services/server/kv";
 
 const handleSetupKVClient = (async ({ event, resolve }) => {
   // we intentionally don't await this promise here, so that other things can happen while redis is
@@ -11,7 +9,7 @@ const handleSetupKVClient = (async ({ event, resolve }) => {
   // event.locals.getKVClient and awaiting the result. If nothing awaits the promise
   // then we never wait on redis connecting first.
   const kvClientPromise = KV_URL
-    ? createClient({ url: KV_URL })
+    ? getClient({ url: KV_URL })
     : Promise.reject(new Error("could not get KV client; no KV_URL was specified"));
   event.locals.getKVClient = () => kvClientPromise;
   return resolve(event);
