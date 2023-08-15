@@ -154,8 +154,8 @@
           <span class="ldaf-footer__nowrap">All rights reserved</span>
           <span class="ldaf-footer__nowrap">
             -
-            <Link href="/about/privacy-policy">Privacy Policy</Link> |
-            <Link href="/about/terms-of-use">Terms Of Use</Link>
+            <Link href="/about/website/privacy-policy">Privacy Policy</Link> |
+            <Link href="/about/website/terms-of-use">Terms Of Use</Link>
           </span>
         </div>
       </div>
