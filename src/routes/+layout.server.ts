@@ -7,10 +7,10 @@ import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 export const load = async () => {
   const pageMetadataMapPromise = loadPageMetadataMap();
   const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadMainNav(pageMetadataMap)
+    loadMainNav(pageMetadataMap),
   );
   const footerNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadFooterNav(pageMetadataMap)
+    loadFooterNav(pageMetadataMap),
   );
   const sideNavMapPromise = Promise.all([
     pageMetadataMapPromise,

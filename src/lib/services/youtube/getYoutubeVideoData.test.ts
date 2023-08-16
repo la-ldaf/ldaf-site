@@ -14,7 +14,7 @@ describe("YouTube Fetch", () => {
   it("calls YouTube API", async () => {
     const snippet = await getYoutubeVideoData("a1b2c3");
     expect(fetch).toHaveBeenCalledWith(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=a1b2c3&key=d4e5f6`
+      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=a1b2c3&key=d4e5f6`,
     );
     expect(snippet).toEqual("test data");
   });

@@ -75,7 +75,7 @@ export type LinksMap<
     | RenderableAssetBlock
     | RenderableAssetHyperlink
     | RenderableEntryBlock
-    | RenderableEntryHyperlink
+    | RenderableEntryHyperlink,
 > = Map<string, T>;
 
 export type LinksContext = {

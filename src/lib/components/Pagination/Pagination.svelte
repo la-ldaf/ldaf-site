@@ -49,7 +49,7 @@
     .sort((a, b) => a - b);
 
   $: shownPageLinkNumbersWithLastNumber = shownPageLinkNumbers.map(
-    (n, i, arr) => [n, i > 0 ? arr[i - 1] : null] satisfies [number, number | null]
+    (n, i, arr) => [n, i > 0 ? arr[i - 1] : null] satisfies [number, number | null],
   );
 
   const handleClickForPage = (page: number) => (e: MouseEvent) => {

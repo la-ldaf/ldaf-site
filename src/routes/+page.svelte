@@ -17,7 +17,7 @@
   } = data);
 
   const getCardSettings = (
-    index: number
+    index: number,
   ): { card: "full" | "half" | "third"; button: Variant; imageLoading: "lazy" | "eager" } => {
     if (index === 0) return { card: "full", button: "primary", imageLoading: "eager" };
     else if (index < 3) return { card: "half", button: "secondary", imageLoading: "eager" };

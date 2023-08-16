@@ -337,8 +337,8 @@ export const load = async ({
                   variables: { ids: chunk },
                 }),
               ]
-            : []
-        )
+            : [],
+        ),
       ),
       childServiceGroupIDs.length > 0
         ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
@@ -351,11 +351,11 @@ export const load = async ({
       childEntriesDataChunks.flatMap(
         (dataChunk) =>
           dataChunk?.serviceEntryCollection?.items.filter(
-            (item): item is NonNullable<typeof item> => !!item
-          ) ?? []
+            (item): item is NonNullable<typeof item> => !!item,
+          ) ?? [],
       ),
       (item) => item?.sys?.id,
-      childServiceEntryIDs
+      childServiceEntryIDs,
     );
 
     const childServiceEntriesPromise = Promise.all(
@@ -372,8 +372,8 @@ export const load = async ({
                   : undefined,
               },
             ]
-          : []
-      ) ?? []
+          : [],
+      ) ?? [],
     ).then((arr) => arr.flat());
 
     const childServiceGroups = inOrder(
@@ -385,7 +385,7 @@ export const load = async ({
         return [{ ...group, url }];
       }) ?? [],
       (item) => item?.sys?.id,
-      childServiceGroupIDs
+      childServiceGroupIDs,
     );
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
