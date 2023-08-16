@@ -1,5 +1,52 @@
-import type { SvelteComponent } from "svelte";
-import type { Node } from "@contentful/rich-text-types";
+import type {
+  AssetHyperlink,
+  AssetLinkBlock,
+  EntryLinkBlock,
+  EntryLinkInline,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6,
+  Hr,
+  Hyperlink,
+  EntryHyperlink,
+  ListItem,
+  Node,
+  OrderedList,
+  Paragraph,
+  Quote,
+  Table,
+  TableCell,
+  TableHeaderCell,
+  TableRow,
+  Text,
+  UnorderedList,
+  Inline,
+  Block,
+} from "@contentful/rich-text-types";
+
+import {
+  isAssetBlock,
+  isAssetHyperlink,
+  isEmbeddedEntry,
+  isEntryBlock,
+  isEntryHyperlink,
+  isHeadingOfLevel,
+  isHr,
+  isHyperlink,
+  isListItem,
+  isOrderedList,
+  isParagraph,
+  isQuote,
+  isTable,
+  isTableCell,
+  isTableHeaderCell,
+  isTableRow,
+  isText,
+  isUnorderedList,
+} from "../predicates";
 
 import paragraph from "./Paragraph.svelte";
 import text from "./Text.svelte";
@@ -25,38 +72,93 @@ import embeddedEntry from "./EmbeddedEntry.svelte";
 import assetHyperlink from "./AssetHyperlink.svelte";
 import entryHyperlink from "./EntryHyperlink.svelte";
 
-const nodes: Record<string, typeof SvelteComponent<Record<never, never> | { node: Node }>> = {
-  text,
-  // Block Types (see https://github.com/contentful/rich-text/blob/3568691018866c2a4fdbfede27c0aa19f24b5b3f/packages/rich-text-types/src/blocks.ts)
-  //
-  paragraph,
-  "heading-1": heading1,
-  "heading-2": heading2,
-  "heading-3": heading3,
-  "heading-4": heading4,
-  "heading-5": heading5,
-  "heading-6": heading6,
-  hr,
-  blockquote,
-  "unordered-list": unorderedList,
-  "ordered-list": orderedList,
-  "list-item": listItem,
-  table,
-  "table-row": tableRow,
-  "table-header-cell": tableHeaderCell,
-  "table-cell": tableCell,
+import type { ComponentTakingNode, NodePredicate } from "../types";
 
-  "embedded-entry-block": embeddedEntryBlock, // TODO: Finish this component
-  "embedded-asset-block": embeddedAssetBlock,
-  // TODO: Potentially other components to handle
-  // see https://github.com/contentful/rich-text/blob/3568691018866c2a4fdbfede27c0aa19f24b5b3f/packages/rich-text-types/src/blocks.ts
-  // EMBEDDED_RESOURCE = 'embedded-resource-block',
+export type SupportedNode =
+  | AssetHyperlink
+  | AssetLinkBlock
+  | EntryHyperlink
+  | EntryLinkBlock
+  | EntryLinkInline
+  | Heading1
+  | Heading2
+  | Heading3
+  | Heading4
+  | Heading5
+  | Heading6
+  | Hr
+  | Hyperlink
+  | ListItem
+  | OrderedList
+  | Paragraph
+  | Quote
+  | Table
+  | TableCell
+  | TableHeaderCell
+  | TableRow
+  | Text
+  | UnorderedList;
 
-  // Inline Types
-  hyperlink,
-  "entry-hyperlink": entryHyperlink,
-  "asset-hyperlink": assetHyperlink,
-  "embedded-entry-inline": embeddedEntry, // TODO: is this component needed?
+export type AnyNode = Inline | Block | Text;
+
+export type SupportedNodeTag = SupportedNode["nodeType"];
+
+export type NodeComponentAndPredicate<N extends Node> = readonly [
+  ComponentTakingNode<N>,
+  NodePredicate<N>
+];
+
+type Nodes = {
+  [K in SupportedNodeTag]: NodeComponentAndPredicate<SupportedNodeTypesByTag[K]>;
 };
 
+export type SupportedNodeTypesByTag = Omit<
+  {
+    [K in SupportedNodeTag]: Extract<SupportedNode, { nodeType: K }>;
+  },
+  "table-cell"
+> & {
+  "table-cell": TableCell;
+};
+
+const nodes: Nodes = {
+  text: [text, isText],
+  paragraph: [paragraph, isParagraph],
+  "heading-1": [heading1, isHeadingOfLevel(1)],
+  "heading-2": [heading2, isHeadingOfLevel(2)],
+  "heading-3": [heading3, isHeadingOfLevel(3)],
+  "heading-4": [heading4, isHeadingOfLevel(4)],
+  "heading-5": [heading5, isHeadingOfLevel(5)],
+  "heading-6": [heading6, isHeadingOfLevel(6)],
+  hr: [hr, isHr],
+  blockquote: [blockquote, isQuote],
+  "unordered-list": [unorderedList, isUnorderedList],
+  "ordered-list": [orderedList, isOrderedList],
+  "list-item": [listItem, isListItem],
+  table: [table, isTable],
+  "table-row": [tableRow, isTableRow],
+  "table-header-cell": [tableHeaderCell, isTableHeaderCell],
+  "table-cell": [tableCell, isTableCell],
+  "embedded-entry-block": [embeddedEntryBlock, isEntryBlock],
+  "embedded-asset-block": [embeddedAssetBlock, isAssetBlock],
+  hyperlink: [hyperlink, isHyperlink],
+  "entry-hyperlink": [entryHyperlink, isEntryHyperlink],
+  "asset-hyperlink": [assetHyperlink, isAssetHyperlink],
+  "embedded-entry-inline": [embeddedEntry, isEmbeddedEntry],
+} as const;
+
 export default nodes;
+
+const supportedNodeTagsSet = new Set<string>(Object.keys(nodes));
+
+export const isSupportedNodeTag = (tag: string): tag is SupportedNodeTag =>
+  supportedNodeTagsSet.has(tag);
+
+export const isSupportedNode = (node: AnyNode): node is SupportedNode =>
+  isSupportedNodeTag(node.nodeType);
+
+// This hard type assertion is safe only because of the following:
+// - A SupportedNode's nodeType is always a SupportedNodeTag
+// - nodes (of type Nodes) is a record of every SupportedNodeTag as T to a NodeComponentAndPredicate<T>
+export const getComponentAndPredicate = <N extends SupportedNode>(node: N) =>
+  nodes[node.nodeType] as unknown as NodeComponentAndPredicate<N>;

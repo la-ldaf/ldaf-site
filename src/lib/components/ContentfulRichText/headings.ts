@@ -1,6 +1,3 @@
-import type { Node } from "@contentful/rich-text-types";
-import { isHeading } from "./predicates";
-
 import type {
   Heading1,
   Heading2,
@@ -29,13 +26,3 @@ export const headingTagByLevel = {
   5: "h5",
   6: "h6",
 } as const;
-
-export const getAssertedHeadingLevel = <L extends HeadingLevel>(
-  level: L,
-  node: Node,
-): HeadingTypeByLevel<L> => {
-  if (!isHeading<L>(level, node)) {
-    throw new Error(`node is not a heading-${level}`);
-  }
-  return node;
-};

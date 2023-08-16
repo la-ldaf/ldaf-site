@@ -38,6 +38,11 @@ export const isDocument = (n: unknown): n is Document =>
 export const isParagraph = (n: unknown): n is Paragraph =>
   isNode(n) && n.nodeType === BLOCKS.PARAGRAPH;
 
+export const isHeadingOfLevel =
+  <L extends HeadingLevel>(level: L) =>
+  (n: unknown): n is HeadingTypeByLevel<L> =>
+    isNode(n) && n.nodeType === `heading-${level}`;
+
 export const isHeading = <L extends HeadingLevel>(
   level: L,
   n: unknown,

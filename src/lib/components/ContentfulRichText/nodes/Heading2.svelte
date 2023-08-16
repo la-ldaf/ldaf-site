@@ -1,15 +1,11 @@
 <script lang="ts">
-  import type { Node as NodeType } from "@contentful/rich-text-types";
-  import { getAssertedHeadingLevel } from "../headings";
+  import type { Heading2 } from "@contentful/rich-text-types";
   import Node from "./Node.svelte";
-
-  export let node: NodeType;
-
-  const heading = getAssertedHeadingLevel(2, node);
+  export let node: Heading2;
 </script>
 
 <h2>
-  {#each heading.content as subNode}
+  {#each node.content as subNode}
     <Node node={subNode} />
   {/each}
 </h2>

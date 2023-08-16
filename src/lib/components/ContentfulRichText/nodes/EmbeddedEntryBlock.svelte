@@ -1,28 +1,21 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
+  import type { EntryLinkBlock } from "@contentful/rich-text-types";
   import { linksKey, type LinksContext, imageSizeTypeKey } from "../context";
-  import { isEntryBlock } from "../predicates";
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
   import Image from "$lib/components/Image/Image.svelte";
 
-  export let node: NodeType;
-  if (!isEntryBlock(node)) {
-    throw new Error("Node is not an embedded entry block");
-  }
+  export let node: EntryLinkBlock;
 
-  const linksContext = getContext<LinksContext | undefined>(linksKey);
-  if (!linksContext) throw new Error("no context was provided for embedded entry block");
-
-  let entry: EntryLinkBlock = node;
-  const entryId = entry.data.target.sys.id;
-  const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
-
-  if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
+  $: linksContext = getContext<LinksContext | undefined>(linksKey);
+  $: entryID = node.data.target.sys.id;
+  $: entryBlock = linksContext?.linksEntriesMaps.block.get(entryID);
 </script>
 
-{#if entryBlock?.__typename === "Contact"}
+{#if !entryBlock}
+  <p><em>Error: embedded entry was not found in the context. Is it unpublished?</em></p>
+{:else if entryBlock?.__typename === "Contact"}
   <ContactCard address={undefined} contacts={[entryBlock]} />
 {:else if entryBlock?.__typename === "ImageWrapper" && entryBlock?.linkedImage?.url}
   <Image

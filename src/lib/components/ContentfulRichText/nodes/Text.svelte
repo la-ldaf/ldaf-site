@@ -1,17 +1,10 @@
 <script lang="ts">
-  import type { Node, Text } from "@contentful/rich-text-types";
+  import type { Text } from "@contentful/rich-text-types";
   import escape from "lodash/escape";
-  import { isText } from "../predicates";
 
   type MarkType = "bold" | "code" | "italic" | "subscript" | "superscript" | "underline";
 
-  export let node: Node;
-
-  let textNode: Text;
-  if (!isText(node)) {
-    throw new Error("node is not text");
-  }
-  textNode = node;
+  export let node: Text;
 
   const wrapWith = (open: string, close: string) => (text: string) => `${open}${text}${close}`;
 
@@ -24,9 +17,9 @@
     underline: wrapWith("<u>", "</u>"),
   };
 
-  const wrapped = textNode.marks.reduce(
+  const wrapped = node.marks.reduce(
     (text, { type }) => wrappers[type as MarkType](text),
-    escape(textNode.value),
+    escape(node.value),
   );
 </script>
 

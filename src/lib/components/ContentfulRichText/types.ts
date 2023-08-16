@@ -1,5 +1,7 @@
+import type { Node } from "@contentful/rich-text-types";
 import type { Asset, Entry, ImageWrapper, Contact } from "$lib/services/contentful/schema";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type { SvelteComponent } from "svelte";
 
 type AssetWithMaybeBlurhash = Asset & {
   blurhash?: string | null | undefined;
@@ -90,3 +92,6 @@ export type LinksContext = {
     hyperlink: LinksMap<RenderableEntryHyperlink>;
   };
 };
+
+export type ComponentTakingNode<T> = SvelteComponent<Record<never, never> | { node: T }>;
+export type NodePredicate<T extends Node> = (n: Node) => n is T;

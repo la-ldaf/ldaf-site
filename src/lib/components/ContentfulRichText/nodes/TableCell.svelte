@@ -1,19 +1,11 @@
 <script lang="ts">
-  import type { Node as NodeType, TableCell } from "@contentful/rich-text-types";
+  import type { TableCell } from "@contentful/rich-text-types";
   import Node from "./Node.svelte";
-  import { isTableCell } from "../predicates";
-
-  export let node: NodeType;
-
-  let tableCell: TableCell;
-  if (!isTableCell(node)) {
-    throw new Error("node is not a table cell");
-  }
-  tableCell = node;
+  export let node: TableCell;
 </script>
 
 <td>
-  {#each tableCell.content as subNode}
+  {#each node.content as subNode}
     <Node node={subNode} />
   {/each}
 </td>

@@ -1,19 +1,11 @@
 <script lang="ts">
-  import type { Node as NodeType, OrderedList } from "@contentful/rich-text-types";
+  import type { OrderedList } from "@contentful/rich-text-types";
   import Node from "./Node.svelte";
-  import { isOrderedList } from "../predicates";
-
-  export let node: NodeType;
-
-  let ol: OrderedList;
-  if (!isOrderedList(node)) {
-    throw new Error("node is not an ordered list");
-  }
-  ol = node;
+  export let node: OrderedList;
 </script>
 
 <ol>
-  {#each ol.content as subNode}
+  {#each node.content as subNode}
     <Node node={subNode} />
   {/each}
 </ol>
