@@ -7,7 +7,7 @@ window.drawBlurhash = drawBlurhash;
 
 const onContentLoaded = () => {
   const canvases: Iterable<HTMLCanvasElement> = document.querySelectorAll(
-    "canvas.ldaf-img__blur-bg"
+    "canvas.ldaf-img__blur-bg",
   );
   for (const canvas of canvases) {
     const blurhash = canvas.getAttribute("data-blurhash");

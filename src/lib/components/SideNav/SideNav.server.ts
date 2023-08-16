@@ -10,7 +10,7 @@ const sideNavMap: SideNavMap = new Map();
 const buildSideNavTree = (
   pageMetadataMap: PageMetadataMap,
   featuredPages: string[],
-  children: PageMetadataMapItem["children"]
+  children: PageMetadataMapItem["children"],
 ): SideNavItem[] => {
   const tree: SideNavItem[] = [];
   if (children) {
@@ -54,7 +54,7 @@ const buildSideNavTree = (
 
 export const loadSideNavMap = async (
   pageMetadataMap: PageMetadataMap,
-  mainMenu: NavMenuType[]
+  mainMenu: NavMenuType[],
 ): Promise<SideNavMap> => {
   // construct the full side navs for each top tier utilizing work done in the main menu
   mainMenu.forEach((topTier) => {

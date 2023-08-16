@@ -54,7 +54,7 @@
   const getResolvedSources = (
     src: string,
     sources: Sources | GetSources | undefined,
-    sizeType: SizeType | "static"
+    sizeType: SizeType | "static",
   ): Sources => {
     if (!sources) return [];
     if (Array.isArray(sources)) return sources;
@@ -110,7 +110,7 @@
     loading: Loading,
     lazyImageLoadingSupport: boolean,
     intersectionObserverSupport: boolean,
-    explicitLazyLoadingType?: LazyLoading
+    explicitLazyLoadingType?: LazyLoading,
   ): LazyLoading => {
     if (explicitLazyLoadingType) return explicitLazyLoadingType;
     if (loading !== "lazy") return "none";
@@ -128,7 +128,7 @@
     loading,
     lazyImageLoadingSupport,
     intersectionObserverSupport,
-    explicitLazyLoadingType
+    explicitLazyLoadingType,
   );
 
   if (!width || !height) {
@@ -185,7 +185,7 @@
     height: number | null | undefined,
     fit: boolean,
     preserveAspectRatio: boolean,
-    canUpscaleImage: boolean
+    canUpscaleImage: boolean,
   ) =>
     [
       ...(width && !canUpscaleImage ? [`max-width: ${width}px`] : []),
@@ -212,7 +212,7 @@
         "ldaf-img",
         "ldaf-img__container",
         loading === "eager" && "ldaf-img__eager",
-        className
+        className,
       )}
       bind:this={thisContainer}
       style={styleProp}
@@ -240,7 +240,7 @@
             "ldaf-img__img",
             fit && "ldaf-img__img-fit",
             imageLoadClass,
-            imageClass
+            imageClass,
           )}
           on:load={() => (imageLoaded = true)}
           on:click
@@ -263,7 +263,7 @@
         <div
           class="ldaf-img__color-bg"
           style={`background-color: rgb(${Math.round(mean.r)}, ${Math.round(mean.g)}, ${Math.round(
-            mean.b
+            mean.b,
           )});`}
         />
       {/if}

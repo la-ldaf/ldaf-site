@@ -16,7 +16,7 @@ const maxAvifPixels = maxAvifMegapixels * 1000000;
 
 export const getSources: GetSources = (
   url,
-  { widths, srcWidth, srcHeight } = { widths: [...defaultWidths] }
+  { widths, srcWidth, srcHeight } = { widths: [...defaultWidths] },
 ) => {
   const heightProportion = srcWidth && (srcHeight ? srcHeight / srcWidth : 1);
   return formats.map((format) => {

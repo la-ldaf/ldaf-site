@@ -40,7 +40,7 @@ export const isParagraph = (n: unknown): n is Paragraph =>
 
 export const isHeading = <L extends HeadingLevel>(
   level: L,
-  n: unknown
+  n: unknown,
 ): n is HeadingTypeByLevel<L> => isNode(n) && n.nodeType === `heading-${level}`;
 
 export const isHr = (n: unknown): n is Hr => isNode(n) && n.nodeType === BLOCKS.HR;
