@@ -72,7 +72,7 @@ type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource
 export type HomePage = {
   homePage: Home & {
     heroVideo: Home["heroVideo"] & {
-      youtubeVideoData?: (YoutubeVideoData & { blurhash?: string | undefined }) | null | undefined;
+      youtubeVideoData?: (YoutubeVideoData & { blurhash?: string | undefined }) | undefined;
     };
     featuredServices: (FeaturedService & {
       url?: string | null | undefined;
@@ -125,7 +125,8 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
           url: featuredItemMetadata?.url,
         };
       }) ?? [];
-    const youtubeVideoID = home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
+    const youtubeVideoID =
+      home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
       ? getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch })
       : Promise.resolve(undefined);

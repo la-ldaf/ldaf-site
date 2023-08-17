@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "./YoutubeSubscribeLink.scss"
+  import "./YoutubeSubscribeLink.scss";
   import { url as youtubeIcon } from "$icons/youtube";
   import Link from "$lib/components/Link";
   import Icon from "$lib/components/Icon";

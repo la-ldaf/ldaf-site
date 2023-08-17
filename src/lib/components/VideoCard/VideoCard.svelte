@@ -2,7 +2,7 @@
   import "./VideoCard.scss";
 
   import type { Thumbnails } from "$lib/services/server/youtube";
-  import getYoutubeVideoIDFromURL from "\$lib/util/getYoutubeVideoIDFromURL";
+  import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
   import YoutubeSubscribeLink from "$lib/components/YoutubeSubscribeLink";
   import Image, { type Sources, type Srcset } from "$lib/components/Image";
 
@@ -13,6 +13,7 @@
     title?: string | null | undefined;
     description?: string | null | undefined;
     variation?: VideoCardVariation;
+    blurhash?: string | null | undefined;
     thumbnails?: Thumbnails;
     sizeType?: SizeType;
   }
@@ -28,7 +29,7 @@
   $: trimmedDescription = description?.slice(0, maxDescriptionLength);
 
   export let thumbnails: Thumbnails | undefined = undefined;
-  export let blurhash: string | undefined = undefined;
+  export let blurhash: string | null | undefined = undefined;
 
   const getSrcAndSourcesFromThumbnails = (
     thumbs: Thumbnails
