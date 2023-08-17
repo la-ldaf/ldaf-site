@@ -1,4 +1,6 @@
 import type { SvelteComponent } from "svelte";
+import type { Node } from "@contentful/rich-text-types";
+
 import paragraph from "./Paragraph.svelte";
 import text from "./Text.svelte";
 import heading1 from "./Heading1.svelte";
@@ -23,7 +25,7 @@ import embeddedEntry from "./EmbeddedEntry.svelte";
 import assetHyperlink from "./AssetHyperlink.svelte";
 import entryHyperlink from "./EntryHyperlink.svelte";
 
-const nodes: Record<string, typeof SvelteComponent<any>> = {
+const nodes: Record<string, typeof SvelteComponent<Record<never, never> | { node: Node }>> = {
   text,
   // Block Types (see https://github.com/contentful/rich-text/blob/3568691018866c2a4fdbfede27c0aa19f24b5b3f/packages/rich-text-types/src/blocks.ts)
   //
@@ -56,4 +58,5 @@ const nodes: Record<string, typeof SvelteComponent<any>> = {
   "asset-hyperlink": assetHyperlink,
   "embedded-entry-inline": embeddedEntry, // TODO: is this component needed?
 };
+
 export default nodes;
