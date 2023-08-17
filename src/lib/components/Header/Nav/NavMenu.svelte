@@ -9,7 +9,10 @@
   import type { NavMenuProps, NavLinkType } from "./types";
   type $$Props = NavMenuProps;
 
-  const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher<{
+    toggle: null;
+    close: null;
+  }>();
 
   export let id = "";
   export let current = false;
