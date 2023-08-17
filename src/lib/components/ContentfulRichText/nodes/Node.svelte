@@ -1,6 +1,11 @@
 <script lang="ts" generics="N extends AnyNode">
   import type { ComponentTakingNode, NodePredicate } from "../types";
-  import { isSupportedNode, getComponentAndPredicate, type AnyNode, type NodeComponentAndPredicate } from ".";
+  import {
+    isSupportedNode,
+    getComponentAndPredicate,
+    type AnyNode,
+    type NodeComponentAndPredicate,
+  } from ".";
 
   export let node: N;
 
