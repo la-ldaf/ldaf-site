@@ -5,11 +5,13 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
+import { getYoutubeVideoDataWithBlurhash, getYoutubeIDFromURL } from "$lib/services/youtube";
 
 import type { HomeCollectionQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
+import type { YoutubeVideoData } from "$lib/services/youtube/getYoutubeVideoData";
 
 const query = gql`
   query HomeCollection($metadataID: String!) {
@@ -69,6 +71,9 @@ type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource
 
 export type HomePage = {
   homePage: Home & {
+    heroVideo: Home["heroVideo"] & {
+      youtubeVideoData?: (YoutubeVideoData & { blurhash?: string | undefined }) | null | undefined;
+    };
     featuredServices: (FeaturedService & {
       url?: string | null | undefined;
     } & {
@@ -120,8 +125,18 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
           url: featuredItemMetadata?.url,
         };
       }) ?? [];
-    const featuredServices = await Promise.all(featuredServicesPromises);
-    return { homePage: { ...home, featuredServices }, pageMetadata };
+    const youtubeVideoID = home.heroVideo?.videoUrl && getYoutubeIDFromURL(home.heroVideo.videoUrl);
+    const youtubeVideoDataPromise = youtubeVideoID
+      ? getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch })
+      : Promise.resolve(undefined);
+    const [featuredServices, youtubeVideoData] = await Promise.all([
+      Promise.all(featuredServicesPromises),
+      youtubeVideoDataPromise,
+    ]);
+    return {
+      homePage: { ...home, featuredServices, heroVideo: { ...home.heroVideo, youtubeVideoData } },
+      pageMetadata,
+    };
   }
   // TODO: We really shouldn't 404 on the home page.
   throw error(404);

@@ -14,6 +14,12 @@
   export let data;
   $: ({ topTierPage } = data);
   $: ({ subheading, video, description, featuredServices } = topTierPage);
+  $: ({ videoUrl, youtubeVideoData } = video);
+  $: ({
+    title: videoTitle,
+    description: videoDescription,
+    thumbnails: videoThumbnails,
+  } = youtubeVideoData ?? ({} as Record<string, undefined>));
 
   const getButtonVariant = (index: number): Variant => {
     switch (index) {
@@ -35,12 +41,14 @@
 {#if description?.json}
   <ContentfulRichText document={description.json} />
 {/if}
-{#if video?.videoUrl}
+{#if videoUrl}
   <VideoCard
-    url={video.videoUrl}
-    customTitle={video.videoTitle}
-    customDescription={video.videoSubhead}
+    url={videoUrl}
+    title={videoTitle}
+    description={videoDescription}
+    thumbnails={videoThumbnails}
     variation="secondary"
+    sizeType="hero-col-9"
   />
 {/if}
 {#if featuredServices && featuredServices.length > 0}

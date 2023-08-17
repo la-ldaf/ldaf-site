@@ -4,6 +4,7 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
+import { getYoutubeIDFromURL, getYoutubeVideoDataWithBlurhash } from "$lib/services/youtube";
 
 import type { TopTierCollectionQuery } from "./$queries.generated";
 
@@ -135,9 +136,16 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
         ];
       }) ?? [];
 
-    const [heroImageBlurhash, featuredServices] = await Promise.all([
+    const youtubeVideoID =
+      matchedTopTier.video?.videoUrl && getYoutubeIDFromURL(matchedTopTier.video.videoUrl);
+    const youtubeVideoDataPromise = youtubeVideoID
+      ? getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch })
+      : undefined;
+
+    const [heroImageBlurhash, featuredServices, youtubeVideoData] = await Promise.all([
       heroImageBlurhashPromise,
       Promise.all(featuredServicesPromises).then((arr) => arr.flat()),
+      youtubeVideoDataPromise,
     ]);
 
     return {
@@ -145,6 +153,10 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
       topTierPage: {
         ...matchedTopTier,
         featuredServices,
+        video: {
+          ...matchedTopTier.video,
+          youtubeVideoData,
+        },
         heroImage: matchedTopTier.heroImage
           ? {
               ...matchedTopTier.heroImage,

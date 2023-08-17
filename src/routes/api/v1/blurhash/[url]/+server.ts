@@ -16,12 +16,6 @@ export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }
       { status: 400, headers: { "Content-Type": "application/json" } }
     );
   }
-  if (!imageURL.startsWith(`${CONTENTFUL_IMAGE_API_ENDPOINT}/${CONTENTFUL_SPACE_ID}`)) {
-    return new Response(
-      JSON.stringify({ error: { message: `${imageURL} is not a URL to an LDAF image` } }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
-  }
 
   const kvClient = await getKVClient();
   const cachedBlurhash = await kvClient?.getBlurhashByURL(imageURL);
@@ -31,9 +25,11 @@ export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }
     });
   }
 
-  parsedImageURL.searchParams.set("q", "25");
-  parsedImageURL.searchParams.set("w", "100");
-  parsedImageURL.searchParams.set("fm", "jpg");
+  if (imageURL.startsWith(`${CONTENTFUL_IMAGE_API_ENDPOINT}/${CONTENTFUL_SPACE_ID}`)) {
+    parsedImageURL.searchParams.set("q", "25");
+    parsedImageURL.searchParams.set("w", "100");
+    parsedImageURL.searchParams.set("fm", "jpg");
+  }
 
   const imageResponse = await fetch(parsedImageURL, { headers: { Accept: "image/jpeg" } });
   if (!imageResponse.ok) {
