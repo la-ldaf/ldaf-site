@@ -26,7 +26,7 @@
 
   const wrapped = textNode.marks.reduce(
     (text, { type }) => wrappers[type as MarkType](text),
-    escape(textNode.value)
+    escape(textNode.value),
   );
 </script>
 
