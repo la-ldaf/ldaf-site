@@ -93,7 +93,7 @@
       {#if showYoutubeEmbed}
         <iframe
           class="ldaf-video-embed"
-          src={`https://www.youtube-nocookie.com/embed/${youtubeVideoID}?rel=0`}
+          src={`https://www.youtube-nocookie.com/embed/${youtubeVideoID}?rel=0&autoplay=1`}
           title="Embedded YouTube video player"
           frameborder="0"
           allow="encrypted-media;"
