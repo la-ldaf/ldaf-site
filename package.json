@@ -92,6 +92,7 @@
   "type": "module",
   "dependencies": {
     "@contentful/rich-text-types": "^16.0.3",
+    "@poppanator/sveltekit-svg": "^4.1.0",
     "@uswds/uswds": "^3.4.1",
     "algoliasearch": "^4.19.1",
     "date-fns": "^2.30.0",
