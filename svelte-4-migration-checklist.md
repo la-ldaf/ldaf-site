@@ -22,7 +22,7 @@
 
 - [x] `SvelteComponent` should be replaced with `typeof SvelteComponent<any>`
 
-- [ ] Default slot bindings are no longer exposed to named slots and vice versa
+- [x] Default slot bindings are no longer exposed to named slots and vice versa
 
-- [ ] New eslint package
+- [x] New eslint package
   - https://github.com/sveltejs/kit/issues/10242#issuecomment-1610798405
