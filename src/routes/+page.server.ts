@@ -5,13 +5,13 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
-import { getYoutubeVideoDataWithBlurhash, getYoutubeIDFromURL } from "$lib/services/youtube";
-
+import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
+import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
 import type { HomeCollectionQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
-import type { YoutubeVideoData } from "$lib/services/youtube/getYoutubeVideoData";
+import type { YoutubeVideoData } from "$lib/services/server/youtube/getYoutubeVideoData";
 
 const query = gql`
   query HomeCollection($metadataID: String!) {
@@ -125,7 +125,7 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
           url: featuredItemMetadata?.url,
         };
       }) ?? [];
-    const youtubeVideoID = home.heroVideo?.videoUrl && getYoutubeIDFromURL(home.heroVideo.videoUrl);
+    const youtubeVideoID = home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
       ? getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch })
       : Promise.resolve(undefined);

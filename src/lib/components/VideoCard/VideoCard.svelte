@@ -1,7 +1,8 @@
 <script lang="ts">
   import "./VideoCard.scss";
 
-  import { getYoutubeIDFromURL, type Thumbnails } from "$lib/services/youtube";
+  import type { Thumbnails } from "$lib/services/server/youtube";
+  import getYoutubeVideoIDFromURL from "\$lib/util/getYoutubeVideoIDFromURL";
   import YoutubeSubscribeLink from "$lib/components/YoutubeSubscribeLink";
   import Image, { type Sources, type Srcset } from "$lib/components/Image";
 
@@ -47,7 +48,7 @@
   $: [{ url: thumbSrc, width: thumbWidth, height: thumbHeight }, thumbSources] = thumbnails
     ? getSrcAndSourcesFromThumbnails(thumbnails)
     : [{} as Record<string, undefined>];
-  $: youtubeVideoID = getYoutubeIDFromURL(url);
+  $: youtubeVideoID = getYoutubeVideoIDFromURL(url);
 
   type SizeType = "hero-full-width" | "hero-col-9";
   export let sizeType: SizeType = "hero-full-width";

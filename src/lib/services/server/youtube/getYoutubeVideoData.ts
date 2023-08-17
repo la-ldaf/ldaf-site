@@ -1,4 +1,4 @@
-import { YOUTUBE_API_KEY } from "$env/static/public";
+import { YOUTUBE_API_KEY } from "$env/static/private";
 import { getBlurhash } from "$lib/services/blurhashes";
 
 export type Thumbnail = {

@@ -5,4 +5,3 @@ export {
   type Thumbnails,
   type Thumbnail,
 } from "./getYoutubeVideoData";
-export { default as getYoutubeIDFromURL } from "./getYoutubeIDFromURL";

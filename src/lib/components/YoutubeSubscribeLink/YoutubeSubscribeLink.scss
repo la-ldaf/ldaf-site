@@ -1,0 +1,23 @@
+  .youtube-subscribe-link,
+  .youtube-subscribe-link:visited,
+  .usa-link.youtube-subscribe-link,
+  .usa-link.youtube-subscribe-link:visited {
+    background: #e62117;
+    border: 1px solid #d7211a;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    height: 24px;
+    padding: 0 8px 0 5.5px;
+    font-size: 12px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .usa-icon.youtube-subscribe-icon {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+  }

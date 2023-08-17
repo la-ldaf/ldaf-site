@@ -4,7 +4,7 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
-import { getYoutubeIDFromURL, getYoutubeVideoDataWithBlurhash } from "$lib/services/youtube";
+import { getYoutubeIDFromURL, getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 
 import type { TopTierCollectionQuery } from "./$queries.generated";
 
