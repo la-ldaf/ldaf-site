@@ -93,5 +93,5 @@ export type LinksContext = {
   };
 };
 
-export type ComponentTakingNode<T> = ComponentType<SvelteComponent<{ node: T }>> | ComponentType<SvelteComponent<Record<never, never>>>;
+export type ComponentTakingNode<T> = ComponentType<SvelteComponent<{ node: T }>>;
 export type NodePredicate<T extends Node> = (n: Node) => n is T;

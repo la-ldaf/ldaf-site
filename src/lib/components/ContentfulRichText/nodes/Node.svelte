@@ -1,6 +1,6 @@
 <script lang="ts" generics="N extends AnyNode">
-  import { isSupportedNode, getComponentAndPredicate, type AnyNode } from ".";
   import type { ComponentTakingNode, NodePredicate } from "../types";
+  import { isSupportedNode, getComponentAndPredicate, type AnyNode, type NodeComponentAndPredicate } from ".";
 
   export let node: N;
 
@@ -12,11 +12,7 @@
     console.warn(`unsupported nodeType ${node.nodeType}`);
     [component, predicate, isCorrectNodeType] = [undefined, undefined, false];
   } else {
-    const componentAndPredicate = getComponentAndPredicate(node) as readonly [
-      typeof component,
-      typeof predicate
-    ];
-    [component, predicate] = componentAndPredicate;
+    [component, predicate] = getComponentAndPredicate(node) as NodeComponentAndPredicate<N>;
     isCorrectNodeType = predicate?.(node) ?? true;
   }
 </script>
@@ -29,5 +25,5 @@
   {/if}
 {:else}
   <!-- TODO: Remove before launch -->
-  <p>Unsupported Rich Text nodeType ${node.nodeType}</p>
+  <p>Unsupported ContentfulRichText nodeType <code>{node.nodeType}</code></p>
 {/if}

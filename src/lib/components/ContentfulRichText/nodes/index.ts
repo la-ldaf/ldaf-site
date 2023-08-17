@@ -50,12 +50,7 @@ import {
 
 import paragraph from "./Paragraph.svelte";
 import text from "./Text.svelte";
-import heading1 from "./Heading1.svelte";
-import heading2 from "./Heading2.svelte";
-import heading3 from "./Heading3.svelte";
-import heading4 from "./Heading4.svelte";
-import heading5 from "./Heading5.svelte";
-import heading6 from "./Heading6.svelte";
+import heading from "./Heading.svelte";
 import hr from "./Hr.svelte";
 import blockquote from "./Blockquote.svelte";
 import unorderedList from "./UnorderedList.svelte";
@@ -105,7 +100,7 @@ export type SupportedNodeTag = SupportedNode["nodeType"];
 
 export type NodeComponentAndPredicate<N extends Node> = readonly [
   ComponentTakingNode<N>,
-  NodePredicate<N>
+  NodePredicate<N>,
 ];
 
 type Nodes = {
@@ -124,12 +119,12 @@ export type SupportedNodeTypesByTag = Omit<
 const nodes: Nodes = {
   text: [text, isText],
   paragraph: [paragraph, isParagraph],
-  "heading-1": [heading1, isHeadingOfLevel(1)],
-  "heading-2": [heading2, isHeadingOfLevel(2)],
-  "heading-3": [heading3, isHeadingOfLevel(3)],
-  "heading-4": [heading4, isHeadingOfLevel(4)],
-  "heading-5": [heading5, isHeadingOfLevel(5)],
-  "heading-6": [heading6, isHeadingOfLevel(6)],
+  "heading-1": [heading, isHeadingOfLevel(1)],
+  "heading-2": [heading, isHeadingOfLevel(2)],
+  "heading-3": [heading, isHeadingOfLevel(3)],
+  "heading-4": [heading, isHeadingOfLevel(4)],
+  "heading-5": [heading, isHeadingOfLevel(5)],
+  "heading-6": [heading, isHeadingOfLevel(6)],
   hr: [hr, isHr],
   blockquote: [blockquote, isQuote],
   "unordered-list": [unorderedList, isUnorderedList],
