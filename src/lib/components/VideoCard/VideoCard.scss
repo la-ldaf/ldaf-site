@@ -2,11 +2,13 @@
   $theme-show-notifications: false
 );
 
+/*! purgecss start ignore */
 .ldaf-video-card {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   padding: 1.5rem;
+
   // change colors based on variation
   &--hero {
     color: $white;
@@ -57,3 +59,4 @@
     }
   }
 }
+/*! purgecss end ignore */
