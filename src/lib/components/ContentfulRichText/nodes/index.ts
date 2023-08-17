@@ -23,7 +23,7 @@ import embeddedEntry from "./EmbeddedEntry.svelte";
 import assetHyperlink from "./AssetHyperlink.svelte";
 import entryHyperlink from "./EntryHyperlink.svelte";
 
-const nodes: Record<string, typeof SvelteComponent> = {
+const nodes: Record<string, typeof SvelteComponent<any>> = {
   text,
   // Block Types (see https://github.com/contentful/rich-text/blob/3568691018866c2a4fdbfede27c0aa19f24b5b3f/packages/rich-text-types/src/blocks.ts)
   //
