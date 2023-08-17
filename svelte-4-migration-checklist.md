@@ -6,9 +6,9 @@
 
   - This shouldn't affect us
 
-- [ ] Stricter types for Svelte functions
+- [x] Stricter types for Svelte functions
 
-  - [ ] createEventDispatcher payload typing
+  - [x] createEventDispatcher payload typing
 
   - [x] Action and ActionReturn must be typed if they receive a parameter
 
