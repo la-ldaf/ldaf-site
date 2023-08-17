@@ -6,7 +6,11 @@
   export let totalPages: number;
   export let getPageLink: (page: number) => string | undefined = () => undefined;
 
-  const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher<{
+    paginationClick: {
+      page: number;
+    };
+  }>();
 
   // Rules for numeric page links:
   // - 1 is always shown
@@ -49,7 +53,7 @@
     .sort((a, b) => a - b);
 
   $: shownPageLinkNumbersWithLastNumber = shownPageLinkNumbers.map(
-    (n, i, arr) => [n, i > 0 ? arr[i - 1] : null] satisfies [number, number | null],
+    (n, i, arr) => [n, i > 0 ? arr[i - 1] : null] satisfies [number, number | null]
   );
 
   const handleClickForPage = (page: number) => (e: MouseEvent) => {
