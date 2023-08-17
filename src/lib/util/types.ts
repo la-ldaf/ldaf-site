@@ -31,5 +31,3 @@ export type ExtractQueryType<
     ? ExtractQueryType<NonNullable<NonNullable<Q>[P[0]]>, Tail>
     : never
   : never;
-
-export type Result<T, E = unknown> = { ok: true; value: T } | { ok: false; error: E };
