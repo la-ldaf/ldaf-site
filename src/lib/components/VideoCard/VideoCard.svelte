@@ -70,6 +70,11 @@
   };
 
   let showYoutubeEmbed = !thumbnails;
+  let lastVideoURL = url;
+  $: {
+    if (lastVideoURL !== url) showYoutubeEmbed = false;
+    lastVideoURL = url;
+  }
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!(e.key === "Enter" || e.key === " ")) return;
