@@ -6,7 +6,7 @@ const sampleData = {
   items: [{ snippet: "test data" }],
 };
 
-vi.mock("$env/static/public", () => ({ PUBLIC_YOUTUBE_API_KEY: "d4e5f6" }));
+vi.mock("$env/static/private", () => ({ YOUTUBE_API_KEY: "d4e5f6" }));
 
 describe("YouTube Fetch", () => {
   it("calls YouTube API", async () => {
