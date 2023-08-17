@@ -18,9 +18,9 @@
 
   - We're not using custom elements
 
-- [ ] `SvelteComponentTyped` is deprecated
+- [x] `SvelteComponentTyped` is deprecated
 
-- [ ] `SvelteComponent` should be replaced with `typeof SvelteComponent<any>`
+- [x] `SvelteComponent` should be replaced with `typeof SvelteComponent<any>`
 
 - [ ] Default slot bindings are no longer exposed to named slots and vice versa
 
