@@ -10,7 +10,11 @@ import homePageTestContent from "./__tests__/homePageTestContent";
 
 const query = gql`
   query HomeCollection($metadataID: String!, $preview: Boolean = true) {
-    homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1, preview: $preview) {
+    homeCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         pageMetadata {
           sys {
