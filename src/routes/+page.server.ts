@@ -87,7 +87,7 @@ export type HomePage = {
   pageMetadata: PageMetadataMapItem;
 };
 
-export const load = async ({ parent, fetch }): Promise<HomePage> => {
+export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<HomePage> => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return homePageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
   fetchData: {
@@ -128,7 +128,9 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
     const youtubeVideoID =
       home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
-      ? getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch })
+      ? getKVClient().then((kvClient) =>
+          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient })
+        )
       : Promise.resolve(undefined);
     const [featuredServices, youtubeVideoData] = await Promise.all([
       Promise.all(featuredServicesPromises),

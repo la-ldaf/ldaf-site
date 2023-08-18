@@ -87,7 +87,12 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => {
+export const load = async ({
+  parent,
+  params: { topTierPage: slug },
+  fetch,
+  locals: { getKVClient },
+}) => {
   const { pageMetadataMap, pathsToIDs } = await parent();
   fetchData: {
     const metadataID = pathsToIDs.get(`/${slug}`);
@@ -140,7 +145,9 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
     const youtubeVideoID =
       matchedTopTier.video?.videoUrl && getYoutubeVideoIDFromURL(matchedTopTier.video.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
-      ? getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch })
+      ? getKVClient().then((kvClient) =>
+          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient })
+        )
       : undefined;
 
     const [heroImageBlurhash, featuredServices, youtubeVideoData] = await Promise.all([
