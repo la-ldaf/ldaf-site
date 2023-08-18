@@ -1,30 +1,30 @@
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
-import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
-
-import type {
-  ServiceGroupQuery,
-  ServiceGroupChildEntriesQuery,
-  ServiceGroupChildGroupsQuery,
-} from "./$queries.generated";
-import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
 import chunks from "$lib/util/chunks";
 import imagePropsFragment from "$lib/fragments/imageProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
+import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type {
+  ServiceGroupCollectionQuery,
+  ServiceGroupChildEntriesQuery,
+  ServiceGroupChildGroupsQuery,
+} from "./$queries.generated";
+import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
   ${imagePropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroup($metadataID: String!) {
-    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query ServiceGroupCollection($metadataID: String!, $preview: Boolean = false) {
+    serviceGroupCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         sys {
           id
@@ -132,8 +132,8 @@ const childServiceEntriesQuery = gql`
   ${imagePropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroupChildEntries($ids: [String]!) {
-    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+  query ServiceGroupChildEntries($ids: [String]!, $preview: Boolean = true) {
+    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }, preview: $preview) {
       items {
         sys {
           id
@@ -205,8 +205,8 @@ const childServiceEntriesQuery = gql`
 `;
 
 const childServiceGroupsQuery = gql`
-  query ServiceGroupChildGroups($ids: [String]!) {
-    serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+  query ServiceGroupChildGroups($ids: [String]!, $preview: Boolean = false) {
+    serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }, preview: $preview) {
       items {
         sys {
           id
@@ -225,7 +225,7 @@ const childServiceGroupsQuery = gql`
 `;
 
 type ServiceGroup = ExtractQueryType<
-  ServiceGroupQuery,
+  ServiceGroupCollectionQuery,
   ["serviceGroupCollection", "items", number]
 >;
 
@@ -284,10 +284,11 @@ const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
 
 export const load = async ({
   parent,
+  locals: { contentfulClient, logger },
   params: { topTierPage, serviceGroupPage },
   fetch,
 }): Promise<ServiceGroupPage> => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
+  if (!contentfulClient) return serviceGroupPageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
   // construct URL for matching later
   const path = `/${topTierPage}/${serviceGroupPage}`;
@@ -296,12 +297,7 @@ export const load = async ({
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-
-    const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
+    const baseData = await contentfulClient.fetch<ServiceGroupCollectionQuery>(baseQuery, {
       variables: { metadataID },
     });
     if (!baseData) break fetchData;
@@ -333,7 +329,7 @@ export const load = async ({
         childServiceEntryIDChunks.flatMap((chunk) =>
           chunk.length > 0
             ? [
-                client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
+                contentfulClient.fetch<ServiceGroupChildEntriesQuery>(childServiceEntriesQuery, {
                   variables: { ids: chunk },
                 }),
               ]
@@ -341,7 +337,7 @@ export const load = async ({
         )
       ),
       childServiceGroupIDs.length > 0
-        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
+        ? contentfulClient.fetch<ServiceGroupChildGroupsQuery>(childServiceGroupsQuery, {
             variables: { ids: childServiceGroupIDs },
           })
         : { serviceGroupCollection: { items: [] } },
@@ -420,5 +416,6 @@ export const load = async ({
       childServiceGroups,
     };
   }
+  await logger.logError(new Error("service group page was not found"));
   throw error(404);
 };

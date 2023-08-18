@@ -2,12 +2,13 @@
   import type { PageServerData } from "./$types";
   import DateComponent from "$lib/components/Date";
   export let event: PageServerData["events"][number];
-  $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
+  $: dateString = typeof event?.eventDateAndTime === "string" ? event.eventDateAndTime : undefined;
+  $: date = dateString && new Date(dateString);
 </script>
 
 <div class="event">
-  {#if event?.eventDateAndTime}
-    <DateComponent dateString={event.eventDateAndTime} />
+  {#if dateString}
+    <DateComponent {dateString} />
   {/if}
   <div class="event-details">
     {#if event?.shortTitle}

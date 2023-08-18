@@ -1,9 +1,6 @@
-import { print as printQuery } from "graphql";
 import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 
 import type { HomeCollectionQuery } from "./$queries.generated";
@@ -12,8 +9,12 @@ import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
 
 const query = gql`
-  query HomeCollection($metadataID: String!) {
-    homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query HomeCollection($metadataID: String!, $preview: Boolean = true) {
+    homeCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         pageMetadata {
           sys {
@@ -82,8 +83,12 @@ export type HomePage = {
   pageMetadata: PageMetadataMapItem;
 };
 
-export const load = async ({ parent, fetch }): Promise<HomePage> => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return homePageTestContent;
+export const load = async ({
+  parent,
+  fetch,
+  locals: { contentfulClient, logger },
+}): Promise<HomePage> => {
+  if (!contentfulClient) return homePageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
   fetchData: {
     // Based on how we construct URLs, we should only ever have one entry with the root path (and regardless, the key is unique).
@@ -91,11 +96,7 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<HomeCollectionQuery>(printQuery(query), {
+    const data = await contentfulClient.fetch<HomeCollectionQuery>(query, {
       variables: { metadataID },
     });
     if (!data) break fetchData;
@@ -124,5 +125,6 @@ export const load = async ({ parent, fetch }): Promise<HomePage> => {
     return { homePage: { ...home, featuredServices }, pageMetadata };
   }
   // TODO: We really shouldn't 404 on the home page.
+  await logger.logError(new Error("Home page was not found. Is it published?"));
   throw error(404);
 };

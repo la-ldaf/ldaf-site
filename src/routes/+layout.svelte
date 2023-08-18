@@ -4,22 +4,41 @@
   import { setContext } from "svelte";
   import { afterNavigate } from "$app/navigation";
   import { navigating, page } from "$app/stores";
-
+  import { browser } from "$app/environment";
+  import { beforeNavigate, goto, invalidate } from "$app/navigation";
   import "../app.scss";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
+  import isInIframe from "$lib/util/isInIframe";
+  import { key as currentUserKey, type CurrentUser } from "$lib/contexts/currentUser";
+  import LoginLink from "$lib/components/LoginLink";
+  import { writable, type Writable } from "svelte/store";
+  import { newPublicLogger } from "$lib/logger/public";
   import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
 
   export let data;
+
+  const { loggerContext } = data;
+
+  const logger = newPublicLogger({ context: loggerContext });
+  setContext("logger", logger);
+  logger.setPublicContext("initialURL", loggerContext.url);
+
+  $: logger.setPublicContext("url", $page.url.toString());
+
+  const currentUserStore = writable<CurrentUser | undefined>(data.currentUser);
+  $: setContext<Writable<CurrentUser | undefined>>(currentUserKey, currentUserStore);
+
   $: ({
     headerPrimaryNavItems,
     headerSecondaryNavItems,
     footerNavItems,
     siteTitle,
     pageMetadataMap,
+    previewAuthenticationError,
   } = data);
 
   $: ({ pageMetadata } = $page.data);
@@ -49,6 +68,39 @@
 
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
+
+  // This is a workaround for https://github.com/sveltejs/kit/issues/10122
+  let lastPageURL: URL | undefined, lastPageError: App.Error | null | undefined;
+  $: ({ url: lastPageURL, error: lastPageError } = $page || {});
+  beforeNavigate(async ({ to, type, cancel }) => {
+    const previousPreviewValue = lastPageURL?.searchParams.get("preview");
+    if (
+      typeof previousPreviewValue === "string" &&
+      type === "link" &&
+      to &&
+      !to.url.searchParams.has("preview") &&
+      !lastPageError &&
+      !previewAuthenticationError &&
+      !(to.url.pathname === "/login" || to.url.pathname === "/logout")
+    ) {
+      to.url.searchParams.set("preview", previousPreviewValue);
+    }
+
+    if (
+      type === "link" &&
+      to &&
+      previewAuthenticationError &&
+      !(to.url.pathname === "/login" || to.url.pathname === "/logout")
+    ) {
+      to.url.searchParams.delete("preview");
+      cancel();
+      await goto(to.url.toString());
+      invalidate("app:previewAuthenticationError");
+    }
+  });
+
+  $: inIframe = browser && isInIframe();
+  $: loginLinkProps = inIframe ? { target: "_blank" } : {};
 </script>
 
 <svelte:head>
@@ -92,7 +144,20 @@
     {siteTitle}
     bind:navMenuExpanded
   />
-  <slot />
+  {#if previewAuthenticationError}
+    <div class="usa-section usa-prose grid-container">
+      <h1>{previewAuthenticationError.status}</h1>
+      <p>{previewAuthenticationError.message}</p>
+      <p>
+        (Do you need to <LoginLink {...loginLinkProps}>log in</LoginLink> or visit the
+        <a href={$page.url.toString()}>public version of the page</a>?)
+      </p>
+    </div>
+  {:else}
+    <main id="main-content">
+      <slot />
+    </main>
+  {/if}
   <Footer navItems={footerNavItems} {siteTitle} {afterNavigate} />
 </RootIntersectionObserver>
 

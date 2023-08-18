@@ -1,7 +1,4 @@
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 import type { EventsQuery } from "./$queries.generated";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./page/[page]/$types";
@@ -12,8 +9,13 @@ const limit = 20;
 
 // TODO: filter to only future events. this will require thinking about timezones
 export const query = gql`
-  query Events($limit: Int = 20, $skip: Int = 0) {
-    eventEntryCollection(limit: $limit, skip: $skip, order: [eventDateAndTime_ASC]) {
+  query Events($limit: Int = 20, $skip: Int = 0, $preview: Boolean = false) {
+    eventEntryCollection(
+      limit: $limit
+      skip: $skip
+      order: [eventDateAndTime_ASC]
+      preview: $preview
+    ) {
       total
       items {
         sys {
@@ -64,7 +66,8 @@ export const loadBaseBreadcrumbs = async ({
 export const loadEventsPage = async ({
   parent,
   params: { page },
-}: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
+  locals: { contentfulClient },
+}: Pick<Parameters<PageServerLoad>[0], "params" | "parent" | "locals">) => {
   fetchData: {
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
@@ -74,7 +77,7 @@ export const loadEventsPage = async ({
         ? [{ title: `Page ${pageNumber}`, link: `/about/events/page/${pageNumber}` }]
         : []),
     ]);
-    if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+    if (!contentfulClient) {
       return {
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testEvents.length / limit),
@@ -83,11 +86,7 @@ export const loadEventsPage = async ({
         breadcrumbs: breadcrumbsPromise,
       };
     }
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const eventsData = await client.fetch<EventsQuery>(printQuery(query), {
+    const eventsData = await contentfulClient.fetch<EventsQuery>(query, {
       variables: {
         limit,
         skip: limit * Math.max(pageNumber - 1, 0),
@@ -99,6 +98,7 @@ export const loadEventsPage = async ({
     ) {
       break fetchData;
     }
+    eventsData?.eventEntryCollection?.items?.[0]?.eventDateAndTime;
     return {
       pageMetadata: {
         metaTitle: pageNumber <= 1 ? "Events" : `Events - page ${pageNumber}`,

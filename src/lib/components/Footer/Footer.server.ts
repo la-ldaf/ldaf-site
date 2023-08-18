@@ -1,17 +1,15 @@
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import { footerNavTestContent } from "./__tests__/FooterTestContent";
 
+import type { ContentfulClient } from "$lib/services/server/contentful";
 import type { FooterNavQuery } from "./$queries.generated";
 import type { NavLinkType, NavMenuType } from "$lib/components/Header/Nav/types";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const footerNavQuery = gql`
-  query FooterNav {
-    menuCollection(limit: 1, where: { menuType: "Footer Menu" }) {
+  query FooterNav($preview: Boolean = false) {
+    menuCollection(limit: 1, where: { menuType: "Footer Menu" }, preview: $preview) {
       items {
         childrenCollection(limit: 5) {
           items {
@@ -50,14 +48,16 @@ const footerNavQuery = gql`
   }
 `;
 
-export const loadFooterNav = async (pageMetadataMap: PageMetadataMap): Promise<NavMenuType[]> => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return footerNavTestContent;
+export const loadFooterNav = async ({
+  pageMetadataMap,
+  contentfulClient,
+}: {
+  pageMetadataMap: PageMetadataMap;
+  contentfulClient?: ContentfulClient;
+}): Promise<NavMenuType[]> => {
+  if (!contentfulClient) return footerNavTestContent;
   const footerMenu: NavMenuType[] = [];
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<FooterNavQuery>(printQuery(footerNavQuery));
+  const data = await contentfulClient.fetch<FooterNavQuery>(footerNavQuery);
   if (data?.menuCollection?.items?.length === 1) {
     const subMenus = data.menuCollection.items[0]?.childrenCollection?.items;
     if (subMenus) {

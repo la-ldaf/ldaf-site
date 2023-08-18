@@ -1,16 +1,15 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
-import { print as printQuery } from "graphql";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
-import officePageTestContent from "./__tests__/OfficePageTestContent";
+import officePageTestContent from "./__tests__/officePageTestContent";
 
-import type { OfficePageQuery } from "./$queries.generated";
+import type { PageServerLoad } from "./$types";
+import type { OfficePageQuery, OfficePageQueryVariables } from "./$queries.generated";
+import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 
 const query = gql`
-  query OfficePage {
-    officePageCollection {
+  query OfficePage($slug: String, $preview: Boolean = false) {
+    officePageCollection(preview: $preview, where: { pageMetadata: { slug: $slug } }, limit: 1) {
       items {
         sys {
           id
@@ -58,36 +57,48 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params }) => {
-  const { pageMetadataMap } = await parent();
-  const slug = params.officePage;
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
-    return { officePage: officePageTestContent, pageMetadata: {} };
-  }
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
+type OfficePage = NonNullable<
+  NonNullable<OfficePageQuery["officePageCollection"]>["items"][number]
+>;
+
+export const load = (async ({
+  parent,
+  locals: { contentfulClient, logger },
+  params: { officePage: slug },
+}): Promise<{ officePage: OfficePage; pageMetadata?: PageMetadataMapItem }> => {
+  const parentPromise = parent();
+  if (!contentfulClient) return { officePage: officePageTestContent };
+  const data = await contentfulClient.fetch<OfficePageQuery, OfficePageQueryVariables>(query, {
+    variables: { slug },
   });
-  const data = await client.fetch<OfficePageQuery>(printQuery(query));
-  const officePages = data?.officePageCollection?.items;
-  if (!officePages) throw error(404);
-  const matchedOfficePage = officePages.find(
-    (officePage) => officePage?.pageMetadata?.slug === slug
-  );
-  if (matchedOfficePage) {
-    const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
-    if (pageMetadataId) {
-      const pageMetadata = pageMetadataMap.get(pageMetadataId);
-      if (pageMetadata) {
-        return {
-          officePage: matchedOfficePage,
-          pageMetadata,
-        };
-      }
+  if (!data) {
+    logger.logError(new Error("query returned no response"));
+    throw error(404);
+  }
+  const [officePage] = data?.officePageCollection?.items ?? [];
+  if (!officePage) throw error(404);
+  const metadataID = officePage?.pageMetadata?.sys?.id;
+
+  let pageMetadata: PageMetadataMapItem | undefined;
+  assignPageMetadata: {
+    if (!metadataID) {
+      await logger.logError(
+        new Error(`page ${officePage?.sys?.id ?? "(unknown id)"} had no metadata ID`)
+      );
+      break assignPageMetadata;
+    }
+    const { pageMetadataMap } = await parentPromise;
+    pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) {
+      await logger.logError(
+        new Error(
+          `page ${
+            officePage?.sys?.id ?? "(unknown id)"
+          } with the metadata ID ${metadataID} was missing in page metadata map`
+        )
+      );
     }
   }
-  console.warn(
-    `An Office Page entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Office Page entry is not.`
-  );
-  throw error(404);
-};
+
+  return { officePage, pageMetadata };
+}) satisfies PageServerLoad;
