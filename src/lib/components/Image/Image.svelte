@@ -17,13 +17,15 @@
   // The size type of the image
   export let sizeType: SizeType | "static" = "static";
   export let canUpscaleImage = sizeType === "full-bleed";
-  export let preserveAspectRatio = ({
-    "static": true,
-    card: false,
-    "full-bleed": true,
-    "col-9": true,
-    "col-12": true,
-  } satisfies Record<SizeType | "static", boolean>)[sizeType];
+  export let preserveAspectRatio = (
+    {
+      static: true,
+      card: false,
+      "full-bleed": true,
+      "col-9": true,
+      "col-12": true,
+    } satisfies Record<SizeType | "static", boolean>
+  )[sizeType];
 
   export let src: string;
 
