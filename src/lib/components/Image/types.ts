@@ -20,6 +20,7 @@ export type GetSources = (
     widths: number[];
     srcWidth?: number | null | undefined;
     srcHeight?: number | null | undefined;
+    maxHeight?: number | null | undefined;
   }
 ) => Sources;
 

@@ -11,9 +11,11 @@
   export let height: number | null | undefined = undefined;
   export let width: number | null | undefined = undefined;
 
+  export let maxHeight: number | null | undefined = undefined;
+
   // Whether the image should fit its container
   export let fit = true;
-  export let preserveAspectRatio = true;
+  export let preserveAspectRatio = maxHeight === null || maxHeight === undefined;
 
   // The size type of the image
   export let sizeType: SizeType | "static" = "static";
@@ -52,7 +54,7 @@
     if (Array.isArray(sources)) return sources;
     if (sizeType === "static" && !width) return [{ srcset: [src] }];
     const widths = sizeType == "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType);
-    return sources(src, { widths, srcWidth: width, srcHeight: height });
+    return sources(src, { widths, srcWidth: width, srcHeight: height, maxHeight });
   };
 
   $: resolvedSources = getResolvedSources(src, sources, sizeType);
