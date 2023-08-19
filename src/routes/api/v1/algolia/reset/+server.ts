@@ -6,9 +6,9 @@ import { ALGOLIA_API_KEY } from "$env/static/private";
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
 const algoliaIndex = "webhook-testing";
-const index = algoliaClient.initIndex(algoliaIndex);
+// const index = algoliaClient.initIndex(algoliaIndex);
 // TODO: Update this back to PUBLIC_ALGOLIA_INDEX before merging
-// const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
+const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
 /**
  * This endpoint does a wholesale reset of the page metadata map in Algolia.
@@ -45,7 +45,8 @@ export const POST = async () => {
 
   try {
     // TODO: should this be changed to index.replaceAllObjects?
-    const response = await index.saveObjects(algoliaRecords);
+    // const response = await index.saveObjects(algoliaRecords);
+    const response = await index.replaceAllObjects(algoliaRecords);
 
     return json(response);
   } catch (error) {

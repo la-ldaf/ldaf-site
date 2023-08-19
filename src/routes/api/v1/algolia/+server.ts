@@ -1,19 +1,92 @@
-import { json } from "@sveltejs/kit";
+import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "@sveltejs/kit";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import uniq from "lodash/uniq";
 import isEqual from "lodash/isEqual";
 import algoliasearch from "algoliasearch";
-const ALGOLIA_API_KEY = "dcb19121a82a95ceafc9f00fb74c3a1c";
 import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
+import { ALGOLIA_API_KEY } from "$env/static/private";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
+// const algoliaIndex = "webhook-testing";
+// const index = algoliaClient.initIndex(algoliaIndex);
+
+/**
+ * TODO: we probably need the following server endpoints:
+ *  - GET all of the page metadata map (Louis' work uses this too)
+ *  - POST individual updates from Contenful's webhook ()
+ *  - POST reset algolia index (kind of what the comparisons in this current function are doing)
+ *  - anything else??
+ *
+ * Other implementation details:
+ *  - Update objectID in Algolia records to match sys.id on Contentful content
+ *    - This should make for easier updating of values
+ *  - Filter and act accordingly based on Content type ids
+ *    - TODO: is there a way to do this with GraphQL or are we restricted
+ *    - e.g. right now, we only care about content types of type 'pageMetadata'. in the future,
+ *    - this will expand to probably other things (e.g. serviceGroup, serviceEntry, and topTier types,
+ *      as well as other types that will have useful information not in the metaTitle and metaDescription)
+ */
+const CONTENTFUL_ACTIONS = {
+  PUBLISH: "ContentManagement.Entry.publish",
+  UNPUBLISH: "ContentManagement.Entry.unpublish",
+  // TODO is "ContentManagement.Entry.delete" needed, too?
+};
+export const POST = async ({ request }) => {
+  const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
+  const contentfulAction = request.headers.get("x-contentful-topic");
+  const body = await request.json();
+  const contentType = body.sys.contentType.sys.id;
+
+  const contentTypes = ["pageMetadata"];
+
+  if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
+    // filter for correct type and add to algolia index
+    console.log("publishing");
+    const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
+    const transformedFields = {
+      objectID: body.sys.id,
+      sys: {
+        id: body.sys.id,
+      },
+      url: contentfulValue?.url,
+      children: contentfulValue?.children,
+    };
+    for (const field in body.fields) {
+      const englishValue = body.fields[field]["en-US"];
+      transformedFields[field] = englishValue;
+    }
+
+    if (transformedFields?.parent?.sys) {
+      delete transformedFields.parent.sys.type;
+      delete transformedFields.parent.sys.linkType;
+    }
+    console.log(transformedFields);
+
+    try {
+      // const response = await index.saveObject(transformedFields);
+      const response = await index.partialUpdateObject(transformedFields);
+      return json(response);
+    } catch (message) {
+      throw error(400, message);
+    }
+  }
+
+  if (contentfulAction === CONTENTFUL_ACTIONS.UNPUBLISH) {
+    console.log("unpublishing");
+    // remove from algolia index
+  }
+};
+
 export const GET = (async () => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
+
+  // const res = await index.getObject("34VdYT1mEYnbWITYMIwLMw");
+  // return json(res);
   let hits = [];
-  let hitsWithoutIDs = [];
+  let hitsWithoutObjectID = [];
 
   await index.browseObjects({
     query: "",
@@ -23,15 +96,22 @@ export const GET = (async () => {
         return hitWithoutObjectID;
       });
       hits = hits.concat(batch);
-      hitsWithoutIDs = hitsWithoutIDs.concat(transformedHits);
+      hitsWithoutObjectID = hitsWithoutObjectID.concat(transformedHits);
     },
   });
-
+  // console.log();
+  // return json({})
   const algoliaMap = new Map();
-  const algoliaMapWithIDs = new Map();
-  hitsWithoutIDs.forEach((hit, index) => {
-    algoliaMap.set(hit.sys.id, hit);
-    algoliaMapWithIDs.set(hit.sys.id, hits[index]);
+  // const algoliaMapWithIDs = new Map();
+  hitsWithoutObjectID.forEach((hit, index) => {
+    try {
+      algoliaMap.set(hit.sys.id, hit);
+    } catch (error) {
+      console.log(error);
+      console.log(hit);
+    }
+    // algoliaMap.set(hit.objectID, hit);
+    // algoliaMapWithIDs.set(hit.sys.id, hits[index]);
   });
 
   const getMismatchedKeys = (oldData, newData) => {
@@ -47,16 +127,22 @@ export const GET = (async () => {
   };
 
   let misMatchCount = 0;
+  let nullURLs = 0;
   let missingInAlgolia = [];
+  let missingInContentful = [];
 
   for (const [key, contentfulValue] of pageMetadataMap) {
-    const algoliaValue = algoliaMap.get(key);
-    if (algoliaValue === undefined) {
-      missingInAlgolia.push(key);
-      console.log(`No algolia entry for key ${key}`);
+    if (contentfulValue.url === null) {
+      nullURLs++;
       continue;
     }
-
+    if (contentfulValue.isRoot) {
+      continue;
+    }
+    const algoliaValue = algoliaMap.get(key);
+    if (algoliaValue === undefined) {
+      continue;
+    }
     // isEqual needs any arrays to be in the same order
     // to properly detect any mismatches between objects.
     if (algoliaValue?.children) {
@@ -70,29 +156,58 @@ export const GET = (async () => {
       misMatchCount++;
 
       const mismatchedKeys = getMismatchedKeys(algoliaValue, contentfulValue);
+      console.log("--------------------------------------");
+      console.log(`Mismatches for id ${key}`);
+      console.log("--------------------------------------");
       mismatchedKeys.forEach((key) => {
         console.log(`Key: ${key}`);
         console.log(`Algolia Value: ${algoliaValue[key]}`);
         console.log(`Contentful Value: ${contentfulValue[key]}`);
+        console.log("--------------------------------------\n\n");
       });
     }
   }
 
-  console.log(`Total Contentful Records: ${pageMetadataMap.size}`);
-  console.log(`Total Algolia Records: ${algoliaMap.size}`);
   for (const [key, value] of algoliaMap) {
     if (!pageMetadataMap.get(key)) {
-      console.log(`No entry in Contenful for ${JSON.stringify(value, null, 2)}`);
+      missingInContentful.push(key);
+      console.log(`No entry in Contenful for ${value.url}\n`);
     }
   }
   for (const [key, value] of pageMetadataMap) {
-    if (!algoliaMap.get(key)) {
-      console.log(`No entry in Algolia for ${JSON.stringify(value, null, 2)}`);
+    // filter out isRoot. We expect Algolia to have one less record
+    // than Contentful, since the home page isn't included in search.
+    if (!algoliaMap.get(key) && value.url !== null && !value.isRoot) {
+      missingInAlgolia.push(key);
+      console.log(`No entry in Algolia for ${value.url}\n`);
     }
   }
-  // missingInAlgolia.forEach((id) => console.log(id));
-  console.log(`Total Mismatches: ${misMatchCount}`);
-  // return json({ hello: "world" });
-  // return json(hitsWithoutIDs);
+
+  console.log("--------------------------------------");
+  console.log(`Total records with mismatched values: ${misMatchCount}`);
+  console.log(`Null urls in Contentful: ${nullURLs}`);
+  if (missingInAlgolia.length > 0) {
+    console.log(`${missingInAlgolia.length} Records missing from Algolia: ${missingInAlgolia}`);
+  }
+  if (missingInContentful.length > 0) {
+    // We should never encounter records in Algolia that aren't in Contentful.
+    // If we do, they've been unpublished/deleted and so should also be deleted from Algolia
+    console.log(
+      `${missingInContentful.length} Records missing from Contentful: ${missingInContentful}`
+    );
+  }
+  console.log("--------------------------------------\n");
+
+  console.log("--------------------------------------");
+  console.log(`Total Contentful Records: ${pageMetadataMap.size}`);
+  // Total Algolia Records should be: pageMetadataMap.size - null urls - missing algolia records - 1 (home page omitted)
+  console.log(
+    `Expected Algolia Records size: ${
+      pageMetadataMap.size - nullURLs - missingInAlgolia.length - 1
+    }`
+  );
+  console.log(`Total Algolia Records: ${algoliaMap.size}`);
+  console.log("--------------------------------------\n\n");
+
   return json(Array.from(pageMetadataMap.values()).filter((page) => page.url && !page.isRoot));
 }) satisfies RequestHandler;
