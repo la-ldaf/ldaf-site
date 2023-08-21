@@ -5,11 +5,6 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
-const algoliaIndex = "webhook-testing";
-// const index = algoliaClient.initIndex(algoliaIndex);
-// TODO: Update this back to PUBLIC_ALGOLIA_INDEX before merging
-const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
-
 /**
  * This endpoint does a wholesale reset of the page metadata map in Algolia.
  * Since it requires each record to have an objectID, a reset call won't result
@@ -19,6 +14,7 @@ const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
  **/
 export const POST = async () => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
+  const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
   /**
    * Filter to ignore the records we don't wont to add to Algolia
@@ -44,9 +40,8 @@ export const POST = async () => {
   });
 
   try {
-    // TODO: should this be changed to index.replaceAllObjects?
-    // const response = await index.saveObjects(algoliaRecords);
-    const response = await index.replaceAllObjects(algoliaRecords);
+    // TODO: investigate changing to `index.replaceAllObjects` for a "hard" reset
+    const response = await index.saveObjects(algoliaRecords);
 
     return json(response);
   } catch (error) {
