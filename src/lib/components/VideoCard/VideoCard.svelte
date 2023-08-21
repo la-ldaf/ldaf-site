@@ -26,7 +26,10 @@
   export let variation = "primary";
 
   const maxDescriptionLength = 500;
-  $: trimmedDescription = description?.slice(0, maxDescriptionLength).replace(/\s[^\s]*?$/, "");
+  $: trimmedDescription = description
+    ?.replace(/\n.+$/, "\n")
+    .slice(0, maxDescriptionLength)
+    .replace(/\s[^\s]*?$/, "");
 
   export let thumbnails: Thumbnails | undefined = undefined;
   export let blurhash: string | null | undefined = undefined;
@@ -93,7 +96,7 @@
           src={`https://www.youtube-nocookie.com/embed/${youtubeVideoID}?rel=0`}
           title="Embedded YouTube video player"
           frameborder="0"
-          allow="autoplay;encrypted-media;"
+          allow="encrypted-media;"
           allowfullscreen
         />
       </noscript>
@@ -103,7 +106,7 @@
           src={`https://www.youtube-nocookie.com/embed/${youtubeVideoID}?rel=0&autoplay=1`}
           title="Embedded YouTube video player"
           frameborder="0"
-          allow="encrypted-media;"
+          allow="autoplay;encrypted-media;"
           allowfullscreen
         />
       {:else if thumbnails && thumbSrc}
