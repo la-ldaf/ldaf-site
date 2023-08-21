@@ -93,7 +93,7 @@
           src={`https://www.youtube-nocookie.com/embed/${youtubeVideoID}?rel=0`}
           title="Embedded YouTube video player"
           frameborder="0"
-          allow="encrypted-media;"
+          allow="autoplay;encrypted-media;"
           allowfullscreen
         />
       </noscript>
