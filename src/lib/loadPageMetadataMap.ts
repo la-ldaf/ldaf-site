@@ -133,9 +133,9 @@ export const loadPageMetadataMap = async ({ includeBreadcrumbs = true } = {}): P
       [...pageMetadataMap].forEach(([_, page]) => {
         page.url = constructFullPathFromMap(pageMetadataMap, page);
         if (!page.url) {
-          console.warn(
-            `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`
-          );
+          // console.warn(
+          //   `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`
+          // );
         }
         // update the item in the map
         pageMetadataMap.set(page.sys.id, page);

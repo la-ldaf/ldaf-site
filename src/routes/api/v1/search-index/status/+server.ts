@@ -1,4 +1,4 @@
-import { json, error } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "@sveltejs/kit";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import uniq from "lodash/uniq";
@@ -9,78 +9,6 @@ import { ALGOLIA_API_KEY } from "$env/static/private";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
-
-// const algoliaIndex = "webhook-testing";
-// const index = algoliaClient.initIndex(algoliaIndex);
-
-/**
- * TODO: we probably need the following server endpoints:
- *  - GET all of the page metadata map (Louis' work uses this too)
- *  - POST individual updates from Contenful's webhook ()
- *  - POST reset algolia index (kind of what the comparisons in this current function are doing)
- *  - anything else??
- *
- * Other implementation details:
- *  - Update objectID in Algolia records to match sys.id on Contentful content
- *    - This should make for easier updating of values
- *  - Filter and act accordingly based on Content type ids
- *    - TODO: is there a way to do this with GraphQL or are we restricted
- *    - e.g. right now, we only care about content types of type 'pageMetadata'. in the future,
- *    - this will expand to probably other things (e.g. serviceGroup, serviceEntry, and topTier types,
- *      as well as other types that will have useful information not in the metaTitle and metaDescription)
- */
-const CONTENTFUL_ACTIONS = {
-  PUBLISH: "ContentManagement.Entry.publish",
-  UNPUBLISH: "ContentManagement.Entry.unpublish",
-  // TODO is "ContentManagement.Entry.delete" needed, too?
-};
-export const POST = async ({ request }) => {
-  const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
-  const contentfulAction = request.headers.get("x-contentful-topic");
-  const body = await request.json();
-  const contentType = body.sys.contentType.sys.id;
-
-  const contentTypes = ["pageMetadata"];
-
-  try {
-    if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
-      const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
-      const transformedFields = {
-        objectID: body.sys.id,
-        sys: {
-          id: body.sys.id,
-        },
-        url: contentfulValue?.url,
-        children: contentfulValue?.children,
-      };
-      for (const field in body.fields) {
-        const englishValue = body.fields[field]["en-US"];
-        transformedFields[field] = englishValue;
-      }
-
-      if (transformedFields?.parent?.sys) {
-        delete transformedFields.parent.sys.type;
-        delete transformedFields.parent.sys.linkType;
-      }
-
-      /**
-       * Docs: https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/#about-this-method
-       * - If the objectID exists, Algolia replaces the attributes
-       * - If the objectID is specified but doesn’t exist, Algolia creates a new record
-       * - If the objectID isn’t specified, the method returns an error
-       */
-      const response = await index.partialUpdateObject(transformedFields);
-      return json(response);
-    }
-
-    if (contentfulAction === CONTENTFUL_ACTIONS.UNPUBLISH && contentTypes.includes(contentType)) {
-      const response = await index.deleteObject(body.sys.id);
-      return json(response);
-    }
-  } catch (message) {
-    throw error(400, message);
-  }
-};
 
 export const GET = (async () => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
