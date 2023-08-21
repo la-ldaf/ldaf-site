@@ -42,77 +42,66 @@ export const POST = async ({ request }) => {
 
   const contentTypes = ["pageMetadata"];
 
-  if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
-    // filter for correct type and add to algolia index
-    console.log("publishing");
-    const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
-    const transformedFields = {
-      objectID: body.sys.id,
-      sys: {
-        id: body.sys.id,
-      },
-      url: contentfulValue?.url,
-      children: contentfulValue?.children,
-    };
-    for (const field in body.fields) {
-      const englishValue = body.fields[field]["en-US"];
-      transformedFields[field] = englishValue;
-    }
+  try {
+    if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
+      const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
+      const transformedFields = {
+        objectID: body.sys.id,
+        sys: {
+          id: body.sys.id,
+        },
+        url: contentfulValue?.url,
+        children: contentfulValue?.children,
+      };
+      for (const field in body.fields) {
+        const englishValue = body.fields[field]["en-US"];
+        transformedFields[field] = englishValue;
+      }
 
-    if (transformedFields?.parent?.sys) {
-      delete transformedFields.parent.sys.type;
-      delete transformedFields.parent.sys.linkType;
-    }
-    console.log(transformedFields);
+      if (transformedFields?.parent?.sys) {
+        delete transformedFields.parent.sys.type;
+        delete transformedFields.parent.sys.linkType;
+      }
 
-    try {
-      // const response = await index.saveObject(transformedFields);
+      /**
+       * Docs: https://www.algolia.com/doc/api-reference/api-methods/partial-update-objects/#about-this-method
+       * - If the objectID exists, Algolia replaces the attributes
+       * - If the objectID is specified but doesn’t exist, Algolia creates a new record
+       * - If the objectID isn’t specified, the method returns an error
+       */
       const response = await index.partialUpdateObject(transformedFields);
       return json(response);
-    } catch (message) {
-      throw error(400, message);
     }
-  }
 
-  if (contentfulAction === CONTENTFUL_ACTIONS.UNPUBLISH) {
-    console.log("unpublishing");
-    // remove from algolia index
+    if (contentfulAction === CONTENTFUL_ACTIONS.UNPUBLISH && contentTypes.includes(contentType)) {
+      const response = await index.deleteObject(body.sys.id);
+      return json(response);
+    }
+  } catch (message) {
+    throw error(400, message);
   }
 };
 
 export const GET = (async () => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
 
-  // const res = await index.getObject("34VdYT1mEYnbWITYMIwLMw");
-  // return json(res);
   let hits = [];
-  let hitsWithoutObjectID = [];
 
   await index.browseObjects({
     query: "",
     batch: (batch) => {
+      // objectID doesn't exist on the contentful side, so remove it
+      // from Algolia records so we can properly compare for mismatches
       const transformedHits = batch.map((hit) => {
         const { objectID, ...hitWithoutObjectID } = hit;
         return hitWithoutObjectID;
       });
-      hits = hits.concat(batch);
-      hitsWithoutObjectID = hitsWithoutObjectID.concat(transformedHits);
+      hits = hits.concat(transformedHits);
     },
   });
-  // console.log();
-  // return json({})
+
   const algoliaMap = new Map();
-  // const algoliaMapWithIDs = new Map();
-  hitsWithoutObjectID.forEach((hit, index) => {
-    try {
-      algoliaMap.set(hit.sys.id, hit);
-    } catch (error) {
-      console.log(error);
-      console.log(hit);
-    }
-    // algoliaMap.set(hit.objectID, hit);
-    // algoliaMapWithIDs.set(hit.sys.id, hits[index]);
-  });
+  hits.forEach((hit) => algoliaMap.set(hit.sys.id, hit));
 
   const getMismatchedKeys = (oldData, newData) => {
     const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
@@ -128,8 +117,8 @@ export const GET = (async () => {
 
   let misMatchCount = 0;
   let nullURLs = 0;
-  let missingInAlgolia = [];
-  let missingInContentful = [];
+  const missingInAlgolia = [];
+  const missingInContentful = [];
 
   for (const [key, contentfulValue] of pageMetadataMap) {
     if (contentfulValue.url === null) {
@@ -200,7 +189,7 @@ export const GET = (async () => {
 
   console.log("--------------------------------------");
   console.log(`Total Contentful Records: ${pageMetadataMap.size}`);
-  // Total Algolia Records should be: pageMetadataMap.size - null urls - missing algolia records - 1 (home page omitted)
+  // Subtracting 1 at the end of expected Algolia Records size accounts for omitting the home page
   console.log(
     `Expected Algolia Records size: ${
       pageMetadataMap.size - nullURLs - missingInAlgolia.length - 1
