@@ -15,11 +15,9 @@
   $: ({ topTierPage } = data);
   $: ({ subheading, video, description, featuredServices } = topTierPage);
   $: ({ videoUrl, youtubeVideoData } = video);
-  $: ({
-    title: videoTitle,
-    description: videoDescription,
-    thumbnails: videoThumbnails,
-  } = youtubeVideoData ?? ({} as Record<string, undefined>));
+  $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
+  $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
+  $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));
 
   const getButtonVariant = (index: number): Variant => {
     switch (index) {
