@@ -4,19 +4,20 @@ import { print as printQuery } from "graphql";
 import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
-import type { NewsArticleQuery } from "./$queries.generated";
+import type { NewsQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
 
 const query = gql`
-  query NewsArticle($slug: String!) {
-    newsArticleCollection(limit: 1, where: { slug: $slug }) {
+  query News($slug: String!) {
+    newsCollection(limit: 1, where: { slug: $slug }) {
       items {
         sys {
           id
         }
         slug
-        newsArticleTitle
-        newsArticleSubhead
+        title
+        subhead
+        metaTitle
       }
     }
   }
@@ -34,7 +35,7 @@ export const load = (async ({ params: { slug }, parent }) => {
   const variables = {
     slug,
   };
-  const newsArticleDataPromise = client.fetch<NewsArticleQuery>(printQuery(query), {
+  const newsArticleDataPromise = client.fetch<NewsQuery>(printQuery(query), {
     variables,
   });
   const [baseBreadcrumbs, newsArticleData] = await Promise.all([
@@ -46,10 +47,10 @@ export const load = (async ({ params: { slug }, parent }) => {
   return {
     newsArticle,
     pageMetadata: {
-      metaTitle: `News - ${newsArticle.newsArticleTitle}`,
+      metaTitle: `News - ${newsArticle.metaTitle || newsArticle.title}`,
       breadcrumbs: [
         ...baseBreadcrumbs,
-        { title: newsArticle.newsArticleTitle, link: `/about/news/article/${slug}` },
+        { title: newsArticle.title, link: `/about/news/article/${slug}` },
       ],
     },
   };
