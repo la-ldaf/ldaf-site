@@ -44,13 +44,14 @@ export const GET = (async () => {
   };
 
   let misMatchCount = 0;
-  let nullURLs = 0;
+  let nullURLs = [];
   const missingInAlgolia = [];
   const missingInContentful = [];
+  const mismatches = [];
 
   for (const [key, contentfulValue] of pageMetadataMap) {
     if (contentfulValue.url === null) {
-      nullURLs++;
+      nullURLs.push(key);
       continue;
     }
     if (contentfulValue.isRoot) {
@@ -73,58 +74,45 @@ export const GET = (async () => {
       misMatchCount++;
 
       const mismatchedKeys = getMismatchedKeys(algoliaValue, contentfulValue);
-      console.log("--------------------------------------");
       console.log(`Mismatches for id ${key}`);
-      console.log("--------------------------------------");
-      mismatchedKeys.forEach((key) => {
-        console.log(`Key: ${key}`);
-        console.log(`Algolia Value: ${algoliaValue[key]}`);
-        console.log(`Contentful Value: ${contentfulValue[key]}`);
-        console.log("--------------------------------------\n\n");
+      mismatches.push({
+        id: key,
+        mismatched_values: mismatchedKeys.map((key) => ({
+          key,
+          contentful_value: contentfulValue[key],
+          algolia_value: algoliaValue[key],
+        })),
       });
     }
   }
 
   for (const [key, value] of algoliaMap) {
     if (!pageMetadataMap.get(key)) {
-      missingInContentful.push(key);
-      console.log(`No entry in Contenful for ${value.url}\n`);
+      missingInContentful.push(value);
     }
   }
   for (const [key, value] of pageMetadataMap) {
     // filter out isRoot. We expect Algolia to have one less record
     // than Contentful, since the home page isn't included in search.
     if (!algoliaMap.get(key) && value.url !== null && !value.isRoot) {
-      missingInAlgolia.push(key);
-      console.log(`No entry in Algolia for ${value.url}\n`);
+      missingInAlgolia.push(value);
     }
   }
 
-  console.log("--------------------------------------");
-  console.log(`Total records with mismatched values: ${misMatchCount}`);
-  console.log(`Null urls in Contentful: ${nullURLs}`);
-  if (missingInAlgolia.length > 0) {
-    console.log(`${missingInAlgolia.length} Records missing from Algolia: ${missingInAlgolia}`);
-  }
-  if (missingInContentful.length > 0) {
+  const results = {
+    total_contentful_records: pageMetadataMap.size,
+    total_algolia_records: algoliaMap.size,
+    // Subtracting 1 at the end of expected Algolia Records size accounts for omitting the home page
+    expected_algolia_records: pageMetadataMap.size - nullURLs.length - missingInAlgolia.length - 1,
+    // non-zero values here indicate that new records aren't getting added properly
+    missing_in_algolia: missingInAlgolia,
     // We should never encounter records in Algolia that aren't in Contentful.
     // If we do, they've been unpublished/deleted and so should also be deleted from Algolia
-    console.log(
-      `${missingInContentful.length} Records missing from Contentful: ${missingInContentful}`
-    );
-  }
-  console.log("--------------------------------------\n");
+    missing_in_contentful: missingInContentful,
+    mismatched_records: misMatchCount,
+    nullURLs_in_contentful: nullURLs,
+    mismatches,
+  };
 
-  console.log("--------------------------------------");
-  console.log(`Total Contentful Records: ${pageMetadataMap.size}`);
-  // Subtracting 1 at the end of expected Algolia Records size accounts for omitting the home page
-  console.log(
-    `Expected Algolia Records size: ${
-      pageMetadataMap.size - nullURLs - missingInAlgolia.length - 1
-    }`
-  );
-  console.log(`Total Algolia Records: ${algoliaMap.size}`);
-  console.log("--------------------------------------\n\n");
-
-  return json(Array.from(pageMetadataMap.values()).filter((page) => page.url && !page.isRoot));
+  return json(results);
 }) satisfies RequestHandler;
