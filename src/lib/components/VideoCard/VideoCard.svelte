@@ -26,7 +26,7 @@
   export let variation = "primary";
 
   const maxDescriptionLength = 500;
-  $: trimmedDescription = description?.slice(0, maxDescriptionLength);
+  $: trimmedDescription = description?.slice(0, maxDescriptionLength).replace(/\s[^\s]*?$/, "");
 
   export let thumbnails: Thumbnails | undefined = undefined;
   export let blurhash: string | null | undefined = undefined;
