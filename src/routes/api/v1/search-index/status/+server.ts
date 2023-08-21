@@ -43,8 +43,7 @@ export const GET = (async () => {
     return keys;
   };
 
-  let misMatchCount = 0;
-  let nullURLs = [];
+  const nullURLs = [];
   const missingInAlgolia = [];
   const missingInContentful = [];
   const mismatches = [];
@@ -71,10 +70,7 @@ export const GET = (async () => {
     }
 
     if (!isEqual(contentfulValue, algoliaValue)) {
-      misMatchCount++;
-
       const mismatchedKeys = getMismatchedKeys(algoliaValue, contentfulValue);
-      console.log(`Mismatches for id ${key}`);
       mismatches.push({
         id: key,
         mismatched_values: mismatchedKeys.map((key) => ({
@@ -109,7 +105,7 @@ export const GET = (async () => {
     // We should never encounter records in Algolia that aren't in Contentful.
     // If we do, they've been unpublished/deleted and so should also be deleted from Algolia
     missing_in_contentful: missingInContentful,
-    mismatched_records: misMatchCount,
+    mismatched_record_total: mismatches.length,
     nullURLs_in_contentful: nullURLs,
     mismatches,
   };
