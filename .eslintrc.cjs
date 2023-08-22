@@ -34,9 +34,6 @@ module.exports = {
       },
     },
   ],
-  // settings: {
-  //   "svelte3/typescript": () => require("typescript"),
-  // },
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,
