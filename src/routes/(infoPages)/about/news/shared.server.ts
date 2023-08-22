@@ -2,28 +2,33 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
-import type { NewsArticlesQuery } from "./$queries.generated";
+import type { NewsEntriesQuery } from "./$queries.generated";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./page/[page]/$types";
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import {
-  newsArticles as testNewsArticles,
-  pages as testNewsArticlePages,
+  newsEntries as testNewsEntries,
+  pages as testNewsEntryPages,
 } from "./__tests__/newsTestContent";
 
 const limit = 20;
 
-// TODO: filter to only future events. this will require thinking about timezones
 export const query = gql`
-  query NewsArticles($limit: Int = 20, $skip: Int = 0) {
-    newsArticleCollection(limit: $limit, skip: $skip) {
+  query NewsEntries($limit: Int = 20, $skip: Int = 0) {
+    newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC]) {
       total
       items {
         sys {
           id
         }
-        newsArticleTitle
-        newsArticleSubhead
+        type
+        title
+        publicationDate
+        body {
+          json
+        }
+        slug
+        byline
       }
     }
   }
@@ -55,9 +60,9 @@ export const loadNewsPage = async ({
     if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
       return {
         currentPageNumber: pageNumber,
-        totalPages: Math.ceil(testNewsArticles.length / limit),
-        newsArticles: testNewsArticlePages[pageNumber - 1].items,
-        totalNewsArticles: testNewsArticles.length,
+        totalPages: Math.ceil(testNewsEntries.length / limit),
+        newsEntries: testNewsEntryPages[pageNumber - 1].items,
+        totalNewsEntries: testNewsEntries.length,
         breadcrumbs: breadcrumbsPromise,
       };
     }
@@ -65,16 +70,13 @@ export const loadNewsPage = async ({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
     });
-    const newsData = await client.fetch<NewsArticlesQuery>(printQuery(query), {
+    const newsData = await client.fetch<NewsEntriesQuery>(printQuery(query), {
       variables: {
         limit,
         skip: limit * Math.max(pageNumber - 1, 0),
       },
     });
-    if (
-      !newsData?.newsArticleCollection?.items ||
-      newsData?.newsArticleCollection?.items?.length === 0
-    ) {
+    if (!newsData?.newsCollection?.items || newsData?.newsCollection?.items?.length === 0) {
       break fetchData;
     }
     return {
@@ -83,9 +85,9 @@ export const loadNewsPage = async ({
         breadcrumbs: await breadcrumbsPromise,
       },
       currentPageNumber: pageNumber,
-      totalPages: Math.ceil(newsData.newsArticleCollection.total / limit),
-      newsArticles: newsData.newsArticleCollection.items,
-      totalNewsArticles: newsData.newsArticleCollection.total,
+      totalPages: Math.ceil(newsData.newsCollection.total / limit),
+      newsEntries: newsData.newsCollection.items,
+      totalNewsEntries: newsData.newsCollection.total,
     };
   }
   throw error(404);

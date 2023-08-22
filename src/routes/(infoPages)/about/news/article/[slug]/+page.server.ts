@@ -14,10 +14,15 @@ const query = gql`
         sys {
           id
         }
-        slug
+        type
         title
-        subhead
+        publicationDate
+        body {
+          json
+        }
+        slug
         metaTitle
+        byline
       }
     }
   }
@@ -42,7 +47,7 @@ export const load = (async ({ params: { slug }, parent }) => {
     baseBreadcrumbsPromise,
     newsArticleDataPromise,
   ]);
-  const [newsArticle] = newsArticleData?.newsArticleCollection?.items ?? [];
+  const [newsArticle] = newsArticleData?.newsCollection?.items ?? [];
   if (!newsArticle) throw error(404);
   return {
     newsArticle,
