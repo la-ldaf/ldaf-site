@@ -26,10 +26,10 @@
   export let variation = "primary";
 
   const maxDescriptionLength = 500;
-  $: trimmedDescription = description
-    ?.replace(/\n[\s\S]*$/, " ")
-    .slice(0, maxDescriptionLength)
-    .replace(/\s[^\s]*?$/, "");
+  $: trimmedFirstParagraph = description
+    ?.replace(/\n[\s\S]*$/, " ")    // remove everything after the first newline
+    .slice(0, maxDescriptionLength) // limit to maxDescriptionLength
+    .replace(/\s[^\s]*?$/, "");     // remove everything after the start of the last whitespace character
 
   export let thumbnails: Thumbnails | undefined = undefined;
   export let blurhash: string | null | undefined = undefined;
@@ -148,7 +148,7 @@
         <h3 class="ldaf-video-title">{title}</h3>
       {/if}
       {#if description}
-        <p class="ldaf-video-description">{trimmedDescription}</p>
+        <p class="ldaf-video-description">{trimmedFirstParagraph}</p>
       {/if}
       <YoutubeSubscribeLink />
     </div>
