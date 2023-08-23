@@ -27,9 +27,9 @@
 
   const maxDescriptionLength = 500;
   $: trimmedFirstParagraph = description
-    ?.replace(/\n[\s\S]*$/, " ")    // remove everything after the first newline
+    ?.replace(/\n[\s\S]*$/, " ") // remove everything after the first newline
     .slice(0, maxDescriptionLength) // limit to maxDescriptionLength
-    .replace(/\s[^\s]*?$/, "");     // remove everything after the start of the last whitespace character
+    .replace(/\s[^\s]*?$/, ""); // remove everything after the start of the last whitespace character
 
   export let thumbnails: Thumbnails | undefined = undefined;
   export let blurhash: string | null | undefined = undefined;
