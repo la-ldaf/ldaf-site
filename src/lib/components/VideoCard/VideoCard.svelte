@@ -5,6 +5,7 @@
   import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
   import YoutubeSubscribeLink from "$lib/components/YoutubeSubscribeLink";
   import Image, { type Sources, type Srcset } from "$lib/components/Image";
+  import getTrimmedFirstParagraph from "./getTrimmedFirstParagraph";
 
   type VideoCardVariation = "hero" | "primary" | "secondary" | "tertiary";
   interface $$Props {
@@ -26,10 +27,9 @@
   export let variation = "primary";
 
   const maxDescriptionLength = 500;
-  $: trimmedFirstParagraph = description
-    ?.replace(/\n[\s\S]*$/, " ") // remove everything after the first newline
-    .slice(0, maxDescriptionLength) // limit to maxDescriptionLength
-    .replace(/\s[^\s]*?$/, ""); // remove everything after the start of the last whitespace character
+
+  $: trimmedFirstParagraph =
+    description && getTrimmedFirstParagraph(description, maxDescriptionLength);
 
   export let thumbnails: Thumbnails | undefined = undefined;
   export let blurhash: string | null | undefined = undefined;
