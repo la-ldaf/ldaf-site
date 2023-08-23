@@ -47,6 +47,7 @@
     "@storybook/svelte": "^7.3.1",
     "@storybook/sveltekit": "^7.3.1",
     "@storybook/testing-library": "^0.2.0",
+    "@storybook/theming": "^7.3.1",
     "@sveltejs/adapter-vercel": "^3.0.2",
     "@sveltejs/kit": "^1.22.6",
     "@testing-library/jest-dom": "^5.17.0",
@@ -93,7 +94,6 @@
   "dependencies": {
     "@contentful/rich-text-types": "^16.0.3",
     "@poppanator/sveltekit-svg": "^4.1.0",
-    "@storybook/theming": "^7.3.1",
     "@uswds/uswds": "^3.4.1",
     "algoliasearch": "^4.19.1",
     "date-fns": "^2.30.0",
