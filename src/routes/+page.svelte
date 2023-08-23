@@ -5,6 +5,8 @@
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import { getSources } from "$lib/imageServices/contentful";
+  import commissionerPortrait from "$lib/assets/commissioner-headshot.jpeg";
+  import commissionerBackground from "$lib/assets/commissioner-background.jpeg";
 
   import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
@@ -89,4 +91,78 @@
     <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
     <ResourceLinks links={popularResources} />
   {/if}
+  <section class="usa-hero greeting-wrapper" aria-label="Introduction">
+    <div class="greeting-overlay">
+      <div class="grid-container commissioner-greeting">
+        <div class="greeting-body">
+          <h2>From the Commissioner</h2>
+          <p>
+            For Louisiana to maintain a leading position, we must surpass existing standards of
+            agricultural and forestry achievement and seek additional opportunities for growth and
+            prosperity. Louisiana's agricultural industries and its forestry, soil and water
+            resources are critical to the advancement of our state and play a central role in our
+            diverse cultural heritage.
+          </p>
+          <p>
+            As your Commissioner of Agriculture and Forestry, I am committed to working with the
+            farmer and forester, producer and processor and all others to ensure our food is safe,
+            our fiber production among the best and our animals strong and healthy. Thank you for
+            the honor and privilege of serving you.
+          </p>
+          <p class="commissioner-byline">- Mike Strain DVM</p>
+        </div>
+        <div class="commissioner-portrait">
+          <Image class="test" src={commissionerPortrait} />
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
+
+<style lang="scss">
+  // https://stackoverflow.com/a/24895631/5469511
+  .greeting-wrapper {
+    width: 100vw;
+    position: relative;
+    left: calc(-50vw + 50%);
+    background: url("../lib/assets/commissioner-background.jpeg"), lightgray 50% / cover no-repeat;
+  }
+
+  .commissioner-greeting {
+    padding: 2rem 0;
+    color: $accent-warm;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .greeting-overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 40, 77, 0.79) 0%,
+      #00284d 16.19%,
+      rgba(0, 40, 77, 0.91) 64.78%,
+      rgba(0, 40, 77, 0.79) 100%
+    );
+  }
+
+  .greeting-body {
+    width: 60%;
+  }
+
+  .commissioner-byline {
+    text-align: right;
+  }
+
+  .commissioner-portrait {
+    display: flex;
+    align-items: center;
+    max-width: 30%;
+    border-radius: 50%;
+
+    // .ldaf-img__img {
+    img {
+      border-radius: 50% !important;
+      aspect-ratio: 1/1 !important;
+    }
+  }
+</style>
