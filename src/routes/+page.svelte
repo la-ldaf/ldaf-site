@@ -107,7 +107,13 @@
           <p class="commissioner-byline">{commissionerByline}</p>
         </div>
         <div class="commissioner-portrait-wrapper">
-          <Image class="commissioner-portrait-img" src={commissionerHeadshot.url} />
+          <Image
+            class="commissioner-portrait-img"
+            src={commissionerHeadshot.url}
+            alt={commissionerHeadshot.title ?? "Commissioner Image"}
+            blurhash={commissionerHeadshot.blurhash ?? undefined}
+            width={commissionerHeadshot.width ?? undefined}
+          />
         </div>
       </div>
     </div>
