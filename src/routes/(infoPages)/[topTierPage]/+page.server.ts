@@ -4,6 +4,8 @@ import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
+import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
+import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
 
 import type { TopTierCollectionQuery } from "./$queries.generated";
 
@@ -85,7 +87,12 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => {
+export const load = async ({
+  parent,
+  params: { topTierPage: slug },
+  fetch,
+  locals: { getKVClient },
+}) => {
   const { pageMetadataMap, pathsToIDs } = await parent();
   fetchData: {
     const metadataID = pathsToIDs.get(`/${slug}`);
@@ -135,9 +142,18 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
         ];
       }) ?? [];
 
-    const [heroImageBlurhash, featuredServices] = await Promise.all([
+    const youtubeVideoID =
+      matchedTopTier.video?.videoUrl && getYoutubeVideoIDFromURL(matchedTopTier.video.videoUrl);
+    const youtubeVideoDataPromise = youtubeVideoID
+      ? getKVClient().then((kvClient) =>
+          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient })
+        )
+      : undefined;
+
+    const [heroImageBlurhash, featuredServices, youtubeVideoData] = await Promise.all([
       heroImageBlurhashPromise,
       Promise.all(featuredServicesPromises).then((arr) => arr.flat()),
+      youtubeVideoDataPromise,
     ]);
 
     return {
@@ -145,6 +161,10 @@ export const load = async ({ parent, params: { topTierPage: slug }, fetch }) => 
       topTierPage: {
         ...matchedTopTier,
         featuredServices,
+        video: {
+          ...matchedTopTier.video,
+          youtubeVideoData,
+        },
         heroImage: matchedTopTier.heroImage
           ? {
               ...matchedTopTier.heroImage,

@@ -26,12 +26,19 @@
 </script>
 
 <main id="main-content" class="grid-container usa-prose margin-top-2">
-  {#if heroVideo?.videoUrl}
-    {@const { videoUrl, videoTitle, videoSubhead } = heroVideo}
+  {#if heroVideo?.videoUrl && heroVideo?.youtubeVideoData}
+    {@const {
+      videoUrl,
+      videoTitle,
+      videoSubhead,
+      youtubeVideoData: { title, description, thumbnails, blurhash },
+    } = heroVideo}
     <VideoCard
       url={videoUrl}
-      customTitle={videoTitle}
-      customDescription={videoSubhead}
+      title={videoTitle ?? title}
+      description={videoSubhead ?? description}
+      {thumbnails}
+      {blurhash}
       variation="hero"
     />
   {/if}
