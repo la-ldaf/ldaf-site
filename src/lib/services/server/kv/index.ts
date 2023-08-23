@@ -83,14 +83,14 @@ export const createClient = async ({
     setYoutubeVideoDataByID: async (id, videoData) => {
       const result = await redisClient.set(
         `${keys.youtubeVideoDataByID}:${id}`,
-        JSON.stringify(videoData)
+        JSON.stringify(videoData),
       );
       if (result !== "OK") throw new Error("could not set youtube video data in KV store");
     },
   };
 
   return Object.fromEntries(
-    Object.entries(methods).map(([key, fn]) => [key, getMethod(fn)])
+    Object.entries(methods).map(([key, fn]) => [key, getMethod(fn)]),
   ) as Client;
 };
 

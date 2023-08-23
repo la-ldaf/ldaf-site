@@ -28,12 +28,12 @@ export type YoutubeVideoData = {
 
 export const getYoutubeVideoData = async (
   videoID: string,
-  { fetch, kvClient }: { fetch: typeof global.fetch; kvClient?: KVClient }
+  { fetch, kvClient }: { fetch: typeof global.fetch; kvClient?: KVClient },
 ): Promise<YoutubeVideoData | undefined> => {
   const cachedData = await kvClient?.getYoutubeVideoDataByID(videoID);
   if (cachedData) return cachedData;
   const response = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${videoID}&key=${YOUTUBE_API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${videoID}&key=${YOUTUBE_API_KEY}`,
   );
   if (!response) return;
   const data = await response.json();
@@ -47,12 +47,12 @@ export const getYoutubeVideoData = async (
 
 export const getYoutubeVideoDataWithBlurhash = async (
   videoID: string,
-  { fetch, kvClient }: { fetch: typeof global.fetch; kvClient?: KVClient | undefined }
+  { fetch, kvClient }: { fetch: typeof global.fetch; kvClient?: KVClient | undefined },
 ): Promise<(YoutubeVideoData & { blurhash?: string }) | undefined> => {
   const youtubeVideoData = await getYoutubeVideoData(videoID, { fetch, kvClient });
   if (!youtubeVideoData) return;
   const [smallestThumbnail] = Object.values(youtubeVideoData.thumbnails).sort(
-    (a, b) => a.width - b.width
+    (a, b) => a.width - b.width,
   );
   const blurhash = await getBlurhash(smallestThumbnail.url, { fetch });
   return { ...youtubeVideoData, blurhash };
