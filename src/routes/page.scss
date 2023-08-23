@@ -12,7 +12,7 @@
   width: 100vw;
   position: relative;
   left: calc(-50vw + 50%);
-  // background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
+  background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
 }
 
 .greeting-wrapper .ldaf-img__container.greeting-background {
@@ -35,10 +35,10 @@
 .greeting-overlay {
   background: linear-gradient(
     90deg,
-    rgba(0, 40, 77, 0.79) 0%,
-    #00284d 16.19%,
-    rgba(0, 40, 77, 0.91) 64.78%,
-    rgba(0, 40, 77, 0.79) 100%
+    $primary-darkest-less-opaque 0%,
+    $primary-darkest 16%,
+    $primary-darkest-more-opaque 65%,
+    $primary-darkest-less-opaque 100%
   );
 }
 
@@ -50,17 +50,14 @@
   text-align: right;
 }
 
-.commissioner-portrait {
-  // border: 1px solid $accent-warm;
+.commissioner-portrait-wrapper {
   display: flex;
   align-items: center;
   max-width: 30%;
-  border-radius: 50%;
 
-  // .ldaf-img__img {
-  img {
-    border: 1px solid $accent-warm;
-    border-radius: 50% !important;
-    aspect-ratio: 1/1 !important;
+  .commissioner-portrait-img {
+    border: 3px solid $accent-warm;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
   }
 }
