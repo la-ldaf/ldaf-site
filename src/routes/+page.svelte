@@ -5,19 +5,26 @@
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import { getSources } from "$lib/imageServices/contentful";
-  import commissionerPortrait from "$lib/assets/commissioner-headshot.jpg";
   import CommissionerBackgroundImage from "$lib/components/Header/CommissionerBackgroundImage.svelte";
 
   import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
   import Icon from "$lib/components/Icon";
   import Image from "$lib/components/Image";
+  import ContentfulRichText from "$lib/components/ContentfulRichText";
   import VideoCard from "$lib/components/VideoCard";
   import ResourceLinks from "$lib/components/ResourceLinks";
 
   export let data;
   $: ({
-    homePage: { heroVideo, featuredServices, popularResources },
+    homePage: {
+      heroVideo,
+      featuredServices,
+      popularResources,
+      commissionerGreeting,
+      commissionerByline,
+      commissionerHeadshot,
+    },
   } = data);
 
   const getCardSettings = (
@@ -96,24 +103,11 @@
       <CommissionerBackgroundImage class="greeting-background" />
       <div class="grid-container commissioner-greeting">
         <div class="greeting-body">
-          <h2>From the Commissioner</h2>
-          <p>
-            For Louisiana to maintain a leading position, we must surpass existing standards of
-            agricultural and forestry achievement and seek additional opportunities for growth and
-            prosperity. Louisiana's agricultural industries and its forestry, soil and water
-            resources are critical to the advancement of our state and play a central role in our
-            diverse cultural heritage.
-          </p>
-          <p>
-            As your Commissioner of Agriculture and Forestry, I am committed to working with the
-            farmer and forester, producer and processor and all others to ensure our food is safe,
-            our fiber production among the best and our animals strong and healthy. Thank you for
-            the honor and privilege of serving you.
-          </p>
-          <p class="commissioner-byline">- Mike Strain DVM</p>
+          <ContentfulRichText document={commissionerGreeting.json} />
+          <p class="commissioner-byline">{commissionerByline}</p>
         </div>
         <div class="commissioner-portrait-wrapper">
-          <Image class="commissioner-portrait-img" src={commissionerPortrait} />
+          <Image class="commissioner-portrait-img" src={commissionerHeadshot.url} />
         </div>
       </div>
     </div>
