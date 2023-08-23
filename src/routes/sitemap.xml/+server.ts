@@ -8,7 +8,7 @@ export async function GET() {
       ([path, _]) => `<url>
         <loc>https://www.ldaf.la.gov${path}</loc>
         <changefreq>daily</changefreq>
-      </url>`
+      </url>`,
     )
     .sort()
     .join("");
@@ -32,6 +32,6 @@ export async function GET() {
       headers: {
         "Content-Type": "application/xml",
       },
-    }
+    },
   );
 }
