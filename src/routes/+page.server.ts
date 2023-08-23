@@ -7,6 +7,8 @@ import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
+import imageProps from "$lib/fragments/imageProps";
+
 import type { HomeCollectionQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
@@ -15,6 +17,8 @@ import type { YoutubeVideoData } from "$lib/services/server/youtube/getYoutubeVi
 import type { ResourceLinks } from "$lib/components/ResourceLinks";
 
 const query = gql`
+  ${imageProps}
+
   query HomeCollection($metadataID: String!) {
     homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
@@ -67,6 +71,15 @@ const query = gql`
             }
           }
         }
+        commissionerGreeting {
+          json
+        }
+        commissionerByline
+        commissionerHeadshot {
+          ... on Asset {
+            ...ImageProps
+          }
+        }
       }
     }
   }
@@ -76,6 +89,7 @@ type Home = ExtractQueryType<HomeCollectionQuery, ["homeCollection", "items", nu
 type FeaturedService = ExtractQueryType<Home, ["featuredServiceCardsCollection", "items", number]>;
 type FeaturedServiceImage = FeaturedService["heroImage"];
 type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource"];
+type CommissionerHeadshot = ExtractQueryType<Home, ["commissionerHeadshot"]>;
 
 export type HomePage = {
   homePage: Home & {
@@ -93,6 +107,7 @@ export type HomePage = {
       };
     })[];
   };
+  commissionerHeadshot: CommissionerHeadshot;
   pageMetadata: PageMetadataMapItem;
 };
 
