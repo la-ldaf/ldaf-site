@@ -112,70 +112,10 @@
           </p>
           <p class="commissioner-byline">- Mike Strain DVM</p>
         </div>
-        <div class="commissioner-portrait">
-          <Image class="test" src={commissionerPortrait} />
+        <div class="commissioner-portrait-wrapper">
+          <Image class="commissioner-portrait-img" src={commissionerPortrait} />
         </div>
       </div>
     </div>
   </section>
 </main>
-
-<style lang="scss">
-  // https://stackoverflow.com/a/24895631/5469511
-  .greeting-wrapper {
-    width: 100vw;
-    position: relative;
-    left: calc(-50vw + 50%);
-    background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
-  }
-
-  .greeting-wrapper .ldaf-img__container.greeting-background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    // background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
-
-    // max-height: $header-height-without-navbar;
-  }
-
-  .commissioner-greeting {
-    padding: 2rem;
-    color: $accent-warm;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .greeting-overlay {
-    background: linear-gradient(
-      90deg,
-      rgba(0, 40, 77, 0.79) 0%,
-      #00284d 16.19%,
-      rgba(0, 40, 77, 0.91) 64.78%,
-      rgba(0, 40, 77, 0.79) 100%
-    );
-  }
-
-  .greeting-body {
-    width: 60%;
-  }
-
-  .commissioner-byline {
-    text-align: right;
-  }
-
-  .commissioner-portrait {
-    // border: 1px solid $accent-warm;
-    display: flex;
-    align-items: center;
-    max-width: 30%;
-    border-radius: 50%;
-
-    // .ldaf-img__img {
-    img {
-      border: 1px solid $accent-warm;
-      border-radius: 50% !important;
-      aspect-ratio: 1/1 !important;
-    }
-  }
-</style>
