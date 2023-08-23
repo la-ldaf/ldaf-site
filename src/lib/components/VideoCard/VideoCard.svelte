@@ -27,7 +27,7 @@
 
   const maxDescriptionLength = 500;
   $: trimmedDescription = description
-    ?.replace(/\n.+$/, "\n")
+    ?.replace(/\n[\s\S]*$/, " ")
     .slice(0, maxDescriptionLength)
     .replace(/\s[^\s]*?$/, "");
 
