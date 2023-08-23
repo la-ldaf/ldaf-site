@@ -93,7 +93,7 @@
   {/if}
   <section class=" greeting-wrapper" aria-label="Introduction">
     <div class="greeting-overlay">
-      <!-- <CommissionerBackgroundImage class="greeting-background" /> -->
+      <CommissionerBackgroundImage class="greeting-background" />
       <div class="grid-container commissioner-greeting">
         <div class="greeting-body">
           <h2>From the Commissioner</h2>

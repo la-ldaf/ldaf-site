@@ -12,17 +12,13 @@
   width: 100vw;
   position: relative;
   left: calc(-50vw + 50%);
-  background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
 }
 
-.greeting-wrapper .ldaf-img__container.greeting-background {
+.greeting-wrapper .greeting-background {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: -1;
-  // background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
-
-  // max-height: $header-height-without-navbar;
 }
 
 .commissioner-greeting {
