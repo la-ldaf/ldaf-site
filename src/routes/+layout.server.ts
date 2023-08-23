@@ -18,7 +18,7 @@ export const load = async () => {
     headerPrimaryNavItemsPromise,
   ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
   return {
-    analyticsID: VERCEL_ANALYTICS_ID,
+    analyticsID: VERCEL_ANALYTICS_ID, // this env variable can't be renamed, so we send it with the page data
     pageMetadataMap: pageMetadataMapPromise.then(({ pageMetadataMap }) => pageMetadataMap),
     pathsToIDs: pageMetadataMapPromise.then(({ pathsToIDs }) => pathsToIDs),
     siteTitle: loadSiteTitle(),
