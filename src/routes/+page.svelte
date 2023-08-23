@@ -5,8 +5,8 @@
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import { getSources } from "$lib/imageServices/contentful";
-  import commissionerPortrait from "$lib/assets/commissioner-headshot.jpeg";
-  import commissionerBackground from "$lib/assets/commissioner-background.jpeg";
+  import commissionerPortrait from "$lib/assets/commissioner-headshot.jpg";
+  import CommissionerBackgroundImage from "$lib/components/Header/CommissionerBackgroundImage.svelte";
 
   import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
@@ -91,8 +91,9 @@
     <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
     <ResourceLinks links={popularResources} />
   {/if}
-  <section class="usa-hero greeting-wrapper" aria-label="Introduction">
+  <section class=" greeting-wrapper" aria-label="Introduction">
     <div class="greeting-overlay">
+      <!-- <CommissionerBackgroundImage class="greeting-background" /> -->
       <div class="grid-container commissioner-greeting">
         <div class="greeting-body">
           <h2>From the Commissioner</h2>
@@ -125,11 +126,21 @@
     width: 100vw;
     position: relative;
     left: calc(-50vw + 50%);
-    background: url("../lib/assets/commissioner-background.jpeg"), lightgray 50% / cover no-repeat;
+    background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
+  }
+
+  .greeting-wrapper .ldaf-img__container.greeting-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    // background: url("../lib/assets/commissioner-background.jpg"), lightgray 50% / cover no-repeat;
+
+    // max-height: $header-height-without-navbar;
   }
 
   .commissioner-greeting {
-    padding: 2rem 0;
+    padding: 2rem;
     color: $accent-warm;
     display: flex;
     justify-content: space-between;
@@ -154,6 +165,7 @@
   }
 
   .commissioner-portrait {
+    // border: 1px solid $accent-warm;
     display: flex;
     align-items: center;
     max-width: 30%;
@@ -161,6 +173,7 @@
 
     // .ldaf-img__img {
     img {
+      border: 1px solid $accent-warm;
       border-radius: 50% !important;
       aspect-ratio: 1/1 !important;
     }
