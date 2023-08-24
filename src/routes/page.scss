@@ -43,14 +43,19 @@
         border: 3px solid $accent-warm;
         border-radius: 50%;
         aspect-ratio: 1/1;
+        // center and reduce size on small phones
         margin: 0 auto;
         width: 125px;
         @include at-media("mobile-lg") {
+          // place below byline on larger phones and tablets
           margin: 0 0 0 auto;
         }
         @include at-media("desktop") {
+          // reset margin and width for desktop
           margin: auto;
           width: auto;
+          // Set min-width for blurhash to render at proper size
+          min-width: 350px;
         }
       }
     }
