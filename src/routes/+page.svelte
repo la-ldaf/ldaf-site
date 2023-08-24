@@ -29,8 +29,8 @@
 
   // We want to render the commissioner's headshot as a circle
   $: commissionerHeadshotDimensions =
-    commissionerHeadshot?.height && commissionerHeadshot?.width
-      ? Math.min(commissionerHeadshot.height, commissionerHeadshot.width)
+    commissionerHeadshot?.linkedImage?.height && commissionerHeadshot?.linkedImage?.width
+      ? Math.min(commissionerHeadshot.linkedImage.height, commissionerHeadshot.linkedImage.width)
       : undefined;
 
   const getCardSettings = (
@@ -112,13 +112,13 @@
           <ContentfulRichText document={commissionerGreeting?.json} />
           <p class="commissioner-byline">{commissionerByline}</p>
         </div>
-        {#if commissionerHeadshot?.url}
+        {#if commissionerHeadshot?.linkedImage?.url}
           <div class="commissioner-portrait-wrapper">
             <Image
               class="commissioner-portrait-img"
-              src={commissionerHeadshot.url}
-              alt={commissionerHeadshot.title ?? "Commissioner Image"}
-              blurhash={commissionerHeadshot.blurhash ?? undefined}
+              src={commissionerHeadshot.linkedImage.url}
+              alt={commissionerHeadshot.altText ?? "Headshot of the commissioner"}
+              blurhash={commissionerHeadshot.linkedImage.blurhash ?? undefined}
               height={commissionerHeadshotDimensions}
               width={commissionerHeadshotDimensions}
               sources={getSources}
