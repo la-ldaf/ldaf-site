@@ -79,8 +79,13 @@ const query = gql`
         }
         commissionerByline
         commissionerHeadshot {
-          ... on Asset {
-            ...ImageProps
+          ... on ImageWrapper {
+            altText
+            linkedImage {
+              ... on Asset {
+                ...ImageProps
+              }
+            }
           }
         }
       }
@@ -93,6 +98,7 @@ type FeaturedService = ExtractQueryType<Home, ["featuredServiceCardsCollection",
 type FeaturedServiceImage = FeaturedService["heroImage"];
 type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource"];
 type CommissionerHeadshot = ExtractQueryType<Home, ["commissionerHeadshot"]>;
+type CommissionerHeadshotImageSource = CommissionerHeadshot["linkedImage"];
 
 export type HomePage = {
   homePage: Home & {
@@ -110,7 +116,9 @@ export type HomePage = {
       };
     })[];
     commissionerHeadshot?: CommissionerHeadshot & {
-      blurhash?: string | null | undefined;
+      linkedImage?: CommissionerHeadshotImageSource & {
+        blurhash?: string | null | undefined;
+      };
     };
   };
   pageMetadata: PageMetadataMapItem;
@@ -135,6 +143,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
     if (!data) break fetchData;
     const [home] = data?.homeCollection?.items ?? [];
     if (!home) break fetchData;
+
     const featuredServicesPromises =
       home.featuredServiceCardsCollection?.items.map(async (featuredItem) => {
         const featuredItemMetadata = pageMetadataMap.get(featuredItem?.pageMetadata?.sys.id || "");
@@ -154,6 +163,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           url: featuredItemMetadata?.url,
         };
       }) ?? [];
+
     const youtubeVideoID =
       home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
@@ -177,7 +187,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
         return [{ href: url, title, description: subheading ?? undefined }];
       }) ?? [];
 
-    const commissionerHeadshotURL = home.commissionerHeadshot?.url;
+    const commissionerHeadshotURL = home.commissionerHeadshot?.linkedImage?.url;
     const commissionerHeadshotPromise = commissionerHeadshotURL
       ? getBlurhash(commissionerHeadshotURL, { fetch })
       : Promise.resolve(undefined);
@@ -197,7 +207,12 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
         commissionerHeadshot: home.commissionerHeadshot
           ? {
               ...home.commissionerHeadshot,
-              blurhash: commissionerHeadshotBlurhash,
+              linkedImage: home.commissionerHeadshot.linkedImage?.url
+                ? {
+                    ...home.commissionerHeadshot.linkedImage,
+                    blurhash: commissionerHeadshotBlurhash,
+                  }
+                : undefined,
             }
           : undefined,
       },
