@@ -27,6 +27,12 @@
     },
   } = data);
 
+  // We want to render the commissioner's headshot as a circle
+  $: commissionerHeadshotDimensions =
+    commissionerHeadshot?.height && commissionerHeadshot?.width
+      ? Math.min(commissionerHeadshot.height, commissionerHeadshot.width)
+      : undefined;
+
   const getCardSettings = (
     index: number,
   ): { card: "full" | "half" | "third"; button: Variant; imageLoading: "lazy" | "eager" } => {
@@ -103,18 +109,23 @@
       <CommissionerBackgroundImage class="greeting-background" />
       <div class="grid-container commissioner-greeting">
         <div class="greeting-body">
-          <ContentfulRichText document={commissionerGreeting.json} />
+          <ContentfulRichText document={commissionerGreeting?.json} />
           <p class="commissioner-byline">{commissionerByline}</p>
         </div>
-        <div class="commissioner-portrait-wrapper">
-          <Image
-            class="commissioner-portrait-img"
-            src={commissionerHeadshot.url}
-            alt={commissionerHeadshot.title ?? "Commissioner Image"}
-            blurhash={commissionerHeadshot.blurhash ?? undefined}
-            width={commissionerHeadshot.width ?? undefined}
-          />
-        </div>
+        {#if commissionerHeadshot?.url}
+          <div class="commissioner-portrait-wrapper">
+            <Image
+              class="commissioner-portrait-img"
+              src={commissionerHeadshot.url}
+              alt={commissionerHeadshot.title ?? "Commissioner Image"}
+              blurhash={commissionerHeadshot.blurhash ?? undefined}
+              height={commissionerHeadshotDimensions}
+              width={commissionerHeadshotDimensions}
+              sources={getSources}
+              loading="lazy"
+            />
+          </div>
+        {/if}
       </div>
     </div>
   </section>

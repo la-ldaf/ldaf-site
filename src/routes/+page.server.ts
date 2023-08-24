@@ -60,12 +60,15 @@ const query = gql`
                   sys {
                     id
                   }
-                  contentType
-                  title
-                  description
-                  url
-                  width
-                  height
+                }
+              }
+              title
+              subheading
+              heroImage {
+                ... on HeroImage {
+                  imageSource {
+                    ...ImageProps
+                  }
                 }
               }
             }
@@ -106,8 +109,10 @@ export type HomePage = {
         };
       };
     })[];
+    commissionerHeadshot?: CommissionerHeadshot & {
+      blurhash?: string | null | undefined;
+    };
   };
-  commissionerHeadshot: CommissionerHeadshot;
   pageMetadata: PageMetadataMapItem;
 };
 
@@ -156,6 +161,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient }),
         )
       : Promise.resolve(undefined);
+
     const popularResources =
       home.popularResourcesListCollection?.items?.flatMap((item) => {
         if (!item || !item.pageMetadata?.sys?.id || !item.title) return [];
@@ -170,16 +176,30 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
         if (!url) return [];
         return [{ href: url, title, description: subheading ?? undefined }];
       }) ?? [];
-    const [featuredServices, youtubeVideoData] = await Promise.all([
-      Promise.all(featuredServicesPromises),
+
+    const commissionerHeadshotURL = home.commissionerHeadshot?.url;
+    const commissionerHeadshotPromise = commissionerHeadshotURL
+      ? getBlurhash(commissionerHeadshotURL, { fetch })
+      : Promise.resolve(undefined);
+
+    const [featuredServices, youtubeVideoData, commissionerHeadshotBlurhash] = await Promise.all([
+      Promise.all(featuredServicesPromises).then((arr) => arr.flat()),
       youtubeVideoDataPromise,
+      commissionerHeadshotPromise,
     ]);
+
     return {
       homePage: {
         ...home,
         featuredServices,
         heroVideo: { ...home.heroVideo, youtubeVideoData },
         popularResources,
+        commissionerHeadshot: home.commissionerHeadshot
+          ? {
+              ...home.commissionerHeadshot,
+              blurhash: commissionerHeadshotBlurhash,
+            }
+          : undefined,
       },
       pageMetadata,
     };
