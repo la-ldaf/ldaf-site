@@ -233,6 +233,8 @@
             />
           {/each}
         {/if}
+        <!-- the only place we use an on:click on an image is as an optional alternative to a button that's also present -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <img
           {...imgProps}
           alt=""
