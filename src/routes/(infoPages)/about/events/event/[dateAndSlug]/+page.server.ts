@@ -7,7 +7,7 @@ import type { PageServerLoad } from "./$types";
 import type { EventQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
 import { eventIANATimezone } from "$lib/constants/date";
-import { zonedEndOfDay, zonedStartOfDay } from "$lib/util/dates";
+import { getEndOfDayForDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 import zonedTimeToUtc from "date-fns-tz/zonedTimeToUtc";
 
 const query = gql`
@@ -65,11 +65,10 @@ const query = gql`
 export const load = (async ({ params: { dateAndSlug }, parent }) => {
   // dateAndSlug should be constructed like 2023-08-10-some-slug
   // TODO: write route matcher that enforces this
-  const [_, dateString, slug] = dateAndSlug.match(/(\d{4}-\d{2}-\d{2})-([a-z1-9-]+)/) ?? [];
+  const [_, dateString, slug] = dateAndSlug.match(/^(\d{4}-\d{2}-\d{2})-([a-z1-9-]+)$/) ?? [];
   if (!dateString || !slug) throw error(404);
-  const date = zonedTimeToUtc(dateString, eventIANATimezone);
-  const dateStart = zonedStartOfDay(date, eventIANATimezone).toISOString();
-  const dateEnd = zonedEndOfDay(date, eventIANATimezone).toISOString();
+  const dateStart = getStartOfDayForDateInTZ(dateString, eventIANATimezone);
+  const dateEnd = getEndOfDayForDateInTZ(dateString, eventIANATimezone);
   // TODO: example contents
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) throw error(404);
   const baseBreadcrumbsPromise = loadBaseBreadcrumbs({ parent });

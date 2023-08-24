@@ -8,7 +8,7 @@ import type { PageServerLoad } from "./page/[page]/$types";
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import { events as testEvents, pages as testEventPages } from "./__tests__/eventsTestContent";
 import { eventIANATimezone } from "$lib/constants/date";
-import { zonedStartOfDay } from "$lib/util/dates";
+import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 
 const limit = 20;
 
@@ -72,7 +72,7 @@ export const loadEventsPage = async ({
   parent,
   params: { page },
 }: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
-  const startDate = zonedStartOfDay(new Date(), eventIANATimezone).toISOString();
+  const startDate = getStartOfDayForDateInTZ(getCurrentDateInTZ(eventIANATimezone), eventIANATimezone);
   fetchData: {
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
