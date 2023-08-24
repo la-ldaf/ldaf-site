@@ -28,7 +28,7 @@ export default () => {
         onwarn: (warning, handler) => {
           const { pluginCode } = warning;
           // TS7031 - https://github.com/microsoft/TypeScript/blob/cbf3c63ef3bb85e235092eaf5aa6035dad04b185/src/compiler/diagnosticMessages.json#L6382-L6385
-          if (pluginCode === "TS7031") return;
+          if (pluginCode === "TS7031" || pluginCode === "TS7006") return;
           handler(warning);
         },
       });
