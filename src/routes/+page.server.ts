@@ -12,6 +12,7 @@ import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
 import type { YoutubeVideoData } from "$lib/services/server/youtube/getYoutubeVideoData";
+import type { ResourceLinks } from "$lib/components/ResourceLinks";
 
 const query = gql`
   query HomeCollection($metadataID: String!) {
@@ -29,31 +30,38 @@ const query = gql`
             videoSubhead
           }
         }
+        popularResourcesListCollection(limit: 9) {
+          items {
+            pageMetadata {
+              sys {
+                id
+              }
+            }
+            title
+            subheading
+          }
+        }
         featuredServiceCardsCollection {
           items {
-            ... on ServiceGroup {
-              pageMetadata {
-                ... on PageMetadata {
+            pageMetadata {
+              sys {
+                id
+              }
+            }
+            title
+            subheading
+            heroImage {
+              ... on HeroImage {
+                imageSource {
                   sys {
                     id
                   }
-                }
-              }
-              title
-              subheading
-              heroImage {
-                ... on HeroImage {
-                  imageSource {
-                    sys {
-                      id
-                    }
-                    contentType
-                    title
-                    description
-                    url
-                    width
-                    height
-                  }
+                  contentType
+                  title
+                  description
+                  url
+                  width
+                  height
                 }
               }
             }
@@ -74,6 +82,7 @@ export type HomePage = {
     heroVideo: Home["heroVideo"] & {
       youtubeVideoData?: (YoutubeVideoData & { blurhash?: string | undefined }) | undefined;
     };
+    popularResources: ResourceLinks;
     featuredServices: (FeaturedService & {
       url?: string | null | undefined;
     } & {
@@ -104,6 +113,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
       variables: { metadataID },
     });
     if (!data) break fetchData;
+    console.log(JSON.stringify(data, null, 2));
     const [home] = data?.homeCollection?.items ?? [];
     if (!home) break fetchData;
     const featuredServicesPromises =
@@ -132,12 +142,33 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient }),
         )
       : Promise.resolve(undefined);
+    const popularResources =
+      home.popularResourcesListCollection?.items?.flatMap((item) => {
+        if (!item || !item.pageMetadata?.sys?.id || !item.title) return [];
+        const {
+          pageMetadata: {
+            sys: { id },
+          },
+          title,
+          subheading,
+        } = item;
+        const { url } = pageMetadataMap.get(id) ?? {};
+        console.log({ id, url, title });
+        if (!url) return [];
+        return [{ href: url, title, description: subheading ?? undefined }];
+      }) ?? [];
+    console.log({ popularResources });
     const [featuredServices, youtubeVideoData] = await Promise.all([
       Promise.all(featuredServicesPromises),
       youtubeVideoDataPromise,
     ]);
     return {
-      homePage: { ...home, featuredServices, heroVideo: { ...home.heroVideo, youtubeVideoData } },
+      homePage: {
+        ...home,
+        featuredServices,
+        heroVideo: { ...home.heroVideo, youtubeVideoData },
+        popularResources,
+      },
       pageMetadata,
     };
   }

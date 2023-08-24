@@ -6,6 +6,7 @@ export default {
     heroVideo: {
       videoUrl: "https://www.youtube.com/watch?v=3HRGzFjA_cU",
     },
+    popularResources: [],
     featuredServiceCardsCollection: {
       items: [{ pageMetadata: { sys: { id: "1" } } }],
     },

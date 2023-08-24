@@ -1,5 +1,6 @@
 <script lang="ts">
   import "./(infoPages)/[topTierPage]/page.scss";
+  import "./page.scss";
 
   import { url as arrowIcon } from "$icons/arrow_forward";
 
@@ -10,10 +11,11 @@
   import Icon from "$lib/components/Icon";
   import Image from "$lib/components/Image";
   import VideoCard from "$lib/components/VideoCard";
+  import ResourceLinks from "$lib/components/ResourceLinks";
 
   export let data;
   $: ({
-    homePage: { heroVideo, featuredServices },
+    homePage: { heroVideo, featuredServices, popularResources },
   } = data);
 
   const getCardSettings = (
@@ -82,5 +84,9 @@
         {/if}
       {/each}
     </ul>
+  {/if}
+  {#if popularResources && popularResources.length > 0}
+    <h2 class="ldaf-homepage__popular-resources-heading font-sans">Popular resources</h2>
+    <ResourceLinks links={popularResources} />
   {/if}
 </main>
