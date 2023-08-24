@@ -113,7 +113,6 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
       variables: { metadataID },
     });
     if (!data) break fetchData;
-    console.log(JSON.stringify(data, null, 2));
     const [home] = data?.homeCollection?.items ?? [];
     if (!home) break fetchData;
     const featuredServicesPromises =
@@ -153,11 +152,9 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           subheading,
         } = item;
         const { url } = pageMetadataMap.get(id) ?? {};
-        console.log({ id, url, title });
         if (!url) return [];
         return [{ href: url, title, description: subheading ?? undefined }];
       }) ?? [];
-    console.log({ popularResources });
     const [featuredServices, youtubeVideoData] = await Promise.all([
       Promise.all(featuredServicesPromises),
       youtubeVideoDataPromise,
