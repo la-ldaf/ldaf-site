@@ -1,4 +1,4 @@
-import { onCLS, onFCP, onFID, onLCP, onTTFB, type Metric } from "web-vitals";
+import type { Metric } from "web-vitals";
 
 const vitalsURL = "https://vitals.vercel-analytics.com/v1/vitals";
 
@@ -48,8 +48,9 @@ const sendToAnalytics = (metric: Metric, options: Options) => {
   }
 };
 
-export const webVitals = (options: Options) => {
+export const webVitals = async (options: Options) => {
   try {
+    const { onCLS, onFCP, onFID, onLCP, onTTFB } = await import("web-vitals");
     onFID((metric) => sendToAnalytics(metric, options));
     onTTFB((metric) => sendToAnalytics(metric, options));
     onLCP((metric) => sendToAnalytics(metric, options));
