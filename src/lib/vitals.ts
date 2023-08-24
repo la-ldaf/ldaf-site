@@ -48,7 +48,7 @@ const sendToAnalytics = (metric: Metric, options: Options) => {
   }
 };
 
-export const webVitals = (options: Options) => {
+export const webVitals = async (options: Options) => {
   try {
     const { onCLS, onFCP, onFID, onLCP, onTTFB } = await import("web-vitals");
     onFID((metric) => sendToAnalytics(metric, options));
