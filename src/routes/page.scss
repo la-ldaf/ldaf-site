@@ -9,51 +9,50 @@
 
 // https://stackoverflow.com/a/24895631/5469511
 .greeting-wrapper {
-  width: 100vw;
   position: relative;
-  left: calc(-50vw + 50%);
-}
-
-.greeting-wrapper .greeting-background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-.commissioner-greeting {
-  padding: 2rem;
-  color: $accent-warm;
-  display: flex;
-  justify-content: space-between;
-}
-
-.greeting-overlay {
+  // Columns are 7 and 5 (approx 60% and 40%), so lighten opacity at 60%
   background: linear-gradient(
     90deg,
-    $primary-darkest-less-opaque 0%,
-    $primary-darkest 16%,
-    $primary-darkest-more-opaque 65%,
-    $primary-darkest-less-opaque 100%
+    rgba($primary-darkest, 0.95) 0%,
+    rgba($primary-darkest, 0.9) 60%,
+    rgba($primary-darkest, 0.8) 100%
   );
-}
-
-.greeting-body {
-  width: 60%;
-}
-
-.commissioner-byline {
-  text-align: right;
-}
-
-.commissioner-portrait-wrapper {
-  display: flex;
-  align-items: center;
-  max-width: 30%;
-
-  .commissioner-portrait-img {
-    border: 3px solid $accent-warm;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
+  .greeting-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  .greeting-content {
+    padding: 2rem;
+    color: $accent-warm;
+    .greeting-body {
+      :first-child {
+        margin-top: 0;
+      }
+      @include at-media("desktop") {
+        :last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+    .greeting-commissioner-portrait-wrapper {
+      display: flex;
+      align-items: center;
+      .greeting-commissioner-portrait {
+        border: 3px solid $accent-warm;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        margin: 0 auto;
+        width: 125px;
+        @include at-media("mobile-lg") {
+          margin: 0 0 0 auto;
+        }
+        @include at-media("desktop") {
+          margin: auto;
+          width: auto;
+        }
+      }
+    }
   }
 }
