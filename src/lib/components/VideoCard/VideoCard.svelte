@@ -63,13 +63,13 @@
   const descriptionWidth = "200px";
 
   const mobileSizes = [
-    "(max-width: 640px) calc(100% - (${bodyPadding} + ${videoCardPadding}))",
+    `(max-width: 640px) calc(100% - (${bodyPadding} + ${videoCardPadding}))`,
     `(max-width: 1023px) calc(100% - (${bodyPadding} + ${videoCardPadding} + ${videoCardFlexGap} + ${descriptionWidth}))`,
   ];
 
   const sizesBySizeType: Record<SizeType, string> = {
-    "hero-full-width": [...mobileSizes, "688px"].join(", "),
-    "hero-col-9": [...mobileSizes, "420px"].join(", "),
+    "hero-full-width": [...mobileSizes, "632px"].join(", "),
+    "hero-col-9": [...mobileSizes, "423px"].join(", "),
   };
 
   let showYoutubeEmbed = !thumbnails;
