@@ -30,9 +30,9 @@ describe("getStartOfDayForDateInTZ", () => {
   testCases.forEach(([dateString, tz, expectedDate]) => {
     it(`returns ${expectedDate.toISOString()} for the date ${dateString} in ${tz}`, () => {
       expect(getStartOfDayForDateInTZ(dateString, tz)).toEqual(expectedDate);
-    })
-  })
-})
+    });
+  });
+});
 
 describe("getEndOfDayForDateInTZ", () => {
   type TestCase = [string, string, Date];
@@ -44,6 +44,6 @@ describe("getEndOfDayForDateInTZ", () => {
   testCases.forEach(([dateString, tz, expectedDate]) => {
     it(`returns ${expectedDate.toISOString()} for the date ${dateString} in ${tz}`, () => {
       expect(getEndOfDayForDateInTZ(dateString, tz)).toEqual(expectedDate);
-    })
-  })
-})
+    });
+  });
+});

@@ -72,7 +72,10 @@ export const loadEventsPage = async ({
   parent,
   params: { page },
 }: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
-  const startDate = getStartOfDayForDateInTZ(getCurrentDateInTZ(eventIANATimezone), eventIANATimezone);
+  const startDate = getStartOfDayForDateInTZ(
+    getCurrentDateInTZ(eventIANATimezone),
+    eventIANATimezone
+  );
   fetchData: {
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
