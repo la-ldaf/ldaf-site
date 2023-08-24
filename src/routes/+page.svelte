@@ -104,29 +104,27 @@
     <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
     <ResourceLinks links={popularResources} />
   {/if}
-  <section class=" greeting-wrapper" aria-label="Introduction">
-    <div class="greeting-overlay">
+  {#if commissionerGreeting?.json && commissionerByline && commissionerHeadshot?.linkedImage?.url}
+    <section class="greeting-wrapper" aria-label="Introduction">
       <CommissionerBackgroundImage class="greeting-background" />
-      <div class="grid-container commissioner-greeting">
-        <div class="greeting-body">
-          <ContentfulRichText document={commissionerGreeting?.json} />
-          <p class="commissioner-byline">{commissionerByline}</p>
+      <div class="grid-row grid-gap greeting-content">
+        <div class="desktop:grid-col-7 greeting-body">
+          <ContentfulRichText document={commissionerGreeting.json} />
+          <p class="text-right">{commissionerByline}</p>
         </div>
-        {#if commissionerHeadshot?.linkedImage?.url}
-          <div class="commissioner-portrait-wrapper">
-            <Image
-              class="commissioner-portrait-img"
-              src={commissionerHeadshot.linkedImage.url}
-              alt={commissionerHeadshot.altText ?? "Headshot of the commissioner"}
-              blurhash={commissionerHeadshot.linkedImage.blurhash ?? undefined}
-              height={commissionerHeadshotDimensions}
-              width={commissionerHeadshotDimensions}
-              sources={getSources}
-              loading="lazy"
-            />
-          </div>
-        {/if}
+        <div class="desktop:grid-col-5 greeting-commissioner-portrait-wrapper">
+          <Image
+            class="greeting-commissioner-portrait"
+            src={commissionerHeadshot.linkedImage.url}
+            alt={commissionerHeadshot.altText ?? "Headshot of the commissioner"}
+            blurhash={commissionerHeadshot.linkedImage.blurhash ?? undefined}
+            height={commissionerHeadshotDimensions}
+            width={commissionerHeadshotDimensions}
+            sources={getSources}
+            loading="lazy"
+          />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  {/if}
 </main>
