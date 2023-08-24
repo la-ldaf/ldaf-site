@@ -8,8 +8,6 @@
   import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
 
-  import { PUBLIC_VERCEL_SPEED_INSIGHTS_ANALYTICS_ID as analyticsID } from "$env/static/public";
-
   import { webVitals } from "$lib/vitals";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
@@ -18,14 +16,6 @@
   import { BlurhashRenderer } from "$lib/components/Image";
   import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
 
-  $: if (browser && analyticsID) {
-    webVitals({
-      path: $page.url.pathname,
-      params: $page.params,
-      analyticsID,
-    });
-  }
-
   export let data;
   $: ({
     headerPrimaryNavItems,
@@ -33,7 +23,16 @@
     footerNavItems,
     siteTitle,
     pageMetadataMap,
+    analyticsID,
   } = data);
+
+  $: if (browser && analyticsID) {
+    webVitals({
+      path: $page.url.pathname,
+      params: $page.params,
+      analyticsID,
+    });
+  }
 
   $: ({ pageMetadata } = $page.data);
 

@@ -1,3 +1,4 @@
+import { VERCEL_ANALYTICS_ID } from "$env/static/private";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
 import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.server";
@@ -17,6 +18,7 @@ export const load = async () => {
     headerPrimaryNavItemsPromise,
   ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
   return {
+    analyticsID: VERCEL_ANALYTICS_ID, // this env variable can't be renamed, so we send it with the page data
     pageMetadataMap: pageMetadataMapPromise.then(({ pageMetadataMap }) => pageMetadataMap),
     pathsToIDs: pageMetadataMapPromise.then(({ pathsToIDs }) => pathsToIDs),
     siteTitle: loadSiteTitle(),
