@@ -1,6 +1,4 @@
 @use "uswds-core" as uswds with (
-  $theme-font-path: $theme-font-path,
-  $theme-image-path: $theme-image-path,
   $theme-show-notifications: false
 );
 // For some reason the USWDS rules for alternate color links depends on the link being a child of an element with the 'usa-dark-background' class.
