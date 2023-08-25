@@ -15,7 +15,7 @@
   export let fit = true;
 
   // The size type of the image
-  export let sizeType: SizeType | "static" = "static";
+  export let sizeType: SizeType | "static" | "custom" = "static";
   export let canUpscaleImage = sizeType === "full-bleed";
   export let preserveAspectRatio = (
     {
@@ -41,9 +41,10 @@
 
   export let sources: Sources | GetSources | undefined = undefined;
 
-  const getWidths = (sizeType: SizeType): number[] => {
+  export let renderedWidths: number[] | undefined;
+  const getWidths = (sizeType: SizeType, renderedWidths: number[] | undefined): number[] => {
     const imageWidth = width;
-    const unfilteredWidths = Object.values(sizesByScreenSizeByType[sizeType]);
+    const unfilteredWidths = renderedWidths ?? Object.values(sizesByScreenSizeByType[sizeType]);
     const unfilteredWidthsAndDoubleWidths = [
       ...new Set([...unfilteredWidths, ...unfilteredWidths.map((n) => n * 2)]),
     ].sort((a, b) => a - b);
@@ -54,16 +55,17 @@
   const getResolvedSources = (
     src: string,
     sources: Sources | GetSources | undefined,
-    sizeType: SizeType | "static",
+    sizeType: SizeType | "static" | "custom",
+    renderedWidths: number[] | undefined,
   ): Sources => {
     if (!sources) return [];
     if (Array.isArray(sources)) return sources;
     if (sizeType === "static" && !width) return [{ srcset: [src] }];
-    const widths = sizeType == "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType);
+    const widths = sizeType === "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType, renderedWidths);
     return sources(src, { widths, srcWidth: width, srcHeight: height });
   };
 
-  $: resolvedSources = getResolvedSources(src, sources, sizeType);
+  $: resolvedSources = getResolvedSources(src, sources, sizeType, renderedWidths);
 
   let overrideSizes: string | undefined = undefined;
   export { overrideSizes as sizes };
