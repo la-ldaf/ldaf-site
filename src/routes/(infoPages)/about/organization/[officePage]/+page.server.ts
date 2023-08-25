@@ -72,7 +72,7 @@ export const load = async ({ parent, params }) => {
   const officePages = data?.officePageCollection?.items;
   if (!officePages) throw error(404);
   const matchedOfficePage = officePages.find(
-    (officePage) => officePage?.pageMetadata?.slug === slug
+    (officePage) => officePage?.pageMetadata?.slug === slug,
   );
   if (matchedOfficePage) {
     const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
@@ -87,7 +87,7 @@ export const load = async ({ parent, params }) => {
     }
   }
   console.warn(
-    `An Office Page entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Office Page entry is not.`
+    `An Office Page entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Office Page entry is not.`,
   );
   throw error(404);
 };

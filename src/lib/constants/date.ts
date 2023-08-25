@@ -32,3 +32,5 @@ export const shortMonths = [
   "Nov",
   "Dec",
 ];
+
+export const eventIANATimezone = "America/Chicago";

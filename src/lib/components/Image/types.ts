@@ -20,7 +20,7 @@ export type GetSources = (
     widths: number[];
     srcWidth?: number | null | undefined;
     srcHeight?: number | null | undefined;
-  }
+  },
 ) => Sources;
 
 export type FixedImage = { format: Format; size: number | "original"; src: string };

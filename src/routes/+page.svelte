@@ -8,8 +8,8 @@
   import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
   import Icon from "$lib/components/Icon";
+  import Image from "$lib/components/Image";
   import VideoCard from "$lib/components/VideoCard";
-  import Image from "$lib/components/Image/Image.svelte";
 
   export let data;
   $: ({
@@ -17,7 +17,7 @@
   } = data);
 
   const getCardSettings = (
-    index: number
+    index: number,
   ): { card: "full" | "half" | "third"; button: Variant; imageLoading: "lazy" | "eager" } => {
     if (index === 0) return { card: "full", button: "primary", imageLoading: "eager" };
     else if (index < 3) return { card: "half", button: "secondary", imageLoading: "eager" };
@@ -26,12 +26,15 @@
 </script>
 
 <main id="main-content" class="grid-container usa-prose margin-top-2">
-  {#if heroVideo?.videoUrl}
-    {@const { videoUrl, videoTitle, videoSubhead } = heroVideo}
+  {#if heroVideo && heroVideo.videoUrl}
+    {@const { videoUrl, videoTitle, videoSubhead, youtubeVideoData } = heroVideo}
+    {@const { title, description, thumbnails, blurhash } = youtubeVideoData ?? {}}
     <VideoCard
       url={videoUrl}
-      customTitle={videoTitle}
-      customDescription={videoSubhead}
+      title={videoTitle ?? title}
+      description={videoSubhead ?? description}
+      {thumbnails}
+      {blurhash}
       variation="hero"
     />
   {/if}

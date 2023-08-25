@@ -20,7 +20,7 @@ type Asset = Nullable<{
 
 export const getBlurhashMapFromAssetList = async (
   assets: (Asset | null | undefined)[],
-  options: Options
+  options: Options,
 ): Promise<Record<string, string>> =>
   Object.fromEntries(
     (
@@ -32,9 +32,9 @@ export const getBlurhashMapFromAssetList = async (
             const blurhash = await getBlurhash(item.url, options);
             if (!blurhash) return [];
             return [[item.sys.id, blurhash]];
-          })
+          }),
       )
-    ).flat()
+    ).flat(),
   );
 
 type RichTextForBlurhashes = Nullable<{
@@ -47,5 +47,5 @@ type RichTextForBlurhashes = Nullable<{
 
 export const getBlurhashMapFromRichText = async (
   richText: RichTextForBlurhashes,
-  options: Options
+  options: Options,
 ) => getBlurhashMapFromAssetList(richText?.links?.assets?.block ?? [], options);

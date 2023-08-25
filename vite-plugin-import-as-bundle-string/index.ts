@@ -11,7 +11,7 @@ export default () => {
   const bundleStringRegex = /\?bundlestring$/;
   const plugins = [
     typescript(
-      process.env.NODE_ENV === "production" ? {} : { sourceMap: true, inlineSources: true }
+      process.env.NODE_ENV === "production" ? {} : { sourceMap: true, inlineSources: true },
     ),
     nodeResolve(),
     process.env.NODE_ENV === "production" && terser(),

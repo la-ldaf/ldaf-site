@@ -24,7 +24,7 @@
     `usa-link`,
     external && "usa-link--external",
     alternate && "usa-link--alt",
-    className
+    className,
   );
 </script>
 
