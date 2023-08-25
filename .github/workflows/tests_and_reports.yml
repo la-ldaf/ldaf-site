@@ -142,8 +142,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # Check once a minute
           check_interval: 60
-          # Timeout after 30 minutes
-          max_timeout: 1800
+          # Timeout after 45 minutes
+          max_timeout: 2700
 
       - name: Checkout
         uses: actions/checkout@v3
