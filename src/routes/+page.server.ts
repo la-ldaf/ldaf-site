@@ -136,6 +136,26 @@ export type HomePage = {
   pageMetadata: PageMetadataMapItem;
 };
 
+// TODO: Maybe make this more reusable since we'll be doing something similar for all Image Wrapper entries.
+const addBlurhashToImageWrapper = (
+  home: Home,
+  fieldName: "commissionerHeadshot" | "commissionerBackground",
+  blurhash: string | null | undefined
+) => {
+  const field = home[fieldName];
+  return field
+    ? {
+        ...field,
+        linkedImage: field.linkedImage?.url
+          ? {
+              ...field.linkedImage,
+              blurhash,
+            }
+          : undefined,
+      }
+    : undefined;
+};
+
 export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<HomePage> => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return homePageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
@@ -221,37 +241,22 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
       youtubeVideoDataPromise,
     ]);
 
-    const commissionerHeadshot = home.commissionerHeadshot
-      ? {
-          ...home.commissionerHeadshot,
-          linkedImage: home.commissionerHeadshot.linkedImage?.url
-            ? {
-                ...home.commissionerHeadshot.linkedImage,
-                blurhash: commissionerHeadshotBlurhash,
-              }
-            : undefined,
-        }
-      : undefined;
-    const commissionerBackground = home.commissionerBackground
-      ? {
-          ...home.commissionerBackground,
-          linkedImage: home.commissionerBackground.linkedImage?.url
-            ? {
-                ...home.commissionerBackground.linkedImage,
-                blurhash: commissionerBackgroundBlurhash,
-              }
-            : undefined,
-        }
-      : undefined;
-
     return {
       homePage: {
         ...home,
         featuredServices,
         heroVideo: { ...home.heroVideo, youtubeVideoData },
         popularResources,
-        commissionerHeadshot,
-        commissionerBackground,
+        commissionerHeadshot: addBlurhashToImageWrapper(
+          home,
+          "commissionerHeadshot",
+          commissionerHeadshotBlurhash
+        ),
+        commissionerBackground: addBlurhashToImageWrapper(
+          home,
+          "commissionerBackground",
+          commissionerBackgroundBlurhash
+        ),
       },
       pageMetadata,
     };
