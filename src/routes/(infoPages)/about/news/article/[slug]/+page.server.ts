@@ -16,6 +16,7 @@ const query = gql`
         }
         type
         title
+        subhead
         publicationDate
         body {
           json

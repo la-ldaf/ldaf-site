@@ -1,12 +1,14 @@
 <script lang="ts">
-  import News from "./News.svelte";
+  import "./page.scss";
+
+  import News from "./NewsEntrySnippet.svelte";
   import Pagination from "$lib/components/Pagination";
 
   export let data;
   $: ({ newsEntries, currentPageNumber, totalPages } = data);
 </script>
 
-<h1>News</h1>
+<h1 class="ldaf-news-page--heading">News</h1>
 
 <div>
   {#each newsEntries as entry}

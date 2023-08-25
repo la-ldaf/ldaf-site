@@ -1,0 +1,8 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+/* Override font family on `.usa-prose > h1` */
+.usa-prose > .ldaf-news-page--heading {
+  @include u-font-family("sans");
+}

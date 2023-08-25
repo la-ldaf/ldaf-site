@@ -1,0 +1,10 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+.usa-prose > .ldaf-news-entry--heading {
+  /* Override font family on `.usa-prose > h1` */
+  @include u-font-family("sans");
+  /* Override margin-top on `.usa-prose > * + h1` */
+  margin-top: 1rem;
+}

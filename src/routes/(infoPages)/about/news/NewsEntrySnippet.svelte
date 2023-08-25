@@ -2,6 +2,7 @@
   import { months } from "$lib/constants/date";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Link from "$lib/components/Link";
+  import Tag from "$lib/components/Tag";
   import type { PageServerData } from "./$types";
   export let entry: PageServerData["newsEntries"][number];
 
@@ -18,22 +19,24 @@
 {#if entry}
   {@const { slug, title, body, byline, type } = entry}
   {#if title && slug}
-    <div class="news-entry">
+    <div class="ldaf-news-entry">
       <Link href={`/about/news/article/${slug}`}>
-        <h2>{title}</h2></Link
+        <h2 class="font-body-lg">{title}</h2></Link
       >
       {#if body?.json}
         <ContentfulRichText document={body.json} />
       {/if}
-      {#if byline}
-        <p>{byline}</p>
-      {/if}
-      <p>
+      <div class="font-body-2xs">
+        {#if byline}
+          {byline}<br />
+        {/if}
         {dateString}
-      </p>
-      <p>
-        {type}
-      </p>
+      </div>
+      <div class="margin-top-1">
+        <!-- TODO: LDAF-402 support additional tags -->
+        <Tag>{type}</Tag>
+      </div>
     </div>
+    <hr />
   {/if}
 {/if}
