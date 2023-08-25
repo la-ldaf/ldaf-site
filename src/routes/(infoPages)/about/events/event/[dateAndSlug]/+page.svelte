@@ -1,7 +1,7 @@
 <script lang="ts">
-  import ContactCard from "$lib/components/ContactCard/ContactCard.svelte";
-  import DateComponent from "$lib/components/Date/Date.svelte";
-  import Link from "$lib/components/Link/Link.svelte";
+  import ContactCard from "$lib/components/ContactCard";
+  import DateComponent from "$lib/components/Date";
+  import Link from "$lib/components/Link";
   import { months } from "$lib/constants/date.js";
 
   export let data;

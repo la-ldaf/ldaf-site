@@ -8,8 +8,8 @@
   import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
   import Icon from "$lib/components/Icon";
+  import Image from "$lib/components/Image";
   import VideoCard from "$lib/components/VideoCard";
-  import Image from "$lib/components/Image/Image.svelte";
 
   export let data;
   $: ({

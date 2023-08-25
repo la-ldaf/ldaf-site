@@ -8,7 +8,7 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import VideoCard from "$lib/components/VideoCard";
-  import Image from "$lib/components/Image/Image.svelte";
+  import Image from "$lib/components/Image";
   import { getSources } from "$lib/imageServices/contentful";
 
   export let data;

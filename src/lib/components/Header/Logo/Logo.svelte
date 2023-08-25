@@ -6,7 +6,7 @@
   import ldafLogoWebp2x from "$lib/assets/ldaf-flat-logo-transparent-optimized-2x.png?format=webp&quality=85&imagetools";
   import ldafLogoAvif from "$lib/assets/ldaf-flat-logo-transparent-optimized.png?format=avif&quality=85&imagetools";
   import ldafLogoAvif2x from "$lib/assets/ldaf-flat-logo-transparent-optimized-2x.png?format=avif&quality=85&imagetools";
-  import Image from "$lib/components/Image/Image.svelte";
+  import Image from "$lib/components/Image";
 </script>
 
 <!-- TODO: Replace alt value with content from CMS. -->
