@@ -5,7 +5,6 @@
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import { getSources } from "$lib/imageServices/contentful";
-  import CommissionerBackgroundImage from "$lib/components/Header/CommissionerBackgroundImage.svelte";
 
   import Button, { type Variant } from "$lib/components/Button";
   import Card from "$lib/components/Card";
@@ -24,6 +23,7 @@
       commissionerGreeting,
       commissionerByline,
       commissionerHeadshot,
+      commissionerBackground,
     },
   } = data);
 
@@ -106,7 +106,20 @@
   {/if}
   {#if commissionerGreeting?.json && commissionerByline && commissionerHeadshot?.linkedImage?.url}
     <section class="greeting-wrapper" aria-label="Introduction">
-      <CommissionerBackgroundImage class="greeting-background" />
+      <!-- This section can render without the background image, so this is optional. -->
+      {#if commissionerBackground?.linkedImage?.url}
+        <Image
+          class="greeting-background"
+          src={commissionerBackground.linkedImage.url}
+          alt={commissionerBackground.altText ?? ""}
+          blurhash={commissionerBackground.linkedImage.blurhash ?? undefined}
+          height={commissionerBackground.linkedImage.height}
+          width={commissionerBackground.linkedImage.width}
+          preserveAspectRatio={false}
+          canUpscaleImage
+          loading="lazy"
+        />
+      {/if}
       <div class="grid-row grid-gap greeting-content">
         <div class="desktop:grid-col-7 greeting-body">
           <ContentfulRichText document={commissionerGreeting.json} />
