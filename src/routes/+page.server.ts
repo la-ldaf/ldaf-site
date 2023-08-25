@@ -64,12 +64,8 @@ const query = gql`
             title
             subheading
             heroImage {
-              ... on HeroImage {
-                imageSource {
-                  sys {
-                    id
-                  }
-                }
+              imageSource {
+                ...ImageProps
               }
             }
           }
