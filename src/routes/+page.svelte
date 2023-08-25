@@ -106,8 +106,10 @@
     </ul>
   {/if}
   {#if popularResources && popularResources.length > 0}
-    <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
-    <ResourceLinks links={popularResources} />
+    <div class="ldaf-homepage__popular-resources">
+      <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
+      <ResourceLinks links={popularResources} />
+    </div>
   {/if}
   {#if commissionerGreeting?.json && commissionerByline && commissionerHeadshot?.linkedImage?.url}
     <section class="greeting-wrapper" aria-label="Introduction">
