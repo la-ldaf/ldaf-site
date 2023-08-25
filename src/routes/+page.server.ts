@@ -106,11 +106,12 @@ type CommissionerHeadshot = ExtractQueryType<Home, ["commissionerHeadshot"]>;
 type CommissionerHeadshotImageSource = CommissionerHeadshot["linkedImage"];
 type CommissionerBackground = ExtractQueryType<Home, ["commissionerBackground"]>;
 type CommissionerBackgroundImageSource = CommissionerBackground["linkedImage"];
+type Blurhash = string | null | undefined;
 
 export type HomePage = {
   homePage: Home & {
     heroVideo: Home["heroVideo"] & {
-      youtubeVideoData?: (YoutubeVideoData & { blurhash?: string | undefined }) | undefined;
+      youtubeVideoData?: (YoutubeVideoData & { blurhash?: Blurhash }) | undefined;
     };
     popularResources: ResourceLinks;
     featuredServices: (FeaturedService & {
@@ -118,18 +119,18 @@ export type HomePage = {
     } & {
       heroImage?: FeaturedServiceImage & {
         imageSource?: FeaturedServiceImageSource & {
-          blurhash?: string | null | undefined;
+          blurhash?: Blurhash;
         };
       };
     })[];
     commissionerHeadshot?: CommissionerHeadshot & {
       linkedImage?: CommissionerHeadshotImageSource & {
-        blurhash?: string | null | undefined;
+        blurhash?: Blurhash;
       };
     };
     commissionerBackground?: CommissionerBackground & {
       linkedImage?: CommissionerBackgroundImageSource & {
-        blurhash?: string | null | undefined;
+        blurhash?: Blurhash;
       };
     };
   };
@@ -140,7 +141,7 @@ export type HomePage = {
 const addBlurhashToImageWrapper = (
   home: Home,
   fieldName: "commissionerHeadshot" | "commissionerBackground",
-  blurhash: string | null | undefined
+  blurhash: Blurhash
 ) => {
   const field = home[fieldName];
   return field
