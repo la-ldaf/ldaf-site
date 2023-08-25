@@ -74,7 +74,7 @@ export const loadEventsPage = async ({
 }: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
   const startDate = getStartOfDayForDateInTZ(
     getCurrentDateInTZ(eventIANATimezone),
-    eventIANATimezone
+    eventIANATimezone,
   );
   fetchData: {
     const pageNumber = parseInt(page);
