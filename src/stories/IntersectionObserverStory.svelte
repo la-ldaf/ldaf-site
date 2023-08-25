@@ -8,7 +8,7 @@
   let viewElement: HTMLDivElement;
   let resolveViewElement: (viewElement: Element) => void;
   const viewElementPromise = new Promise<Element | undefined>(
-    (resolve) => (resolveViewElement = resolve)
+    (resolve) => (resolveViewElement = resolve),
   );
   $: if (resolveViewElement && viewElement) resolveViewElement(viewElement);
   const childElements: HTMLDivElement[] = [];

@@ -52,10 +52,10 @@
   let activeNavItemIndex = -1;
   $: {
     activeNavItemIndex = headerPrimaryNavItems.findIndex(
-      (item) => "link" in item && item.link === $page.url.pathname
+      (item) => "link" in item && item.link === $page.url.pathname,
     );
     headerPrimaryNavItems.forEach(
-      (_, i) => (headerPrimaryNavItems[i].current = i === activeNavItemIndex)
+      (_, i) => (headerPrimaryNavItems[i].current = i === activeNavItemIndex),
     );
   }
 

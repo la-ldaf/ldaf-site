@@ -13,7 +13,7 @@ export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }
       JSON.stringify({
         error: { message: `Could not construct a URL from ${imageURL}: ${getErrorMessage(err)}` },
       }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -42,7 +42,7 @@ export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }
           } error response when requesting image from ${parsedImageURL.toString()} to convert to blurhash: ${errorMessage}`,
         },
       }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -54,7 +54,7 @@ export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }
           message: `Received a response with the content type ${contentType}, expected image/jpeg`,
         },
       }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -68,11 +68,11 @@ export const GET = async ({ locals: { getKVClient }, params: { url: imageURL } }
       JSON.stringify({
         error: {
           message: `Got the following error when trying to create the blurhash: ${getErrorMessage(
-            err
+            err,
           )}`,
         },
       }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 

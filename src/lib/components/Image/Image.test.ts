@@ -110,14 +110,14 @@ describe("Image", () => {
 
     describe("when mean color of image is provided", () => {
       beforeEach(() =>
-        render(Image, { props: { src: sampleImage, alt: "", mean: sampleImageMean } })
+        render(Image, { props: { src: sampleImage, alt: "", mean: sampleImageMean } }),
       );
       it("renders a background div with the mean background color", () => {
         expect(getMeanBg()).toHaveAttribute(
           "style",
           `background-color: rgb(${Math.round(sampleImageMean.r)}, ${Math.round(
-            sampleImageMean.g
-          )}, ${Math.round(sampleImageMean.b)});`
+            sampleImageMean.g,
+          )}, ${Math.round(sampleImageMean.b)});`,
         );
       });
     });

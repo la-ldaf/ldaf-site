@@ -32,7 +32,7 @@ export const headingTagByLevel = {
 
 export const getAssertedHeadingLevel = <L extends HeadingLevel>(
   level: L,
-  node: Node
+  node: Node,
 ): HeadingTypeByLevel<L> => {
   if (!isHeading<L>(level, node)) {
     throw new Error(`node is not a heading-${level}`);

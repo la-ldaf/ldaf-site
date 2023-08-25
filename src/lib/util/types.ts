@@ -21,7 +21,7 @@ type ExtractorPathElement<T> = keyof NonNullable<T>;
 // Q is the query type we're extracting from and P is the path
 export type ExtractQueryType<
   Q,
-  P extends [] | [ExtractorPathElement<Q>, ...(readonly (number | string)[])]
+  P extends [] | [ExtractorPathElement<Q>, ...(readonly (number | string)[])],
 > = P extends []
   ? Q
   : P extends [ExtractorPathElement<Q>, ...infer Tail]

@@ -129,7 +129,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
       home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
       ? getKVClient().then((kvClient) =>
-          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient })
+          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient }),
         )
       : Promise.resolve(undefined);
     const [featuredServices, youtubeVideoData] = await Promise.all([

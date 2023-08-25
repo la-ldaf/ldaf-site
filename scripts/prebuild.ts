@@ -19,7 +19,7 @@ const copyExampleEnvFile = async () => {
 
 await Promise.all([
   runScript(
-    "src/lib/components/ContentfulRichText/__tests__/documents/generateDocumentsFromMarkdown.ts"
+    "src/lib/components/ContentfulRichText/__tests__/documents/generateDocumentsFromMarkdown.ts",
   ),
   copyExampleEnvFile(),
 ]);

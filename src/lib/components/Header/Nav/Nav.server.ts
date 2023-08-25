@@ -82,7 +82,7 @@ export const loadMainNav = async (pageMetadataMap: PageMetadataMap): Promise<Nav
                 // the next set of links for each menu should be the featured Service Groups on the Top Tier page
                 const featuredServiceGroupMetadataIds =
                   topTier?.featuredServiceListCollection?.items?.map(
-                    (featuredServiceGroup) => featuredServiceGroup?.pageMetadata?.sys?.id
+                    (featuredServiceGroup) => featuredServiceGroup?.pageMetadata?.sys?.id,
                   );
                 if (featuredServiceGroupMetadataIds && featuredServiceGroupMetadataIds.length > 0) {
                   featuredServiceGroupMetadataIds.forEach((id) => {
@@ -105,7 +105,7 @@ export const loadMainNav = async (pageMetadataMap: PageMetadataMap): Promise<Nav
                 const secondTierMenuItems: NavLinkType[] = [];
                 topTierMetadata.children?.forEach((secondTierMetadataId) => {
                   const foundDuplicateIndex = menu?.children?.findIndex(
-                    (page) => page.id === secondTierMetadataId
+                    (page) => page.id === secondTierMetadataId,
                   );
                   if (foundDuplicateIndex && foundDuplicateIndex < 0) {
                     const secondTierMetadata = pageMetadataMap.get(secondTierMetadataId);

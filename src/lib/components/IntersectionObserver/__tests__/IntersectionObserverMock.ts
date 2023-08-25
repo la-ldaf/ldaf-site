@@ -18,7 +18,7 @@ type Instance = {
 
 const getInitialInstance = (
   callback: IntersectionObserverCallback,
-  observer: IntersectionObserverType
+  observer: IntersectionObserverType,
 ): Instance => ({ callback, observer, targets: [], formerTargets: [] });
 
 let instances: Instance[] = [];
@@ -45,8 +45,8 @@ const getDisconnect: (i: number) => Mock<[], void> = (i) =>
 const getTakeRecords: (i: number) => Mock<[], IntersectionObserverEntry[]> = (i: number) =>
   vi.fn(() =>
     instances[i].targets.map((target) =>
-      createIntersectionObserverEntry({ target, isIntersecting: true })
-    )
+      createIntersectionObserverEntry({ target, isIntersecting: true }),
+    ),
   );
 
 export const createIntersectionObserverEntry = ({
@@ -83,7 +83,7 @@ const IntersectionObserverMock: Mock<[() => void, IntersectionObserverInit]> = v
     const instance = getInitialInstance(callback, observer);
     instances.push(instance);
     return observer;
-  }
+  },
 );
 
 const getInstance = (stateIndex = 0): Instance | undefined => instances[stateIndex];

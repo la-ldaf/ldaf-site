@@ -40,7 +40,7 @@ const isHiddenAttribute = ({ name }: Attr) => name.startsWith("__");
 const attributesMatch = (
   nodeA: HTMLElement,
   nodeB: HTMLElement,
-  { ignoreAttributes }: { ignoreAttributes: Set<string> }
+  { ignoreAttributes }: { ignoreAttributes: Set<string> },
 ): boolean => {
   const firstAttrsSet = new Set<string>();
 
@@ -62,7 +62,7 @@ const attributesMatch = (
 // and nodeB
 function* getChildNodePairs(
   nodeA: HTMLElement | Document,
-  nodeB: HTMLElement | Document
+  nodeB: HTMLElement | Document,
 ): Generator<[Node, Node]> {
   const nodeAChildrenIterator = nodeA.childNodes[Symbol.iterator]();
   const nodeBChildrenIterator = nodeB.childNodes[Symbol.iterator]();
@@ -101,13 +101,13 @@ const doctypesMatch = (doctypeA: DocumentType | null, doctypeB: DocumentType | n
 const nodesMatch = (
   rootNodeA: Node,
   rootNodeB: Node,
-  { ignoreAttributes }: { ignoreAttributes: Set<string> }
+  { ignoreAttributes }: { ignoreAttributes: Set<string> },
 ): boolean => {
   const stack: [Node, Node][] = [[rootNodeA, rootNodeB]];
 
   const addChildNodePairsToStack = (
     nodeA: HTMLElement | Document,
-    nodeB: HTMLElement | Document
+    nodeB: HTMLElement | Document,
   ) => {
     for (const pair of getChildNodePairs(nodeA, nodeB)) {
       if (!pair.every(Boolean)) return false;
@@ -164,7 +164,7 @@ const getAsSignificantNodeArray =
     const nodeArray = asNodeArray(it);
     if (!nodeArray) {
       throw new Error(
-        `${label} was not a node, an array of nodes, an iterable of nodes, or a string that could be parsed into an array of nodes`
+        `${label} was not a node, an array of nodes, an iterable of nodes, or a string that could be parsed into an array of nodes`,
       );
     }
     return nodeArray.filter(isSignificantNode);
@@ -210,7 +210,7 @@ export function toMatchDOMNodes<R>(
   },
   received: R,
   expected: string | Node[] | HTMLElement | NodeList,
-  { ignoreAttributes = [] }: { ignoreAttributes?: string[] } = {}
+  { ignoreAttributes = [] }: { ignoreAttributes?: string[] } = {},
 ) {
   const { isNot } = this;
 
@@ -223,7 +223,7 @@ export function toMatchDOMNodes<R>(
       nodesMatch(node, expectedNodeArray[i], {
         ignoreAttributes: new Set(ignoreAttributes),
       }),
-    true
+    true,
   );
 
   const actualString = prettier.format(nodeArrayToString(receivedNodeArray), { parser: "html" });

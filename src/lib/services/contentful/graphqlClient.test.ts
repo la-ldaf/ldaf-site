@@ -6,7 +6,7 @@ const query = "{ some { graphql { query } } }";
 const sampleData = Symbol("sample return value");
 
 global.fetch = vi.fn(async () =>
-  Promise.resolve({ ok: true, json: () => ({ data: sampleData }) })
+  Promise.resolve({ ok: true, json: () => ({ data: sampleData }) }),
 ) as Mock;
 
 describe("Contentful Fetch", () => {
@@ -38,7 +38,7 @@ describe("Contentful Fetch", () => {
           spaceID: "SPACE_ID",
           token: "API_TOKEN",
           environment: "ENVIRONMENT",
-        }))
+        })),
     );
     afterEach(() => vi.clearAllMocks());
 
@@ -53,7 +53,7 @@ describe("Contentful Fetch", () => {
             "Content-Type": "application/json",
           },
           method: "POST",
-        }
+        },
       );
       expect(data).toBe(sampleData);
     });

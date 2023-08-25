@@ -146,7 +146,7 @@ export const load = async ({
       matchedTopTier.video?.videoUrl && getYoutubeVideoIDFromURL(matchedTopTier.video.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
       ? getKVClient().then((kvClient) =>
-          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient })
+          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient }),
         )
       : undefined;
 

@@ -26,8 +26,9 @@
 
   const wrapped = textNode.marks.reduce(
     (text, { type }) => wrappers[type as MarkType](text),
-    escape(textNode.value)
+    escape(textNode.value),
   );
 </script>
 
+<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 {@html wrapped}

@@ -5,16 +5,21 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:storybook/recommended",
+    "plugin:svelte/recommended",
     // From the prettier/eslint-config-prettier README:
     // "Make sure to put it last, so it gets the chance to override other configs."
     "prettier",
   ],
-  plugins: ["svelte3", "@typescript-eslint"],
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint"],
   ignorePatterns: ["*.cjs"],
   overrides: [
     {
       files: ["*.svelte"],
-      processor: "svelte3/svelte3",
+      parser: "svelte-eslint-parser",
+      parserOptions: {
+        parser: "@typescript-eslint/parser",
+      },
     },
     {
       files: ["*.ts", "*.js"],
@@ -29,12 +34,10 @@ module.exports = {
       },
     },
   ],
-  settings: {
-    "svelte3/typescript": () => require("typescript"),
-  },
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,
+    extraFileExtensions: [".svelte"],
   },
   env: {
     browser: true,
@@ -47,7 +50,7 @@ module.exports = {
       "warn",
       {
         argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
+        varsIgnorePattern: "(^_|\\$\\$Props)",
         caughtErrorsIgnorePattern: "^_",
       },
     ],

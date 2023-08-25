@@ -35,7 +35,7 @@
   export let blurhash: string | null | undefined = undefined;
 
   const getSrcAndSourcesFromThumbnails = (
-    thumbs: Thumbnails
+    thumbs: Thumbnails,
   ): [{ width: number; height: number; url: string }, Sources] => {
     const sorted = Object.values(thumbs).sort((a, b) => a.width - b.width);
     const { width, height, url } = sorted[sorted.length - 1];
