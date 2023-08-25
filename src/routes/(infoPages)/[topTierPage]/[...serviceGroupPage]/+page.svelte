@@ -3,7 +3,7 @@
   import { getSources } from "$lib/imageServices/contentful";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button";
-  import Card from "$lib/components/Card/Card.svelte";
+  import Card from "$lib/components/Card";
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";

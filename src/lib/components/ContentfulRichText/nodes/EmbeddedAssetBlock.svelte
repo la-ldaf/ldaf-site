@@ -2,10 +2,10 @@
   import type { Node as NodeType, AssetLinkBlock } from "@contentful/rich-text-types";
   import { getContext } from "svelte";
   import { isAssetBlock } from "../predicates";
-  import Image from "$lib/components/Image/Image.svelte";
   import { linksKey, blurhashesKey, type LinksContext, imageSizeTypeKey } from "../context";
   import { getSources } from "$lib/imageServices/contentful";
-  import Link from "$lib/components/Link/Link.svelte";
+  import Image from "$lib/components/Image";
+  import Link from "$lib/components/Link";
 
   export let node: NodeType;
 
