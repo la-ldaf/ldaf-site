@@ -38,8 +38,6 @@ export const getSources: GetSources = (
           })
         : widths;
 
-    console.log({ filteredWidths })
-
     const srcsetEntries = filteredWidths.map((width): [string, number] => [
       getURL(url, shortFormat, width),
       width,

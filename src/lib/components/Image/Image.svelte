@@ -15,16 +15,16 @@
   export let fit = true;
 
   // The size type of the image
-  export let sizeType: SizeType | "static" | "custom" = "static";
+  export let sizeType: SizeType | "custom" = "custom";
   export let canUpscaleImage = sizeType === "full-bleed";
   export let preserveAspectRatio = (
     {
-      static: true,
+      custom: true,
       card: false,
       "full-bleed": true,
       "col-9": true,
       "col-12": true,
-    } satisfies Record<SizeType | "static", boolean>
+    } satisfies Record<SizeType | "custom", boolean>
   )[sizeType];
 
   export let src: string;
@@ -41,43 +41,54 @@
 
   export let sources: Sources | GetSources | undefined = undefined;
 
-  export let renderedWidths: number[] | undefined;
-  const getWidths = (sizeType: SizeType, renderedWidths: number[] | undefined): number[] => {
-    const imageWidth = width;
-    const unfilteredWidths = renderedWidths ?? Object.values(sizesByScreenSizeByType[sizeType]);
+  export let renderedWidths: number[] | null | undefined = width ? [width] : undefined;
+
+  const getWidths = (
+    sizeType: SizeType | "custom",
+    width: number | null | undefined,
+    renderedWidths: number[] | null | undefined,
+  ): number[] => {
+    const unfilteredWidths =
+      renderedWidths ??
+      (sizeType === "custom"
+        ? width
+          ? [width]
+          : []
+        : Object.values(sizesByScreenSizeByType[sizeType]));
     const unfilteredWidthsAndDoubleWidths = [
       ...new Set([...unfilteredWidths, ...unfilteredWidths.map((n) => n * 2)]),
     ].sort((a, b) => a - b);
-    if (!imageWidth) return unfilteredWidthsAndDoubleWidths;
-    return unfilteredWidthsAndDoubleWidths.filter((w) => w <= imageWidth);
+    if (!width) return unfilteredWidthsAndDoubleWidths;
+    return unfilteredWidthsAndDoubleWidths.filter((w) => w <= width);
   };
 
   const getResolvedSources = (
     src: string,
     sources: Sources | GetSources | undefined,
-    sizeType: SizeType | "static" | "custom",
-    renderedWidths: number[] | undefined,
+    sizeType: SizeType | "custom",
+    width: number | null | undefined,
+    renderedWidths: number[] | null | undefined,
   ): Sources => {
     if (!sources) return [];
     if (Array.isArray(sources)) return sources;
-    if (sizeType === "static" && !width) return [{ srcset: [src] }];
-    const widths = sizeType === "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType, renderedWidths);
+    if (sizeType === "custom" && !width && !renderedWidths) return [{ srcset: [src] }];
+    const widths = getWidths(sizeType, width, renderedWidths);
     return sources(src, { widths, srcWidth: width, srcHeight: height });
   };
 
-  $: resolvedSources = getResolvedSources(src, sources, sizeType, renderedWidths);
+  $: resolvedSources = getResolvedSources(src, sources, sizeType, width, renderedWidths);
 
   let overrideSizes: string | undefined = undefined;
   export { overrideSizes as sizes };
 
-  const getSizesAttr = (sizeType: SizeType | "static", fit: boolean) => {
+  const getSizesAttr = (sizeType: SizeType | "custom", fit: boolean) => {
     if (overrideSizes) return overrideSizes;
     if (!fit) return `${width}px`;
     if (sizeType === "full-bleed") return "100vw";
     // 100vw in the following line is technically a lie but the worst it will do is load a slightly
-    // larger version of an image explicitly marked "static", all of which should have sources
+    // larger version of an image explicitly marked "custom", all of which should have sizes
     // explicitly specified in the code.
-    if (sizeType === "static") return `(max-width: ${width}px) 100vw, ${width}px`;
+    if (sizeType === "custom") return `(max-width: ${width}px) 100vw, ${width}px`;
     const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
     let lastSize: number = 0;
     const screenSizesAndSizes: [number, number][] = [];
