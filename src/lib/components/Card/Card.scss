@@ -1,5 +1,5 @@
 @use "uswds-core" as * with (
-  $theme-show-notifications: false,
+  $theme-show-notifications: false
 );
 
 .usa-card__img {
@@ -16,7 +16,12 @@
 }
 
 .usa-card__header {
-  & > h1, & > h2, & > h3, & > h4, & > h5, & > h6 {
+  & > h1,
+  & > h2,
+  & > h3,
+  & > h4,
+  & > h5,
+  & > h6 {
     @include u-font("sans", nth($theme-card-header-typeset, 2));
   }
 }
