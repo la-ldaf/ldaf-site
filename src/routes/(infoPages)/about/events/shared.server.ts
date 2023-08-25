@@ -7,13 +7,20 @@ import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./page/[page]/$types";
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import { events as testEvents, pages as testEventPages } from "./__tests__/eventsTestContent";
+import { eventIANATimezone } from "$lib/constants/date";
+import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 
 const limit = 20;
 
 // TODO: filter to only future events. this will require thinking about timezones
 export const query = gql`
-  query Events($limit: Int = 20, $skip: Int = 0) {
-    eventEntryCollection(limit: $limit, skip: $skip, order: [eventDateAndTime_ASC]) {
+  query Events($startDate: DateTime!, $limit: Int = 20, $skip: Int = 0) {
+    eventEntryCollection(
+      limit: $limit
+      skip: $skip
+      order: [eventDateAndTime_ASC]
+      where: { eventDateAndTime_gte: $startDate }
+    ) {
       total
       items {
         sys {
@@ -65,6 +72,10 @@ export const loadEventsPage = async ({
   parent,
   params: { page },
 }: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
+  const startDate = getStartOfDayForDateInTZ(
+    getCurrentDateInTZ(eventIANATimezone),
+    eventIANATimezone
+  );
   fetchData: {
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
@@ -89,6 +100,7 @@ export const loadEventsPage = async ({
     });
     const eventsData = await client.fetch<EventsQuery>(printQuery(query), {
       variables: {
+        startDate,
         limit,
         skip: limit * Math.max(pageNumber - 1, 0),
       },
