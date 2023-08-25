@@ -117,6 +117,7 @@
           width={commissionerBackground.linkedImage.width}
           preserveAspectRatio={false}
           canUpscaleImage
+          sources={getSources}
           loading="lazy"
         />
       {/if}
