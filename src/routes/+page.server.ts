@@ -71,15 +71,6 @@ const query = gql`
                   }
                 }
               }
-              title
-              subheading
-              heroImage {
-                ... on HeroImage {
-                  imageSource {
-                    ...ImageProps
-                  }
-                }
-              }
             }
           }
         }
@@ -141,7 +132,7 @@ export type HomePage = {
 const addBlurhashToImageWrapper = (
   home: Home,
   fieldName: "commissionerHeadshot" | "commissionerBackground",
-  blurhash: Blurhash
+  blurhash: Blurhash,
 ) => {
   const field = home[fieldName];
   return field
@@ -251,12 +242,12 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
         commissionerHeadshot: addBlurhashToImageWrapper(
           home,
           "commissionerHeadshot",
-          commissionerHeadshotBlurhash
+          commissionerHeadshotBlurhash,
         ),
         commissionerBackground: addBlurhashToImageWrapper(
           home,
           "commissionerBackground",
-          commissionerBackgroundBlurhash
+          commissionerBackgroundBlurhash,
         ),
       },
       pageMetadata,
