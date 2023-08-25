@@ -19,6 +19,15 @@ import type { ResourceLinks } from "$lib/components/ResourceLinks";
 const query = gql`
   ${imageProps}
 
+  fragment ImageWrapperProps on ImageWrapper {
+    altText
+    linkedImage {
+      ... on Asset {
+        ...ImageProps
+      }
+    }
+  }
+
   query HomeCollection($metadataID: String!) {
     homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
@@ -79,14 +88,10 @@ const query = gql`
         }
         commissionerByline
         commissionerHeadshot {
-          ... on ImageWrapper {
-            altText
-            linkedImage {
-              ... on Asset {
-                ...ImageProps
-              }
-            }
-          }
+          ...ImageWrapperProps
+        }
+        commissionerBackground {
+          ...ImageWrapperProps
         }
       }
     }
@@ -99,6 +104,8 @@ type FeaturedServiceImage = FeaturedService["heroImage"];
 type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource"];
 type CommissionerHeadshot = ExtractQueryType<Home, ["commissionerHeadshot"]>;
 type CommissionerHeadshotImageSource = CommissionerHeadshot["linkedImage"];
+type CommissionerBackground = ExtractQueryType<Home, ["commissionerBackground"]>;
+type CommissionerBackgroundImageSource = CommissionerBackground["linkedImage"];
 
 export type HomePage = {
   homePage: Home & {
@@ -117,6 +124,11 @@ export type HomePage = {
     })[];
     commissionerHeadshot?: CommissionerHeadshot & {
       linkedImage?: CommissionerHeadshotImageSource & {
+        blurhash?: string | null | undefined;
+      };
+    };
+    commissionerBackground?: CommissionerBackground & {
+      linkedImage?: CommissionerBackgroundImageSource & {
         blurhash?: string | null | undefined;
       };
     };
@@ -192,11 +204,45 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
       ? getBlurhash(commissionerHeadshotURL, { fetch })
       : Promise.resolve(undefined);
 
-    const [featuredServices, youtubeVideoData, commissionerHeadshotBlurhash] = await Promise.all([
+    const commissionerBackgroundURL = home.commissionerBackground?.linkedImage?.url;
+    const commissionerBackgroundPromise = commissionerBackgroundURL
+      ? getBlurhash(commissionerBackgroundURL, { fetch })
+      : Promise.resolve(undefined);
+
+    const [
+      featuredServices,
+      commissionerHeadshotBlurhash,
+      commissionerBackgroundBlurhash,
+      youtubeVideoData,
+    ] = await Promise.all([
       Promise.all(featuredServicesPromises).then((arr) => arr.flat()),
-      youtubeVideoDataPromise,
       commissionerHeadshotPromise,
+      commissionerBackgroundPromise,
+      youtubeVideoDataPromise,
     ]);
+
+    const commissionerHeadshot = home.commissionerHeadshot
+      ? {
+          ...home.commissionerHeadshot,
+          linkedImage: home.commissionerHeadshot.linkedImage?.url
+            ? {
+                ...home.commissionerHeadshot.linkedImage,
+                blurhash: commissionerHeadshotBlurhash,
+              }
+            : undefined,
+        }
+      : undefined;
+    const commissionerBackground = home.commissionerBackground
+      ? {
+          ...home.commissionerBackground,
+          linkedImage: home.commissionerBackground.linkedImage?.url
+            ? {
+                ...home.commissionerBackground.linkedImage,
+                blurhash: commissionerBackgroundBlurhash,
+              }
+            : undefined,
+        }
+      : undefined;
 
     return {
       homePage: {
@@ -204,17 +250,8 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
         featuredServices,
         heroVideo: { ...home.heroVideo, youtubeVideoData },
         popularResources,
-        commissionerHeadshot: home.commissionerHeadshot
-          ? {
-              ...home.commissionerHeadshot,
-              linkedImage: home.commissionerHeadshot.linkedImage?.url
-                ? {
-                    ...home.commissionerHeadshot.linkedImage,
-                    blurhash: commissionerHeadshotBlurhash,
-                  }
-                : undefined,
-            }
-          : undefined,
+        commissionerHeadshot,
+        commissionerBackground,
       },
       pageMetadata,
     };

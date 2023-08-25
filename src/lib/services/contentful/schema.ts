@@ -2587,6 +2587,7 @@ export enum HeroImageOrder {
 /** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type Home = Entry & {
   __typename?: 'Home';
+  commissionerBackground?: Maybe<ImageWrapper>;
   commissionerByline?: Maybe<Scalars['String']['output']>;
   commissionerGreeting?: Maybe<HomeCommissionerGreeting>;
   commissionerHeadshot?: Maybe<ImageWrapper>;
@@ -2599,6 +2600,14 @@ export type Home = Entry & {
   popularResourcesListCollection?: Maybe<HomePopularResourcesListCollection>;
   promotionalCardsCollection?: Maybe<HomePromotionalCardsCollection>;
   sys: Sys;
+};
+
+
+/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+export type HomeCommissionerBackgroundArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ImageWrapperFilter>;
 };
 
 
@@ -2749,6 +2758,8 @@ export enum HomeFeaturedServiceCardsCollectionOrder {
 export type HomeFilter = {
   AND?: InputMaybe<Array<InputMaybe<HomeFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<HomeFilter>>>;
+  commissionerBackground?: InputMaybe<CfImageWrapperNestedFilter>;
+  commissionerBackground_exists?: InputMaybe<Scalars['Boolean']['input']>;
   commissionerByline?: InputMaybe<Scalars['String']['input']>;
   commissionerByline_contains?: InputMaybe<Scalars['String']['input']>;
   commissionerByline_exists?: InputMaybe<Scalars['Boolean']['input']>;

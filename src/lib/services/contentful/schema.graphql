@@ -1744,6 +1744,7 @@ scalar HexColor
 The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home)
 """
 type Home implements Entry {
+  commissionerBackground(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
   commissionerByline(locale: String): String
   commissionerGreeting(locale: String): HomeCommissionerGreeting
   commissionerHeadshot(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
@@ -1818,6 +1819,8 @@ enum HomeFeaturedServiceCardsCollectionOrder {
 input HomeFilter {
   AND: [HomeFilter]
   OR: [HomeFilter]
+  commissionerBackground: cfImageWrapperNestedFilter
+  commissionerBackground_exists: Boolean
   commissionerByline: String
   commissionerByline_contains: String
   commissionerByline_exists: Boolean
