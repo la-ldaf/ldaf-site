@@ -86,7 +86,7 @@
     </ul>
   {/if}
   {#if popularResources && popularResources.length > 0}
-    <h2 class="ldaf-homepage__popular-resources-heading font-sans">Popular resources</h2>
+    <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
     <ResourceLinks links={popularResources} />
   {/if}
 </main>
