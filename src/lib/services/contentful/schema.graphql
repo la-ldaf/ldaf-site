@@ -93,6 +93,7 @@ type AssetLinkingCollections {
   documentWrapperCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsDocumentWrapperCollectionOrder], preview: Boolean, skip: Int = 0): DocumentWrapperCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   heroImageCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsHeroImageCollectionOrder], preview: Boolean, skip: Int = 0): HeroImageCollection
+  homeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
   imageWrapperCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsImageWrapperCollectionOrder], preview: Boolean, skip: Int = 0): ImageWrapperCollection
   testRichTextCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsTestRichTextCollectionOrder], preview: Boolean, skip: Int = 0): TestRichTextCollection
 }
@@ -117,6 +118,21 @@ enum AssetLinkingCollectionsHeroImageCollectionOrder {
   fotogCredit_DESC
   imageTitle_ASC
   imageTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum AssetLinkingCollectionsHomeCollectionOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
+  internalTitle_ASC
+  internalTitle_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1744,10 +1760,9 @@ scalar HexColor
 The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home)
 """
 type Home implements Entry {
-  commissionerBackground(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
   commissionerByline(locale: String): String
   commissionerGreeting(locale: String): HomeCommissionerGreeting
-  commissionerHeadshot(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
+  commissionerHeadshot(locale: String, preview: Boolean): Asset
   contentfulMetadata: ContentfulMetadata!
   featuredServiceCardsCollection(limit: Int = 100, locale: String, order: [HomeFeaturedServiceCardsCollectionOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): HomeFeaturedServiceCardsCollection
   heroVideo(locale: String, preview: Boolean, where: VideoWrapperFilter): VideoWrapper
@@ -1819,8 +1834,6 @@ enum HomeFeaturedServiceCardsCollectionOrder {
 input HomeFilter {
   AND: [HomeFilter]
   OR: [HomeFilter]
-  commissionerBackground: cfImageWrapperNestedFilter
-  commissionerBackground_exists: Boolean
   commissionerByline: String
   commissionerByline_contains: String
   commissionerByline_exists: Boolean
@@ -1831,7 +1844,6 @@ input HomeFilter {
   commissionerGreeting_contains: String
   commissionerGreeting_exists: Boolean
   commissionerGreeting_not_contains: String
-  commissionerHeadshot: cfImageWrapperNestedFilter
   commissionerHeadshot_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   featuredServiceCards: cfServiceGroupNestedFilter
@@ -2091,23 +2103,7 @@ input ImageWrapperFilter {
 
 type ImageWrapperLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  homeCollection(limit: Int = 100, locale: String, order: [ImageWrapperLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
   promoBannerWithCtaCollection(limit: Int = 100, locale: String, order: [ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionOrder], preview: Boolean, skip: Int = 0): PromoBannerWithCtaCollection
-}
-
-enum ImageWrapperLinkingCollectionsHomeCollectionOrder {
-  commissionerByline_ASC
-  commissionerByline_DESC
-  internalTitle_ASC
-  internalTitle_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
 }
 
 enum ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionOrder {
