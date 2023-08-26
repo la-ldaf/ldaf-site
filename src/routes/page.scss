@@ -6,3 +6,60 @@
   margin-bottom: 1rem;
   @include u-font("sans", $theme-h2-font-size);
 }
+
+.ldaf-homepage__popular-resources {
+  margin-bottom: 1.5rem;
+}
+
+// https://stackoverflow.com/a/24895631/5469511
+.greeting-wrapper {
+  position: relative;
+  // Columns are 7 and 5 (approx 60% and 40%), so lighten opacity at 60%
+  background: linear-gradient(
+    90deg,
+    rgba($primary-darkest, 0.95) 0%,
+    rgba($primary-darkest, 0.9) 60%,
+    rgba($primary-darkest, 0.8) 100%
+  );
+  .greeting-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  .greeting-content {
+    padding: 2rem;
+    color: $accent-warm;
+    .greeting-body {
+      :first-child {
+        margin-top: 0;
+      }
+      @include at-media("desktop") {
+        :last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+    .greeting-commissioner-portrait-wrapper {
+      display: flex;
+      align-items: center;
+      .greeting-commissioner-portrait {
+        border: 3px solid $accent-warm;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        // center and reduce size on small phones
+        margin: 0 auto;
+        width: 125px;
+        @include at-media("mobile-lg") {
+          // place below byline on larger phones and tablets
+          margin: 0 0 0 auto;
+        }
+        @include at-media("desktop") {
+          // reset margin and width for desktop
+          margin: auto;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

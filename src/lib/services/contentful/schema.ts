@@ -172,7 +172,6 @@ export type AssetLinkingCollections = {
   documentWrapperCollection?: Maybe<DocumentWrapperCollection>;
   entryCollection?: Maybe<EntryCollection>;
   heroImageCollection?: Maybe<HeroImageCollection>;
-  homeCollection?: Maybe<HomeCollection>;
   imageWrapperCollection?: Maybe<ImageWrapperCollection>;
   testRichTextCollection?: Maybe<TestRichTextCollection>;
 };
@@ -199,15 +198,6 @@ export type AssetLinkingCollectionsHeroImageCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Array<InputMaybe<AssetLinkingCollectionsHeroImageCollectionOrder>>>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type AssetLinkingCollectionsHomeCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Array<InputMaybe<AssetLinkingCollectionsHomeCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -250,21 +240,6 @@ export enum AssetLinkingCollectionsHeroImageCollectionOrder {
   FotogCreditDesc = 'fotogCredit_DESC',
   ImageTitleAsc = 'imageTitle_ASC',
   ImageTitleDesc = 'imageTitle_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
-}
-
-export enum AssetLinkingCollectionsHomeCollectionOrder {
-  CommissionerBylineAsc = 'commissionerByline_ASC',
-  CommissionerBylineDesc = 'commissionerByline_DESC',
-  InternalTitleAsc = 'internalTitle_ASC',
-  InternalTitleDesc = 'internalTitle_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -2612,9 +2587,10 @@ export enum HeroImageOrder {
 /** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type Home = Entry & {
   __typename?: 'Home';
+  commissionerBackground?: Maybe<ImageWrapper>;
   commissionerByline?: Maybe<Scalars['String']['output']>;
   commissionerGreeting?: Maybe<HomeCommissionerGreeting>;
-  commissionerHeadshot?: Maybe<Asset>;
+  commissionerHeadshot?: Maybe<ImageWrapper>;
   contentfulMetadata: ContentfulMetadata;
   featuredServiceCardsCollection?: Maybe<HomeFeaturedServiceCardsCollection>;
   heroVideo?: Maybe<VideoWrapper>;
@@ -2624,6 +2600,14 @@ export type Home = Entry & {
   popularResourcesListCollection?: Maybe<HomePopularResourcesListCollection>;
   promotionalCardsCollection?: Maybe<HomePromotionalCardsCollection>;
   sys: Sys;
+};
+
+
+/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+export type HomeCommissionerBackgroundArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ImageWrapperFilter>;
 };
 
 
@@ -2643,6 +2627,7 @@ export type HomeCommissionerGreetingArgs = {
 export type HomeCommissionerHeadshotArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ImageWrapperFilter>;
 };
 
 
@@ -2773,6 +2758,8 @@ export enum HomeFeaturedServiceCardsCollectionOrder {
 export type HomeFilter = {
   AND?: InputMaybe<Array<InputMaybe<HomeFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<HomeFilter>>>;
+  commissionerBackground?: InputMaybe<CfImageWrapperNestedFilter>;
+  commissionerBackground_exists?: InputMaybe<Scalars['Boolean']['input']>;
   commissionerByline?: InputMaybe<Scalars['String']['input']>;
   commissionerByline_contains?: InputMaybe<Scalars['String']['input']>;
   commissionerByline_exists?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2783,6 +2770,7 @@ export type HomeFilter = {
   commissionerGreeting_contains?: InputMaybe<Scalars['String']['input']>;
   commissionerGreeting_exists?: InputMaybe<Scalars['Boolean']['input']>;
   commissionerGreeting_not_contains?: InputMaybe<Scalars['String']['input']>;
+  commissionerHeadshot?: InputMaybe<CfImageWrapperNestedFilter>;
   commissionerHeadshot_exists?: InputMaybe<Scalars['Boolean']['input']>;
   contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
   featuredServiceCards?: InputMaybe<CfServiceGroupNestedFilter>;
@@ -3054,6 +3042,7 @@ export type ImageWrapperFilter = {
 export type ImageWrapperLinkingCollections = {
   __typename?: 'ImageWrapperLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
+  homeCollection?: Maybe<HomeCollection>;
   promoBannerWithCtaCollection?: Maybe<PromoBannerWithCtaCollection>;
 };
 
@@ -3066,6 +3055,15 @@ export type ImageWrapperLinkingCollectionsEntryCollectionArgs = {
 };
 
 
+export type ImageWrapperLinkingCollectionsHomeCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ImageWrapperLinkingCollectionsHomeCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -3073,6 +3071,21 @@ export type ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
+
+export enum ImageWrapperLinkingCollectionsHomeCollectionOrder {
+  CommissionerBylineAsc = 'commissionerByline_ASC',
+  CommissionerBylineDesc = 'commissionerByline_DESC',
+  InternalTitleAsc = 'internalTitle_ASC',
+  InternalTitleDesc = 'internalTitle_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
 
 export enum ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionOrder {
   PromoInternalNameAsc = 'promoInternalName_ASC',

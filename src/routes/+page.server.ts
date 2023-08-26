@@ -7,6 +7,8 @@ import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
+import imageProps from "$lib/fragments/imageProps";
+
 import type { HomeCollectionQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
@@ -15,6 +17,17 @@ import type { YoutubeVideoData } from "$lib/services/server/youtube/getYoutubeVi
 import type { ResourceLinks } from "$lib/components/ResourceLinks";
 
 const query = gql`
+  ${imageProps}
+
+  fragment ImageWrapperProps on ImageWrapper {
+    altText
+    linkedImage {
+      ... on Asset {
+        ...ImageProps
+      }
+    }
+  }
+
   query HomeCollection($metadataID: String!) {
     homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
@@ -51,21 +64,21 @@ const query = gql`
             title
             subheading
             heroImage {
-              ... on HeroImage {
-                imageSource {
-                  sys {
-                    id
-                  }
-                  contentType
-                  title
-                  description
-                  url
-                  width
-                  height
-                }
+              imageSource {
+                ...ImageProps
               }
             }
           }
+        }
+        commissionerGreeting {
+          json
+        }
+        commissionerByline
+        commissionerHeadshot {
+          ...ImageWrapperProps
+        }
+        commissionerBackground {
+          ...ImageWrapperProps
         }
       }
     }
@@ -76,11 +89,16 @@ type Home = ExtractQueryType<HomeCollectionQuery, ["homeCollection", "items", nu
 type FeaturedService = ExtractQueryType<Home, ["featuredServiceCardsCollection", "items", number]>;
 type FeaturedServiceImage = FeaturedService["heroImage"];
 type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource"];
+type CommissionerHeadshot = ExtractQueryType<Home, ["commissionerHeadshot"]>;
+type CommissionerHeadshotImageSource = CommissionerHeadshot["linkedImage"];
+type CommissionerBackground = ExtractQueryType<Home, ["commissionerBackground"]>;
+type CommissionerBackgroundImageSource = CommissionerBackground["linkedImage"];
+type Blurhash = string | null | undefined;
 
 export type HomePage = {
   homePage: Home & {
     heroVideo: Home["heroVideo"] & {
-      youtubeVideoData?: (YoutubeVideoData & { blurhash?: string | undefined }) | undefined;
+      youtubeVideoData?: (YoutubeVideoData & { blurhash?: Blurhash }) | undefined;
     };
     popularResources: ResourceLinks;
     featuredServices: (FeaturedService & {
@@ -88,12 +106,42 @@ export type HomePage = {
     } & {
       heroImage?: FeaturedServiceImage & {
         imageSource?: FeaturedServiceImageSource & {
-          blurhash?: string | null | undefined;
+          blurhash?: Blurhash;
         };
       };
     })[];
+    commissionerHeadshot?: CommissionerHeadshot & {
+      linkedImage?: CommissionerHeadshotImageSource & {
+        blurhash?: Blurhash;
+      };
+    };
+    commissionerBackground?: CommissionerBackground & {
+      linkedImage?: CommissionerBackgroundImageSource & {
+        blurhash?: Blurhash;
+      };
+    };
   };
   pageMetadata: PageMetadataMapItem;
+};
+
+// TODO: Maybe make this more reusable since we'll be doing something similar for all Image Wrapper entries.
+const addBlurhashToImageWrapper = (
+  home: Home,
+  fieldName: "commissionerHeadshot" | "commissionerBackground",
+  blurhash: Blurhash,
+) => {
+  const field = home[fieldName];
+  return field
+    ? {
+        ...field,
+        linkedImage: field.linkedImage?.url
+          ? {
+              ...field.linkedImage,
+              blurhash,
+            }
+          : undefined,
+      }
+    : undefined;
 };
 
 export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<HomePage> => {
@@ -115,6 +163,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
     if (!data) break fetchData;
     const [home] = data?.homeCollection?.items ?? [];
     if (!home) break fetchData;
+
     const featuredServicesPromises =
       home.featuredServiceCardsCollection?.items.map(async (featuredItem) => {
         const featuredItemMetadata = pageMetadataMap.get(featuredItem?.pageMetadata?.sys.id || "");
@@ -134,6 +183,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           url: featuredItemMetadata?.url,
         };
       }) ?? [];
+
     const youtubeVideoID =
       home.heroVideo?.videoUrl && getYoutubeVideoIDFromURL(home.heroVideo.videoUrl);
     const youtubeVideoDataPromise = youtubeVideoID
@@ -141,6 +191,7 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient }),
         )
       : Promise.resolve(undefined);
+
     const popularResources =
       home.popularResourcesListCollection?.items?.flatMap((item) => {
         if (!item || !item.pageMetadata?.sys?.id || !item.title) return [];
@@ -155,16 +206,45 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
         if (!url) return [];
         return [{ href: url, title, description: subheading ?? undefined }];
       }) ?? [];
-    const [featuredServices, youtubeVideoData] = await Promise.all([
-      Promise.all(featuredServicesPromises),
+
+    const commissionerHeadshotURL = home.commissionerHeadshot?.linkedImage?.url;
+    const commissionerHeadshotPromise = commissionerHeadshotURL
+      ? getBlurhash(commissionerHeadshotURL, { fetch })
+      : Promise.resolve(undefined);
+
+    const commissionerBackgroundURL = home.commissionerBackground?.linkedImage?.url;
+    const commissionerBackgroundPromise = commissionerBackgroundURL
+      ? getBlurhash(commissionerBackgroundURL, { fetch })
+      : Promise.resolve(undefined);
+
+    const [
+      featuredServices,
+      commissionerHeadshotBlurhash,
+      commissionerBackgroundBlurhash,
+      youtubeVideoData,
+    ] = await Promise.all([
+      Promise.all(featuredServicesPromises).then((arr) => arr.flat()),
+      commissionerHeadshotPromise,
+      commissionerBackgroundPromise,
       youtubeVideoDataPromise,
     ]);
+
     return {
       homePage: {
         ...home,
         featuredServices,
         heroVideo: { ...home.heroVideo, youtubeVideoData },
         popularResources,
+        commissionerHeadshot: addBlurhashToImageWrapper(
+          home,
+          "commissionerHeadshot",
+          commissionerHeadshotBlurhash,
+        ),
+        commissionerBackground: addBlurhashToImageWrapper(
+          home,
+          "commissionerBackground",
+          commissionerBackgroundBlurhash,
+        ),
       },
       pageMetadata,
     };
