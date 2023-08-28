@@ -41,7 +41,9 @@
 
   export let sources: Sources | GetSources | undefined = undefined;
 
-  export let renderedWidths: number[] | null | undefined = width ? [width] : undefined;
+  // Only set a default for renderedWidths if the sizeType is custom
+  export let renderedWidths: number[] | null | undefined =
+    sizeType === "custom" && width ? [width] : undefined;
 
   const getWidths = (
     sizeType: SizeType | "custom",
