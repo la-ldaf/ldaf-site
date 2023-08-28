@@ -152,8 +152,6 @@
               height={diameter}
               width={diameter}
               preserveAspectRatio={false}
-              sizeType="custom"
-              renderedWidths={[119, 350]}
               sizes="(max-width: 1023px) calc(125px - 6px), 350px"
               sources={getSources}
               loading="lazy"
