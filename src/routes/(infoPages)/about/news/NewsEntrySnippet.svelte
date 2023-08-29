@@ -4,39 +4,40 @@
   import Link from "$lib/components/Link";
   import Tag from "$lib/components/Tag";
   import type { PageServerData } from "./$types";
-  export let entry: PageServerData["newsEntries"][number];
 
-  $: if (entry?.body?.json?.content?.length) {
-    entry.body.json.content.length = 1;
+  export let entry: NonNullable<PageServerData["newsEntries"][number]>;
+
+  $: ({ slug, title, body, byline, type, publicationDate } = entry);
+
+  $: if (body?.json?.content?.length) {
+    body.json.content.length = 1;
   }
   // We only care about the date, not the timestamp.
   // TODO: Update using work completed in #378
-  $: [date] = entry?.publicationDate ? entry.publicationDate.split("T") : "";
+  $: [date] = publicationDate ? publicationDate.split("T") : "";
   $: [year, month, day] = date.split("-");
   $: dateString = `${months[month - 1]} ${day.replace(/^0+/, "")}, ${year}`;
+  $: isArticle = type === "News article";
 </script>
 
-{#if entry}
-  {@const { slug, title, body, byline, type } = entry}
-  {#if title && slug}
-    <div class="ldaf-news-entry">
-      <Link href={`/about/news/article/${slug}`}>
-        <h2 class="font-body-lg">{title}</h2></Link
-      >
-      {#if body?.json}
-        <ContentfulRichText document={body.json} />
+{#if title && slug}
+  <div class="ldaf-news-entry">
+    <Link href={`/about/news/article/${slug}`}>
+      <h2 class="font-body-lg">{title}</h2></Link
+    >
+    {#if body?.json}
+      <ContentfulRichText document={body.json} links={body?.links} imageSizeType="col-9" />
+    {/if}
+    <div class="font-body-2xs">
+      {#if isArticle && byline}
+        By {byline}<br />
       {/if}
-      <div class="font-body-2xs">
-        {#if byline}
-          {byline}<br />
-        {/if}
-        {dateString}
-      </div>
-      <div class="margin-top-1">
-        <!-- TODO: LDAF-402 support additional tags -->
-        <Tag>{type}</Tag>
-      </div>
+      {dateString}
     </div>
-    <hr />
-  {/if}
+    <div class="margin-top-1 margin-bottom-2">
+      <!-- TODO: LDAF-402 support additional tags -->
+      <Tag>{type}</Tag>
+    </div>
+  </div>
+  <hr />
 {/if}

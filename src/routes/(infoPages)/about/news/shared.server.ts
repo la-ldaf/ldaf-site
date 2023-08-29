@@ -10,11 +10,16 @@ import {
   newsEntries as testNewsEntries,
   pages as testNewsEntryPages,
 } from "./__tests__/newsTestContent";
+import imagePropsFragment from "$lib/fragments/imageProps";
+import entryPropsFragment from "$lib/fragments/entryProps";
 
-const limit = 20;
+const limit = 10;
 
 export const query = gql`
-  query NewsEntries($limit: Int = 20, $skip: Int = 0) {
+  # eslint-disable @graphql-eslint/selection-set-depth
+  ${imagePropsFragment}
+  ${entryPropsFragment}
+  query NewsEntries($limit: Int = 10, $skip: Int = 0) {
     newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC]) {
       total
       items {
@@ -26,6 +31,24 @@ export const query = gql`
         publicationDate
         body {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
         }
         slug
         byline

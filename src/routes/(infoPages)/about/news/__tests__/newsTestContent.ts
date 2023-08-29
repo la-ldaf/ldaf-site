@@ -43,6 +43,7 @@ const getArticle = (i: number) => ({
         },
       ],
     },
+    links: undefined,
   },
 });
 

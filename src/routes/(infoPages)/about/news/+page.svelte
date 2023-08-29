@@ -12,7 +12,9 @@
 
 <div>
   {#each newsEntries as entry}
-    <News {entry} />
+    {#if entry}
+      <News {entry} />
+    {/if}
   {/each}
 </div>
 
