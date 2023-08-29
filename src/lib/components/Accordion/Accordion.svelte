@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { setContext } from "svelte";
   import { writable } from "svelte/store";
+  import { setAccordionContext } from "./context";
 
   export let multiselectable = false;
   export let bordered = false;
 
-  const selectedItems = writable<Record<string, boolean>>({});
+  const expandedItems = writable<Record<string, boolean>>({});
 
-  setContext("Accordion", {
-    subscribe: selectedItems.subscribe,
+  setAccordionContext({
+    expandedItems,
     toggle: (itemID: string) =>
-      selectedItems.update((items) => ({
+      expandedItems.update((items) => ({
         ...(multiselectable ? items : {}),
         [itemID]: !items[itemID],
       })),

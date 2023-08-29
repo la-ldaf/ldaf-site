@@ -1,21 +1,15 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getAccordionContext } from "./context";
 
   export let id: string;
   export let title: string | null | undefined = "Title";
-  export let expanded = false;
+
   let ref: HTMLElement | null = null;
 
-  interface ItemApi {
-    subscribe: (run: (items: Record<string, boolean>) => void) => () => void;
-    toggle: (id: string) => void;
-  }
+  $: ({ expandedItems, toggle } = getAccordionContext());
 
-  const { subscribe, toggle } = getContext<ItemApi>("Accordion");
-
-  subscribe((items) => {
-    expanded = items[id] || false;
-  });
+  let expanded: boolean;
+  $: expanded = $expandedItems[id] ?? false;
 </script>
 
 <h3 {...$$restProps} class="usa-accordion__heading">
