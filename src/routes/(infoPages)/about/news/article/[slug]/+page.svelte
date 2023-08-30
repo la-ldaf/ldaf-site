@@ -105,9 +105,11 @@
 
 {#if relatedEventsCollection?.items && relatedEventsCollection?.items.length > 0}
   <h2>Related events</h2>
-  {#each relatedEventsCollection?.items as event (event?.sys.id)}
-    <Event {event} />
-  {/each}
+  <div class="events">
+    {#each relatedEventsCollection?.items as event (event?.sys.id)}
+      <Event {event} />
+    {/each}
+  </div>
 {/if}
 
 {#if relatedNewsCollection?.items && relatedNewsCollection?.items.length > 0}
@@ -118,3 +120,14 @@
     {/if}
   {/each}
 {/if}
+
+<!-- TODO: This is copied from the events page, should be reusable instead. -->
+<style>
+  .events {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+</style>
