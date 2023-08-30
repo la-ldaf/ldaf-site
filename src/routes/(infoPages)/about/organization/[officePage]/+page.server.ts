@@ -3,14 +3,20 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import imagePropsFragment from "$lib/fragments/imageProps";
+import entryPropsFragment from "$lib/fragments/entryProps";
+import { getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 import getContentfulClient from "$lib/services/contentful";
 import officePageTestContent from "./__tests__/OfficePageTestContent";
 
 import type { OfficePageQuery } from "./$queries.generated";
 
 const query = gql`
-  query OfficePage {
-    officePageCollection {
+  # eslint-disable @graphql-eslint/selection-set-depth
+  ${imagePropsFragment}
+  ${entryPropsFragment}
+  query OfficePage($metadataID: String!) {
+    officePageCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         sys {
           id
@@ -19,9 +25,45 @@ const query = gql`
         subheading
         description {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
         }
         servicesAndPrograms {
           json
+          links {
+            assets {
+              block {
+                ...ImageProps
+              }
+              hyperlink {
+                ...ImageProps
+              }
+            }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
         }
         mailingAddress {
           ... on ContentTypeLocation {
@@ -58,36 +100,54 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params }) => {
-  const { pageMetadataMap } = await parent();
-  const slug = params.officePage;
+export const load = async ({ parent, params: { officePage }, fetch }) => {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
     return { officePage: officePageTestContent, pageMetadata: {} };
   }
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
-  const data = await client.fetch<OfficePageQuery>(printQuery(query));
-  const officePages = data?.officePageCollection?.items;
-  if (!officePages) throw error(404);
-  const matchedOfficePage = officePages.find(
-    (officePage) => officePage?.pageMetadata?.slug === slug,
-  );
-  if (matchedOfficePage) {
-    const pageMetadataId = matchedOfficePage?.pageMetadata?.sys?.id;
-    if (pageMetadataId) {
-      const pageMetadata = pageMetadataMap.get(pageMetadataId);
-      if (pageMetadata) {
-        return {
-          officePage: matchedOfficePage,
-          pageMetadata,
-        };
-      }
-    }
+  const { pageMetadataMap, pathsToIDs } = await parent();
+  const path = `/about/organization/${officePage}`;
+  fetchData: {
+    const metadataID = pathsToIDs.get(path);
+    if (!metadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (!pageMetadata) break fetchData;
+    const client = getContentfulClient({
+      spaceID: CONTENTFUL_SPACE_ID,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
+    });
+
+    const data = await client.fetch<OfficePageQuery>(printQuery(query), {
+      variables: { metadataID },
+    });
+    if (!data) break fetchData;
+    const [officePageData] = data?.officePageCollection?.items ?? [];
+    if (!officePageData) break fetchData;
+
+    const descriptionBlurhashesPromise =
+      officePageData.description &&
+      getBlurhashMapFromRichText(officePageData.description, { fetch });
+
+    const servicesAndProgramsBlurhashesPromise =
+      officePageData.servicesAndPrograms &&
+      getBlurhashMapFromRichText(officePageData.servicesAndPrograms, { fetch });
+
+    const [descriptionBlurhashes, servicesAndProgramsBlurhashes] = await Promise.all([
+      descriptionBlurhashesPromise,
+      servicesAndProgramsBlurhashesPromise,
+    ]);
+
+    return {
+      officePage: {
+        ...officePageData,
+        description: officePageData.description
+          ? { ...officePageData.description, blurhashes: descriptionBlurhashes }
+          : undefined,
+        servicesAndPrograms: officePageData.servicesAndPrograms
+          ? { ...officePageData.servicesAndPrograms, blurhashes: servicesAndProgramsBlurhashes }
+          : undefined,
+      },
+      pageMetadata,
+    };
   }
-  console.warn(
-    `An Office Page entry with the slug "${slug}" could not be found. If this page was reached via a link, it is likely that the Page Metadata entry is published but the Office Page entry is not.`,
-  );
   throw error(404);
 };
