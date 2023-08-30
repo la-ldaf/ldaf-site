@@ -2,6 +2,7 @@
   $theme-show-notifications: false
 );
 
+// TODO: We need to fix fonts across the site, at which point this should go in app.scss
 .usa-prose > .ldaf-news-entry--heading {
   /* Override font family on `.usa-prose > h1` */
   @include u-font-family("sans");
