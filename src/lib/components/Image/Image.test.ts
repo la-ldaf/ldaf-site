@@ -12,6 +12,7 @@ import * as environment from "$app/environment";
 import * as support from "$lib/constants/support";
 import Image from "./Image.svelte";
 import { mock as intersectionObserverMock } from "../IntersectionObserver/__tests__/IntersectionObserverMock";
+import type { ComponentProps } from "svelte";
 
 vi.mock("$app/environment", () => ({
   browser: false,
@@ -32,6 +33,12 @@ const getContainer = () => {
   return container;
 };
 
+const getPicture = () => {
+  const picture = getContainer().querySelector(":scope > picture") as HTMLPictureElement;
+  if (!picture) throw new Error("no picture found!");
+  return picture;
+}
+
 const getImage = () => {
   const image = screen
     .getAllByRole("img")
@@ -45,22 +52,37 @@ const getMeanBg = () => getContainer().querySelector(".ldaf-img__color-bg");
 
 afterEach(() => vi.restoreAllMocks());
 
+const hasChildOfType = (element: HTMLElement, tagName: string) => !![...element.children].find((element) => element.tagName.toLowerCase() === tagName)
+
+const defaultProps: Pick<ComponentProps<Image>, "src" | "sources" | "alt"> = {
+  src: sampleImage,
+  sources: [{ type: "image/jpeg", srcset: [sampleImage, [sampleImage, 100]] }],
+  alt: "",
+}
+
 describe("Image", () => {
   describe("on the server", () => {
     beforeEach(() => withBrowser(false));
-
     it('renders without src when loading="lazy"', () => {
       render(Image, {
-        props: { src: sampleImage, alt: "", loading: "lazy" },
+        props: {
+          ...defaultProps,
+          loading: "lazy",
+        },
       });
       expect(getImage()).not.toHaveAttribute("src");
+      expect(hasChildOfType(getPicture(), "source")).toEqual(false);
     });
 
     it('renders with src when loading="eager"', () => {
       render(Image, {
-        props: { src: sampleImage, alt: "", loading: "eager" },
+        props: {
+          ...defaultProps,
+          loading: "eager",
+        },
       });
       expect(getImage()).toHaveAttribute("src", sampleImage);
+      expect(hasChildOfType(getPicture(), "source")).toEqual(true);
     });
   });
 
@@ -71,12 +93,11 @@ describe("Image", () => {
       beforeEach(() => {
         withSupport("intersectionObserverSupport");
         withSupport("lazyImageLoadingSupport");
+        render(Image, {props: defaultProps});
       });
       it("renders with src", () => {
-        render(Image, {
-          props: { src: sampleImage, alt: "" },
-        });
         expect(getImage()).toHaveAttribute("src", sampleImage);
+        expect(hasChildOfType(getPicture(), "source")).toEqual(true);
       });
     });
 
@@ -88,14 +109,20 @@ describe("Image", () => {
       beforeEach(async () => {
         withSupport("intersectionObserverSupport");
         withSupport("lazyImageLoadingSupport", false);
-        render(Image, { props: { src: sampleImage, alt: "" } });
+        render(Image, { props: defaultProps });
         return () => intersectionObserverMock.restore();
       });
-      it("renders without src", () => expect(getImage()).not.toHaveAttribute("src"));
+      it("renders without src", () => {
+        expect(getImage()).not.toHaveAttribute("src")
+        expect(hasChildOfType(getPicture(), "source")).toEqual(false);
+      });
       it("adds src on intersect", async () => {
         await waitFor(() => expect(intersectionObserverMock.observe).toHaveBeenCalledOnce());
         intersectionObserverMock.intersect();
-        await waitFor(() => expect(getImage()).toHaveAttribute("src", sampleImage));
+        await waitFor(() => {
+          expect(getImage()).toHaveAttribute("src", sampleImage);
+          expect(hasChildOfType(getPicture(), "source")).toEqual(true);
+        });
       });
     });
 
@@ -103,14 +130,17 @@ describe("Image", () => {
       beforeEach(() => {
         withSupport("intersectionObserverSupport", false);
         withSupport("lazyImageLoadingSupport", false);
-        render(Image, { props: { src: sampleImage, alt: "" } });
+        render(Image, { props: defaultProps });
       });
-      it("renders with src", () => expect(getImage()).toHaveAttribute("src", sampleImage));
+      it("renders with src", () => {
+        expect(getImage()).toHaveAttribute("src", sampleImage)
+        expect(hasChildOfType(getPicture(), "source")).toEqual(true)
+      });
     });
 
     describe("when mean color of image is provided", () => {
       beforeEach(() =>
-        render(Image, { props: { src: sampleImage, alt: "", mean: sampleImageMean } }),
+        render(Image, { props: { ...defaultProps, mean: sampleImageMean } }),
       );
       it("renders a background div with the mean background color", () => {
         expect(getMeanBg()).toHaveAttribute(
@@ -125,7 +155,7 @@ describe("Image", () => {
     describe("when blurhash of image is provided", () => {
       it("renders a background canvas", () => {
         render(Image, {
-          props: { src: sampleImage, alt: "", blurhash: sampleImageBlurhash },
+          props: { ...defaultProps, blurhash: sampleImageBlurhash },
         });
         expect(getBlurBg()).toBeInTheDocument();
       });
@@ -134,7 +164,7 @@ describe("Image", () => {
     describe("when width and height is provided", () => {
       it("uses explicit width and height", () => {
         render(Image, {
-          props: { src: sampleImage, alt: "", width: sampleImageWidth, height: sampleImageHeight },
+          props: { ...defaultProps, width: sampleImageWidth, height: sampleImageHeight },
         });
         const image = getImage();
         expect(image).toHaveAttribute("width", `${sampleImageWidth}`);
