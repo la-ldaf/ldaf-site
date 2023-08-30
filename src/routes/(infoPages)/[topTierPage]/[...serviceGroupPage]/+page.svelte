@@ -68,7 +68,7 @@
 
 {#if childServiceEntries.length > 0}
   <Accordion multiselectable bordered>
-    {#each childServiceEntries as item}
+    {#each childServiceEntries as item (item.sys.id)}
       <AccordionItem title={item?.entryTitle} id={item.sys.id}>
         <ContentfulRichText
           document={item?.description?.json}
