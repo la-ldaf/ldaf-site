@@ -4,14 +4,19 @@
   import Tag from "$lib/components/Tag";
   import { getDateStringFromUTCDate } from "$lib/util/dates";
 
+  import type { Node } from "@contentful/rich-text-types";
   import type { PageServerData } from "./$types";
 
   export let entry: NonNullable<PageServerData["newsEntries"][number]>;
 
   $: ({ slug, title, body, byline, type, publicationDate } = entry);
 
-  $: if (body?.json?.content?.length) {
-    body.json.content.length = 1;
+  // Only display the first paragraph.
+  $: if (body?.json?.content) {
+    const firstParagraph = body.json.content.find(
+      (content: Node) => content.nodeType === "paragraph",
+    );
+    body.json.content = [firstParagraph];
   }
 
   $: dateString = getDateStringFromUTCDate(publicationDate);
