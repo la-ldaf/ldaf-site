@@ -12,16 +12,18 @@ export type Source = {
   srcset: Srcset;
 };
 
-export type Sources = Source[];
+export type SourcesArr = Source[];
 
-export type GetSources = (
+export type SourcesFn = (
   url: string,
   options?: {
     widths: number[];
     srcWidth?: number | null | undefined;
     srcHeight?: number | null | undefined;
   },
-) => Sources;
+) => SourcesArr;
+
+export type Sources = SourcesFn | SourcesArr;
 
 export type FixedImage = { format: Format; size: number | "original"; src: string };
 export type FixedSetOfImages = FixedImage[];

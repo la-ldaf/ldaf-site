@@ -203,7 +203,7 @@ const nodeArrayToString = (nodeArray: Node[]) => nodeArray.map(nodeToString).joi
 // The exported matchers _must not_ be arrow functions, because they depend on `this` being bound
 // dynamically
 
-export function toMatchDOMNodes<R>(
+export async function toMatchDOMNodes<R>(
   this: {
     isNot: boolean;
     utils: { diff: (a: string, b: string) => string | null };
@@ -217,17 +217,21 @@ export function toMatchDOMNodes<R>(
   const receivedNodeArray = getReceivedAsSignificantNodeArray(received);
   const expectedNodeArray = getExpectedAsSignificantNodeArray(expected);
 
+  const ignoreAttributesSet = new Set(ignoreAttributes);
+
   const pass = receivedNodeArray.reduce(
     (p, node, i) =>
       p &&
       nodesMatch(node, expectedNodeArray[i], {
-        ignoreAttributes: new Set(ignoreAttributes),
+        ignoreAttributes: ignoreAttributesSet,
       }),
     true,
   );
 
-  const actualString = prettier.format(nodeArrayToString(receivedNodeArray), { parser: "html" });
-  const expectedString = prettier.format(nodeArrayToString(expectedNodeArray), { parser: "html" });
+  const [actualString, expectedString] = await Promise.all([
+    prettier.format(nodeArrayToString(receivedNodeArray), { parser: "html" }),
+    prettier.format(nodeArrayToString(expectedNodeArray), { parser: "html" }),
+  ]);
 
   return {
     pass,

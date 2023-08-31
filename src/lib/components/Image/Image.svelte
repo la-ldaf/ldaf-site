@@ -2,14 +2,15 @@
   import "./Image.scss";
   import { browser } from "$app/environment";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
-  import { screenSizes, sizesByScreenSizeByType, type SizeType } from "$lib/constants/images";
+  import type { SizeType } from "$lib/constants/images";
   import classNames from "$lib/util/classNames";
   import IntersectionObserver from "$lib/components/IntersectionObserver";
   import warn from "$lib/util/warn";
-  import type { Loading, LazyLoading, Color, Sources, GetSources, Srcset } from "./types";
+  import type { Loading, LazyLoading, Color, Sources } from "./types";
+  import { getLazyLoadingType, getSizesAttr, getSrcsetAttr, resolveSources } from "./helpers";
 
-  export let height: number | null | undefined = undefined;
   export let width: number | null | undefined = undefined;
+  export let height: number | null | undefined = undefined;
 
   // Whether the image should fit its container
   export let fit = true;
@@ -29,74 +30,13 @@
 
   export let src: string;
 
-  const getSrcsetAttr = (srcset: Srcset): string | undefined => {
-    if (srcset.length === 0) return;
-    const hasFallback = typeof srcset[0] === "string";
-    const sourcesAndWidths = hasFallback ? srcset.slice(1) : srcset;
-    return [
-      ...sourcesAndWidths.map(([source, width]) => `${source} ${width}w`),
-      ...(hasFallback ? [`${srcset[0]} ${width}w`] : []),
-    ].join(", ");
-  };
+  let sourcesProp: Sources | undefined = undefined;
+  export { sourcesProp as sources };
 
-  export let sources: Sources | GetSources | undefined = undefined;
-
-  const getWidths = (sizeType: SizeType): number[] => {
-    const imageWidth = width;
-    const unfilteredWidths = Object.values(sizesByScreenSizeByType[sizeType]);
-    const unfilteredWidthsAndDoubleWidths = [
-      ...new Set([...unfilteredWidths, ...unfilteredWidths.map((n) => n * 2)]),
-    ].sort((a, b) => a - b);
-    if (!imageWidth) return unfilteredWidthsAndDoubleWidths;
-    return unfilteredWidthsAndDoubleWidths.filter((w) => w <= imageWidth);
-  };
-
-  const getResolvedSources = (
-    src: string,
-    sources: Sources | GetSources | undefined,
-    sizeType: SizeType | "static",
-  ): Sources => {
-    if (!sources) return [];
-    if (Array.isArray(sources)) return sources;
-    if (sizeType === "static" && !width) return [{ srcset: [src] }];
-    const widths = sizeType == "static" ? (width ? [width, width * 2] : []) : getWidths(sizeType);
-    return sources(src, { widths, srcWidth: width, srcHeight: height });
-  };
-
-  $: resolvedSources = getResolvedSources(src, sources, sizeType);
+  $: resolvedSources = resolveSources(src, sourcesProp, sizeType, width, height);
 
   let overrideSizes: string | undefined = undefined;
   export { overrideSizes as sizes };
-
-  const getSizesAttr = (sizeType: SizeType | "static", fit: boolean) => {
-    if (overrideSizes) return overrideSizes;
-    if (!fit) return `${width}px`;
-    if (sizeType === "full-bleed") return "100vw";
-    // 100vw in the following line is technically a lie but the worst it will do is load a slightly
-    // larger version of an image explicitly marked "static", all of which should have sources
-    // explicitly specified in the code.
-    if (sizeType === "static") return `(max-width: ${width}px) 100vw, ${width}px`;
-    const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
-    let lastSize: number = 0;
-    const screenSizesAndSizes: [number, number][] = [];
-    for (const screenSize of screenSizes) {
-      const size = sizesByScreenSize[screenSize];
-      if (size === lastSize) continue;
-      lastSize = size;
-      screenSizesAndSizes.push([screenSize, size]);
-    }
-    const maxSize = lastSize;
-    const sizeStrings: string[] = [];
-    for (const [screenSize, size] of screenSizesAndSizes) {
-      if (size < maxSize) {
-        sizeStrings.push(`(max-width: ${screenSize}px) ${size}px`);
-        continue;
-      }
-      sizeStrings.push(`${size}px`);
-      break;
-    }
-    return sizeStrings.join(", ");
-  };
 
   export let alt: string;
   export let loading: Loading = "lazy";
@@ -105,19 +45,6 @@
   let className: string | undefined = undefined;
   export { className as class };
   export let imageClass: string | undefined = undefined;
-
-  const getLazyLoadingType = (
-    loading: Loading,
-    lazyImageLoadingSupport: boolean,
-    intersectionObserverSupport: boolean,
-    explicitLazyLoadingType?: LazyLoading,
-  ): LazyLoading => {
-    if (explicitLazyLoadingType) return explicitLazyLoadingType;
-    if (loading !== "lazy") return "none";
-    if (lazyImageLoadingSupport) return "native";
-    if (intersectionObserverSupport) return "intersectionObserver";
-    return "none";
-  };
 
   // Used to set the lazy loading type explicitly in Storybook
   let explicitLazyLoadingType: LazyLoading | undefined = undefined;
@@ -131,9 +58,7 @@
     explicitLazyLoadingType,
   );
 
-  if (!width || !height) {
-    warn("image width or height was missing!");
-  }
+  $: if (!width || !height) warn("image width or height was missing!");
 
   $: decoding = loading === "lazy" ? ("async" as const) : ("auto" as const);
 
@@ -195,7 +120,8 @@
         : []),
     ].join("; ");
 
-  $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
+  $: styleProp =
+    getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage) || undefined;
 </script>
 
 {#key src}
@@ -225,12 +151,15 @@
       <picture>
         {#if resolvedSources && showSources}
           {#each resolvedSources as { media, type, srcset }}
-            <source
-              {media}
-              {type}
-              srcset={getSrcsetAttr(srcset)}
-              sizes={getSizesAttr(sizeType, fit)}
-            />
+            {@const srcsetAttr = getSrcsetAttr(srcset, width)}
+            {#if srcsetAttr}
+              <source
+                {media}
+                {type}
+                srcset={srcsetAttr}
+                sizes={overrideSizes ?? getSizesAttr(sizeType, fit, width)}
+              />
+            {/if}
           {/each}
         {/if}
         <!-- the only place we use an on:click on an image is as an optional alternative to a button that's also present -->

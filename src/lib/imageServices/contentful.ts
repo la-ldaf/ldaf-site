@@ -1,4 +1,4 @@
-import type { GetSources, Source } from "$lib/components/Image";
+import type { SourcesFn, Source } from "$lib/components/Image";
 import { defaultWidths, formats, quality } from "$lib/constants/images";
 
 const getURL = (url: string, format?: string, size?: number) =>
@@ -14,7 +14,7 @@ const getURL = (url: string, format?: string, size?: number) =>
 const maxAvifMegapixels = 9;
 const maxAvifPixels = maxAvifMegapixels * 1000000;
 
-export const getSources: GetSources = (
+export const getSources: SourcesFn = (
   url,
   { widths, srcWidth, srcHeight } = { widths: [...defaultWidths] },
 ) => {

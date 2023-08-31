@@ -31,7 +31,6 @@
       height={topTierPage.heroImage.imageSource.height}
       sizeType="full-bleed"
       blurhash={topTierPage.heroImage.imageSource.blurhash}
-      fit={true}
       preserveAspectRatio={false}
       loading="eager"
     />

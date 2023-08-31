@@ -4,7 +4,7 @@ export type {
   Format,
   Source,
   Sources,
-  GetSources,
+  SourcesFn,
   FixedImage,
   FixedSetOfImages,
 } from "./types";
