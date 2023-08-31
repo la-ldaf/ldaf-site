@@ -49,16 +49,13 @@
 </div>
 {#if heroImage?.imageSource?.url}
   <Image
-    class="top-tier-page-hero-image"
     src={heroImage.imageSource.url}
-    alt={heroImage.imageSource.description ?? "Hero image"}
     sources={getSources}
+    blurhash={heroImage.imageSource.blurhash}
+    alt={heroImage.imageSource.description ?? "Hero image"}
     width={heroImage.imageSource.width}
     height={heroImage.imageSource.height}
     sizeType="col-9"
-    blurhash={heroImage.imageSource.blurhash}
-    fit={true}
-    preserveAspectRatio={false}
     loading="eager"
   />
   {#if heroImage.fotogCredit}
