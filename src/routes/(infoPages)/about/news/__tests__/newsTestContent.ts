@@ -1,18 +1,4 @@
-// import type { ExtractQueryType } from "$lib/util/types";
 import chunk from "lodash/chunk";
-// import type { NewsArticlesQuery } from "../$queries.generated";
-
-// type EventCollection = ExtractQueryType<EventsQuery, ["eventEntryCollection"]>;
-// type Event = ExtractQueryType<EventCollection, ["items", number]>;
-
-// type EventOptionsKeys = never;
-// type EventOptionsNullable = Required<Pick<Event, EventOptionsKeys>>;
-// type EventOptions = {
-//   [K in keyof EventOptionsNullable]: NonNullable<EventOptionsNullable[K]>;
-// };
-
-//const baseTimestamp = Date.now() + 1 * day;
-//const getEventDateAndTime = (i: number) => new Date(baseTimestamp + i * day).toISOString();
 
 const getArticleID = (i: number) => `${1000 + i}`;
 

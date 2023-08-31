@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { months } from "$lib/constants/date";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Link from "$lib/components/Link";
   import Tag from "$lib/components/Tag";
+  import { getDateStringFromUTCDate } from "$lib/util/dates";
+
   import type { PageServerData } from "./$types";
 
   export let entry: NonNullable<PageServerData["newsEntries"][number]>;
@@ -12,11 +13,9 @@
   $: if (body?.json?.content?.length) {
     body.json.content.length = 1;
   }
-  // We only care about the date, not the timestamp.
-  // TODO: Update using work completed in #378
-  $: [date] = publicationDate ? publicationDate.split("T") : "";
-  $: [year, month, day] = date.split("-");
-  $: dateString = `${months[month - 1]} ${day.replace(/^0+/, "")}, ${year}`;
+
+  $: dateString = getDateStringFromUTCDate(publicationDate);
+
   $: isArticle = type === "News article";
 </script>
 

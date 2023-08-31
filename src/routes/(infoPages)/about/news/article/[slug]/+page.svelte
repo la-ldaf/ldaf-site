@@ -1,7 +1,6 @@
 <script lang="ts">
   import "./page.scss";
 
-  import { months } from "$lib/constants/date";
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Event from "../../../events/Event.svelte";
@@ -9,6 +8,7 @@
   import NewsEntrySnippet from "../../NewsEntrySnippet.svelte";
   import Tag from "$lib/components/Tag";
   import { getSources } from "$lib/imageServices/contentful";
+  import { getDateStringFromUTCDate } from "$lib/util/dates";
 
   export let data;
   $: ({
@@ -26,11 +26,8 @@
       relatedNewsCollection,
     },
   } = data);
-  // We only care about the date, not the timestamp.
-  // TODO: Update using work completed in #378
-  $: [date] = publicationDate ? publicationDate.split("T") : "";
-  $: [year, month, day] = date.split("-");
-  $: dateString = `${months[month - 1]} ${day.replace(/^0+/, "")}, ${year}`;
+
+  $: dateString = getDateStringFromUTCDate(publicationDate);
 
   $: isPressRelease = type === "Press release";
   $: isArticle = type === "News article";
