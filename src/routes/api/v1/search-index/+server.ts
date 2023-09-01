@@ -24,12 +24,29 @@ export const POST = async ({ request }) => {
 
   const contentTypes = ["pageMetadata"];
 
+  type TransformedFields = {
+    objectID: string;
+    sys: { id: string };
+    url?: string | null | undefined;
+    children?: string[];
+    parent?: {
+      sys: {
+        id: string;
+        linkType?: string;
+        type?: string;
+      };
+    };
+    // Unfortunately, we can't know what all of what will exist in `fields`,
+    // so we have to allow for some dynamic flexibility here
+    [key: string]: string | null | undefined | object;
+  };
+
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
       const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
       // The webhook body is missing `children` and `url`, since we construct those in `loadPageMetadataMap`.
       // We add those properties here.
-      const transformedFields = {
+      const transformedFields: TransformedFields = {
         objectID: body.sys.id,
         sys: {
           id: body.sys.id,
@@ -74,6 +91,6 @@ export const POST = async ({ request }) => {
       return json(response);
     }
   } catch (message) {
-    throw error(400, message);
+    throw error(400, message as string);
   }
 };

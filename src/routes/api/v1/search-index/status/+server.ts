@@ -1,6 +1,10 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "@sveltejs/kit";
-import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
+import {
+  loadPageMetadataMap,
+  type PageMetadataMapItem,
+  type PageMetadataMapItemWithObjectID,
+} from "$lib/loadPageMetadataMap";
 import uniq from "lodash/uniq";
 import isEqual from "lodash/isEqual";
 import algoliasearch from "algoliasearch";
@@ -13,7 +17,7 @@ const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 export const GET = (async () => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
 
-  let hits = [];
+  let hits: PageMetadataMapItem[] = [];
 
   await index.browseObjects({
     query: "",
@@ -21,7 +25,8 @@ export const GET = (async () => {
       // objectID doesn't exist on the contentful side, so remove it
       // from Algolia records so we can properly compare for mismatches
       const transformedHits = batch.map((hit) => {
-        const { objectID, ...hitWithoutObjectID } = hit;
+        const { objectID: _objectID, ...hitWithoutObjectID } =
+          hit as PageMetadataMapItemWithObjectID;
         return hitWithoutObjectID;
       });
       hits = hits.concat(transformedHits);
@@ -31,16 +36,16 @@ export const GET = (async () => {
   const algoliaMap = new Map();
   hits.forEach((hit) => algoliaMap.set(hit.sys.id, hit));
 
-  const getMismatchedKeys = (oldData, newData) => {
+  const getMismatchedKeys = (oldData: PageMetadataMapItem, newData: PageMetadataMapItem) => {
     const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
     const keys = [];
-    for (const key of data) {
+    for (const key of data as (keyof PageMetadataMapItem)[]) {
       if (!isEqual(oldData[key], newData[key])) {
         keys.push(key);
       }
     }
 
-    return keys;
+    return keys as (keyof PageMetadataMapItem)[];
   };
 
   const nullURLs = [];
@@ -73,7 +78,8 @@ export const GET = (async () => {
       const mismatchedKeys = getMismatchedKeys(algoliaValue, contentfulValue);
       mismatches.push({
         id: key,
-        mismatched_values: mismatchedKeys.map((key) => ({
+        // mismatched_values: mismatchedKeys.map((key: keyof PageMetadataMapItem) => ({
+        mismatched_values: mismatchedKeys.map((key: keyof typeof contentfulValue) => ({
           key,
           contentful_value: contentfulValue[key],
           algolia_value: algoliaValue[key],

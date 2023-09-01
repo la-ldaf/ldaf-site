@@ -16,6 +16,10 @@ export type PageMetadataMapItem = NonNullable<
   breadcrumbs?: Breadcrumbs;
 };
 
+export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
+  objectID: string;
+};
+
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
 const query = gql`
