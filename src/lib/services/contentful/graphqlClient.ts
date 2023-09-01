@@ -50,7 +50,7 @@ const getClient = ({
     key,
     async fetch<T>(
       query: string,
-      { variables = {} }: { variables?: Record<string, unknown> } = {}
+      { variables = {} }: { variables?: Record<string, unknown> } = {},
     ): Promise<T> {
       const { spaceID, environment, token, apiPrefix } = this.options;
       const url = `${apiPrefix}/${spaceID}/environments/${environment}`;
@@ -67,7 +67,7 @@ const getClient = ({
         throw new Error(
           `Got failed response with status code ${response.status} ${response.statusText}${
             errorMessage ? `\n${errorMessage}` : ""
-          }`
+          }`,
         );
       }
       const { data } = await response.json();

@@ -21,7 +21,7 @@ const getErrorMessage = (body: unknown): string | false =>
 
 const getDataMessage = (
   body: unknown,
-  { parseDevalue }: { parseDevalue: (str: string) => unknown }
+  { parseDevalue }: { parseDevalue: (str: string) => unknown },
 ): string | false => {
   if (!(!!body && typeof body === "object" && "data" in body && typeof body.data === "string")) {
     return false;

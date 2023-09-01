@@ -11,7 +11,7 @@ export default () => {
   const bundleStringRegex = /\?bundlestring$/;
   const plugins = [
     typescript(
-      process.env.NODE_ENV === "production" ? {} : { sourceMap: true, inlineSources: true }
+      process.env.NODE_ENV === "production" ? {} : { sourceMap: true, inlineSources: true },
     ),
     nodeResolve(),
     process.env.NODE_ENV === "production" && terser(),
@@ -27,8 +27,9 @@ export default () => {
         // Suppress some TS warnings that we know are irrelevant.
         onwarn: (warning, handler) => {
           const { pluginCode } = warning;
-          // TS7031 - https://github.com/microsoft/TypeScript/blob/cbf3c63ef3bb85e235092eaf5aa6035dad04b185/src/compiler/diagnosticMessages.json#L6382-L6385
-          if (pluginCode === "TS7031") return;
+          // TS7031 - https://github.com/microsoft/TypeScript/blob/e0a324b0503be479f2b33fd2e17c6e86c94d1297/src/compiler/diagnosticMessages.json#L6382-L6385
+          // TS-7006 - https://github.com/microsoft/TypeScript/blob/e0a324b0503be479f2b33fd2e17c6e86c94d1297/src/compiler/diagnosticMessages.json#L6288-L6291
+          if (pluginCode === "TS7031" || pluginCode === "TS7006") return;
           handler(warning);
         },
       });

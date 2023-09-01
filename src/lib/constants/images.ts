@@ -14,16 +14,16 @@ const [mobileScreenSizes, desktopScreenSizes] = partition(screenSizes, (n) => n 
 const mobilePadding = 32;
 
 const mobileSizesInGrid = Object.fromEntries(
-  mobileScreenSizes.map((size) => [size, size - mobilePadding])
+  mobileScreenSizes.map((size) => [size, size - mobilePadding]),
 ) as Record<ScreenSize, number>;
 
 export const defaultWidths = [...screenSizes, ...screenSizes.map((n) => n * 2)].sort(
-  (a, b) => a - b
+  (a, b) => a - b,
 );
 
 const [cardMobileScreenSizes, cardDesktopScreenSizes] = partition(screenSizes, (n) => n <= 640);
 const cardMobileSizes = Object.fromEntries(
-  cardMobileScreenSizes.map((size) => [size, size - mobilePadding - 2])
+  cardMobileScreenSizes.map((size) => [size, size - mobilePadding - 2]),
 ) as Record<ScreenSize, number>;
 
 export const sizesByScreenSizeByType: Record<SizeType, Record<ScreenSize, number>> = {

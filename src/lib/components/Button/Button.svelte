@@ -34,7 +34,7 @@
     "usa-button",
     ...variantClasses,
     unstyled && "usa-button--unstyled",
-    className
+    className,
   );
 </script>
 

@@ -36,7 +36,7 @@
 <form
   class={classNames(
     "usa-search",
-    { default: "", small: "usa-search--small", big: "usa-search--big" }[size]
+    { default: "", small: "usa-search--small", big: "usa-search--big" }[size],
   )}
   role="search"
   on:submit={onSubmit}

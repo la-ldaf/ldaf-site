@@ -17,12 +17,20 @@
 <p class="usa-intro">
   {subheading}
 </p>
-{#if description}
-  <ContentfulRichText document={description?.json} />
+{#if description?.json}
+  <ContentfulRichText
+    document={description.json}
+    links={description?.links}
+    imageSizeType="col-9"
+  />
 {/if}
-{#if servicesAndPrograms}
+{#if servicesAndPrograms?.json}
   <h2>Services</h2>
-  <ContentfulRichText document={servicesAndPrograms?.json} />
+  <ContentfulRichText
+    document={servicesAndPrograms.json}
+    links={servicesAndPrograms?.links}
+    imageSizeType="col-9"
+  />
 {/if}
 <div />
 {#if mailingAddress || contactsCollection}

@@ -5,7 +5,7 @@
   import { isEntryBlock } from "../predicates";
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
-  import Image from "$lib/components/Image/Image.svelte";
+  import Image from "$lib/components/Image";
 
   export let node: NodeType;
   if (!isEntryBlock(node)) {

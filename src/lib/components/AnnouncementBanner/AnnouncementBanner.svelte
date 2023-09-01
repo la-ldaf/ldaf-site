@@ -17,8 +17,8 @@
   <header class="usa-banner__header">
     <div class="usa-banner__inner">
       <div class="grid-col-auto">
-        <img
-          class="usa-banner__header-flag banner-icon"
+        <Icon
+          class="usa-banner__header-flag ldaf-banner__lightbulb-icon"
           src={lightbulbIcon}
           alt="Lightbulb icon"
           width={16}
@@ -27,7 +27,7 @@
       </div>
       <div class="grid-col-fill tablet:grid-col-auto ldaf-banner--announcement-text">
         <p class="usa-banner__header-text">{headerText}</p>
-        <Link {href}>{linkText}<Icon src={arrowIcon} /></Link>
+        <Link {href}>{linkText}<Icon src={arrowIcon} class="ldaf-banner__arrow-icon" /></Link>
       </div>
     </div>
   </header>

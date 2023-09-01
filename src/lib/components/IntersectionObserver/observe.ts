@@ -25,7 +25,7 @@ export type ObserveCallbacks = AnyMap<Element, ObserveCallback>;
 const unobserve = (
   observer: IntersectionObserver,
   callbacks: ObserveCallbacks,
-  target: Element
+  target: Element,
 ) => {
   callbacks.delete(target);
   observer.unobserve(target);
@@ -36,7 +36,7 @@ const observe = (
   callbacks: ObserveCallbacks,
   target: Element,
   callback: ObserveCallback,
-  options: ObserveOptions = {}
+  options: ObserveOptions = {},
 ) => {
   const { once } = resolveOptions(options);
 
@@ -67,7 +67,7 @@ export type RootObserver = {
 };
 
 export const getRootObserver = (
-  options: IntersectionObserverInit = {}
+  options: IntersectionObserverInit = {},
 ): RootObserver | undefined => {
   const callbacks = new WeakMap<Element, ObserveCallback>();
   if (typeof IntersectionObserver === "undefined") return;

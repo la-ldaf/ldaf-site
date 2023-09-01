@@ -54,7 +54,7 @@
   const getResolvedSources = (
     src: string,
     sources: Sources | GetSources | undefined,
-    sizeType: SizeType | "static"
+    sizeType: SizeType | "static",
   ): Sources => {
     if (!sources) return [];
     if (Array.isArray(sources)) return sources;
@@ -69,12 +69,12 @@
   export { overrideSizes as sizes };
 
   const getSizesAttr = (sizeType: SizeType | "static", fit: boolean) => {
-    // 100vw in the following line is technically a lie but the worst it will do is load a slightly
-    // larger version of an image explicitly marked "static", all of which should have sources
-    // explicitly specified in the code.
     if (overrideSizes) return overrideSizes;
     if (!fit) return `${width}px`;
     if (sizeType === "full-bleed") return "100vw";
+    // 100vw in the following line is technically a lie but the worst it will do is load a slightly
+    // larger version of an image explicitly marked "static", all of which should have sources
+    // explicitly specified in the code.
     if (sizeType === "static") return `(max-width: ${width}px) 100vw, ${width}px`;
     const sizesByScreenSize = sizesByScreenSizeByType[sizeType];
     let lastSize: number = 0;
@@ -110,7 +110,7 @@
     loading: Loading,
     lazyImageLoadingSupport: boolean,
     intersectionObserverSupport: boolean,
-    explicitLazyLoadingType?: LazyLoading
+    explicitLazyLoadingType?: LazyLoading,
   ): LazyLoading => {
     if (explicitLazyLoadingType) return explicitLazyLoadingType;
     if (loading !== "lazy") return "none";
@@ -128,7 +128,7 @@
     loading,
     lazyImageLoadingSupport,
     intersectionObserverSupport,
-    explicitLazyLoadingType
+    explicitLazyLoadingType,
   );
 
   if (!width || !height) {
@@ -185,7 +185,7 @@
     height: number | null | undefined,
     fit: boolean,
     preserveAspectRatio: boolean,
-    canUpscaleImage: boolean
+    canUpscaleImage: boolean,
   ) =>
     [
       ...(width && !canUpscaleImage ? [`max-width: ${width}px`] : []),
@@ -212,7 +212,7 @@
         "ldaf-img",
         "ldaf-img__container",
         loading === "eager" && "ldaf-img__eager",
-        className
+        className,
       )}
       bind:this={thisContainer}
       style={styleProp}
@@ -233,6 +233,8 @@
             />
           {/each}
         {/if}
+        <!-- the only place we use an on:click on an image is as an optional alternative to a button that's also present -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <img
           {...imgProps}
           alt=""
@@ -240,9 +242,11 @@
             "ldaf-img__img",
             fit && "ldaf-img__img-fit",
             imageLoadClass,
-            imageClass
+            imageClass,
           )}
           on:load={() => (imageLoaded = true)}
+          on:click
+          on:keydown
           {loading}
           {decoding}
           {...srcProps}
@@ -261,7 +265,7 @@
         <div
           class="ldaf-img__color-bg"
           style={`background-color: rgb(${Math.round(mean.r)}, ${Math.round(mean.g)}, ${Math.round(
-            mean.b
+            mean.b,
           )});`}
         />
       {/if}

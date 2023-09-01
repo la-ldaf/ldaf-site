@@ -26,6 +26,9 @@
         <Link href="/plants/pesticides">Pesticide licensing and registration</Link>
       </li>
       <li>
+        <Link href="/plants/seeds/seed-dealers">Seed dealer licensing</Link>
+      </li>
+      <li>
         <Link href="/business/pest-control/pest-control-licensing"
           >Structural pest control licensing and registration</Link
         >

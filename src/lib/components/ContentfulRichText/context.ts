@@ -13,7 +13,7 @@ const getAssetEntriesMap = (links: Links, key: "block" | "hyperlink") => {
 
 export const createLinksContext = (
   links: Links,
-  pageMetadataMap: PageMetadataMap
+  pageMetadataMap: PageMetadataMap,
 ): LinksContext => {
   return {
     pageMetadataMap,

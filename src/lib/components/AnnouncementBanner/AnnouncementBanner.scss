@@ -18,7 +18,7 @@
     width: fit-content;
   }
 
-  .banner-icon {
+  .ldaf-banner__lightbulb-icon {
     height: auto;
     // TODO: switch to fill: $base-ink once the Icon component
     // supports recoloring (see https://ldaf.atlassian.net/browse/LDAF-327)
@@ -32,7 +32,7 @@
     align-items: center;
   }
 
-  .usa-icon {
+  .ldaf-banner__arrow-icon {
     // TODO: change this to `fill: $primary-lighter` once
     // https://ldaf.atlassian.net/browse/LDAF-327 is done.
     filter: brightness(0) saturate(100%) invert(58%) sepia(99%) saturate(396%) hue-rotate(185deg)

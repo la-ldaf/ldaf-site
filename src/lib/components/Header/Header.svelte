@@ -55,7 +55,7 @@
         class:search-page={$page.url.pathname === "/search"}
       >
         <ul class="usa-nav__secondary-links">
-          {#each secondaryNavItems as item, i (item.id)}
+          {#each secondaryNavItems as item (item.id)}
             {@const { name, link } = item}
             <li class="usa-nav__secondary-item">
               <Link href={link}>{name}</Link>
@@ -65,11 +65,7 @@
 
         {#if $page.url.pathname !== "/search"}
           <section aria-label="Search component">
-            <Search
-              size="small"
-              id="ldaf-header-search"
-              on:submit={(event) => console.log({ searchTerm: event.detail.searchTerm })}
-            />
+            <Search size="small" id="ldaf-header-search" />
           </section>
         {/if}
       </div>

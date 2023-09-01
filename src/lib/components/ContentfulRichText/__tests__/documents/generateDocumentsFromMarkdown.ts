@@ -61,11 +61,11 @@ const printDocument = (document: Document, links: Links) =>
   });
 
 const markdownDocumentFilenames = (await fs.readdir(__dirname)).filter((filename) =>
-  filename.endsWith(".md")
+  filename.endsWith(".md"),
 );
 
 const markdownToDocumentAndLinks = async (
-  markdown: string
+  markdown: string,
 ): Promise<{ document: Document; links: Links }> => {
   const links: Links = {
     assets: {
@@ -127,7 +127,7 @@ const newFilePromises = markdownDocumentFilenames.map(async (filename) => {
     console.log(`${filename}: processing rich text to JSON`);
     const rawJSON = JSON.stringify({ document: richText, links });
     console.log(`${filename}: pretty printing JSON`);
-    jsonString = prettier.format(rawJSON, { parser: "json", printWidth: 100 });
+    jsonString = await prettier.format(rawJSON, { parser: "json", printWidth: 100 });
   } catch (err) {
     throw new Error(`failed to process ${filename}`, { cause: err });
   }
@@ -144,7 +144,7 @@ const newFilePromises = markdownDocumentFilenames.map(async (filename) => {
     console.log(`${filename}: compiling document to HTML`);
     const rawHTML = printDocument(richText, links);
     console.log(`${filename}: pretty printing HTML`);
-    html = prettier.format(rawHTML, { parser: "html", printWidth: 100 });
+    html = await prettier.format(rawHTML, { parser: "html", printWidth: 100 });
   } catch (err) {
     throw new Error(`failed to generate HTML document from ${filename}`);
   }

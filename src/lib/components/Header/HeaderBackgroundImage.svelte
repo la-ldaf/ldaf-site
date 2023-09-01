@@ -20,7 +20,7 @@
       acc[i % 3].push(url);
       return acc;
     },
-    [[], [], []] as [string[], string[], string[]]
+    [[], [], []] as [string[], string[], string[]],
   );
 
   const jpegSrcset: Srcset = [jpegFallback, ...getSrcset(resizedJPEGs)];
