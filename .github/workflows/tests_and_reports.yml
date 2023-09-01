@@ -30,6 +30,9 @@ jobs:
   lint-and-unit-tests:
     name: "ESLint, TypeScript Check, and Unit Tests"
     runs-on: ubuntu-latest
+    env:
+      ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+      AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
