@@ -2,6 +2,7 @@ import { json, error } from "@sveltejs/kit";
 import algoliasearch from "algoliasearch";
 import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
 import { ALGOLIA_API_KEY } from "$env/static/private";
+import { authenticateRequest } from "$lib/services/server";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
@@ -14,6 +15,8 @@ const CONTENTFUL_ACTIONS = {
 };
 
 export const POST = async ({ request }) => {
+  authenticateRequest(request);
+
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();

@@ -3,6 +3,8 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import algoliasearch from "algoliasearch";
 import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
 import { ALGOLIA_API_KEY } from "$env/static/private";
+import { authenticateRequest } from "$lib/services/server";
+
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
 /**
@@ -12,7 +14,9 @@ const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
  * of the previous object value with the current value in contentful
  * TODO: secure this somehow to prevent unnecessary operations
  **/
-export const POST = async () => {
+export const POST = async ({ request }) => {
+  authenticateRequest(request);
+
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
   const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
