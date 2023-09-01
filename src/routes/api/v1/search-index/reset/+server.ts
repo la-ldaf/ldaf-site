@@ -25,7 +25,7 @@ export const POST = async ({ request }) => {
    * (i.e., omit the home page and any null urls)
    */
   const metadataValues = Array.from(pageMetadataMap.values()).filter(
-    (page) => page.url && !page.isRoot
+    (page) => page.url && !page.isRoot,
   );
 
   const algoliaRecords = metadataValues.map((metadataValue) => {
