@@ -22,7 +22,7 @@ export const GET = (async () => {
   await index.browseObjects({
     query: "",
     batch: (batch) => {
-      // objectID doesn't exist on the contentful side, so remove it
+      // objectID doesn't exist on the Contentful side, so remove it
       // from Algolia records so we can properly compare for mismatches
       const transformedHits = batch.map((hit) => {
         const { objectID: _objectID, ...hitWithoutObjectID } =
@@ -78,7 +78,6 @@ export const GET = (async () => {
       const mismatchedKeys = getMismatchedKeys(algoliaValue, contentfulValue);
       mismatches.push({
         id: key,
-        // mismatched_values: mismatchedKeys.map((key: keyof PageMetadataMapItem) => ({
         mismatched_values: mismatchedKeys.map((key: keyof typeof contentfulValue) => ({
           key,
           contentful_value: contentfulValue[key],
