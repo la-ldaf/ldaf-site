@@ -20,7 +20,7 @@ export const POST = async ({ request }) => {
   const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
-  const contentType = body.sys.contentType.sys.id;
+  const contentType = body?.sys?.contentType?.sys?.id;
 
   const contentTypes = ["pageMetadata"];
 
@@ -36,7 +36,8 @@ export const POST = async ({ request }) => {
         type?: string;
       };
     };
-    // Unfortunately, we can't know what all of what will exist in `fields`,
+    // Unfortunately, we can't know what all of what will exist in the the `fields`
+    // property from Contentful (especially once we're adding Service Entries),
     // so we have to allow for some dynamic flexibility here
     [key: string]: string | null | undefined | object;
   };
@@ -44,8 +45,8 @@ export const POST = async ({ request }) => {
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
       const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
-      // The webhook body is missing `children` and `url`, since we construct those in `loadPageMetadataMap`.
-      // We add those properties here.
+      // The webhook body is missing `children` and `url`, since we
+      // construct those in `loadPageMetadataMap`. Add those properties here.
       const transformedFields: TransformedFields = {
         objectID: body.sys.id,
         sys: {
@@ -55,8 +56,8 @@ export const POST = async ({ request }) => {
         children: contentfulValue?.children,
       };
       for (const field in body.fields) {
-        // The webhook body unfortunately prefaces each field with its local value,
-        // so we need to flatten that.
+        // The webhook body unfortunately prefaces each field with a sub-property equal to
+        // the locale value, so we need to flatten that first.
         const englishValue = body.fields[field]["en-US"];
         transformedFields[field] = englishValue;
       }
@@ -90,6 +91,9 @@ export const POST = async ({ request }) => {
       const response = await index.deleteObject(body.sys.id);
       return json(response);
     }
+
+    // Fall-through response if the request body doesn't result in any Algolia updates.
+    return json("No action taken on the supplied request body.");
   } catch (message) {
     throw error(400, message as string);
   }
