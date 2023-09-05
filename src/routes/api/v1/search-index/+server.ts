@@ -24,7 +24,7 @@ export const POST = async ({ request }) => {
 
   const contentTypes = ["pageMetadata"];
 
-  type TransformedFields = {
+  type AlgoliaMetadataRecord = {
     objectID: string;
     sys: { id: string };
     url?: string | null | undefined;
@@ -47,7 +47,7 @@ export const POST = async ({ request }) => {
       const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
       // The webhook body is missing `children` and `url`, since we
       // construct those in `loadPageMetadataMap`. Add those properties here.
-      const transformedFields: TransformedFields = {
+      const transformedFields: AlgoliaMetadataRecord = {
         objectID: body.sys.id,
         sys: {
           id: body.sys.id,
