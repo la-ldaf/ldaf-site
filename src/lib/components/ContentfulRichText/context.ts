@@ -5,11 +5,10 @@ import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 export const linksKey = Symbol("contentfulRichTextLinks");
 
 const getAssetLinksMap = (links: Links, key: "block" | "hyperlink") =>
-  new Map(links.assets[key]?.flatMap((link) => (link ? [[link?.sys?.id, link]] : [])));
+  new Map(links.assets?.[key]?.flatMap((link) => (link ? [[link?.sys?.id, link]] : [])));
 
-const getAssetEntriesMap = (links: Links, key: "block" | "hyperlink") => {
-  return new Map(links.entries?.[key]?.flatMap((link) => (link ? [[link?.sys?.id, link]] : [])));
-};
+const getAssetEntriesMap = (links: Links, key: "block" | "hyperlink") =>
+  new Map(links.entries?.[key]?.flatMap((link) => (link ? [[link?.sys?.id, link]] : [])));
 
 export const createLinksContext = (
   links: Links,

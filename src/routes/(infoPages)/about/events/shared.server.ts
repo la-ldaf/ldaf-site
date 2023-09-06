@@ -90,7 +90,6 @@ export const loadEventsPage = async ({
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testEvents.length / limit),
         events: testEventPages[pageNumber - 1].items,
-        totalEvents: testEvents.length,
         breadcrumbs: breadcrumbsPromise,
       };
     }
@@ -119,7 +118,6 @@ export const loadEventsPage = async ({
       currentPageNumber: pageNumber,
       totalPages: Math.ceil(eventsData.eventEntryCollection.total / limit),
       events: eventsData.eventEntryCollection.items,
-      totalEvents: eventsData.eventEntryCollection.total,
     };
   }
   throw error(404);

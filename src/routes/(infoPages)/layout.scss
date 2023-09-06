@@ -1,3 +1,14 @@
 .top-tier-page-hero-image {
   height: 33vh;
 }
+
+// TODO: If we create an EventList component, this should go there instead.
+// Not included on the homepage since (if we were to use it there) we would
+//   likely want to style it to be more compact.
+.ldaf-events-list-container {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 18px;
+}
