@@ -10,12 +10,14 @@ import {
   newsEntries as testNewsEntries,
   pages as testNewsEntryPages,
 } from "./__tests__/newsTestContent";
+import imagePropsFragment from "$lib/fragments/imageProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 
 const limit = 10;
 
 export const query = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
+  ${imagePropsFragment}
   ${entryPropsFragment}
   query NewsEntries($limit: Int = 10, $skip: Int = 0) {
     newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC]) {
@@ -31,7 +33,13 @@ export const query = gql`
           json
           links {
             # Only including hyperlinks since we should only be displaying the
-            #   first paragraph node in the rich text field.
+            #   first paragraph node in the rich text field, i.e. no other
+            #   blocks will be embedded.
+            assets {
+              hyperlink {
+                ...ImageProps
+              }
+            }
             entries {
               hyperlink {
                 ...EntryProps
