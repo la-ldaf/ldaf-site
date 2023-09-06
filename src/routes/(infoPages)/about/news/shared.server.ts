@@ -10,14 +10,12 @@ import {
   newsEntries as testNewsEntries,
   pages as testNewsEntryPages,
 } from "./__tests__/newsTestContent";
-import imagePropsFragment from "$lib/fragments/imageProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 
 const limit = 10;
 
 export const query = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${imagePropsFragment}
   ${entryPropsFragment}
   query NewsEntries($limit: Int = 10, $skip: Int = 0) {
     newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC]) {
@@ -32,18 +30,9 @@ export const query = gql`
         body {
           json
           links {
-            assets {
-              block {
-                ...ImageProps
-              }
-              hyperlink {
-                ...ImageProps
-              }
-            }
+            # Only including hyperlinks since we should only be displaying the
+            #   first paragraph node in the rich text field.
             entries {
-              block {
-                ...EntryProps
-              }
               hyperlink {
                 ...EntryProps
               }
@@ -85,7 +74,6 @@ export const loadNewsPage = async ({
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testNewsEntries.length / limit),
         newsEntries: testNewsEntryPages[pageNumber - 1].items,
-        totalNewsEntries: testNewsEntries.length,
         breadcrumbs: breadcrumbsPromise,
       };
     }
@@ -110,7 +98,6 @@ export const loadNewsPage = async ({
       currentPageNumber: pageNumber,
       totalPages: Math.ceil(newsData.newsCollection.total / limit),
       newsEntries: newsData.newsCollection.items,
-      totalNewsEntries: newsData.newsCollection.total,
     };
   }
   throw error(404);
