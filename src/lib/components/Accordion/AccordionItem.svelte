@@ -3,6 +3,7 @@
 
   export let id: string;
   export let title: string | null | undefined = "Title";
+  export let onClickAnalyticsHandler: ((expanded: boolean) => void) | null = null;
 
   let ref: HTMLElement | null = null;
 
@@ -24,6 +25,9 @@
       if (expanded && ref && ref.getBoundingClientRect().top < 0) {
         ref.scrollIntoView();
       }
+    }}
+    on:click={() => {
+      if (onClickAnalyticsHandler) onClickAnalyticsHandler(expanded);
     }}
   >
     {title}

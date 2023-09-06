@@ -1,4 +1,6 @@
+import { join } from "path";
 import { sveltekit } from "@sveltejs/kit/vite";
+import { partytownVite } from "@builder.io/partytown/utils";
 import svg from "@poppanator/sveltekit-svg";
 import type { PluginOption } from "vite";
 import { purgeCss } from "vite-plugin-svelte-purgecss";
@@ -10,6 +12,10 @@ import bundlestring from "./vite-plugin-import-as-bundle-string";
 
 const plugins: PluginOption[] = [
   sveltekit(),
+  // https://partytown.builder.io/sveltekit
+  partytownVite({
+    dest: join(process.cwd(), ".svelte-kit/output/client/~partytown"),
+  }),
   svg(),
   blurhash(),
   imagetools(),

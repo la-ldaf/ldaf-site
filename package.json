@@ -53,6 +53,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/svelte": "^4.0.3",
     "@testing-library/user-event": "^14.4.3",
+    "@types/gtag.js": "^0.0.13",
     "@types/prettier": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
@@ -92,6 +93,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@builder.io/partytown": "^0.8.0",
     "@contentful/rich-text-types": "^16.0.3",
     "@poppanator/sveltekit-svg": "^4.1.0",
     "@uswds/uswds": "^3.4.1",
