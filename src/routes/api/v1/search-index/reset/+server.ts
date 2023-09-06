@@ -12,7 +12,6 @@ const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
  * Since it requires each record to have an objectID, a reset call won't result
  * in any duplication of metadata records in the Algolia index, just a replacement
  * of the previous object value with the current value in contentful
- * TODO: secure this somehow to prevent unnecessary operations
  **/
 export const POST = async ({ request }) => {
   authenticateRequest(request);
