@@ -7,7 +7,7 @@ import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
-import imageProps from "$lib/fragments/imageProps";
+import assetProps from "$lib/fragments/assetProps";
 
 import type { HomeCollectionQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
@@ -17,13 +17,13 @@ import type { YoutubeVideoData } from "$lib/services/server/youtube/getYoutubeVi
 import type { ResourceLinks } from "$lib/components/ResourceLinks";
 
 const query = gql`
-  ${imageProps}
+  ${assetProps}
 
   fragment ImageWrapperProps on ImageWrapper {
     altText
     linkedImage {
       ... on Asset {
-        ...ImageProps
+        ...AssetProps
       }
     }
   }
@@ -65,7 +65,7 @@ const query = gql`
             subheading
             heroImage {
               imageSource {
-                ...ImageProps
+                ...AssetProps
               }
             }
           }

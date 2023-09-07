@@ -7,12 +7,12 @@ import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
 import type { DefaultPressReleaseContactInfoQuery, NewsQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
-import imagePropsFragment from "$lib/fragments/imageProps";
+import assetPropsFragment from "$lib/fragments/assetProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 
 const newsQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${imagePropsFragment}
+  ${assetPropsFragment}
   ${entryPropsFragment}
   query News($slug: String!) {
     newsCollection(limit: 1, where: { slug: $slug }) {
@@ -48,10 +48,10 @@ const newsQuery = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {
@@ -85,10 +85,10 @@ const newsQuery = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {
