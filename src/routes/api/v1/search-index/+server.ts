@@ -82,7 +82,6 @@ export const POST = async ({ request }) => {
        * - If the objectID is specified but doesn’t exist, Algolia creates a new record
        * - If the objectID isn’t specified, the method returns an error
        */
-      console.log(transformedFields);
       const response = await index.partialUpdateObject(transformedFields, {
         createIfNotExists: true,
       });
