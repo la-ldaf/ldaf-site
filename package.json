@@ -36,7 +36,7 @@
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@playwright/test": "^1.37.1",
-    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.1",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.2",
     "@storybook/addon-essentials": "^7.3.1",
