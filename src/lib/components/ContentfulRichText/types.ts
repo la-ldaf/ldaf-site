@@ -60,11 +60,11 @@ export type RenderableAssetHyperlink = RenderableAssetBlock;
 export type RenderableEntryHyperlink = RenderableEntryBlock;
 
 export type Links = {
-  assets: {
+  assets?: {
     block?: (RenderableAssetBlock | null)[];
     hyperlink?: (RenderableAssetHyperlink | null)[];
   };
-  entries: {
+  entries?: {
     block?: (RenderableEntryBlock | null)[];
     hyperlink?: (RenderableEntryHyperlink | null)[];
   };

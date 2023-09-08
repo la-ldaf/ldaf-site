@@ -28,3 +28,8 @@ body {
     }
   }
 }
+
+/* Override the max-width on paragraphs set by the USWDS */
+.usa-prose > p {
+  max-width: none;
+}
