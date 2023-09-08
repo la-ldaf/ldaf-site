@@ -16,6 +16,7 @@ export type PageMetadataMapItem = NonNullable<
   breadcrumbs?: Breadcrumbs;
 };
 
+// This type is used for search indexing in /api/v1/* endpoints
 export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
   objectID: string;
 };

@@ -8,10 +8,10 @@ import { authenticateRequest } from "$lib/services/server";
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
 /**
- * This endpoint does a wholesale reset of the page metadata map in Algolia.
- * Since it requires each record to have an objectID, a reset call won't result
+ * This endpoint does a wholesale reset of the page metadata values in Algolia.
+ * Since it requires each record to have an objectID, a reset call *won't* result
  * in any duplication of metadata records in the Algolia index, just a replacement
- * of the previous object value with the current value in contentful
+ * of the previous object value with the current value in Contentful
  **/
 export const POST = async ({ request }) => {
   authenticateRequest(request);
@@ -43,7 +43,18 @@ export const POST = async ({ request }) => {
   });
 
   try {
-    // TODO: investigate changing to `index.replaceAllObjects` for a "hard" reset
+    /**
+     * `index.saveObjects` adds new records (objects) to an index or replaces existing records
+     *  with an updated set of attributes. It redefines all of a record’s attributes (except
+     * its objectID). In other words, it fully replaces an existing record.
+     *
+     * Note: If there’s an error saving one of the records,
+     * *none* of them will be added to the index.
+     *
+     * We're using this in lieu of `index.replaceAllObjects`, which is a "hard" reset of the index.
+     * In the future, we want to add more than just pageMetadata records to the index.
+     * In that case, `replaceAllObjects` might wipe out other records presently not replaced here.
+     */
     const response = await index.saveObjects(algoliaRecords);
 
     return json(response);
