@@ -10,7 +10,7 @@ const vitePluginLDAFIcon = async () => {
     const iconPathWithinImg = iconPath.replace(/^node_modules\/@uswds\/uswds\/dist\/img\//, "");
     return [path.basename(iconPath).split(".")[0].replace(/^.+\//, ""), iconPathWithinImg];
   });
-  const iconNames = iconNamesAndPathsWithinImgDir.map(([name]) => name);
+  const iconNames = iconNamesAndPathsWithinImgDir.map(([name]) => name).sort();
   const iconPathsWithinImgByName = Object.fromEntries(iconNamesAndPathsWithinImgDir);
   return {
     name: "vite-plugin-ldaf-icon",

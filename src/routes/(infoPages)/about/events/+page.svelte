@@ -8,7 +8,8 @@
 
 <h1>All events</h1>
 
-<div class="events">
+<!-- See src/routes/(infoPages)/layout.scss for styling. -->
+<div class="ldaf-events-list-container">
   {#each events as event}
     <Event {event} />
   {/each}
@@ -19,13 +20,3 @@
   {totalPages}
   getPageLink={(page) => `/about/events/page/${page}`}
 />
-
-<style>
-  .events {
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-bottom: 18px;
-  }
-</style>

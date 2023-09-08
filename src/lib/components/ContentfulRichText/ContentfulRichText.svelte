@@ -22,7 +22,7 @@
   $: pageMetadataMap = getContext<PageMetadataMap>(pageMetadataMapKey);
   $: setContext<LinksContext | undefined>(
     linksKey,
-    links ? createLinksContext(links, pageMetadataMap) : links
+    links ? createLinksContext(links, pageMetadataMap) : links,
   );
 
   export let blurhashes: Record<string, string> | null | undefined = undefined;

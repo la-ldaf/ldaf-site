@@ -1,11 +1,14 @@
 <script lang="ts">
+  import "../app.scss";
+
   import type { PageMetadataMap, PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 
   import { setContext } from "svelte";
   import { afterNavigate } from "$app/navigation";
   import { navigating, page } from "$app/stores";
+  import { browser } from "$app/environment";
 
-  import "../app.scss";
+  import { webVitals } from "$lib/vitals";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
@@ -20,7 +23,16 @@
     footerNavItems,
     siteTitle,
     pageMetadataMap,
+    analyticsID,
   } = data);
+
+  $: if (browser && analyticsID) {
+    webVitals({
+      path: $page.url.pathname,
+      params: $page.params,
+      analyticsID,
+    });
+  }
 
   $: ({ pageMetadata } = $page.data);
 
@@ -40,10 +52,10 @@
   let activeNavItemIndex = -1;
   $: {
     activeNavItemIndex = headerPrimaryNavItems.findIndex(
-      (item) => "link" in item && item.link === $page.url.pathname
+      (item) => "link" in item && item.link === $page.url.pathname,
     );
     headerPrimaryNavItems.forEach(
-      (_, i) => (headerPrimaryNavItems[i].current = i === activeNavItemIndex)
+      (_, i) => (headerPrimaryNavItems[i].current = i === activeNavItemIndex),
     );
   }
 
@@ -62,7 +74,7 @@
     <meta name="twitter:description" content={pageMetadata.metaDescription} />
   {/if}
   {#if pageMetadata?.url}
-    <meta name="og:url" content={`https://ldaf.la.gov${pageMetadata.url}`} />
+    <meta name="og:url" content={`https://www.ldaf.la.gov${pageMetadata.url}`} />
   {/if}
   <meta name="og:site_name" content="Louisiana Department of Agriculture and Forestry" />
   <!-- TODO: We could use our Contentful content types here instead. -->

@@ -764,6 +764,7 @@ type ContactLinkingCollections {
   boardsAndCommissionsCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsBoardsAndCommissionsCollectionOrder], preview: Boolean, skip: Int = 0): BoardsAndCommissionsCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   eventEntryCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsEventEntryCollectionOrder], preview: Boolean, skip: Int = 0): EventEntryCollection
+  newsCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsNewsCollectionOrder], preview: Boolean, skip: Int = 0): NewsCollection
   officePageCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsOfficePageCollectionOrder], preview: Boolean, skip: Int = 0): OfficePageCollection
   pressReleaseCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
   serviceEntryCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsServiceEntryCollectionOrder], preview: Boolean, skip: Int = 0): ServiceEntryCollection
@@ -806,6 +807,31 @@ enum ContactLinkingCollectionsEventEntryCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+enum ContactLinkingCollectionsNewsCollectionOrder {
+  byline_ASC
+  byline_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  publicationDate_ASC
+  publicationDate_DESC
+  slug_ASC
+  slug_DESC
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
 }
 
 enum ContactLinkingCollectionsOfficePageCollectionOrder {
@@ -1492,7 +1518,33 @@ input EventEntryFilter {
 
 type EventEntryLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  newsCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsNewsCollectionOrder], preview: Boolean, skip: Int = 0): NewsCollection
   pressReleaseCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
+}
+
+enum EventEntryLinkingCollectionsNewsCollectionOrder {
+  byline_ASC
+  byline_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  publicationDate_ASC
+  publicationDate_DESC
+  slug_ASC
+  slug_DESC
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
 }
 
 enum EventEntryLinkingCollectionsPressReleaseCollectionOrder {
@@ -1589,6 +1641,7 @@ input HeroImageFilter {
 type HeroImageLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   newsArticleCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsNewsArticleCollectionOrder], preview: Boolean, skip: Int = 0): NewsArticleCollection
+  newsCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsNewsCollectionOrder], preview: Boolean, skip: Int = 0): NewsCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   topTierCollection(limit: Int = 100, locale: String, order: [HeroImageLinkingCollectionsTopTierCollectionOrder], preview: Boolean, skip: Int = 0): TopTierCollection
 }
@@ -1608,6 +1661,31 @@ enum HeroImageLinkingCollectionsNewsArticleCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+enum HeroImageLinkingCollectionsNewsCollectionOrder {
+  byline_ASC
+  byline_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  publicationDate_ASC
+  publicationDate_DESC
+  slug_ASC
+  slug_DESC
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
 }
 
 enum HeroImageLinkingCollectionsServiceGroupCollectionOrder {
@@ -1666,13 +1744,17 @@ scalar HexColor
 The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home)
 """
 type Home implements Entry {
+  commissionerBackground(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
+  commissionerByline(locale: String): String
+  commissionerGreeting(locale: String): HomeCommissionerGreeting
+  commissionerHeadshot(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
   contentfulMetadata: ContentfulMetadata!
   featuredServiceCardsCollection(limit: Int = 100, locale: String, order: [HomeFeaturedServiceCardsCollectionOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): HomeFeaturedServiceCardsCollection
   heroVideo(locale: String, preview: Boolean, where: VideoWrapperFilter): VideoWrapper
   internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): HomeLinkingCollections
   pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
-  popularResourcesListCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: HomePopularResourcesListFilter): HomePopularResourcesListCollection
+  popularResourcesListCollection(limit: Int = 100, locale: String, order: [HomePopularResourcesListCollectionOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): HomePopularResourcesListCollection
   promotionalCardsCollection(limit: Int = 100, locale: String, order: [HomePromotionalCardsCollectionOrder], preview: Boolean, skip: Int = 0, where: PromoBannerWithCtaFilter): HomePromotionalCardsCollection
   sys: Sys!
 }
@@ -1682,6 +1764,32 @@ type HomeCollection {
   limit: Int!
   skip: Int!
   total: Int!
+}
+
+type HomeCommissionerGreeting {
+  json: JSON!
+  links: HomeCommissionerGreetingLinks!
+}
+
+type HomeCommissionerGreetingAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type HomeCommissionerGreetingEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type HomeCommissionerGreetingLinks {
+  assets: HomeCommissionerGreetingAssets!
+  entries: HomeCommissionerGreetingEntries!
+  resources: HomeCommissionerGreetingResources!
+}
+
+type HomeCommissionerGreetingResources {
+  block: [ResourceLink!]!
 }
 
 type HomeFeaturedServiceCardsCollection {
@@ -1711,6 +1819,20 @@ enum HomeFeaturedServiceCardsCollectionOrder {
 input HomeFilter {
   AND: [HomeFilter]
   OR: [HomeFilter]
+  commissionerBackground: cfImageWrapperNestedFilter
+  commissionerBackground_exists: Boolean
+  commissionerByline: String
+  commissionerByline_contains: String
+  commissionerByline_exists: Boolean
+  commissionerByline_in: [String]
+  commissionerByline_not: String
+  commissionerByline_not_contains: String
+  commissionerByline_not_in: [String]
+  commissionerGreeting_contains: String
+  commissionerGreeting_exists: Boolean
+  commissionerGreeting_not_contains: String
+  commissionerHeadshot: cfImageWrapperNestedFilter
+  commissionerHeadshot_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   featuredServiceCards: cfServiceGroupNestedFilter
   featuredServiceCardsCollection_exists: Boolean
@@ -1725,7 +1847,7 @@ input HomeFilter {
   internalTitle_not_in: [String]
   pageMetadata: cfPageMetadataNestedFilter
   pageMetadata_exists: Boolean
-  popularResourcesList: cfpopularResourcesListMultiTypeNestedFilter
+  popularResourcesList: cfServiceGroupNestedFilter
   popularResourcesListCollection_exists: Boolean
   promotionalCards: cfPromoBannerWithCtaNestedFilter
   promotionalCardsCollection_exists: Boolean
@@ -1737,6 +1859,8 @@ type HomeLinkingCollections {
 }
 
 enum HomeOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
   internalTitle_ASC
   internalTitle_DESC
   sys_firstPublishedAt_ASC
@@ -1750,23 +1874,28 @@ enum HomeOrder {
 }
 
 type HomePopularResourcesListCollection {
-  items: [HomePopularResourcesListItem]!
+  items: [ServiceGroup]!
   limit: Int!
   skip: Int!
   total: Int!
 }
 
-input HomePopularResourcesListFilter {
-  AND: [HomePopularResourcesListFilter]
-  OR: [HomePopularResourcesListFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  description_contains: String
-  description_exists: Boolean
-  description_not_contains: String
-  sys: SysFilter
+enum HomePopularResourcesListCollectionOrder {
+  serviceListName_ASC
+  serviceListName_DESC
+  subheading_ASC
+  subheading_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
 }
-
-union HomePopularResourcesListItem = ServiceEntry | ServiceGroup
 
 type HomePromotionalCardsCollection {
   items: [PromoBannerWithCta]!
@@ -1962,7 +2091,23 @@ input ImageWrapperFilter {
 
 type ImageWrapperLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  homeCollection(limit: Int = 100, locale: String, order: [ImageWrapperLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
   promoBannerWithCtaCollection(limit: Int = 100, locale: String, order: [ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionOrder], preview: Boolean, skip: Int = 0): PromoBannerWithCtaCollection
+}
+
+enum ImageWrapperLinkingCollectionsHomeCollectionOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
+  internalTitle_ASC
+  internalTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum ImageWrapperLinkingCollectionsPromoBannerWithCtaCollectionOrder {
@@ -2274,6 +2419,29 @@ enum MenuOrder {
 }
 
 """
+A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news)
+"""
+type News implements Entry {
+  body(locale: String): NewsBody
+  byline(locale: String): String
+  contactInformationCollection(limit: Int = 100, locale: String, order: [NewsContactInformationCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): NewsContactInformationCollection
+  contentfulMetadata: ContentfulMetadata!
+  heroImage(locale: String, preview: Boolean, where: HeroImageFilter): HeroImage
+  linkedFrom(allowedLocales: [String]): NewsLinkingCollections
+  metaDescription(locale: String): String
+  metaTitle(locale: String): String
+  publicationDate(locale: String): DateTime
+  relatedEventsCollection(limit: Int = 100, locale: String, order: [NewsRelatedEventsCollectionOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): NewsRelatedEventsCollection
+  relatedLinks(locale: String): NewsRelatedLinks
+  relatedNewsCollection(limit: Int = 100, locale: String, order: [NewsRelatedNewsCollectionOrder], preview: Boolean, skip: Int = 0, where: NewsFilter): NewsRelatedNewsCollection
+  slug(locale: String): String
+  subhead(locale: String): String
+  sys: Sys!
+  title(locale: String): String
+  type(locale: String): String
+}
+
+"""
 Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle)
 """
 type NewsArticle implements Entry {
@@ -2347,6 +2515,144 @@ enum NewsArticleOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+type NewsBody {
+  json: JSON!
+  links: NewsBodyLinks!
+}
+
+type NewsBodyAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type NewsBodyEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type NewsBodyLinks {
+  assets: NewsBodyAssets!
+  entries: NewsBodyEntries!
+  resources: NewsBodyResources!
+}
+
+type NewsBodyResources {
+  block: [ResourceLink!]!
+}
+
+type NewsCollection {
+  items: [News]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type NewsContactInformationCollection {
+  items: [Contact]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum NewsContactInformationCollectionOrder {
+  email_ASC
+  email_DESC
+  entityName_ASC
+  entityName_DESC
+  phoneExt_ASC
+  phoneExt_DESC
+  phone_ASC
+  phone_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+input NewsFilter {
+  AND: [NewsFilter]
+  OR: [NewsFilter]
+  body_contains: String
+  body_exists: Boolean
+  body_not_contains: String
+  byline: String
+  byline_contains: String
+  byline_exists: Boolean
+  byline_in: [String]
+  byline_not: String
+  byline_not_contains: String
+  byline_not_in: [String]
+  contactInformation: cfContactNestedFilter
+  contactInformationCollection_exists: Boolean
+  contentfulMetadata: ContentfulMetadataFilter
+  heroImage: cfHeroImageNestedFilter
+  heroImage_exists: Boolean
+  metaDescription: String
+  metaDescription_contains: String
+  metaDescription_exists: Boolean
+  metaDescription_in: [String]
+  metaDescription_not: String
+  metaDescription_not_contains: String
+  metaDescription_not_in: [String]
+  metaTitle: String
+  metaTitle_contains: String
+  metaTitle_exists: Boolean
+  metaTitle_in: [String]
+  metaTitle_not: String
+  metaTitle_not_contains: String
+  metaTitle_not_in: [String]
+  publicationDate: DateTime
+  publicationDate_exists: Boolean
+  publicationDate_gt: DateTime
+  publicationDate_gte: DateTime
+  publicationDate_in: [DateTime]
+  publicationDate_lt: DateTime
+  publicationDate_lte: DateTime
+  publicationDate_not: DateTime
+  publicationDate_not_in: [DateTime]
+  relatedEvents: cfEventEntryNestedFilter
+  relatedEventsCollection_exists: Boolean
+  relatedLinks_contains: String
+  relatedLinks_exists: Boolean
+  relatedLinks_not_contains: String
+  relatedNews: cfNewsNestedFilter
+  relatedNewsCollection_exists: Boolean
+  slug: String
+  slug_contains: String
+  slug_exists: Boolean
+  slug_in: [String]
+  slug_not: String
+  slug_not_contains: String
+  slug_not_in: [String]
+  subhead: String
+  subhead_contains: String
+  subhead_exists: Boolean
+  subhead_in: [String]
+  subhead_not: String
+  subhead_not_contains: String
+  subhead_not_in: [String]
+  sys: SysFilter
+  title: String
+  title_contains: String
+  title_exists: Boolean
+  title_in: [String]
+  title_not: String
+  title_not_contains: String
+  title_not_in: [String]
+  type: String
+  type_contains: String
+  type_exists: Boolean
+  type_in: [String]
+  type_not: String
+  type_not_contains: String
+  type_not_in: [String]
 }
 
 """
@@ -2476,6 +2782,149 @@ enum NewsItemContentOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+type NewsLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  newsCollection(limit: Int = 100, locale: String, order: [NewsLinkingCollectionsNewsCollectionOrder], preview: Boolean, skip: Int = 0): NewsCollection
+}
+
+enum NewsLinkingCollectionsNewsCollectionOrder {
+  byline_ASC
+  byline_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  publicationDate_ASC
+  publicationDate_DESC
+  slug_ASC
+  slug_DESC
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
+}
+
+enum NewsOrder {
+  byline_ASC
+  byline_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  publicationDate_ASC
+  publicationDate_DESC
+  slug_ASC
+  slug_DESC
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
+}
+
+type NewsRelatedEventsCollection {
+  items: [EventEntry]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum NewsRelatedEventsCollectionOrder {
+  eventDateAndTime_ASC
+  eventDateAndTime_DESC
+  eventDescription_ASC
+  eventDescription_DESC
+  inPersonOrOnline_ASC
+  inPersonOrOnline_DESC
+  internalName_ASC
+  internalName_DESC
+  shortTitle_ASC
+  shortTitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type NewsRelatedLinks {
+  json: JSON!
+  links: NewsRelatedLinksLinks!
+}
+
+type NewsRelatedLinksAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type NewsRelatedLinksEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type NewsRelatedLinksLinks {
+  assets: NewsRelatedLinksAssets!
+  entries: NewsRelatedLinksEntries!
+  resources: NewsRelatedLinksResources!
+}
+
+type NewsRelatedLinksResources {
+  block: [ResourceLink!]!
+}
+
+type NewsRelatedNewsCollection {
+  items: [News]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum NewsRelatedNewsCollectionOrder {
+  byline_ASC
+  byline_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  publicationDate_ASC
+  publicationDate_DESC
+  slug_ASC
+  slug_DESC
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
 }
 
 """
@@ -2732,6 +3181,8 @@ enum PageMetadataLinkingCollectionsBoardsAndCommissionsCollectionOrder {
 }
 
 enum PageMetadataLinkingCollectionsHomeCollectionOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
   internalTitle_ASC
   internalTitle_DESC
   sys_firstPublishedAt_ASC
@@ -3084,6 +3535,8 @@ type PromoBannerWithCtaLinkingCollections {
 }
 
 enum PromoBannerWithCtaLinkingCollectionsHomeCollectionOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
   internalTitle_ASC
   internalTitle_DESC
   sys_firstPublishedAt_ASC
@@ -3170,8 +3623,10 @@ type Query {
   menuCollection(limit: Int = 100, locale: String, order: [MenuOrder], preview: Boolean, skip: Int = 0, where: MenuFilter): MenuCollection
   menuItem(id: String!, locale: String, preview: Boolean): MenuItem
   menuItemCollection(limit: Int = 100, locale: String, order: [MenuItemOrder], preview: Boolean, skip: Int = 0, where: MenuItemFilter): MenuItemCollection
+  news(id: String!, locale: String, preview: Boolean): News
   newsArticle(id: String!, locale: String, preview: Boolean): NewsArticle
   newsArticleCollection(limit: Int = 100, locale: String, order: [NewsArticleOrder], preview: Boolean, skip: Int = 0, where: NewsArticleFilter): NewsArticleCollection
+  newsCollection(limit: Int = 100, locale: String, order: [NewsOrder], preview: Boolean, skip: Int = 0, where: NewsFilter): NewsCollection
   newsItemContent(id: String!, locale: String, preview: Boolean): NewsItemContent
   newsItemContentCollection(limit: Int = 100, locale: String, order: [NewsItemContentOrder], preview: Boolean, skip: Int = 0, where: NewsItemContentFilter): NewsItemContentCollection
   officePage(id: String!, locale: String, preview: Boolean): OfficePage
@@ -3299,21 +3754,7 @@ input ServiceEntryFilter {
 
 type ServiceEntryLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  homeCollection(limit: Int = 100, locale: String, order: [ServiceEntryLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [ServiceEntryLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
-}
-
-enum ServiceEntryLinkingCollectionsHomeCollectionOrder {
-  internalTitle_ASC
-  internalTitle_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
 }
 
 enum ServiceEntryLinkingCollectionsServiceGroupCollectionOrder {
@@ -3519,6 +3960,8 @@ type ServiceGroupLinkingCollections {
 }
 
 enum ServiceGroupLinkingCollectionsHomeCollectionOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
   internalTitle_ASC
   internalTitle_DESC
   sys_firstPublishedAt_ASC
@@ -3939,6 +4382,8 @@ type VideoWrapperLinkingCollections {
 }
 
 enum VideoWrapperLinkingCollectionsHomeCollectionOrder {
+  commissionerByline_ASC
+  commissionerByline_DESC
   internalTitle_ASC
   internalTitle_DESC
   sys_firstPublishedAt_ASC
@@ -4141,6 +4586,59 @@ input cfContentTypeLocationNestedFilter {
   zip_not_in: [String]
 }
 
+input cfEventEntryNestedFilter {
+  AND: [cfEventEntryNestedFilter]
+  OR: [cfEventEntryNestedFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  eventCategoryCollection_exists: Boolean
+  eventDateAndTime: DateTime
+  eventDateAndTime_exists: Boolean
+  eventDateAndTime_gt: DateTime
+  eventDateAndTime_gte: DateTime
+  eventDateAndTime_in: [DateTime]
+  eventDateAndTime_lt: DateTime
+  eventDateAndTime_lte: DateTime
+  eventDateAndTime_not: DateTime
+  eventDateAndTime_not_in: [DateTime]
+  eventDescription: String
+  eventDescription_contains: String
+  eventDescription_exists: Boolean
+  eventDescription_in: [String]
+  eventDescription_not: String
+  eventDescription_not_contains: String
+  eventDescription_not_in: [String]
+  eventDocumentsCollection_exists: Boolean
+  inPersonOrOnline: String
+  inPersonOrOnline_contains: String
+  inPersonOrOnline_exists: Boolean
+  inPersonOrOnline_in: [String]
+  inPersonOrOnline_not: String
+  inPersonOrOnline_not_contains: String
+  inPersonOrOnline_not_in: [String]
+  internalName: String
+  internalName_contains: String
+  internalName_exists: Boolean
+  internalName_in: [String]
+  internalName_not: String
+  internalName_not_contains: String
+  internalName_not_in: [String]
+  shortTitle: String
+  shortTitle_contains: String
+  shortTitle_exists: Boolean
+  shortTitle_in: [String]
+  shortTitle_not: String
+  shortTitle_not_contains: String
+  shortTitle_not_in: [String]
+  slug: String
+  slug_contains: String
+  slug_exists: Boolean
+  slug_in: [String]
+  slug_not: String
+  slug_not_contains: String
+  slug_not_in: [String]
+  sys: SysFilter
+}
+
 input cfHeroImageNestedFilter {
   AND: [cfHeroImageNestedFilter]
   OR: [cfHeroImageNestedFilter]
@@ -4216,6 +4714,81 @@ input cfNewsItemContentNestedFilter {
   newsItemBody_exists: Boolean
   newsItemBody_not_contains: String
   sys: SysFilter
+}
+
+input cfNewsNestedFilter {
+  AND: [cfNewsNestedFilter]
+  OR: [cfNewsNestedFilter]
+  body_contains: String
+  body_exists: Boolean
+  body_not_contains: String
+  byline: String
+  byline_contains: String
+  byline_exists: Boolean
+  byline_in: [String]
+  byline_not: String
+  byline_not_contains: String
+  byline_not_in: [String]
+  contactInformationCollection_exists: Boolean
+  contentfulMetadata: ContentfulMetadataFilter
+  heroImage_exists: Boolean
+  metaDescription: String
+  metaDescription_contains: String
+  metaDescription_exists: Boolean
+  metaDescription_in: [String]
+  metaDescription_not: String
+  metaDescription_not_contains: String
+  metaDescription_not_in: [String]
+  metaTitle: String
+  metaTitle_contains: String
+  metaTitle_exists: Boolean
+  metaTitle_in: [String]
+  metaTitle_not: String
+  metaTitle_not_contains: String
+  metaTitle_not_in: [String]
+  publicationDate: DateTime
+  publicationDate_exists: Boolean
+  publicationDate_gt: DateTime
+  publicationDate_gte: DateTime
+  publicationDate_in: [DateTime]
+  publicationDate_lt: DateTime
+  publicationDate_lte: DateTime
+  publicationDate_not: DateTime
+  publicationDate_not_in: [DateTime]
+  relatedEventsCollection_exists: Boolean
+  relatedLinks_contains: String
+  relatedLinks_exists: Boolean
+  relatedLinks_not_contains: String
+  relatedNewsCollection_exists: Boolean
+  slug: String
+  slug_contains: String
+  slug_exists: Boolean
+  slug_in: [String]
+  slug_not: String
+  slug_not_contains: String
+  slug_not_in: [String]
+  subhead: String
+  subhead_contains: String
+  subhead_exists: Boolean
+  subhead_in: [String]
+  subhead_not: String
+  subhead_not_contains: String
+  subhead_not_in: [String]
+  sys: SysFilter
+  title: String
+  title_contains: String
+  title_exists: Boolean
+  title_in: [String]
+  title_not: String
+  title_not_contains: String
+  title_not_in: [String]
+  type: String
+  type_contains: String
+  type_exists: Boolean
+  type_in: [String]
+  type_not: String
+  type_not_contains: String
+  type_not_in: [String]
 }
 
 input cfPageMetadataNestedFilter {
@@ -4383,16 +4956,6 @@ input cfeventDocumentsMultiTypeNestedFilter {
   AND: [cfeventDocumentsMultiTypeNestedFilter]
   OR: [cfeventDocumentsMultiTypeNestedFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  sys: SysFilter
-}
-
-input cfpopularResourcesListMultiTypeNestedFilter {
-  AND: [cfpopularResourcesListMultiTypeNestedFilter]
-  OR: [cfpopularResourcesListMultiTypeNestedFilter]
-  contentfulMetadata: ContentfulMetadataFilter
-  description_contains: String
-  description_exists: Boolean
-  description_not_contains: String
   sys: SysFilter
 }
 

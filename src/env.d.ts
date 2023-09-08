@@ -13,7 +13,11 @@ declare module "$env/static/private" {
   export const VERCEL_GIT_REPO_SLUG: string;
   export const VERCEL_GIT_COMMIT_SHA: string;
   export const VERCEL_GIT_PULL_REQUEST_ID: string;
+  export const VERCEL_ANALYTICS_ID: string; // this variable is sent to the frontend but can't be renamed
   export const KV_URL: string;
+  export const YOUTUBE_API_KEY: string;
+  export const ALGOLIA_API_KEY: string;
+  export const AUTH_TOKEN: string;
 }
 
 declare module "$env/static/public" {

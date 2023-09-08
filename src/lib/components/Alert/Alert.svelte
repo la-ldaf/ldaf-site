@@ -32,7 +32,7 @@
     noIcon ? "usa-alert--no-icon" : null,
     slim ? "usa-alert--slim" : null,
     siteAlert ? "ldaf-alert--site-wide" : null,
-    className
+    className,
   );
 </script>
 

@@ -16,6 +16,11 @@ export type PageMetadataMapItem = NonNullable<
   breadcrumbs?: Breadcrumbs;
 };
 
+// This type is used for search indexing in /api/v1/* endpoints
+export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
+  objectID: string;
+};
+
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
 const query = gql`
@@ -48,7 +53,7 @@ const query = gql`
 const constructFullPathFromMap = (
   pageMetadataMap: PageMetadataMap,
   pageMetadata: PageMetadataMapItem,
-  path = ""
+  path = "",
 ): string | null => {
   if (pageMetadata.parent) {
     // recurse, running on parent
@@ -58,7 +63,7 @@ const constructFullPathFromMap = (
         pageMetadataMap,
         parentPageMetadata,
         // only append path if not blank
-        `${pageMetadata.slug}${path ? `/${path}` : ""}`
+        `${pageMetadata.slug}${path ? `/${path}` : ""}`,
       );
     } else {
       // somehow we have a parent that's not in our map, error
@@ -77,7 +82,7 @@ const constructFullPathFromMap = (
 const constructBreadcrumbs = (
   pageMetadataMap: PageMetadataMap,
   metadata: PageMetadataMapItem,
-  breadcrumbs: Breadcrumbs = []
+  breadcrumbs: Breadcrumbs = [],
 ): Breadcrumbs => {
   breadcrumbs.unshift({
     id: metadata.sys.id,
@@ -123,7 +128,7 @@ export const loadPageMetadataMap = async ({ includeBreadcrumbs = true } = {}): P
             }
           } else {
             console.warn(
-              `The parent field was set but could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`
+              `The parent field was set but could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
             );
           }
         }
@@ -134,7 +139,7 @@ export const loadPageMetadataMap = async ({ includeBreadcrumbs = true } = {}): P
         page.url = constructFullPathFromMap(pageMetadataMap, page);
         if (!page.url) {
           console.warn(
-            `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`
+            `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
           );
         }
         // update the item in the map

@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -77,7 +77,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -108,7 +108,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -142,11 +142,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # Check once a minute
           check_interval: 60
-          # Timeout after 30 minutes
-          max_timeout: 1800
+          # Timeout after 45 minutes
+          max_timeout: 2700
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@latest
@@ -174,8 +174,8 @@ jobs:
         #   reports that the GitHub Actions runner couldn't keep up. Increasing this to 8 from the
         #   base of 4 seems to fix the issue.
         run: |
-          lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8"
-          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --throttling.cpuSlowdownMultiplier=8 --preset=desktop"
+          lighthouse-batch --use-global --html --out lighthouse-reports/mobile --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --extra-headers \"{\\\"x-vercel-skip-toolbar\\\":\\\"1\\\"}\" --throttling.cpuSlowdownMultiplier=8"
+          lighthouse-batch --use-global --html --out lighthouse-reports/desktop --file .lighthouse/urls.txt --params "--only-categories=\"performance,accessibility,best-practices,seo\" --extra-headers \"{\\\"x-vercel-skip-toolbar\\\":\\\"1\\\"}\" --throttling.cpuSlowdownMultiplier=8 --preset=desktop"
 
       - name: Copy landing page for reports summary
         run: cp .lighthouse/index.html lighthouse-reports/index.html
@@ -202,7 +202,7 @@ jobs:
       VERCEL_TOKEN: ${{secrets.VERCEL_META_SITE_DEPLOY_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -277,7 +277,7 @@ jobs:
       VERCEL_TOKEN: ${{secrets.VERCEL_STORYBOOK_DEPLOY_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3

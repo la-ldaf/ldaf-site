@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <style>
@@ -85,7 +85,7 @@
 
       try {
         const response = await fetch(
-          "https://api.github.com/repos/la-ldaf/ldaf-site/pulls?state=open"
+          "https://api.github.com/repos/la-ldaf/ldaf-site/pulls?state=open",
         );
         const data = await response.json();
         let htmlString = "<ul class='prs'>";
