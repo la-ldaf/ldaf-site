@@ -19,6 +19,7 @@ updates:
       - dependency-name: "@storybook/blocks"
       - dependency-name: "@storybook/svelte"
       - dependency-name: "@storybook/sveltekit"
+      - dependency-name: "@storybook/theming"
     reviewers:
       - "la-ldaf/ad-hoc-engineers"
     commit-message:
