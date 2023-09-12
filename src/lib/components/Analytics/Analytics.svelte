@@ -18,11 +18,6 @@
       ${isProd ? "{}" : "{ debug_mode: true }"}
     );
   `;
-
-  let googleAnalyticsScriptElement: HTMLScriptElement;
-  $: if (googleAnalyticsScriptElement) {
-    googleAnalyticsScriptElement.textContent = googleAnalyticsSnippet;
-  }
 </script>
 
 {#if PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID}
@@ -30,5 +25,6 @@
     type="text/partytown"
     src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID}`}
   ></script>
-  <script bind:this={googleAnalyticsScriptElement} type="text/partytown"></script>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html `${"<"}script type="text/partytown">${googleAnalyticsSnippet}</script>`}
 {/if}
