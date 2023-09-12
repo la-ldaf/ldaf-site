@@ -102,7 +102,7 @@
     "fast-blurhash": "^1.1.2",
     "graphql": "^16.8.0",
     "graphql-tag": "^2.12.6",
-    "instantsearch.js": "^4.56.9",
+    "instantsearch.js": "^4.56.10",
     "jpeg-js": "^0.4.4",
     "lodash": "^4.17.21",
     "redis": "^4.6.8",
