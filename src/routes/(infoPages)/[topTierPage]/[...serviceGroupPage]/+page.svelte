@@ -38,24 +38,20 @@
       const serviceAccordionCTA = accordionHeading.nextElementSibling?.querySelector(
         ".service-entry-CTA p > a",
       );
-      if (serviceAccordionCTA) {
-        serviceAccordionCTA.classList.add("usa-button");
-        serviceAccordionCTA.addEventListener("click", () => {
-          if (window.gtag) {
-            window.gtag("event", "ldaf_service_cta_click", {
-              event_category: "click",
-              event_label: serviceAccordionCTA.textContent,
-              ldaf_service_name: serviceAccordionHeadingText,
-              ldaf_service_cta_destination: serviceAccordionCTA.getAttribute("href"),
-            });
-          }
+      serviceAccordionCTA?.classList.add("usa-button");
+      serviceAccordionCTA?.addEventListener("click", () => {
+        window.gtag?.("event", "ldaf_service_cta_click", {
+          event_category: "click",
+          event_label: serviceAccordionCTA.textContent,
+          ldaf_service_name: serviceAccordionHeadingText,
+          ldaf_service_cta_destination: serviceAccordionCTA.getAttribute("href"),
         });
-      }
+      });
     });
   });
 </script>
 
-{#if heroImage && heroImage?.imageSource?.url}
+{#if heroImage?.imageSource?.url}
   <Image
     src={heroImage.imageSource.url}
     sources={getSources}
@@ -90,13 +86,11 @@
         title={item?.entryTitle}
         id={item.sys.id}
         onClickAnalyticsHandler={(expanded) => {
-          if (window.gtag) {
-            window.gtag("event", `ldaf_service_accordion_${expanded ? "expand" : "collapse"}`, {
-              event_category: "click",
-              event_label: item?.entryTitle,
-              value: expanded ? 1 : 0,
-            });
-          }
+          window.gtag?.("event", `ldaf_service_accordion_${expanded ? "expand" : "collapse"}`, {
+            event_category: "click",
+            event_label: item?.entryTitle,
+            value: expanded ? 1 : 0,
+          });
         }}
       >
         <ContentfulRichText

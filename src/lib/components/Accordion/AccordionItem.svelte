@@ -26,9 +26,7 @@
         ref.scrollIntoView();
       }
     }}
-    on:click={() => {
-      if (onClickAnalyticsHandler) onClickAnalyticsHandler(expanded);
-    }}
+    on:click={() => onClickAnalyticsHandler?.(expanded)}
   >
     {title}
   </button>

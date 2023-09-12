@@ -38,9 +38,6 @@
     });
   }
 
-  let partytownScriptElement: HTMLScriptElement;
-  $: if (partytownScriptElement) partytownScriptElement.textContent = partytownSnippet();
-
   $: ({ pageMetadata } = $page.data);
 
   const getTitle = (pageMetadata: PageMetadataMapItem) => {
@@ -78,7 +75,8 @@
     //   thread to use the gtag alias.
     partytown = { forward: ["gtag", "dataLayer.push"] };
   </script>
-  <script bind:this={partytownScriptElement}></script>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html `${"<"}script>${partytownSnippet()}</script>`}
   <Analytics {isProd} />
 
   <!-- TODO: Move all hard-coded content below into Contentful. -->
