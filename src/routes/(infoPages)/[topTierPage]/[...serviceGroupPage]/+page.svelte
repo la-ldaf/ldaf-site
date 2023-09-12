@@ -30,15 +30,28 @@
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
     // We must manually add the required classes to achieve the desired styles.
+    // While we're at it, attach an analytics event so we can track CTA clicks.
     // This wasn't always getting applied in `onMount`, so we're making sure it doesn't
     // happen prematurely by using `afterUpdate` instead.
-    document
-      .querySelectorAll(".service-entry-CTA p > a")
-      .forEach((linkEl) => linkEl.classList.add("usa-button"));
+    document.querySelectorAll(".usa-accordion__heading").forEach((accordionHeading) => {
+      const serviceAccordionHeadingText = accordionHeading.textContent;
+      const serviceAccordionCTA = accordionHeading.nextElementSibling?.querySelector(
+        ".service-entry-CTA p > a",
+      );
+      serviceAccordionCTA?.classList.add("usa-button");
+      serviceAccordionCTA?.addEventListener("click", () => {
+        window.gtag?.("event", "ldaf_service_cta_click", {
+          event_category: "click",
+          event_label: serviceAccordionCTA.textContent,
+          ldaf_service_name: serviceAccordionHeadingText,
+          ldaf_service_cta_destination: serviceAccordionCTA.getAttribute("href"),
+        });
+      });
+    });
   });
 </script>
 
-{#if heroImage && heroImage?.imageSource?.url}
+{#if heroImage?.imageSource?.url}
   <Image
     src={heroImage.imageSource.url}
     sources={getSources}
@@ -69,7 +82,17 @@
 {#if childServiceEntries.length > 0}
   <Accordion multiselectable bordered>
     {#each childServiceEntries as item (item.sys.id)}
-      <AccordionItem title={item?.entryTitle} id={item.sys.id}>
+      <AccordionItem
+        title={item?.entryTitle}
+        id={item.sys.id}
+        onClickAnalyticsHandler={(expanded) => {
+          window.gtag?.("event", `ldaf_service_accordion_${expanded ? "expand" : "collapse"}`, {
+            event_category: "click",
+            event_label: item?.entryTitle,
+            value: expanded ? 1 : 0,
+          });
+        }}
+      >
         <ContentfulRichText
           document={item?.description?.json}
           links={item?.description?.links}
