@@ -3,12 +3,14 @@
 
   import type { PageMetadataMap, PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 
+  import { partytownSnippet } from "@builder.io/partytown/integration";
   import { setContext } from "svelte";
   import { afterNavigate } from "$app/navigation";
   import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
 
   import { webVitals } from "$lib/vitals";
+  import Analytics from "$lib/components/Analytics";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
@@ -18,6 +20,7 @@
 
   export let data;
   $: ({
+    isProd,
     headerPrimaryNavItems,
     headerSecondaryNavItems,
     footerNavItems,
@@ -26,6 +29,7 @@
     analyticsID,
   } = data);
 
+  // Vercel Speed Insights
   $: if (browser && analyticsID) {
     webVitals({
       path: $page.url.pathname,
@@ -64,6 +68,17 @@
 </script>
 
 <svelte:head>
+  <script>
+    // https://partytown.builder.io/sveltekit
+    // Forward globals to web worker layer.
+    // This allows the web worker to use dataLayer.push while allowing the main
+    //   thread to use the gtag alias.
+    partytown = { forward: ["gtag", "dataLayer.push"] };
+  </script>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html `${"<"}script>${partytownSnippet()}</script>`}
+  <Analytics {isProd} />
+
   <!-- TODO: Move all hard-coded content below into Contentful. -->
   <title>{pageTitle}</title>
   <meta name="og:title" content={pageTitle} />

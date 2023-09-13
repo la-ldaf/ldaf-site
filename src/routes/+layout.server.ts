@@ -6,6 +6,10 @@ import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
 export const load = async () => {
+  // prod indicator is sent with page data and is currently used to determine:
+  //   * whether we should connect to Vercel Speed Insights
+  //   * if we should set up GA in debug mode or prod mode
+  const isProd = VERCEL_ENV === "production";
   const pageMetadataMapPromise = loadPageMetadataMap();
   const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
     loadMainNav(pageMetadataMap),
@@ -18,8 +22,9 @@ export const load = async () => {
     headerPrimaryNavItemsPromise,
   ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
   return {
+    isProd,
     // this env variable can't be renamed, so we send it with the page data
-    analyticsID: VERCEL_ENV === "production" ? VERCEL_ANALYTICS_ID : undefined,
+    analyticsID: isProd ? VERCEL_ANALYTICS_ID : undefined,
     pageMetadataMap: pageMetadataMapPromise.then(({ pageMetadataMap }) => pageMetadataMap),
     pathsToIDs: pageMetadataMapPromise.then(({ pathsToIDs }) => pathsToIDs),
     siteTitle: loadSiteTitle(),
