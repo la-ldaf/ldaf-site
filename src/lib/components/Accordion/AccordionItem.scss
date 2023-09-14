@@ -1,0 +1,17 @@
+.usa-accordion__content .accordion-deeplink {
+  float: right;
+  text-decoration: none;
+  color: $base-ink;
+  &:visited {
+    color: $base-ink;
+  }
+  &:hover {
+    filter: invert(17%) sepia(56%) saturate(4186%) hue-rotate(201deg) brightness(98%) contrast(102%);
+  }
+  display: flex;
+  align-items: center;
+
+  .usa-icon {
+    margin-left: 4px;
+  }
+}
