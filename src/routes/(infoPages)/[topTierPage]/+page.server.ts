@@ -12,6 +12,8 @@ import {
   getDateSixMonthsAgoInTZ,
   getStartOfDayForDateInTZ,
 } from "$lib/util/dates";
+import imagePropsFragment from "$lib/fragments/imageProps";
+import entryPropsFragment from "$lib/fragments/entryProps";
 
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
 
@@ -93,7 +95,11 @@ const query = gql`
   }
 `;
 
+// TODO: Create fragment for News and Events snippets.
 const taggedNewsAndEventsQuery = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
+  ${imagePropsFragment}
+  ${entryPropsFragment}
   query TaggedNewsAndEvents($tag: String!, $newsOldestDate: DateTime!, $eventStartDate: DateTime!) {
     newsCollection(
       where: {
@@ -109,6 +115,29 @@ const taggedNewsAndEventsQuery = gql`
         sys {
           id
         }
+        type
+        title
+        publicationDate
+        body {
+          json
+          links {
+            # Only including hyperlinks since we should only be displaying the
+            #   first paragraph node in the rich text field, i.e. no other
+            #   blocks will be embedded.
+            assets {
+              hyperlink {
+                ...ImageProps
+              }
+            }
+            entries {
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
+        }
+        slug
+        byline
       }
     }
     eventEntryCollection(
@@ -125,6 +154,10 @@ const taggedNewsAndEventsQuery = gql`
         sys {
           id
         }
+        slug
+        shortTitle
+        eventDescription
+        eventDateAndTime
       }
     }
   }
