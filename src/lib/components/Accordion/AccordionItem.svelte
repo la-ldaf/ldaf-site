@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { page } from "$app/stores";
   import "./AccordionItem.scss";
   import { getAccordionContext } from "./context";
@@ -21,6 +22,7 @@
   // and whitespace, then convert to Kebab case.
   // E.g. "Title 2: This time it's personal"
   // becomes "title-2-this-time-its-personal"
+  // TODO: Make `titleHref` come from Contentful instead of deriving it here
   const titleHref = title
     ? title
         .replace(/[^A-Za-z0-9\s]/g, "")
@@ -29,9 +31,11 @@
         .join("-")
     : null;
 
-  $: if ($page.url.hash === `#${titleHref}` && $expandedItems) {
-    $expandedItems[id] = true;
-  }
+  onMount(() => {
+    if ($page.url.hash === `#${titleHref}` && $expandedItems) {
+      $expandedItems[id] = true;
+    }
+  });
 </script>
 
 <h3 {...$$restProps} class="usa-accordion__heading" id={titleHref}>
