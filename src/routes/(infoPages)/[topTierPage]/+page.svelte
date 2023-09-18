@@ -13,7 +13,8 @@
 
   export let data;
   $: ({ topTierPage } = data);
-  $: ({ subheading, video, description, featuredServices } = topTierPage);
+  $: ({ subheading, video, description, featuredServices, relatedNews, relatedEvents } =
+    topTierPage);
   $: ({ videoUrl, youtubeVideoData } = video);
   $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
   $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
@@ -90,4 +91,11 @@
       {/if}
     {/each}
   </ul>
+{/if}
+{#if relatedNews?.items && relatedNews.items.length > 0}
+  <h2>Recent news</h2>
+{/if}
+
+{#if relatedEvents?.items && relatedEvents.items.length > 0}
+  <h2>Upcoming events</h2>
 {/if}
