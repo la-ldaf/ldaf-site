@@ -95,19 +95,19 @@
   </ul>
 {/if}
 {#if relatedNews?.items && relatedNews.items.length > 0}
-  <h2>Recent news</h2>
+  <h3>Recent news</h3>
   {#each relatedNews.items as entry (entry?.sys.id)}
     {#if entry}
-      <NewsEntrySnippet {entry} />
+      <NewsEntrySnippet {entry} headingLevel={4} />
     {/if}
   {/each}
 {/if}
 
 {#if relatedEvents?.items && relatedEvents.items.length > 0}
-  <h2>Upcoming events</h2>
+  <h3>Upcoming events</h3>
   <div class="ldaf-events-list-container">
     {#each relatedEvents.items as event (event?.sys.id)}
-      <Event {event} />
+      <Event {event} headingLevel={4} />
     {/each}
   </div>
 {/if}

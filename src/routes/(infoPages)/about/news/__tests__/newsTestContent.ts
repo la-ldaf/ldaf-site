@@ -10,7 +10,7 @@ const getArticle = (i: number) => ({
     id: getArticleID(i),
   },
   title: "Test title",
-  subhead: "Test subhead",
+  subhead: "A test subhead which gives an overview of what this article or press release is about.",
   slug: "test-slug",
   byline: "Test Author",
   publicationDate: new Date(),
