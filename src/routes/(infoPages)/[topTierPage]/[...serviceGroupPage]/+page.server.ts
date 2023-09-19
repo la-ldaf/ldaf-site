@@ -206,7 +206,7 @@ const childServiceEntriesQuery = gql`
 
 const childServiceGroupsQuery = gql`
   query ServiceGroupChildGroups($ids: [String]!) {
-    serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+    serviceGroupCollection(preview: true, limit: 10, where: { sys: { id_in: $ids } }) {
       items {
         sys {
           id
@@ -271,6 +271,7 @@ export type ServiceGroupPage = {
 };
 
 const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
+  console.log(items, order);
   if (order.length !== items.length) {
     throw new Error("ID order array does not match the provided items");
   }
@@ -304,9 +305,14 @@ export const load = async ({
     const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
       variables: { metadataID },
     });
+    console.log("before baseData");
     if (!baseData) break fetchData;
+    console.log("after baseData");
     const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];
+    console.log("before serviceGroup");
+    console.log(JSON.stringify(serviceGroup.serviceEntriesCollection?.items, null, 2));
     if (!serviceGroup) break fetchData;
+    console.log("after serviceGroup");
 
     const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
@@ -334,7 +340,7 @@ export const load = async ({
           chunk.length > 0
             ? [
                 client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
-                  variables: { ids: chunk },
+                  variables: { ids: chunk, preview: true },
                 }),
               ]
             : [],
@@ -342,11 +348,13 @@ export const load = async ({
       ),
       childServiceGroupIDs.length > 0
         ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-            variables: { ids: childServiceGroupIDs },
+            variables: { ids: childServiceGroupIDs, preview: true },
           })
         : { serviceGroupCollection: { items: [] } },
     ]);
-
+    console.log("before service entries");
+    console.log("data chunks:", childEntriesDataChunks[0]?.serviceEntryCollection?.items);
+    console.log("groups data:", childGroupsData);
     const childServiceEntriesItems = inOrder(
       childEntriesDataChunks.flatMap(
         (dataChunk) =>
@@ -357,6 +365,7 @@ export const load = async ({
       (item) => item?.sys?.id,
       childServiceEntryIDs,
     );
+    console.log("after service entries");
 
     const childServiceEntriesPromise = Promise.all(
       childServiceEntriesItems?.map(async (entry) =>

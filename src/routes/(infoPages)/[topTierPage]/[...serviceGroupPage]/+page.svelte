@@ -26,6 +26,8 @@
     childServiceGroups,
   } = data);
 
+  // $: console.log(data);
+
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
