@@ -3,6 +3,7 @@
 
   export let id: string;
   export let title: string | null | undefined = "Title";
+  export let onClickAnalyticsHandler: ((expanded: boolean) => void) | null = null;
 
   let ref: HTMLElement | null = null;
 
@@ -25,6 +26,7 @@
         ref.scrollIntoView();
       }
     }}
+    on:click={() => onClickAnalyticsHandler?.(expanded)}
   >
     {title}
   </button>

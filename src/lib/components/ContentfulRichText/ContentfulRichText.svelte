@@ -31,7 +31,7 @@
   export let imageSizeType: SizeType = "col-12";
   $: setContext<string>(imageSizeTypeKey, imageSizeType);
 
-  if (!isDocument(document)) {
+  $: if (!isDocument(document)) {
     throw error(500, {
       title: "We could not render this page.",
       message: "Contentful connection failed and fallback document does not match expected format.",
