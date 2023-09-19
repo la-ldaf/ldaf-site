@@ -46,7 +46,7 @@
              focus if the URL doesn't already include #top.
              Shift focus back to top if user hits this more than once. -->
   <div class="grid-container usa-footer__return-to-top">
-    <a href="#top">Return to top</a>
+    <Link href="#top">Return to top</Link>
   </div>
   <div class="usa-footer__primary-section ldaf-footer__primary-section">
     <div class="grid-container">
