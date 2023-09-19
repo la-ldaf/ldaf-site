@@ -95,7 +95,6 @@ const query = gql`
 
 // TODO: Create fragment for News and Events snippets.
 const taggedNewsAndEventsQuery = gql`
-  # eslint-disable @graphql-eslint/selection-set-depth
   query TaggedNewsAndEvents($tag: String!, $newsOldestDate: DateTime!, $eventStartDate: DateTime!) {
     newsCollection(
       where: {
