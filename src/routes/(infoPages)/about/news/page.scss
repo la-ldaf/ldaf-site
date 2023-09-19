@@ -1,9 +1,0 @@
-@use "uswds-core" as * with (
-  $theme-show-notifications: false
-);
-
-/* Override font family on `.usa-prose > h1` */
-// TODO: We need to fix fonts across the site, at which point this should go in app.scss
-.usa-prose > .ldaf-news-page--heading {
-  @include u-font-family("sans");
-}

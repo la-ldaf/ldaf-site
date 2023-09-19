@@ -1,6 +1,4 @@
 <script lang="ts">
-  import "./page.scss";
-
   import NewsEntrySnippet from "./NewsEntrySnippet.svelte";
   import Pagination from "$lib/components/Pagination";
 
