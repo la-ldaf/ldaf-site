@@ -10,6 +10,7 @@ import { events as testEvents, pages as testEventPages } from "./__tests__/event
 import { eventIANATimezone } from "$lib/constants/date";
 import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 
+const eventsBasePath = "/about/events";
 const limit = 20;
 
 // TODO: filter to only future events. this will require thinking about timezones
@@ -65,7 +66,7 @@ export const loadBaseBreadcrumbs = async ({
   const aboutPageMetadataID = pathsToIDs.get("/about");
   if (!aboutPageMetadataID) return [];
   const { breadcrumbs } = pageMetadataMap.get(aboutPageMetadataID) ?? {};
-  return [...(breadcrumbs ?? []), { title: "Events", link: "/about/events" }];
+  return [...(breadcrumbs ?? []), { title: "Events", link: eventsBasePath }];
 };
 
 export const loadEventsPage = async ({
@@ -82,7 +83,7 @@ export const loadEventsPage = async ({
     const breadcrumbsPromise = loadBaseBreadcrumbs({ parent }).then((baseBreadcrumbs) => [
       ...baseBreadcrumbs,
       ...(pageNumber > 1
-        ? [{ title: `Page ${pageNumber}`, link: `/about/events/page/${pageNumber}` }]
+        ? [{ title: `Page ${pageNumber}`, link: `${eventsBasePath}/page/${pageNumber}` }]
         : []),
     ]);
     if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
@@ -93,6 +94,11 @@ export const loadEventsPage = async ({
         breadcrumbs: breadcrumbsPromise,
       };
     }
+    const { pageMetadataMap, pathsToIDs } = await parent();
+    const pageMetadataID = pathsToIDs.get(eventsBasePath);
+    if (!pageMetadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(pageMetadataID);
+    if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -112,7 +118,12 @@ export const loadEventsPage = async ({
     }
     return {
       pageMetadata: {
-        metaTitle: pageNumber <= 1 ? "Events" : `Events - page ${pageNumber}`,
+        ...pageMetadata,
+        metaTitle:
+          pageNumber <= 1
+            ? pageMetadata.metaTitle
+            : `${pageMetadata.metaTitle} - page ${pageNumber}`,
+        url: pageNumber <= 1 ? eventsBasePath : `${eventsBasePath}/page/${pageNumber}`,
         breadcrumbs: await breadcrumbsPromise,
       },
       currentPageNumber: pageNumber,

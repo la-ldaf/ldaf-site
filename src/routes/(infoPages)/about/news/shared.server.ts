@@ -11,6 +11,7 @@ import {
   pages as testNewsEntryPages,
 } from "./__tests__/newsTestContent";
 
+const newsBasePath = "/about/news";
 const limit = 10;
 
 export const query = gql`
@@ -40,7 +41,7 @@ export const loadBaseBreadcrumbs = async ({
   const aboutPageMetadataID = pathsToIDs.get("/about");
   if (!aboutPageMetadataID) return [];
   const { breadcrumbs } = pageMetadataMap.get(aboutPageMetadataID) ?? {};
-  return [...(breadcrumbs ?? []), { title: "News", link: "/about/news" }];
+  return [...(breadcrumbs ?? []), { title: "News", link: newsBasePath }];
 };
 
 export const loadNewsPage = async ({
@@ -53,7 +54,7 @@ export const loadNewsPage = async ({
     const breadcrumbsPromise = loadBaseBreadcrumbs({ parent }).then((baseBreadcrumbs) => [
       ...baseBreadcrumbs,
       ...(pageNumber > 1
-        ? [{ title: `Page ${pageNumber}`, link: `/about/news/page/${pageNumber}` }]
+        ? [{ title: `Page ${pageNumber}`, link: `${newsBasePath}/page/${pageNumber}` }]
         : []),
     ]);
     if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
@@ -64,6 +65,11 @@ export const loadNewsPage = async ({
         breadcrumbs: breadcrumbsPromise,
       };
     }
+    const { pageMetadataMap, pathsToIDs } = await parent();
+    const pageMetadataID = pathsToIDs.get(newsBasePath);
+    if (!pageMetadataID) break fetchData;
+    const pageMetadata = pageMetadataMap.get(pageMetadataID);
+    if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
@@ -79,7 +85,12 @@ export const loadNewsPage = async ({
     }
     return {
       pageMetadata: {
-        metaTitle: pageNumber <= 1 ? "News" : `News - page ${pageNumber}`,
+        ...pageMetadata,
+        metaTitle:
+          pageNumber <= 1
+            ? pageMetadata.metaTitle
+            : `${pageMetadata.metaTitle} - page ${pageNumber}`,
+        url: pageNumber <= 1 ? newsBasePath : `${newsBasePath}/page/${pageNumber}`,
         breadcrumbs: await breadcrumbsPromise,
       },
       currentPageNumber: pageNumber,
