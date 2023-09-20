@@ -19,6 +19,13 @@
   const entryId = entry.data.target.sys.id;
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
 
+  if (entryBlock?.__typename === "CallToAction") {
+    console.log("CTA", entry, entryBlock);
+  }
+  if (entryBlock?.__typename === "Contact") {
+    console.log("CONTACT", entry, entryBlock);
+  }
+
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
 </script>
 
@@ -34,6 +41,10 @@
     height={entryBlock.linkedImage?.height ?? undefined}
     sizeType={getContext(imageSizeTypeKey)}
   />
+{:else if entryBlock?.__typename === "CallToAction"}
+  <pre>
+    {JSON.stringify(entryBlock, null, 2)}
+  </pre>
 {:else}
   <!--
     TODO: Add support for the other types of

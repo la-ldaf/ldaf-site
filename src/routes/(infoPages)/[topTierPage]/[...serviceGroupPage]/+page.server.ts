@@ -2,7 +2,11 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import {
+  CONTENTFUL_SPACE_ID,
+  CONTENTFUL_DELIVERY_API_TOKEN,
+  CONTENTFUL_PREVIEW_API_TOKEN,
+} from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 
@@ -24,7 +28,11 @@ const baseQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroup($metadataID: String!) {
-    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+    serviceGroupCollection(
+      preview: true
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+    ) {
       items {
         sys {
           id
@@ -133,7 +141,7 @@ const childServiceEntriesQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!) {
-    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+    serviceEntryCollection(preview: true, limit: 10, where: { sys: { id_in: $ids } }) {
       items {
         sys {
           id
@@ -271,7 +279,6 @@ export type ServiceGroupPage = {
 };
 
 const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
-  console.log(items, order);
   if (order.length !== items.length) {
     throw new Error("ID order array does not match the provided items");
   }
@@ -299,20 +306,15 @@ export const load = async ({
     if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
+      token: CONTENTFUL_PREVIEW_API_TOKEN,
     });
 
     const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
       variables: { metadataID },
     });
-    console.log("before baseData");
     if (!baseData) break fetchData;
-    console.log("after baseData");
     const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];
-    console.log("before serviceGroup");
-    console.log(JSON.stringify(serviceGroup.serviceEntriesCollection?.items, null, 2));
     if (!serviceGroup) break fetchData;
-    console.log("after serviceGroup");
 
     const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
@@ -340,7 +342,7 @@ export const load = async ({
           chunk.length > 0
             ? [
                 client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
-                  variables: { ids: chunk, preview: true },
+                  variables: { ids: chunk },
                 }),
               ]
             : [],
@@ -348,13 +350,10 @@ export const load = async ({
       ),
       childServiceGroupIDs.length > 0
         ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-            variables: { ids: childServiceGroupIDs, preview: true },
+            variables: { ids: childServiceGroupIDs },
           })
         : { serviceGroupCollection: { items: [] } },
     ]);
-    console.log("before service entries");
-    console.log("data chunks:", childEntriesDataChunks[0]?.serviceEntryCollection?.items);
-    console.log("groups data:", childGroupsData);
     const childServiceEntriesItems = inOrder(
       childEntriesDataChunks.flatMap(
         (dataChunk) =>
@@ -365,7 +364,6 @@ export const load = async ({
       (item) => item?.sys?.id,
       childServiceEntryIDs,
     );
-    console.log("after service entries");
 
     const childServiceEntriesPromise = Promise.all(
       childServiceEntriesItems?.map(async (entry) =>
@@ -404,7 +402,6 @@ export const load = async ({
       descriptionBlurhashesPromise,
       childServiceEntriesPromise,
     ]);
-
     return {
       serviceGroup: {
         ...serviceGroup,

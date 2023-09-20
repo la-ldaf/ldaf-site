@@ -26,7 +26,7 @@
     childServiceGroups,
   } = data);
 
-  // $: console.log(data);
+  $: console.log(data);
 
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
