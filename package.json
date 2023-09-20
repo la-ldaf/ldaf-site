@@ -71,7 +71,7 @@
     "jsdom": "^22.1.0",
     "postcss": "^8.4.29",
     "postcss-load-config": "^4.0.1",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "prettier-plugin-svelte": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
