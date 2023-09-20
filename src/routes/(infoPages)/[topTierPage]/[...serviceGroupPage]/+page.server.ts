@@ -18,13 +18,13 @@ import type {
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
 import chunks from "$lib/util/chunks";
-import imagePropsFragment from "$lib/fragments/imageProps";
+import assetPropsFragment from "$lib/fragments/assetProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${imagePropsFragment}
+  ${assetPropsFragment}
   ${entryPropsFragment}
 
   query ServiceGroup($metadataID: String!) {
@@ -40,7 +40,7 @@ const baseQuery = gql`
         heroImage {
           ... on HeroImage {
             imageSource {
-              ...ImageProps
+              ...AssetProps
             }
             imageTitle
             altField
@@ -54,10 +54,10 @@ const baseQuery = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {
@@ -102,10 +102,10 @@ const baseQuery = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {
@@ -137,7 +137,7 @@ const baseQuery = gql`
 
 const childServiceEntriesQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${imagePropsFragment}
+  ${assetPropsFragment}
   ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!) {
@@ -153,10 +153,10 @@ const childServiceEntriesQuery = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {
@@ -176,10 +176,10 @@ const childServiceEntriesQuery = gql`
               links {
                 assets {
                   block {
-                    ...ImageProps
+                    ...AssetProps
                   }
                   hyperlink {
-                    ...ImageProps
+                    ...AssetProps
                   }
                 }
                 entries {
