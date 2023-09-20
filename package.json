@@ -46,7 +46,7 @@
     "@storybook/blocks": "^7.4.2",
     "@storybook/svelte": "^7.4.2",
     "@storybook/sveltekit": "^7.4.2",
-    "@storybook/testing-library": "^0.2.0",
+    "@storybook/testing-library": "^0.2.1",
     "@storybook/theming": "^7.4.2",
     "@sveltejs/adapter-vercel": "^3.0.3",
     "@sveltejs/kit": "^1.24.1",
