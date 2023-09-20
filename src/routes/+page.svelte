@@ -13,6 +13,8 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import VideoCard from "$lib/components/VideoCard";
   import ResourceLinks from "$lib/components/ResourceLinks";
+  import NewsEntrySnippet from "./(infoPages)/about/news/NewsEntrySnippet.svelte";
+  import Event from "./(infoPages)/about/events/Event.svelte";
 
   export let data;
   $: ({
@@ -24,6 +26,8 @@
       commissionerByline,
       commissionerHeadshot,
       commissionerBackground,
+      news,
+      events,
     },
   } = data);
 
@@ -107,8 +111,43 @@
   {/if}
   {#if popularResources && popularResources.length > 0}
     <div class="ldaf-homepage__popular-resources">
-      <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
+      <h2>Popular resources</h2>
       <ResourceLinks links={popularResources} />
+    </div>
+  {/if}
+  {#if news && news.length > 0}
+    {@const [featuredEntry, ...listedEntries] = news}
+    <div class="ldaf-homepage__news">
+      <h2 class="margin-bottom-0">Recent news</h2>
+      <hr class="margin-top-0 margin-bottom-2" />
+      <div class="grid-row grid-gap-lg">
+        <div class="tablet:grid-col-6">
+          {#if featuredEntry}
+            <NewsEntrySnippet
+              entry={featuredEntry}
+              headingLevel={3}
+              variation="homepage-featured"
+            />
+          {/if}
+        </div>
+        <div class="tablet:grid-col-6">
+          {#if listedEntries.length > 0}
+            {#each listedEntries as entry (entry?.sys.id)}
+              {#if entry}
+                <NewsEntrySnippet {entry} headingLevel={3} variation="homepage-listed" />
+              {/if}
+            {/each}
+          {/if}
+        </div>
+      </div>
+    </div>
+  {/if}
+  {#if events && events.length > 0}
+    <div class="ldaf-homepage__events">
+      <h2 class="margin-bottom-0">Upcoming events</h2>
+      {#each events as event (event?.sys?.id)}
+        <Event {event} headingLevel={3} />
+      {/each}
     </div>
   {/if}
   {#if commissionerGreeting?.json && commissionerByline && commissionerHeadshot?.linkedImage?.url}

@@ -3,11 +3,6 @@
   $theme-font-type-sans: "public-sans"
 );
 
-.usa-prose > .ldaf-homepage__popular-resources-heading {
-  margin-bottom: 1rem;
-  @include u-font("sans", $theme-h2-font-size);
-}
-
 .ldaf-homepage__popular-resources {
   margin-bottom: 1.5rem;
 }
