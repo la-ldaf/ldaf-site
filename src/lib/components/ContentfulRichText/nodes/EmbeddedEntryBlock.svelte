@@ -3,6 +3,7 @@
   import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
   import { linksKey, type LinksContext, imageSizeTypeKey } from "../context";
   import { isEntryBlock } from "../predicates";
+  import ContentfulRichText from "../ContentfulRichText.svelte";
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
   import Image from "$lib/components/Image";
@@ -18,13 +19,6 @@
   let entry: EntryLinkBlock = node;
   const entryId = entry.data.target.sys.id;
   const entryBlock = linksContext.linksEntriesMaps.block.get(entryId);
-
-  if (entryBlock?.__typename === "CallToAction") {
-    console.log("CTA", entry, entryBlock);
-  }
-  if (entryBlock?.__typename === "Contact") {
-    console.log("CONTACT", entry, entryBlock);
-  }
 
   if (!entryBlock) throw new Error(`the entry ${entryId} was not found in the context`);
 </script>
@@ -42,9 +36,12 @@
     sizeType={getContext(imageSizeTypeKey)}
   />
 {:else if entryBlock?.__typename === "CallToAction"}
-  <pre>
-    {JSON.stringify(entryBlock, null, 2)}
-  </pre>
+  <span class="embedded-entry-CTA">
+    <ContentfulRichText
+      document={entryBlock?.callToActionDestination?.json}
+      links={entryBlock?.callToActionDestination?.links}
+    />
+  </span>
 {:else}
   <!--
     TODO: Add support for the other types of

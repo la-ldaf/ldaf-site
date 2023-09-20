@@ -41,5 +41,17 @@ export default gql`
         zip
       }
     }
+    ... on CallToAction {
+      callToActionDestination {
+        json
+        links {
+          assets {
+            hyperlink {
+              ...ImageProps
+            }
+          }
+        }
+      }
+    }
   }
 `;
