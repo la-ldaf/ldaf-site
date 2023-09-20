@@ -58,7 +58,7 @@
           {#each secondaryNavItems as item (item.id)}
             {@const { name, link } = item}
             <li class="usa-nav__secondary-item">
-              <Link href={link}>{name}</Link>
+              <Link href={link} useBaseLinkStyles={false}>{name}</Link>
             </li>
           {/each}
         </ul>

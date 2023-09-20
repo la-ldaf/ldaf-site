@@ -1,6 +1,12 @@
-.usa-sidenav__item.ldaf-sidenav-item .usa-link {
+.usa-sidenav__item.ldaf-sidenav-item .ldaf-sidenav-link {
   display: flex;
   align-items: center;
+  &.usa-current {
+    color: $link-color;
+    &::after {
+      background-color: $link-color;
+    }
+  }
   .ldaf-sidenav-link-text {
     width: 75%;
   }

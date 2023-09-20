@@ -55,7 +55,13 @@ $filters: (
     contrast(100%),
 );
 
-.usa-button {
+// TODO: We're overriding the base usa-link color styles for the default button
+//       here. Currently the only time we use a link displayed as a button is
+//       with the default button style. If we ever use a link displayed as a
+//       button with another variation (e.g. secondary), we'll want to add
+//       overrides for those colors here as well.
+.usa-button,
+.usa-button.usa-link {
   width: auto;
   color: #fff;
   background: map.get($colors, "primary");
@@ -63,10 +69,15 @@ $filters: (
     filter: map.get($filters, "white");
   }
   &:hover {
+    color: #fff;
     background: map.get($colors, "primary-dark");
   }
   &:active {
+    color: #fff;
     background: map.get($colors, "primary-darker");
+  }
+  &:visited {
+    color: #fff;
   }
   &:disabled,
   &:disabled:hover,

@@ -11,6 +11,12 @@
     white-space: nowrap;
   }
 
+  .usa-footer__return-to-top a.usa-link {
+    &:visited {
+      color: $link-color;
+    }
+  }
+
   .ldaf-footer__primary-section {
     background-color: $primary-dark;
     .ldaf-footer__nav {
@@ -28,7 +34,7 @@
       @include u-font("sans", "sm");
     }
     .ldaf-footer__secondary-link a {
-      color: $white;
+      color: $primary-lightest;
       line-height: 1.3;
     }
   }

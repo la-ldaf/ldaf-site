@@ -8,6 +8,7 @@
     class?: string;
     external?: boolean;
     alternate?: boolean;
+    useBaseLinkStyles?: boolean;
   };
 
   // this isn't necessary but will suppress vite-plugin-svelte a11y warnings
@@ -19,9 +20,12 @@
   export let external = false;
   // render with the alternate variation, for use on darker backgrounds
   export let alternate = false;
+  // we don't always want to include the usa-link class for special cases, e.g.
+  //   for links in the header and the sidenav
+  export let useBaseLinkStyles = true;
 
   $: linkClassNames = classNames(
-    `usa-link`,
+    useBaseLinkStyles && "usa-link",
     external && "usa-link--external",
     alternate && "usa-link--alt",
     className,

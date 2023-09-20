@@ -6,4 +6,4 @@
   $: classes = classNames("usa-nav-link", current && "usa-current");
 </script>
 
-<Link {href} class={classes}><span><slot /></span></Link>
+<Link {href} useBaseLinkStyles={false} class={classes}><span><slot /></span></Link>

@@ -1,28 +1,37 @@
-.usa-link {
-  color: $primary-light;
+// The 'a' is important here so that we have enough specificity to override the USWDS.
+a.usa-link {
+  color: $link-color;
+  &:active {
+    // color: $link-active-color;
+  }
   &:focus {
-    // ???
+    // outline-color: ???
   }
   &:hover {
-    color: $primary-dark;
+    color: $link-hover-color;
   }
   &:visited {
-    color: #562b97;
+    color: $link-visited-color;
   }
   &.usa-link--alt {
-    color: $primary-lighter;
+    color: $link-reverse-color;
+    &:active {
+      // color: $link-reverse-active-color;
+    }
     &:focus {
-      // ???
+      // outline-color: ???
     }
     &:hover {
-      // ???
+      // color: $link-reverse-hover-color;
     }
     &:visited {
-      // ???
+      color: $link-reverse-color;
     }
   }
 }
 
+// The following extend `usa-link` in the USWDS, so we need to do the same to
+// properly override them.
 .usa-breadcrumb__link,
 .usa-footer__return-to-top a.usa-link,
 .usa-skipnav {

@@ -5,6 +5,7 @@
 
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
+  import classNames from "$lib/util/classNames";
 
   import type SideNavItem from "./types";
 
@@ -14,10 +15,11 @@
     children: SideNavItem[] | undefined = undefined;
 
   $: partOfCurrentPath = !!currentPath?.startsWith(link);
+  $: sideNavLinkClasses = classNames("ldaf-sidenav-link", partOfCurrentPath && "usa-current");
 </script>
 
 <li class="usa-sidenav__item ldaf-sidenav-item">
-  <Link class={partOfCurrentPath ? "usa-current" : ""} href={link}>
+  <Link useBaseLinkStyles={false} class={sideNavLinkClasses} href={link}>
     <span class="ldaf-sidenav-link-text">{title}</span>
     {#if children && children.length > 0}
       <div class="ldaf-sidenav-icon-container">
