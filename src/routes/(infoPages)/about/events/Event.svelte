@@ -9,13 +9,14 @@
 
   export let event: PageServerData["events"][number];
   export let headingLevel: HeadingLevel = 2;
+  export let variation: "big" | "small" = "big";
 
   $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
 </script>
 
 <div class="event">
   {#if event?.eventDateAndTime}
-    <DateComponent dateString={event.eventDateAndTime} />
+    <DateComponent dateString={event.eventDateAndTime} {variation} />
   {/if}
   <div class="event-details">
     {#if event?.shortTitle}
@@ -43,7 +44,7 @@
     flex-direction: row;
     gap: 14px;
     padding-bottom: 18px;
-    border-bottom: 1px solid #757473;
+    border-bottom: 1px solid #757473; /* replace with $grayscale-90 */
   }
 
   .event-title {
