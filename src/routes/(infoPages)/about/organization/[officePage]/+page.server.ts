@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import imagePropsFragment from "$lib/fragments/imageProps";
+import assetPropsFragment from "$lib/fragments/assetProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 import { getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 import getContentfulClient from "$lib/services/contentful";
@@ -13,7 +13,7 @@ import type { OfficePageQuery } from "./$queries.generated";
 
 const query = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${imagePropsFragment}
+  ${assetPropsFragment}
   ${entryPropsFragment}
   query OfficePage($metadataID: String!) {
     officePageCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
@@ -28,10 +28,10 @@ const query = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {
@@ -49,10 +49,10 @@ const query = gql`
           links {
             assets {
               block {
-                ...ImageProps
+                ...AssetProps
               }
               hyperlink {
-                ...ImageProps
+                ...AssetProps
               }
             }
             entries {

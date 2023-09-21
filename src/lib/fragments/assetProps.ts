@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 export default gql`
-  fragment ImageProps on Asset {
+  fragment AssetProps on Asset {
     sys {
       id
     }
