@@ -21,6 +21,6 @@ describe("SideNav", () => {
     expect(childItem).toBeVisible();
     expect(childItem.closest("a")).toHaveAttribute("href", "#ba");
     expect(currentItem).toBeVisible();
-    expect(currentItem.closest("a")).toHaveAttribute("class", "usa-link usa-current");
+    expect(currentItem.closest("a")).toHaveAttribute("class", "ldaf-sidenav-link usa-current");
   });
 });
