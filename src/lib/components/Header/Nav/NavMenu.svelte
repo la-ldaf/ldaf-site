@@ -88,7 +88,7 @@
     <ul id="extended-mega-nav-section-{id}" class="usa-nav__submenu" hidden={!expanded}>
       {#each children as { id, link, name } (id)}
         <li class="usa-nav__submenu-item">
-          <Link href={link}>{name}</Link>
+          <Link useBaseLinkStyles={false} href={link}>{name}</Link>
         </li>
       {/each}
     </ul>
@@ -105,7 +105,7 @@
             <ul class="usa-nav__submenu-list">
               {#each column as { id, link, name } (id)}
                 <li class="usa-nav__submenu-item">
-                  <Link href={link}>{name}</Link>
+                  <Link useBaseLinkStyles={false} href={link}>{name}</Link>
                 </li>
               {/each}
             </ul>
