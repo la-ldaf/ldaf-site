@@ -5,6 +5,7 @@
   import { getAccordionContext } from "./context";
   import Link from "$lib/components/Link";
   import Icon from "$lib/components/Icon";
+  import slugify from "$lib/util/slugify";
   import { url as linkIcon } from "$icons/link";
   import slugify from "$lib/util/slugify";
 

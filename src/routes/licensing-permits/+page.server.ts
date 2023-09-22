@@ -3,20 +3,42 @@ import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
+import slugify from "$lib/util/slugify";
 
-import type { TaggedPagesQuery } from "./$queries.generated";
+import type { TaggedServicesQuery } from "./$queries.generated";
+
+type TaggedService =
+  | {
+      id: string;
+      title: string;
+      url: string;
+      parentTitle: string;
+    }
+  | undefined;
 
 const query = gql`
-  query TaggedPages {
-    pageMetadataCollection(
-      where: { contentfulMetadata: { tags: { id_contains_some: "licensingAndPermits" } } }
-      order: [title_ASC]
+  query TaggedServices {
+    serviceEntryCollection(
+      # TODO: Perhaps provide tag as variable; should be based on this page's slug.
+      where: { contentfulMetadata: { tags: { id_contains_some: "type-licensing-permits" } } }
+      order: [entryTitle_ASC]
     ) {
       items {
         sys {
           id
         }
-        title
+        entryTitle
+        linkedFrom {
+          serviceGroupCollection(limit: 1) {
+            items {
+              pageMetadata {
+                sys {
+                  id
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -33,18 +55,44 @@ export const load = async ({ parent }) => {
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
     });
-    const data = await client.fetch<TaggedPagesQuery>(printQuery(query));
-    if (!data?.pageMetadataCollection?.items) break fetchData;
-    const taggedPages = data.pageMetadataCollection.items.map((taggedPage) => {
-      if (taggedPage?.sys.id) {
-        return pageMetadataMap.get(taggedPage?.sys.id);
+    const data = await client.fetch<TaggedServicesQuery>(printQuery(query));
+    if (!data?.serviceEntryCollection?.items) break fetchData;
+    // Create array of all tagged services and create links.
+    const taggedServices: TaggedService[] = data.serviceEntryCollection.items.map(
+      (taggedService) => {
+        // The Core Content entry that the service appears on.
+        const [serviceGroupEntry] = taggedService?.linkedFrom?.serviceGroupCollection?.items ?? [];
+        const pageMetadataID = serviceGroupEntry?.pageMetadata?.sys.id;
+        if (taggedService?.entryTitle && pageMetadataID) {
+          const pageMetadataForServiceGroup = pageMetadataMap.get(pageMetadataID);
+          if (pageMetadataForServiceGroup?.title) {
+            const url = `${pageMetadataForServiceGroup.url}#${slugify(taggedService.entryTitle)}`;
+            return {
+              id: taggedService?.sys.id,
+              title: taggedService?.entryTitle,
+              url,
+              parentTitle: pageMetadataForServiceGroup.title,
+            };
+          }
+        }
+      },
+    );
+    // Organize tagged services under their respective Core Content pages.
+    const taggedServicesByParent: Record<string, TaggedService[]> = {};
+    taggedServices.forEach((taggedService) => {
+      if (taggedService && taggedService.parentTitle) {
+        const mapEntry = taggedServicesByParent[taggedService.parentTitle];
+        if (mapEntry) {
+          taggedServicesByParent[taggedService.parentTitle].push(taggedService);
+        } else {
+          taggedServicesByParent[taggedService.parentTitle] = [taggedService];
+        }
       }
     });
 
     return {
-      aggregationPage: {},
       pageMetadata,
-      taggedPages,
+      taggedServicesByParent,
     };
   }
   throw error(404);
