@@ -35,13 +35,23 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {},
 };
+export const PrimaryAsLink: Story = {
+  args: { isLink: true },
+};
 
 export const Disabled: Story = {
   args: { disabled: true },
 };
+// DisabledAsLink not included as you can't disable a link.
 
 export const Base: Story = {
   args: {
+    variant: "base",
+  },
+};
+export const BaseAsLink: Story = {
+  args: {
+    isLink: true,
     variant: "base",
   },
 };
@@ -54,15 +64,36 @@ export const Inverse: Story = {
     variant: "inverse",
   },
 };
+export const InverseAsLink: Story = {
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
+  args: {
+    isLink: true,
+    variant: "inverse",
+  },
+};
 
 export const TextOnly: Story = {
   args: {
     variant: "text-only",
   },
 };
+export const TextOnlyAsLink: Story = {
+  args: {
+    isLink: true,
+    variant: "text-only",
+  },
+};
 
 export const Outline: Story = {
   args: {
+    variant: "outline",
+  },
+};
+export const OutlineAsLink: Story = {
+  args: {
+    isLink: true,
     variant: "outline",
   },
 };
@@ -75,9 +106,24 @@ export const OutlineInverse: Story = {
     variant: "outline-inverse",
   },
 };
+export const OutlineInverseAsLink: Story = {
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
+  args: {
+    isLink: true,
+    variant: "outline-inverse",
+  },
+};
 
 export const Big: Story = {
   args: {
+    variant: "big",
+  },
+};
+export const BigAsLink: Story = {
+  args: {
+    isLink: true,
     variant: "big",
   },
 };
@@ -90,9 +136,24 @@ export const BigInverse: Story = {
     variant: "big-inverse",
   },
 };
+export const BigInverseAsLink: Story = {
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
+  args: {
+    isLink: true,
+    variant: "big-inverse",
+  },
+};
 
 export const Unstyled: Story = {
   args: {
+    unstyled: true,
+  },
+};
+export const UnstyledAsLink: Story = {
+  args: {
+    isLink: true,
     unstyled: true,
   },
 };
@@ -106,9 +167,26 @@ export const UnstyledInverse: Story = {
     unstyled: true,
   },
 };
+export const UnstyledInverseAsLink: Story = {
+  parameters: {
+    backgrounds: { default: "dark" },
+  },
+  args: {
+    isLink: true,
+    variant: "inverse",
+    unstyled: true,
+  },
+};
 
 export const BigUnstyled: Story = {
   args: {
+    variant: "big",
+    unstyled: true,
+  },
+};
+export const BigUnstyledAsLink: Story = {
+  args: {
+    isLink: true,
     variant: "big",
     unstyled: true,
   },
