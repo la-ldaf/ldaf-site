@@ -41,6 +41,7 @@ $grayscale-90: #171717;
 
 /* Miscellaneous */
 $primary-vivid: #0050d8;
+$color-violet-50v: #d1b3ff;
 $color-violet-70v: #562b97;
 
 /* Warnings, Alerts, and Errors */
@@ -74,9 +75,10 @@ $disabled-darker: #adadad;
 
 /* Links */
 $link-color: $primary-light;
+$link-hover-color: $primary;
+$link-active-color: $primary-dark;
 $link-visited-color: $color-violet-70v;
-$link-hover-color: $primary-dark;
-// $link-active-color: ???
 $link-reverse-color: $primary-lighter;
-// $link-reverse-hover-color: ???
-// $link-reverse-active-color: ???
+$link-reverse-hover-color: $primary-light;
+$link-reverse-active-color: $primary-lightest;
+$link-reverse-visited-color: $color-violet-50v;

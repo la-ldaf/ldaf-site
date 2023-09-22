@@ -1,21 +1,7 @@
 @use "sass:map";
 
-// TODO: replace with global color variables from src/variables.scss
+// TODO: Bring the below colors inline with global colors in `src/variables.scss`
 $colors: (
-  "primary": #0051ad,
-  "primary-dark": #063c7a,
-  "primary-darker": #00284d,
-  "secondary": #ffc745,
-  "secondary-dark": #ffb200,
-  "secondary-darker": #d49400,
-  "disabled": #c9c9c9,
-  "disabled-dark": #adadad,
-  "base-lightest": #f2f1f0,
-  "base-light": #a9aeb1,
-  "base-dark": #565c65,
-  "base-darker": #3d4551,
-  "gray-05": #f0f0f0,
-  "primary-lightest": #d1e9ff,
   "text-only-hover": rgba(6, 60, 122, 16%),
   "text-only-active": rgba(6, 60, 122, 30%),
   "outline-inverse": #dcdee0,
@@ -55,26 +41,25 @@ $filters: (
     contrast(100%),
 );
 
-// TODO: We're overriding the base usa-link color styles for the default button
-//       here. Currently the only time we use a link displayed as a button is
-//       with the default button style. If we ever use a link displayed as a
-//       button with another variation (e.g. secondary), we'll want to add
-//       overrides for those colors here as well.
+// Note: We're setting a lot of seemingly-redundant color rules on each of
+//       these selectors for the "link displayed as a button" use-case.
+//       Removing these rules would have no impact on regular buttons but will
+//       break the styling on links using a button style.
 .usa-button,
 .usa-button.usa-link {
   width: auto;
   color: #fff;
-  background: map.get($colors, "primary");
+  background: $primary;
   .usa-icon {
     filter: map.get($filters, "white");
   }
   &:hover {
     color: #fff;
-    background: map.get($colors, "primary-dark");
+    background: $primary-dark;
   }
   &:active {
     color: #fff;
-    background: map.get($colors, "primary-darker");
+    background: $primary-darkest;
   }
   &:visited {
     color: #fff;
@@ -82,69 +67,77 @@ $filters: (
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
-    background: map.get($colors, "disabled-dark");
+    background: $disabled-darker;
   }
 }
 
 .usa-button.usa-button--secondary {
-  color: map.get($colors, "primary");
-  background: map.get($colors, "secondary");
+  color: $primary;
+  background: $accent-warm;
   .usa-icon {
     filter: map.get($filters, "primary");
   }
   &:hover {
-    background: map.get($colors, "secondary-dark");
+    color: $primary;
+    background: $accent-dark;
   }
   &:active {
-    background: map.get($colors, "secondary-darker");
+    color: $primary;
+    background: $accent-darker;
+  }
+  &:visited {
+    color: $primary;
   }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
-    background: map.get($colors, "disabled-dark");
+    background: $disabled-darker;
   }
 }
 
 .usa-button.usa-button--base {
-  background: map.get($colors, "base-dark");
+  background: $base-dark;
   &:hover {
-    background: map.get($colors, "base-dark");
+    background: $base-dark;
   }
   &:active {
-    background: map.get($colors, "base-darker");
+    background: $base-darker;
   }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
-    background: map.get($colors, "disabled-dark");
+    background: $disabled-darker;
   }
 }
 
 .usa-button.usa-button--inverse {
-  color: map.get($colors, "primary");
+  color: $primary;
   background: #fff;
   .usa-icon {
     filter: map.get($filters, "primary");
   }
   &:hover {
-    color: map.get($colors, "primary");
-    background: map.get($colors, "gray-05");
+    color: $primary;
+    background: $grayscale-05;
     .usa-icon {
       filter: map.get($filters, "primary");
     }
   }
   &:active {
-    color: map.get($colors, "primary");
-    background: map.get($colors, "primary-lightest");
+    color: $primary;
+    background: $primary-lightest;
     .usa-icon {
       filter: map.get($filters, "primary");
     }
+  }
+  &:visited {
+    color: $primary;
   }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
     color: #fff;
-    background: map.get($colors, "disabled-dark");
+    background: $disabled-darker;
     .usa-icon {
       filter: map.get($filters, "white");
     }
@@ -152,30 +145,33 @@ $filters: (
 }
 
 .usa-button.usa-button--text-only {
-  color: map.get($colors, "primary");
+  color: $primary;
   background: none;
   .usa-icon {
     filter: map.get($filters, "primary");
   }
   &:hover {
-    color: map.get($colors, "primary");
+    color: $primary;
     background: map.get($colors, "text-only-hover");
     .usa-icon {
       filter: map.get($filters, "primary");
     }
   }
   &:active {
-    color: map.get($colors, "primary");
+    color: $primary;
     background: map.get($colors, "text-only-active");
     .usa-icon {
       filter: map.get($filters, "primary");
     }
   }
+  &:visited {
+    color: $primary;
+  }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
     background: none;
-    color: map.get($colors, "disabled");
+    color: $disabled-dark;
     .usa-icon {
       filter: map.get($filters, "disabled");
     }
@@ -184,28 +180,37 @@ $filters: (
 
 .usa-button.usa-button--outline {
   background: none;
-  color: map.get($colors, "primary");
+  color: $primary;
   .usa-icon {
     filter: map.get($filters, "primary");
   }
   &:hover {
     background: none;
-    color: map.get($colors, "primary-dark");
+    color: $primary-dark;
     .usa-icon {
       filter: map.get($filters, "primary-dark");
     }
   }
   &:active {
     background: none;
-    color: map.get($colors, "base-darker");
+    color: $base-darker;
     .usa-icon {
       filter: map.get($filters, "base-darker");
+    }
+  }
+  &:visited {
+    color: $primary;
+    &:hover {
+      color: $primary-dark;
+    }
+    &:active {
+      color: $base-darker;
     }
   }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
-    color: map.get($colors, "disabled");
+    color: $disabled-dark;
     background: none;
     .usa-icon {
       filter: map.get($filters, "disabled");
@@ -215,13 +220,13 @@ $filters: (
 
 .usa-button.usa-button--outline-inverse {
   color: map.get($colors, "outline-inverse");
-  box-shadow: inset 0 0 0 2px map.get($colors, "base-light");
+  box-shadow: inset 0 0 0 2px $base-light;
   .usa-icon {
     filter: map.get($filters, "outline-inverse");
   }
   &:hover {
-    color: map.get($colors, "base-lightest");
-    box-shadow: inset 0 0 0 2px map.get($colors, "base-lightest");
+    color: $base-lightest;
+    box-shadow: inset 0 0 0 2px $base-lightest;
     .usa-icon {
       filter: map.get($filters, "base-lightest");
     }
@@ -233,12 +238,21 @@ $filters: (
       filter: map.get($filters, "white");
     }
   }
+  &:visited {
+    color: map.get($colors, "outline-inverse");
+    &:hover {
+      color: $base-lightest;
+    }
+    &:active {
+      color: #fff;
+    }
+  }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
     background: none;
-    color: map.get($colors, "disabled-dark");
-    box-shadow: inset 0 0 0 2px map.get($colors, "disabled-dark");
+    color: $disabled-darker;
+    box-shadow: inset 0 0 0 2px $disabled-darker;
     .usa-icon {
       filter: map.get($filters, "disabled-dark");
     }
@@ -246,46 +260,49 @@ $filters: (
 }
 
 .usa-button.usa-button--big {
-  background: map.get($colors, "primary");
+  background: $primary;
   color: #fff;
   .usa-icon {
     filter: map.get($filters, "white");
   }
   &:hover {
-    background: map.get($colors, "primary-dark");
+    background: $primary-dark;
   }
   &:active {
-    background: map.get($colors, "primary-darker");
+    background: $primary-darkest;
   }
   &:disabled {
-    background: map.get($colors, "disabled");
+    background: $disabled-dark;
   }
 }
 
 .usa-button.usa-button--big-inverse {
   background: #fff;
-  color: map.get($colors, "primary");
+  color: $primary;
   .usa-icon {
     filter: map.get($filters, "primary");
   }
   &:hover {
-    background: map.get($colors, "gray-05");
-    color: map.get($colors, "primary");
+    background: $grayscale-05;
+    color: $primary;
     .usa-icon {
       filter: map.get($filters, "primary");
     }
   }
   &:active {
-    background: map.get($colors, "primary-lightest");
-    color: map.get($colors, "primary");
+    background: $primary-lightest;
+    color: $primary;
     .usa-icon {
       filter: map.get($filters, "primary");
     }
   }
+  &:visited {
+    color: $primary;
+  }
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
-    background: map.get($colors, "disabled-dark");
+    background: $disabled-darker;
     color: #fff;
     .usa-icon {
       filter: map.get($filters, "white");
@@ -316,13 +333,22 @@ $filters: (
       filter: map.get($filters, "unstyled-fg-active");
     }
   }
+  &:visited {
+    color: map.get($colors, "unstyled-fg");
+    &:hover {
+      color: map.get($colors, "unstyled-fg-hover");
+    }
+    &:active {
+      color: map.get($colors, "unstyled-fg-active");
+    }
+  }
 
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
     box-shadow: none;
     background: none;
-    color: map.get($colors, "disabled");
+    color: $disabled-dark;
     .usa-icon {
       filter: map.get($filters, "disabled");
     }
@@ -354,7 +380,7 @@ $filters: (
     &:disabled:hover,
     &:disabled:active {
       background: none;
-      color: map.get($colors, "disabled-dark");
+      color: $disabled-darker;
       .usa-icon {
         filter: map.get($filters, "disabled-dark");
       }
