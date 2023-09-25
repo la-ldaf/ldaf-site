@@ -1,23 +1,18 @@
 <script lang="ts">
-  import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Link from "$lib/components/Link";
   import Tag from "$lib/components/Tag";
+  import {
+    headingTagByLevel,
+    type HeadingLevel,
+  } from "$lib/components/ContentfulRichText/headings";
   import { getDateStringFromUTCDate } from "$lib/util/dates";
 
-  import type { Node } from "@contentful/rich-text-types";
   import type { PageServerData } from "./$types";
 
   export let entry: NonNullable<PageServerData["newsEntries"][number]>;
+  export let headingLevel: HeadingLevel = 2;
 
-  $: ({ slug, title, body, byline, type, publicationDate } = entry);
-
-  // Only display the first paragraph.
-  $: if (body?.json?.content) {
-    const firstParagraph = body.json.content.find(
-      (content: Node) => content.nodeType === "paragraph",
-    );
-    body.json.content = [firstParagraph];
-  }
+  $: ({ slug, title, subhead, byline, type, publicationDate } = entry);
 
   $: dateString = getDateStringFromUTCDate(publicationDate);
 
@@ -27,10 +22,12 @@
 {#if title && slug}
   <div class="ldaf-news-entry">
     <Link href={`/about/news/article/${slug}`}>
-      <h2 class="font-body-lg">{title}</h2></Link
-    >
-    {#if body?.json}
-      <ContentfulRichText document={body.json} links={body?.links} imageSizeType="col-9" />
+      <svelte:element this={headingTagByLevel[headingLevel]} class="news-title">
+        {title}
+      </svelte:element>
+    </Link>
+    {#if subhead}
+      <p>{subhead}</p>
     {/if}
     <div class="font-body-2xs">
       {#if isArticle && byline}
@@ -39,9 +36,15 @@
       {dateString}
     </div>
     <div class="margin-top-1 margin-bottom-2">
-      <!-- TODO: LDAF-402 support additional tags -->
       <Tag>{type}</Tag>
     </div>
   </div>
   <hr />
 {/if}
+
+<style>
+  .news-title {
+    font-size: 18px;
+    margin: 0;
+  }
+</style>
