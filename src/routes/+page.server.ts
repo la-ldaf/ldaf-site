@@ -7,9 +7,12 @@ import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
+import { eventIANATimezone } from "$lib/constants/date";
+import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
+
 import assetProps from "$lib/fragments/assetProps";
 
-import type { HomeCollectionQuery } from "./$queries.generated";
+import type { HomePageQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
@@ -28,7 +31,7 @@ const query = gql`
     }
   }
 
-  query HomeCollection($metadataID: String!) {
+  query HomePage($metadataID: String!, $eventStartDate: DateTime!) {
     homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         pageMetadata {
@@ -82,10 +85,37 @@ const query = gql`
         }
       }
     }
+    newsCollection(order: [publicationDate_DESC], limit: 4) {
+      items {
+        sys {
+          id
+        }
+        type
+        title
+        subhead
+        publicationDate
+        slug
+        byline
+      }
+    }
+    eventEntryCollection(
+      where: { eventDateAndTime_gte: $eventStartDate }
+      order: [eventDateAndTime_ASC]
+      limit: 4
+    ) {
+      items {
+        sys {
+          id
+        }
+        slug
+        shortTitle
+        eventDateAndTime
+      }
+    }
   }
 `;
 
-type Home = ExtractQueryType<HomeCollectionQuery, ["homeCollection", "items", number]>;
+type Home = ExtractQueryType<HomePageQuery, ["homeCollection", "items", number]>;
 type FeaturedService = ExtractQueryType<Home, ["featuredServiceCardsCollection", "items", number]>;
 type FeaturedServiceImage = FeaturedService["heroImage"];
 type FeaturedServiceImageSource = NonNullable<FeaturedServiceImage>["imageSource"];
@@ -94,6 +124,8 @@ type CommissionerHeadshotImageSource = CommissionerHeadshot["linkedImage"];
 type CommissionerBackground = ExtractQueryType<Home, ["commissionerBackground"]>;
 type CommissionerBackgroundImageSource = CommissionerBackground["linkedImage"];
 type Blurhash = string | null | undefined;
+type News = ExtractQueryType<HomePageQuery, ["newsCollection", "items"]>;
+type Events = ExtractQueryType<HomePageQuery, ["eventEntryCollection", "items"]>;
 
 export type HomePage = {
   homePage: Home & {
@@ -120,6 +152,8 @@ export type HomePage = {
         blurhash?: Blurhash;
       };
     };
+    news: News;
+    events: Events;
   };
   pageMetadata: PageMetadataMapItem;
 };
@@ -157,11 +191,17 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
     });
-    const data = await client.fetch<HomeCollectionQuery>(printQuery(query), {
-      variables: { metadataID },
+    const eventStartDate = getStartOfDayForDateInTZ(
+      getCurrentDateInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
+    const data = await client.fetch<HomePageQuery>(printQuery(query), {
+      variables: { metadataID, eventStartDate },
     });
     if (!data) break fetchData;
     const [home] = data?.homeCollection?.items ?? [];
+    const news = data?.newsCollection?.items ?? [];
+    const events = data?.eventEntryCollection?.items ?? [];
     if (!home) break fetchData;
 
     const featuredServicesPromises =
@@ -245,6 +285,8 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
           "commissionerBackground",
           commissionerBackgroundBlurhash,
         ),
+        news,
+        events,
       },
       pageMetadata,
     };
