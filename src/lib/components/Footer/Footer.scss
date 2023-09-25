@@ -17,6 +17,14 @@
     }
   }
 
+  // adjust default focus outline for the darker footer background
+  .ldaf-footer__primary-section,
+  .ldaf-footer__secondary-section {
+    [href]:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
+  }
+
   .ldaf-footer__primary-section {
     background-color: $primary-dark;
     .ldaf-footer__nav {

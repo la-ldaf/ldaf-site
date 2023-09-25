@@ -38,3 +38,11 @@ body {
 .usa-prose > p {
   max-width: none;
 }
+
+/* Set a default focus outline color */
+iframe:focus,
+[href]:focus,
+[tabindex]:focus,
+[contentEditable="true"]:focus {
+  outline-color: $focus-outline-color;
+}

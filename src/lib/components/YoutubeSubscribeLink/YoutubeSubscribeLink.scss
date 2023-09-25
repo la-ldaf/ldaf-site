@@ -14,6 +14,10 @@
   flex-direction: row;
   align-items: center;
   gap: 4px;
+  &:hover,
+  &:active {
+    color: white;
+  }
 }
 
 .usa-icon.youtube-subscribe-icon {

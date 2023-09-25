@@ -78,7 +78,11 @@ $link-color: $primary-light;
 $link-hover-color: $primary;
 $link-active-color: $primary-dark;
 $link-visited-color: $color-violet-70v;
-$link-reverse-color: $primary-lighter;
-$link-reverse-hover-color: $primary-light;
-$link-reverse-active-color: $primary-lightest;
+$link-reverse-color: $primary-lightest;
+$link-reverse-hover-color: $primary-lighter;
+$link-reverse-active-color: $primary-light;
 $link-reverse-visited-color: $color-violet-50v;
+
+/* Focus Outline */
+$focus-outline-color: $primary-vivid;
+$focus-reverse-outline-color: $primary-lightest;

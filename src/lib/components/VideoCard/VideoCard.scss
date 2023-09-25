@@ -11,6 +11,9 @@
   &--hero {
     color: $white;
     background: $primary-darkest;
+    [href]:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
   }
   &--primary {
     background: $accent-light;

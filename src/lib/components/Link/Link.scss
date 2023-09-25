@@ -5,7 +5,7 @@ a.usa-link {
     color: $link-active-color;
   }
   &:focus {
-    // outline-color: ???
+    outline-color: $focus-outline-color;
   }
   &:hover {
     color: $link-hover-color;
@@ -19,13 +19,13 @@ a.usa-link {
       color: $link-reverse-active-color;
     }
     &:focus {
-      // outline-color: ???
+      outline-color: $focus-reverse-outline-color;
     }
     &:hover {
       color: $link-reverse-hover-color;
     }
     &:visited {
-      color: $link-reverse-color;
+      color: $link-reverse-visited-color;
     }
   }
 }

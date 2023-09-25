@@ -27,6 +27,25 @@ $header-height-without-navbar: 148px;
   }
 }
 
+// use a lighter focus style on darker header backgrounds
+.ldaf-header {
+  .usa-logo a,
+  .usa-menu-btn {
+    &:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
+  }
+  @include at-media("desktop") {
+    .usa-nav__secondary-item a,
+    .usa-search .usa-input,
+    .usa-search .usa-search__submit {
+      &:focus {
+        outline-color: $focus-reverse-outline-color;
+      }
+    }
+  }
+}
+
 .ldaf-header.usa-header--extended .usa-nav__primary {
   justify-content: center;
   // Override default button width for submenus on mobile and tablet
