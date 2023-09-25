@@ -107,7 +107,7 @@
     "instantsearch.js": "^4.56.11",
     "jpeg-js": "^0.4.4",
     "lodash": "^4.17.21",
-    "redis": "^4.6.8",
+    "redis": "^4.6.10",
     "web-vitals": "^3.4.0"
   }
 }
