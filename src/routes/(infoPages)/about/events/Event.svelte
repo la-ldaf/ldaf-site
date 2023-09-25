@@ -1,7 +1,15 @@
 <script lang="ts">
   import type { PageServerData } from "./$types";
   import DateComponent from "$lib/components/Date";
+  import Link from "$lib/components/Link";
+  import {
+    headingTagByLevel,
+    type HeadingLevel,
+  } from "$lib/components/ContentfulRichText/headings";
+
   export let event: PageServerData["events"][number];
+  export let headingLevel: HeadingLevel = 2;
+
   $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
 </script>
 
@@ -11,15 +19,15 @@
   {/if}
   <div class="event-details">
     {#if event?.shortTitle}
-      <a
+      <Link
         href={date && event?.slug
           ? `/about/events/event/${date.toISOString().split("T")[0]}-${event.slug}`
           : undefined}
       >
-        <h2 class="event-title">
+        <svelte:element this={headingTagByLevel[headingLevel]} class="event-title">
           {event.shortTitle}
-        </h2>
-      </a>
+        </svelte:element>
+      </Link>
     {/if}
     {#if event?.eventDescription}
       <p class="event-description">
@@ -39,11 +47,8 @@
   }
 
   .event-title {
-    color: #757473;
-    margin: 0;
     font-size: 18px;
-    text-decoration: underline;
-    font-weight: normal;
+    margin: 0;
   }
 
   .event-description {
