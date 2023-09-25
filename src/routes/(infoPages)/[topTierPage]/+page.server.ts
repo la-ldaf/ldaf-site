@@ -229,8 +229,6 @@ export const load = async ({
       taggedDataPromise,
     ]);
 
-    if (!taggedData) break fetchData;
-
     return {
       __typename: matchedTopTier.__typename,
       topTierPage: {
@@ -251,8 +249,8 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
-        relatedNews: taggedData.newsCollection,
-        relatedEvents: taggedData.eventEntryCollection,
+        relatedNews: taggedData?.newsCollection ?? { items: [] },
+        relatedEvents: taggedData?.eventEntryCollection ?? { items: [] },
       },
       pageMetadata,
     };
