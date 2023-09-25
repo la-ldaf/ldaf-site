@@ -21,6 +21,7 @@
   <div class="event-details">
     {#if event?.shortTitle}
       <Link
+        class="display-block"
         href={date && event?.slug
           ? `/about/events/event/${date.toISOString().split("T")[0]}-${event.slug}`
           : undefined}

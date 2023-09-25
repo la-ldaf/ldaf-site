@@ -24,7 +24,7 @@
 
 {#if title && slug}
   <div class={`ldaf-news-entry ldaf-news-entry--${variation}`}>
-    <Link href={`/about/news/article/${slug}`}>
+    <Link class="display-block" href={`/about/news/article/${slug}`}>
       <svelte:element this={headingTagByLevel[headingLevel]} class="news-title">
         {title}
       </svelte:element>
