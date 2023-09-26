@@ -4,6 +4,7 @@
   import { shortMonths } from "$lib/constants/date";
 
   export let dateString: string;
+  export let variation: "big" | "small" = "big";
 
   $: date = new Date(dateString);
   $: month = date.getMonth();
@@ -11,7 +12,7 @@
   $: day = date.getDate();
 </script>
 
-<div class="event-date">
+<div class="event-date event-date--{variation}">
   <div class="event-date-month">{monthName}</div>
   <div class="event-date-day">{day}</div>
 </div>

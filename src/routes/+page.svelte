@@ -2,6 +2,8 @@
   import "./(infoPages)/[topTierPage]/page.scss";
   import "./page.scss";
 
+  import chunk from "lodash/chunk";
+
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import { getSources } from "$lib/imageServices/contentful";
@@ -13,6 +15,8 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import VideoCard from "$lib/components/VideoCard";
   import ResourceLinks from "$lib/components/ResourceLinks";
+  import NewsEntrySnippet from "./(infoPages)/about/news/NewsEntrySnippet.svelte";
+  import Event from "./(infoPages)/about/events/Event.svelte";
 
   export let data;
   $: ({
@@ -24,6 +28,8 @@
       commissionerByline,
       commissionerHeadshot,
       commissionerBackground,
+      news,
+      events,
     },
   } = data);
 
@@ -42,11 +48,12 @@
   };
 </script>
 
-<main id="main-content" class="grid-container usa-prose margin-top-2">
+<main id="main-content" class="grid-container usa-prose margin-top-3">
   {#if heroVideo && heroVideo.videoUrl}
     {@const { videoUrl, videoTitle, videoSubhead, youtubeVideoData } = heroVideo}
     {@const { title, description, thumbnails, blurhash } = youtubeVideoData ?? {}}
     <VideoCard
+      class="margin-bottom-4"
       url={videoUrl}
       title={videoTitle ?? title}
       description={videoSubhead ?? description}
@@ -106,13 +113,58 @@
     </ul>
   {/if}
   {#if popularResources && popularResources.length > 0}
-    <div class="ldaf-homepage__popular-resources">
-      <h2 class="ldaf-homepage__popular-resources-heading">Popular resources</h2>
+    <div class="margin-top-6 margin-bottom-10">
+      <h2>Popular resources</h2>
       <ResourceLinks links={popularResources} />
     </div>
   {/if}
+  {#if news && news.length > 0}
+    {@const [featuredEntry, ...listedEntries] = news}
+    <div class="margin-bottom-4">
+      <h2 class="margin-bottom-0">Recent news</h2>
+      <hr class="margin-top-0 margin-bottom-3" />
+      <div class="grid-row grid-gap-lg">
+        <div class="tablet:grid-col-6">
+          {#if featuredEntry}
+            <NewsEntrySnippet
+              entry={featuredEntry}
+              headingLevel={3}
+              variation="homepage-featured"
+            />
+          {/if}
+        </div>
+        <div class="tablet:grid-col-6">
+          {#if listedEntries.length > 0}
+            {#each listedEntries as entry (entry?.sys.id)}
+              {#if entry}
+                <NewsEntrySnippet {entry} headingLevel={3} variation="homepage-listed" />
+              {/if}
+            {/each}
+          {/if}
+        </div>
+      </div>
+    </div>
+  {/if}
+  {#if events && events.length > 0}
+    {@const eventColumns = chunk(events, 2)}
+    <div class="margin-bottom-3">
+      <h2 class="margin-bottom-0">Upcoming events</h2>
+      <hr class="margin-top-0 margin-bottom-3" />
+      <div class="grid-row grid-gap-lg">
+        {#each eventColumns as column, i (i)}
+          <div class="tablet:grid-col-6">
+            {#each column as event (event?.sys.id)}
+              <div class="margin-bottom-7">
+                <Event {event} headingLevel={3} variation="small" />
+              </div>
+            {/each}
+          </div>
+        {/each}
+      </div>
+    </div>
+  {/if}
   {#if commissionerGreeting?.json && commissionerByline && commissionerHeadshot?.linkedImage?.url}
-    <section class="greeting-wrapper" aria-label="Introduction">
+    <section class="greeting-wrapper margin-bottom-6" aria-label="Introduction">
       <!-- This section can render without the background image, so this is optional. -->
       {#if commissionerBackground?.linkedImage?.url}
         {@const {
