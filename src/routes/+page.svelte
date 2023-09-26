@@ -41,7 +41,7 @@
         return { card: "full", button: "primary", imageLoading: "eager" };
       case 1:
       case 2:
-        return { card: "half", button: "secondary", imageLoading: "lazy" };
+        return { card: "half", button: "outline", imageLoading: "lazy" };
       default:
         return { card: "third", button: "outline", imageLoading: "lazy" };
     }

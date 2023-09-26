@@ -125,7 +125,7 @@
 
 {#if childServiceGroups.length > 0}
   <ul class="service-group-list">
-    {#each childServiceGroups as item}
+    {#each childServiceGroups as item, i}
       <Card class="service-group-card">
         <h3 class="usa-card__heading" slot="header">{item.title}</h3>
         <svelte:fragment slot="body">
@@ -133,7 +133,7 @@
             {item.subheading}
           {/if}
         </svelte:fragment>
-        <Button slot="footer" isLink={true} href={item.url}>
+        <Button slot="footer" isLink={true} href={item.url} variant={i < 1 ? "primary" : "outline"}>
           <Icon src={arrowIcon} size={3} />
         </Button>
       </Card>
