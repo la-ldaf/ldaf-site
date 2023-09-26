@@ -15,6 +15,9 @@
     &:visited {
       color: $link-color;
     }
+    &:focus {
+      outline-color: $primary-vivid;
+    }
   }
 
   // adjust default focus outline for the darker footer background

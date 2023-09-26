@@ -4,7 +4,6 @@
 $colors: (
   "text-only-hover": rgba(6, 60, 122, 16%),
   "text-only-active": rgba(6, 60, 122, 30%),
-  "outline-inverse": #dcdee0,
   "unstyled-fg": #005ea2,
   "unstyled-fg-hover": #1a4480,
   "unstyled-fg-active": #162e51,
@@ -20,15 +19,17 @@ $filters: (
     contrast(102%),
   "primary-dark": invert(14%) sepia(71%) saturate(2991%) hue-rotate(202deg) brightness(91%)
     contrast(95%),
+  "primary-darkest": invert(11%) sepia(90%) saturate(1645%) hue-rotate(191deg) brightness(89%)
+    contrast(101%),
   "disabled": invert(88%) sepia(0%) saturate(135%) hue-rotate(146deg) brightness(86%) contrast(110%),
   "disabled-dark": invert(73%) sepia(17%) saturate(0%) hue-rotate(174deg) brightness(91%)
     contrast(95%),
   "base-lightest": invert(93%) sepia(6%) saturate(32%) hue-rotate(349deg) brightness(104%)
     contrast(92%),
+  "base-light": invert(71%) sepia(7%) saturate(176%) hue-rotate(159deg) brightness(98%)
+    contrast(86%),
   "base-darker": invert(23%) sepia(14%) saturate(719%) hue-rotate(177deg) brightness(93%)
     contrast(84%),
-  "outline-inverse": invert(96%) sepia(9%) saturate(44%) hue-rotate(169deg) brightness(90%)
-    contrast(99%),
   "unstyled-fg": invert(17%) sepia(91%) saturate(2870%) hue-rotate(191deg) brightness(95%)
     contrast(101%),
   "unstyled-fg-hover": invert(20%) sepia(50%) saturate(2048%) hue-rotate(195deg) brightness(92%)
@@ -193,9 +194,9 @@ $filters: (
   }
   &:active {
     background: none;
-    color: $base-darker;
+    color: $primary-darkest;
     .usa-icon {
-      filter: map.get($filters, "base-darker");
+      filter: map.get($filters, "primary-darkest");
     }
   }
   &:visited {
@@ -219,10 +220,10 @@ $filters: (
 }
 
 .usa-button.usa-button--outline-inverse {
-  color: map.get($colors, "outline-inverse");
+  color: $base-light;
   box-shadow: inset 0 0 0 2px $base-light;
   .usa-icon {
-    filter: map.get($filters, "outline-inverse");
+    filter: map.get($filters, "base-light");
   }
   &:hover {
     color: $base-lightest;
@@ -239,7 +240,7 @@ $filters: (
     }
   }
   &:visited {
-    color: map.get($colors, "outline-inverse");
+    color: $base-light;
     &:hover {
       color: $base-lightest;
     }
