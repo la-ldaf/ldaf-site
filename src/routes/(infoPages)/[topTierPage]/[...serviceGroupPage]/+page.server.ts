@@ -213,8 +213,7 @@ const childServiceEntriesQuery = gql`
 
 const childServiceGroupsQuery = gql`
   query ServiceGroupChildGroups($ids: [String]!) {
-    # Limiting to requesting 10 at once; we always make this request in chunks.
-    serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+    serviceGroupCollection(limit: 50, where: { sys: { id_in: $ids } }) {
       items {
         sys {
           id
@@ -336,9 +335,7 @@ export const load = async ({
         ?.filter((item): item is ChildServiceGroupStub => item?.__typename === "ServiceGroup")
         ?.map(({ sys: { id } }) => id) ?? [];
 
-    const childServiceGroupIDChunks = chunks(childServiceGroupIDs, 10);
-
-    const [childEntriesDataChunks, childGroupsDataChunks] = await Promise.all([
+    const [childEntriesDataChunks, childGroupsData] = await Promise.all([
       Promise.all(
         childServiceEntryIDChunks.flatMap((chunk) =>
           chunk.length > 0
@@ -350,17 +347,11 @@ export const load = async ({
             : [],
         ),
       ),
-      Promise.all(
-        childServiceGroupIDChunks.flatMap((chunk) =>
-          chunk.length > 0
-            ? [
-                client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-                  variables: { ids: chunk },
-                }),
-              ]
-            : [],
-        ),
-      ),
+      childServiceGroupIDs.length > 0
+        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
+            variables: { ids: childServiceGroupIDs },
+          })
+        : { serviceGroupCollection: { items: [] } },
     ]);
 
     const childServiceEntriesItems = inOrder(
@@ -393,19 +384,14 @@ export const load = async ({
     ).then((arr) => arr.flat());
 
     const childServiceGroups = inOrder(
-      childGroupsDataChunks.flatMap((dataChunk) => {
-        const items =
-          dataChunk?.serviceGroupCollection?.items.filter(
-            (item): item is NonNullable<typeof item> => !!item,
-          ) ?? [];
-        return items.map((serviceGroup) => {
-          const { id } = serviceGroup.pageMetadata?.sys ?? {};
-          if (!id) return serviceGroup;
-          const { url } = pageMetadataMap.get(id) ?? {};
-          return { ...serviceGroup, url };
-        });
-      }),
-      (item) => item?.sys.id,
+      childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
+        if (!group) return [];
+        const { id } = group.pageMetadata?.sys ?? {};
+        if (!id) return [group];
+        const { url } = pageMetadataMap.get(id) ?? {};
+        return [{ ...group, url }];
+      }) ?? [],
+      (item) => item?.sys?.id,
       childServiceGroupIDs,
     );
 
