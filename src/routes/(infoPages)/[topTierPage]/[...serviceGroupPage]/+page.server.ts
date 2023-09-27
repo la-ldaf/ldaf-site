@@ -62,7 +62,13 @@ const baseQuery = gql`
             }
           }
         }
-        serviceEntriesCollection(limit: 20) {
+        # We currently allow up to 50 references here (50 services, 50 core
+        #   content, or a mix of the two). This is mainly to account for the
+        #   Boards and Commissions page, which has somewhere around 28
+        #   individual Board / Commission core content pages that it links to
+        #   via cards, and we want to set a high limit so that LDAF isn't
+        #   restrained by this in the future.
+        serviceEntriesCollection(limit: 50) {
           items {
             __typename
             ... on ServiceEntry {
@@ -133,6 +139,7 @@ const childServiceEntriesQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!) {
+    # Limiting to requesting 10 at once; we always make this request in chunks.
     serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
       items {
         sys {
@@ -206,6 +213,7 @@ const childServiceEntriesQuery = gql`
 
 const childServiceGroupsQuery = gql`
   query ServiceGroupChildGroups($ids: [String]!) {
+    # Limiting to requesting 10 at once; we always make this request in chunks.
     serviceGroupCollection(limit: 10, where: { sys: { id_in: $ids } }) {
       items {
         sys {
@@ -328,7 +336,9 @@ export const load = async ({
         ?.filter((item): item is ChildServiceGroupStub => item?.__typename === "ServiceGroup")
         ?.map(({ sys: { id } }) => id) ?? [];
 
-    const [childEntriesDataChunks, childGroupsData] = await Promise.all([
+    const childServiceGroupIDChunks = chunks(childServiceGroupIDs, 10);
+
+    const [childEntriesDataChunks, childGroupsDataChunks] = await Promise.all([
       Promise.all(
         childServiceEntryIDChunks.flatMap((chunk) =>
           chunk.length > 0
@@ -340,11 +350,17 @@ export const load = async ({
             : [],
         ),
       ),
-      childServiceGroupIDs.length > 0
-        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-            variables: { ids: childServiceGroupIDs },
-          })
-        : { serviceGroupCollection: { items: [] } },
+      Promise.all(
+        childServiceGroupIDChunks.flatMap((chunk) =>
+          chunk.length > 0
+            ? [
+                client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
+                  variables: { ids: chunk },
+                }),
+              ]
+            : [],
+        ),
+      ),
     ]);
 
     const childServiceEntriesItems = inOrder(
@@ -377,14 +393,19 @@ export const load = async ({
     ).then((arr) => arr.flat());
 
     const childServiceGroups = inOrder(
-      childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
-        if (!group) return [];
-        const { id } = group.pageMetadata?.sys ?? {};
-        if (!id) return [group];
-        const { url } = pageMetadataMap.get(id) ?? {};
-        return [{ ...group, url }];
-      }) ?? [],
-      (item) => item?.sys?.id,
+      childGroupsDataChunks.flatMap((dataChunk) => {
+        const items =
+          dataChunk?.serviceGroupCollection?.items.filter(
+            (item): item is NonNullable<typeof item> => !!item,
+          ) ?? [];
+        return items.map((serviceGroup) => {
+          const { id } = serviceGroup.pageMetadata?.sys ?? {};
+          if (!id) return serviceGroup;
+          const { url } = pageMetadataMap.get(id) ?? {};
+          return { ...serviceGroup, url };
+        });
+      }),
+      (item) => item?.sys.id,
       childServiceGroupIDs,
     );
 
