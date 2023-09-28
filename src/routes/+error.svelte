@@ -1,38 +1,65 @@
 <script lang="ts">
+  import "./error.scss";
+
+  import Button from "$lib/components/Button";
+  import ContentfulRichText from "$lib/components/ContentfulRichText";
+  import Image from "$lib/components/Image";
+  import { getSources } from "$lib/imageServices/contentful";
+
   import { page } from "$app/stores";
-  $: ({ status, error } = $page);
+
+  $: ({
+    status,
+    error,
+    data: { errorPageContentMap },
+  } = $page);
+  $: errorPageContent = status && errorPageContentMap ? errorPageContentMap.get(status) : null;
+  $: pageMetaTitle = `${errorPageContent?.metaTitle} | Louisiana Department of Agriculture and Forestry`;
 </script>
 
 <svelte:head>
   <meta name="robots" content="noindex nofollow" />
+  <title>{pageMetaTitle}</title>
 </svelte:head>
 
-<!-- To reduce further error possibilities, we use as much plain HTML here as possible. -->
 {#if error}
   <div class="usa-section usa-prose grid-container">
-    {#if status === 404}
+    {#if errorPageContent}
       <div class="grid-row grid-gap">
         <div class="tablet:grid-col-3">
-          <img
-            src="/404.png"
-            class="ldaf-404-img margin-bottom-3"
-            alt="A goat with its tongue hanging out."
-          />
+          {#if errorPageContent?.image?.url}
+            {@const {
+              image: { url, blurhash, description },
+            } = errorPageContent}
+            <Image
+              class="ldaf-error-img margin-bottom-3"
+              src={url}
+              alt={description}
+              {blurhash}
+              height={215}
+              width={215}
+              sources={getSources}
+              loading="eager"
+            />
+          {/if}
         </div>
         <div class="tablet:grid-col-9">
-          <h1 class="margin-top-0">Uh oh. Page not found.</h1>
-          <p class="usa-intro line-height-sans-3 margin-y-0">
-            This is baaaaad. We hope this won't get your goat, but this page doesn't exist.
-          </p>
-          <p>
-            It might have been removed, had its name changed, or is otherwise unavailable. If you
-            typed the URL directly, check your spelling and capitalization. Our URLs look like this: <strong
-              >https://www.ldaf.la.gov/example-page</strong
+          <h1 class="margin-top-0">{errorPageContent.heading}</h1>
+          <!-- subhead is the only optional field -->
+          {#if errorPageContent?.subhead}
+            <p class="usa-intro line-height-sans-3 margin-y-0">
+              {errorPageContent.subhead}
+            </p>
+          {/if}
+          <ContentfulRichText
+            document={errorPageContent.body.json}
+            links={errorPageContent.body.links}
+          />
+          <div class="margin-y-3">
+            <Button href="/" isLink={true} class="margin-y-1">Visit homepage</Button>
+            <Button href="/about/contact" isLink={true} variant="outline" class="margin-y-1"
+              >Contact us</Button
             >
-          </p>
-          <div class="margin-y-4">
-            <a href="/" class="usa-button usa-link">Visit homepage</a>
-            <a href="/about/contact" class="usa-button usa-button--outline usa-link">Contact us</a>
           </div>
           <p>Error code: <code>{status}</code></p>
         </div>
@@ -43,13 +70,3 @@
     {/if}
   </div>
 {/if}
-
-<style>
-  .ldaf-404-img {
-    display: block;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 215px;
-  }
-</style>
