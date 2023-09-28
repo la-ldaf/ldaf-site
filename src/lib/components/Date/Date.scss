@@ -1,0 +1,37 @@
+.event-date {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid $primary-light;
+  flex-shrink: 0;
+  &--big {
+    width: 78px;
+    height: 78px;
+  }
+  &--small {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.event-date-month,
+.event-date-day {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+}
+
+.event-date-month {
+  background-color: $primary-light;
+  color: $white;
+  text-transform: uppercase;
+}
+
+.event-date-day {
+  color: $primary-light;
+}

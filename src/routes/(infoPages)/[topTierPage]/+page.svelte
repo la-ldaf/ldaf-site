@@ -9,11 +9,14 @@
   import Icon from "$lib/components/Icon";
   import VideoCard from "$lib/components/VideoCard";
   import Image from "$lib/components/Image";
+  import NewsEntrySnippet from "../about/news/NewsEntrySnippet.svelte";
+  import Event from "../about/events/Event.svelte";
   import { getSources } from "$lib/imageServices/contentful";
 
   export let data;
   $: ({ topTierPage } = data);
-  $: ({ subheading, video, description, featuredServices } = topTierPage);
+  $: ({ subheading, video, description, featuredServices, relatedNews, relatedEvents } =
+    topTierPage);
   $: ({ videoUrl, youtubeVideoData } = video);
   $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
   $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
@@ -90,4 +93,21 @@
       {/if}
     {/each}
   </ul>
+{/if}
+{#if relatedNews?.items && relatedNews.items.length > 0}
+  <h3>Recent news</h3>
+  {#each relatedNews.items as entry (entry?.sys.id)}
+    {#if entry}
+      <NewsEntrySnippet {entry} headingLevel={4} />
+    {/if}
+  {/each}
+{/if}
+
+{#if relatedEvents?.items && relatedEvents.items.length > 0}
+  <h3>Upcoming events</h3>
+  <div class="ldaf-events-list-container">
+    {#each relatedEvents.items as event (event?.sys.id)}
+      <Event {event} headingLevel={4} />
+    {/each}
+  </div>
 {/if}

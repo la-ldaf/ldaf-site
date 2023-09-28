@@ -10,16 +10,12 @@ import {
   newsEntries as testNewsEntries,
   pages as testNewsEntryPages,
 } from "./__tests__/newsTestContent";
-import assetPropsFragment from "$lib/fragments/assetProps";
-import entryPropsFragment from "$lib/fragments/entryProps";
 
 const newsBasePath = "/about/news";
 const limit = 10;
 
 export const query = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${assetPropsFragment}
-  ${entryPropsFragment}
   query NewsEntries($limit: Int = 10, $skip: Int = 0) {
     newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC]) {
       total
@@ -29,25 +25,8 @@ export const query = gql`
         }
         type
         title
+        subhead
         publicationDate
-        body {
-          json
-          links {
-            # Only including hyperlinks since we should only be displaying the
-            #   first paragraph node in the rich text field, i.e. no other
-            #   blocks will be embedded.
-            assets {
-              hyperlink {
-                ...AssetProps
-              }
-            }
-            entries {
-              hyperlink {
-                ...EntryProps
-              }
-            }
-          }
-        }
         slug
         byline
       }
