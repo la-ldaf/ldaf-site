@@ -11,6 +11,10 @@ import entryProps from "$lib/fragments/entryProps";
 import type { ErrorPageCollectionQuery } from "./$queries.generated";
 import type { ExtractQueryType } from "$lib/util/types";
 
+// We really only need to make this request once when the user first loads the site.
+let ERROR_CONTENT_LOADED = false;
+const errorPageMap: ErrorPageMap = new Map();
+
 const query = gql`
   ${assetProps}
   ${entryProps}
@@ -69,35 +73,37 @@ export const loadErrorPageContent = async ({
 }: {
   fetch: typeof global.fetch;
 }): Promise<ErrorPageMap> => {
-  const errorPageMap: ErrorPageMap = new Map();
-  fetchData: {
-    if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<ErrorPageCollectionQuery>(printQuery(query));
-    if (!data?.errorCollection?.items) break fetchData;
-    const errorPagePromises =
-      data.errorCollection.items.map(async (errorPage) => {
-        if (errorPage) {
-          const errorPageImageURL = errorPage?.image?.url;
-          const errorPageImageBlurhash =
-            errorPageImageURL && (await getBlurhash(errorPageImageURL, { fetch }));
-          return {
-            ...errorPage,
-            image: errorPage?.image
-              ? { ...errorPage.image, blurhash: errorPageImageBlurhash }
-              : undefined,
-          };
+  if (!ERROR_CONTENT_LOADED) {
+    fetchData: {
+      if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) break fetchData;
+      const client = getContentfulClient({
+        spaceID: CONTENTFUL_SPACE_ID,
+        token: CONTENTFUL_DELIVERY_API_TOKEN,
+      });
+      const data = await client.fetch<ErrorPageCollectionQuery>(printQuery(query));
+      if (!data?.errorCollection?.items) break fetchData;
+      const errorPagePromises =
+        data.errorCollection.items.map(async (errorPage) => {
+          if (errorPage) {
+            const errorPageImageURL = errorPage?.image?.url;
+            const errorPageImageBlurhash =
+              errorPageImageURL && (await getBlurhash(errorPageImageURL, { fetch }));
+            return {
+              ...errorPage,
+              image: errorPage?.image
+                ? { ...errorPage.image, blurhash: errorPageImageBlurhash }
+                : undefined,
+            };
+          }
+        }) ?? [];
+      const errorPages = await Promise.all(errorPagePromises);
+      errorPages.forEach((errorPage) => {
+        if (errorPage?.errorCode) {
+          errorPageMap.set(errorPage.errorCode, errorPage);
         }
-      }) ?? [];
-    const errorPages = await Promise.all(errorPagePromises);
-    errorPages.forEach((errorPage) => {
-      if (errorPage?.errorCode) {
-        errorPageMap.set(errorPage.errorCode, errorPage);
-      }
-    });
+      });
+    }
+    ERROR_CONTENT_LOADED = true;
   }
   return errorPageMap;
 };
