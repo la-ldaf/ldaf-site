@@ -11,7 +11,7 @@ import entryProps from "$lib/fragments/entryProps";
 import type { ErrorPageCollectionQuery } from "./$queries.generated";
 import type { ExtractQueryType } from "$lib/util/types";
 
-// We really only need to make this request once when the user first loads the site.
+// TODO: This runs once when the server starts; we should instead run it once per user session.
 let ERROR_CONTENT_LOADED = false;
 const errorPageMap: ErrorPageMap = new Map();
 
