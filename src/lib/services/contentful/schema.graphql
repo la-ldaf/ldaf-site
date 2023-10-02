@@ -1,3 +1,96 @@
+"""
+A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+Currently we only support the Licensing and Permits aggregation page. 
+Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+"""
+type Aggregation implements Entry {
+  body(locale: String): AggregationBody
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): AggregationLinkingCollections
+  pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
+  subhead(locale: String): String
+  sys: Sys!
+  title(locale: String): String
+}
+
+type AggregationBody {
+  json: JSON!
+  links: AggregationBodyLinks!
+}
+
+type AggregationBodyAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type AggregationBodyEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type AggregationBodyLinks {
+  assets: AggregationBodyAssets!
+  entries: AggregationBodyEntries!
+  resources: AggregationBodyResources!
+}
+
+type AggregationBodyResources {
+  block: [ResourceLink!]!
+}
+
+type AggregationCollection {
+  items: [Aggregation]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input AggregationFilter {
+  AND: [AggregationFilter]
+  OR: [AggregationFilter]
+  body_contains: String
+  body_exists: Boolean
+  body_not_contains: String
+  contentfulMetadata: ContentfulMetadataFilter
+  pageMetadata: cfPageMetadataNestedFilter
+  pageMetadata_exists: Boolean
+  subhead: String
+  subhead_contains: String
+  subhead_exists: Boolean
+  subhead_in: [String]
+  subhead_not: String
+  subhead_not_contains: String
+  subhead_not_in: [String]
+  sys: SysFilter
+  title: String
+  title_contains: String
+  title_exists: Boolean
+  title_in: [String]
+  title_not: String
+  title_not_contains: String
+  title_not_in: [String]
+}
+
+type AggregationLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum AggregationOrder {
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+}
+
 """Represents a binary file in a space. An asset can be any file type."""
 type Asset {
   contentType(locale: String): String
@@ -95,6 +188,7 @@ type AssetLinkingCollections {
   errorCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsErrorCollectionOrder], preview: Boolean, skip: Int = 0): ErrorCollection
   heroImageCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsHeroImageCollectionOrder], preview: Boolean, skip: Int = 0): HeroImageCollection
   imageWrapperCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsImageWrapperCollectionOrder], preview: Boolean, skip: Int = 0): ImageWrapperCollection
+  serviceGroupCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   testRichTextCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsTestRichTextCollectionOrder], preview: Boolean, skip: Int = 0): TestRichTextCollection
 }
 
@@ -160,6 +254,25 @@ enum AssetLinkingCollectionsImageWrapperCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+enum AssetLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
+  serviceListName_ASC
+  serviceListName_DESC
+  subheading_ASC
+  subheading_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
 }
 
 enum AssetLinkingCollectionsTestRichTextCollectionOrder {
@@ -473,6 +586,7 @@ type CallToActionLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   promoBannerWithCtaCollection(limit: Int = 100, locale: String, order: [CallToActionLinkingCollectionsPromoBannerWithCtaCollectionOrder], preview: Boolean, skip: Int = 0): PromoBannerWithCtaCollection
   serviceEntryCollection(limit: Int = 100, locale: String, order: [CallToActionLinkingCollectionsServiceEntryCollectionOrder], preview: Boolean, skip: Int = 0): ServiceEntryCollection
+  serviceTempTestCollection(limit: Int = 100, locale: String, order: [CallToActionLinkingCollectionsServiceTempTestCollectionOrder], preview: Boolean, skip: Int = 0): ServiceTempTestCollection
 }
 
 enum CallToActionLinkingCollectionsPromoBannerWithCtaCollectionOrder {
@@ -499,6 +613,21 @@ enum CallToActionLinkingCollectionsServiceEntryCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+enum CallToActionLinkingCollectionsServiceTempTestCollectionOrder {
+  entryTitle_ASC
+  entryTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  urltype_ASC
+  urltype_DESC
 }
 
 enum CallToActionOrder {
@@ -789,6 +918,7 @@ type ContactLinkingCollections {
   pressReleaseCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
   serviceEntryCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsServiceEntryCollectionOrder], preview: Boolean, skip: Int = 0): ServiceEntryCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
+  serviceTempTestCollection(limit: Int = 100, locale: String, order: [ContactLinkingCollectionsServiceTempTestCollectionOrder], preview: Boolean, skip: Int = 0): ServiceTempTestCollection
 }
 
 enum ContactLinkingCollectionsBoardsAndCommissionsCollectionOrder {
@@ -902,6 +1032,8 @@ enum ContactLinkingCollectionsServiceEntryCollectionOrder {
 }
 
 enum ContactLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -916,6 +1048,21 @@ enum ContactLinkingCollectionsServiceGroupCollectionOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
+}
+
+enum ContactLinkingCollectionsServiceTempTestCollectionOrder {
+  entryTitle_ASC
+  entryTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  urltype_ASC
+  urltype_DESC
 }
 
 enum ContactOrder {
@@ -1420,7 +1567,7 @@ enum EntryOrder {
 }
 
 """
-Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error)
+Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error)
 """
 type Error implements Entry {
   body(locale: String): ErrorBody
@@ -1821,6 +1968,8 @@ enum HeroImageLinkingCollectionsNewsCollectionOrder {
 }
 
 enum HeroImageLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -1932,6 +2081,8 @@ type HomeFeaturedServiceCardsCollection {
 }
 
 enum HomeFeaturedServiceCardsCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -2013,6 +2164,8 @@ type HomePopularResourcesListCollection {
 }
 
 enum HomePopularResourcesListCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -3286,6 +3439,7 @@ input PageMetadataFilter {
 }
 
 type PageMetadataLinkingCollections {
+  aggregationCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsAggregationCollectionOrder], preview: Boolean, skip: Int = 0): AggregationCollection
   boardsAndCommissionsCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsBoardsAndCommissionsCollectionOrder], preview: Boolean, skip: Int = 0): BoardsAndCommissionsCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   homeCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
@@ -3295,6 +3449,21 @@ type PageMetadataLinkingCollections {
   pressReleaseCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
   serviceGroupCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   topTierCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsTopTierCollectionOrder], preview: Boolean, skip: Int = 0): TopTierCollection
+}
+
+enum PageMetadataLinkingCollectionsAggregationCollectionOrder {
+  subhead_ASC
+  subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
 }
 
 enum PageMetadataLinkingCollectionsBoardsAndCommissionsCollectionOrder {
@@ -3398,6 +3567,8 @@ enum PageMetadataLinkingCollectionsPressReleaseCollectionOrder {
 }
 
 enum PageMetadataLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -3722,6 +3893,8 @@ The 'Quality' type represents quality as whole numeric values between `1` and `1
 scalar Quality
 
 type Query {
+  aggregation(id: String!, locale: String, preview: Boolean): Aggregation
+  aggregationCollection(limit: Int = 100, locale: String, order: [AggregationOrder], preview: Boolean, skip: Int = 0, where: AggregationFilter): AggregationCollection
   asset(id: String!, locale: String, preview: Boolean): Asset
   assetCollection(limit: Int = 100, locale: String, order: [AssetOrder], preview: Boolean, skip: Int = 0, where: AssetFilter): AssetCollection
   boardsAndCommissions(id: String!, locale: String, preview: Boolean): BoardsAndCommissions
@@ -3775,6 +3948,8 @@ type Query {
   serviceEntryCollection(limit: Int = 100, locale: String, order: [ServiceEntryOrder], preview: Boolean, skip: Int = 0, where: ServiceEntryFilter): ServiceEntryCollection
   serviceGroup(id: String!, locale: String, preview: Boolean): ServiceGroup
   serviceGroupCollection(limit: Int = 100, locale: String, order: [ServiceGroupOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): ServiceGroupCollection
+  serviceTempTest(id: String!, locale: String, preview: Boolean): ServiceTempTest
+  serviceTempTestCollection(limit: Int = 100, locale: String, order: [ServiceTempTestOrder], preview: Boolean, skip: Int = 0, where: ServiceTempTestFilter): ServiceTempTestCollection
   testRichText(id: String!, locale: String, preview: Boolean): TestRichText
   testRichTextCollection(limit: Int = 100, locale: String, order: [TestRichTextOrder], preview: Boolean, skip: Int = 0, where: TestRichTextFilter): TestRichTextCollection
   topTier(id: String!, locale: String, preview: Boolean): TopTier
@@ -3892,6 +4067,8 @@ type ServiceEntryLinkingCollections {
 }
 
 enum ServiceEntryLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -3950,6 +4127,8 @@ type ServiceGroup implements Entry {
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): ServiceGroupDescription
   heroImage(locale: String, preview: Boolean, where: HeroImageFilter): HeroImage
+  imageGalleryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): AssetCollection
+  imageGalleryTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): ServiceGroupLinkingCollections
   pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
   serviceEntriesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: ServiceGroupServiceEntriesFilter): ServiceGroupServiceEntriesCollection
@@ -4058,6 +4237,14 @@ input ServiceGroupFilter {
   description_not_contains: String
   heroImage: cfHeroImageNestedFilter
   heroImage_exists: Boolean
+  imageGalleryCollection_exists: Boolean
+  imageGalleryTitle: String
+  imageGalleryTitle_contains: String
+  imageGalleryTitle_exists: Boolean
+  imageGalleryTitle_in: [String]
+  imageGalleryTitle_not: String
+  imageGalleryTitle_not_contains: String
+  imageGalleryTitle_not_in: [String]
   pageMetadata: cfPageMetadataNestedFilter
   pageMetadata_exists: Boolean
   serviceEntries: cfserviceEntriesMultiTypeNestedFilter
@@ -4109,6 +4296,8 @@ enum ServiceGroupLinkingCollectionsHomeCollectionOrder {
 }
 
 enum ServiceGroupLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -4141,6 +4330,8 @@ enum ServiceGroupLinkingCollectionsTopTierCollectionOrder {
 }
 
 enum ServiceGroupOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -4175,6 +4366,146 @@ input ServiceGroupServiceEntriesFilter {
 }
 
 union ServiceGroupServiceEntriesItem = ServiceEntry | ServiceGroup
+
+"""
+sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest)
+"""
+type ServiceTempTest implements Entry {
+  contactInformationCollection(limit: Int = 100, locale: String, order: [ServiceTempTestContactInformationCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): ServiceTempTestContactInformationCollection
+  contentfulMetadata: ContentfulMetadata!
+  description(locale: String): ServiceTempTestDescription
+  entryTitle(locale: String): String
+  linkedFrom(allowedLocales: [String]): ServiceTempTestLinkingCollections
+  serviceCtaCollection(limit: Int = 100, locale: String, order: [ServiceTempTestServiceCtaCollectionOrder], preview: Boolean, skip: Int = 0, where: CallToActionFilter): ServiceTempTestServiceCtaCollection
+  sys: Sys!
+  urltype(locale: String): String
+}
+
+type ServiceTempTestCollection {
+  items: [ServiceTempTest]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type ServiceTempTestContactInformationCollection {
+  items: [Contact]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum ServiceTempTestContactInformationCollectionOrder {
+  email_ASC
+  email_DESC
+  entityName_ASC
+  entityName_DESC
+  phoneExt_ASC
+  phoneExt_DESC
+  phone_ASC
+  phone_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type ServiceTempTestDescription {
+  json: JSON!
+  links: ServiceTempTestDescriptionLinks!
+}
+
+type ServiceTempTestDescriptionAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type ServiceTempTestDescriptionEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type ServiceTempTestDescriptionLinks {
+  assets: ServiceTempTestDescriptionAssets!
+  entries: ServiceTempTestDescriptionEntries!
+  resources: ServiceTempTestDescriptionResources!
+}
+
+type ServiceTempTestDescriptionResources {
+  block: [ResourceLink!]!
+}
+
+input ServiceTempTestFilter {
+  AND: [ServiceTempTestFilter]
+  OR: [ServiceTempTestFilter]
+  contactInformation: cfContactNestedFilter
+  contactInformationCollection_exists: Boolean
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  entryTitle: String
+  entryTitle_contains: String
+  entryTitle_exists: Boolean
+  entryTitle_in: [String]
+  entryTitle_not: String
+  entryTitle_not_contains: String
+  entryTitle_not_in: [String]
+  serviceCta: cfCallToActionNestedFilter
+  serviceCtaCollection_exists: Boolean
+  sys: SysFilter
+  urltype: String
+  urltype_contains: String
+  urltype_exists: Boolean
+  urltype_in: [String]
+  urltype_not: String
+  urltype_not_contains: String
+  urltype_not_in: [String]
+}
+
+type ServiceTempTestLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum ServiceTempTestOrder {
+  entryTitle_ASC
+  entryTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  urltype_ASC
+  urltype_DESC
+}
+
+type ServiceTempTestServiceCtaCollection {
+  items: [CallToAction]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum ServiceTempTestServiceCtaCollectionOrder {
+  ctaInternalName_ASC
+  ctaInternalName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
 
 type Sys {
   environmentId: String!
@@ -4359,6 +4690,8 @@ type TopTierFeaturedServiceListCollection {
 }
 
 enum TopTierFeaturedServiceListCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
   serviceListName_ASC
   serviceListName_DESC
   subheading_ASC
@@ -5001,6 +5334,14 @@ input cfServiceGroupNestedFilter {
   description_exists: Boolean
   description_not_contains: String
   heroImage_exists: Boolean
+  imageGalleryCollection_exists: Boolean
+  imageGalleryTitle: String
+  imageGalleryTitle_contains: String
+  imageGalleryTitle_exists: Boolean
+  imageGalleryTitle_in: [String]
+  imageGalleryTitle_not: String
+  imageGalleryTitle_not_contains: String
+  imageGalleryTitle_not_in: [String]
   pageMetadata_exists: Boolean
   serviceEntriesCollection_exists: Boolean
   serviceListName: String

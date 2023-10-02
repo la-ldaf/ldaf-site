@@ -5,7 +5,10 @@ import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/
 import getContentfulClient from "$lib/services/contentful";
 import slugify from "$lib/util/slugify";
 
-import type { TaggedServicesQuery } from "./$queries.generated";
+import assetProps from "$lib/fragments/assetProps";
+import entryProps from "$lib/fragments/entryProps";
+
+import type { AggregationPageQuery, TaggedServicesQuery } from "./$queries.generated";
 
 type TaggedService =
   | {
@@ -16,11 +19,50 @@ type TaggedService =
     }
   | undefined;
 
-const query = gql`
-  query TaggedServices {
+const aggregationPageQuery = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
+  ${assetProps}
+  ${entryProps}
+  query AggregationPage($metadataID: String!) {
+    aggregationCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+      items {
+        contentfulMetadata {
+          tags {
+            id
+          }
+        }
+        title
+        subhead
+        body {
+          json
+          links {
+            assets {
+              hyperlink {
+                ...AssetProps
+              }
+            }
+            entries {
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
+        }
+        pageMetadata {
+          sys {
+            id
+          }
+        }
+      }
+    }
+  }
+  # eslint-enable @graphql-eslint/selection-set-depth
+`;
+
+const taggedServicesQuery = gql`
+  query TaggedServices($aggregationTag: String!) {
     serviceEntryCollection(
-      # TODO: Perhaps provide tag as variable; should be based on this page's slug.
-      where: { contentfulMetadata: { tags: { id_contains_some: "type-licensing-permits" } } }
+      where: { contentfulMetadata: { tags: { id_contains_some: [$aggregationTag] } } }
       order: [entryTitle_ASC]
     ) {
       items {
@@ -55,10 +97,29 @@ export const load = async ({ parent }) => {
       spaceID: CONTENTFUL_SPACE_ID,
       token: CONTENTFUL_DELIVERY_API_TOKEN,
     });
-    const data = await client.fetch<TaggedServicesQuery>(printQuery(query));
-    if (!data?.serviceEntryCollection?.items) break fetchData;
+
+    // Fetch content for the page as well as the tag used for aggregation
+    const aggregationPageData = await client.fetch<AggregationPageQuery>(
+      printQuery(aggregationPageQuery),
+      {
+        variables: { metadataID },
+      },
+    );
+    if (!aggregationPageData?.aggregationCollection?.items) break fetchData;
+    const [aggregationPage] = aggregationPageData.aggregationCollection.items;
+    const aggregationPageTags =
+      aggregationPage?.contentfulMetadata?.tags?.map((tag) => tag?.id) ?? [];
+    const aggregationTag = aggregationPageTags.find((tag) => tag?.startsWith("type-"));
+    if (!aggregationTag) break fetchData;
+
+    // Use the aggregation tag to grab all the relevant services
+    const taggedServicesData = await client.fetch<TaggedServicesQuery>(
+      printQuery(taggedServicesQuery),
+      { variables: { aggregationTag } },
+    );
+    if (!taggedServicesData?.serviceEntryCollection?.items) break fetchData;
     // Create array of all tagged services and create links.
-    const taggedServices: TaggedService[] = data.serviceEntryCollection.items.map(
+    const taggedServices: TaggedService[] = taggedServicesData.serviceEntryCollection.items.map(
       (taggedService) => {
         // The Core Content entry that the service appears on.
         const [serviceGroupEntry] = taggedService?.linkedFrom?.serviceGroupCollection?.items ?? [];
@@ -92,6 +153,7 @@ export const load = async ({ parent }) => {
 
     return {
       pageMetadata,
+      aggregationPage,
       taggedServicesByParent,
     };
   }
