@@ -5,6 +5,6 @@
 export default (s: string) =>
   s
     .toLowerCase()
-    .replace(/[^a-z0-9\s-_]/g, "")
+    .replaceAll(/[^a-z0-9\s-&_]/g, "")
     .split(" ")
     .join("-");

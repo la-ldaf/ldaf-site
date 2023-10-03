@@ -24,4 +24,9 @@ describe("slugify", () => {
     expect(slugify(title)).toEqual("this-one-has-a_mixture22");
     expect(slugify(title2)).toEqual("this-one-has-a_mixture22-2-1_33");
   });
+  it("handles ampersands", () => {
+    const title = "Planning, preparation, & practice";
+
+    expect(slugify(title)).toEqual("planning-preparation-&-practice");
+  });
 });
