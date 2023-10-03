@@ -90,6 +90,8 @@ export default {
         blurhash: null,
       },
     },
+    news: [],
+    events: [],
   },
   pageMetadata: {
     sys: { id: "0" },

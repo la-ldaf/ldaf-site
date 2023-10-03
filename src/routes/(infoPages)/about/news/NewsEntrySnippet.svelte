@@ -1,23 +1,21 @@
 <script lang="ts">
-  import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Link from "$lib/components/Link";
   import Tag from "$lib/components/Tag";
+  import {
+    headingTagByLevel,
+    type HeadingLevel,
+  } from "$lib/components/ContentfulRichText/headings";
   import { getDateStringFromUTCDate } from "$lib/util/dates";
 
-  import type { Node } from "@contentful/rich-text-types";
   import type { PageServerData } from "./$types";
 
+  type NewsSnippetVariation = "default" | "homepage-featured" | "homepage-listed";
+
   export let entry: NonNullable<PageServerData["newsEntries"][number]>;
+  export let headingLevel: HeadingLevel = 2;
+  export let variation: NewsSnippetVariation = "default";
 
-  $: ({ slug, title, body, byline, type, publicationDate } = entry);
-
-  // Only display the first paragraph.
-  $: if (body?.json?.content) {
-    const firstParagraph = body.json.content.find(
-      (content: Node) => content.nodeType === "paragraph",
-    );
-    body.json.content = [firstParagraph];
-  }
+  $: ({ slug, title, subhead, byline, type, publicationDate } = entry);
 
   $: dateString = getDateStringFromUTCDate(publicationDate);
 
@@ -25,12 +23,17 @@
 </script>
 
 {#if title && slug}
-  <div class="ldaf-news-entry">
-    <Link href={`/about/news/article/${slug}`}>
-      <h2 class="font-body-lg">{title}</h2></Link
-    >
-    {#if body?.json}
-      <ContentfulRichText document={body.json} links={body?.links} imageSizeType="col-9" />
+  <div class={`ldaf-news-entry ldaf-news-entry--${variation}`}>
+    <Link class="display-block" href={`/about/news/article/${slug}`}>
+      <svelte:element this={headingTagByLevel[headingLevel]} class="news-title">
+        {title}
+      </svelte:element>
+    </Link>
+    {#if variation === "homepage-listed"}
+      <div class="margin-bottom-1"><Tag>{type}</Tag></div>
+    {/if}
+    {#if subhead && variation !== "homepage-listed"}
+      <p class="margin-y-1">{subhead}</p>
     {/if}
     <div class="font-body-2xs">
       {#if isArticle && byline}
@@ -38,10 +41,18 @@
       {/if}
       {dateString}
     </div>
-    <div class="margin-top-1 margin-bottom-2">
-      <!-- TODO: LDAF-402 support additional tags -->
-      <Tag>{type}</Tag>
-    </div>
+    {#if variation !== "homepage-listed"}
+      <div class="margin-y-1">
+        <Tag>{type}</Tag>
+      </div>
+    {/if}
   </div>
-  <hr />
+  <hr class="margin-bottom-2" />
 {/if}
+
+<style>
+  .news-title {
+    font-size: 18px;
+    margin: 0;
+  }
+</style>
