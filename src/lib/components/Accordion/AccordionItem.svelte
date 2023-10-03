@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { afterNavigate } from "$app/navigation";
   import { page } from "$app/stores";
   import "./AccordionItem.scss";
   import { getAccordionContext } from "./context";
   import Link from "$lib/components/Link";
   import Icon from "$lib/components/Icon";
   import { url as linkIcon } from "$icons/link";
+  import slugify from "$lib/util/slugify";
 
   export let id: string;
   export let title: string | null | undefined = "Title";
@@ -18,20 +19,10 @@
   let expanded: boolean;
   $: expanded = $expandedItems[id] ?? false;
 
-  // strip out everything except characters, digits,
-  // and whitespace, then convert to Kebab case.
-  // E.g. "Title 2: This time it's personal"
-  // becomes "title-2-this-time-its-personal"
   // TODO: Make `titleHref` come from Contentful instead of deriving it here
-  const titleHref = title
-    ? title
-        .replace(/[^A-Za-z0-9\s]/g, "")
-        .toLowerCase()
-        .split(" ")
-        .join("-")
-    : null;
+  const titleHref = title ? slugify(title) : null;
 
-  onMount(() => {
+  afterNavigate(() => {
     if ($page.url.hash === `#${titleHref}` && $expandedItems) {
       $expandedItems[id] = true;
     }
@@ -57,7 +48,7 @@
   </button>
 </h3>
 <div class="usa-accordion__content usa-prose" {id} hidden={!expanded}>
-  <Link class="accordion-deeplink" href={`#${titleHref}`}
+  <Link class="accordion-deeplink font font-body-xs" href={`#${titleHref}`}
     >Link to item <Icon src={linkIcon} title="Link to item" /></Link
   >
   <slot />
