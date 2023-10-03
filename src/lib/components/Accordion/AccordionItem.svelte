@@ -22,6 +22,7 @@
   // TODO: Make `titleHref` come from Contentful instead of deriving it here
   const titleHref = title ? slugify(title) : null;
 
+  // TODO fix storybook integration ($app/navigation store currently isn't mocked)
   afterNavigate(() => {
     if ($page.url.hash === `#${titleHref}` && $expandedItems) {
       $expandedItems[id] = true;
