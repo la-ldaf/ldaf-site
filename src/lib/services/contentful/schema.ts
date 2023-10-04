@@ -171,6 +171,7 @@ export type AssetLinkingCollections = {
   __typename?: 'AssetLinkingCollections';
   documentWrapperCollection?: Maybe<DocumentWrapperCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  errorCollection?: Maybe<ErrorCollection>;
   heroImageCollection?: Maybe<HeroImageCollection>;
   imageWrapperCollection?: Maybe<ImageWrapperCollection>;
   testRichTextCollection?: Maybe<TestRichTextCollection>;
@@ -189,6 +190,15 @@ export type AssetLinkingCollectionsDocumentWrapperCollectionArgs = {
 export type AssetLinkingCollectionsEntryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AssetLinkingCollectionsErrorCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<AssetLinkingCollectionsErrorCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -223,6 +233,25 @@ export type AssetLinkingCollectionsTestRichTextCollectionArgs = {
 export enum AssetLinkingCollectionsDocumentWrapperCollectionOrder {
   DocWrapperNameAsc = 'docWrapperName_ASC',
   DocWrapperNameDesc = 'docWrapperName_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export enum AssetLinkingCollectionsErrorCollectionOrder {
+  ErrorCodeAsc = 'errorCode_ASC',
+  ErrorCodeDesc = 'errorCode_DESC',
+  HeadingAsc = 'heading_ASC',
+  HeadingDesc = 'heading_DESC',
+  MetaTitleAsc = 'metaTitle_ASC',
+  MetaTitleDesc = 'metaTitle_DESC',
+  SubheadAsc = 'subhead_ASC',
+  SubheadDesc = 'subhead_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -2068,6 +2097,175 @@ export type EntryFilter = {
 };
 
 export enum EntryOrder {
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type Error = Entry & {
+  __typename?: 'Error';
+  body?: Maybe<ErrorBody>;
+  contentfulMetadata: ContentfulMetadata;
+  errorCode?: Maybe<Scalars['Int']['output']>;
+  heading?: Maybe<Scalars['String']['output']>;
+  image?: Maybe<Asset>;
+  linkedFrom?: Maybe<ErrorLinkingCollections>;
+  metaTitle?: Maybe<Scalars['String']['output']>;
+  subhead?: Maybe<Scalars['String']['output']>;
+  sys: Sys;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorBodyArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorErrorCodeArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorHeadingArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorImageArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorMetaTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+export type ErrorSubheadArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ErrorBody = {
+  __typename?: 'ErrorBody';
+  json: Scalars['JSON']['output'];
+  links: ErrorBodyLinks;
+};
+
+export type ErrorBodyAssets = {
+  __typename?: 'ErrorBodyAssets';
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type ErrorBodyEntries = {
+  __typename?: 'ErrorBodyEntries';
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type ErrorBodyLinks = {
+  __typename?: 'ErrorBodyLinks';
+  assets: ErrorBodyAssets;
+  entries: ErrorBodyEntries;
+  resources: ErrorBodyResources;
+};
+
+export type ErrorBodyResources = {
+  __typename?: 'ErrorBodyResources';
+  block: Array<ResourceLink>;
+};
+
+export type ErrorCollection = {
+  __typename?: 'ErrorCollection';
+  items: Array<Maybe<Error>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type ErrorFilter = {
+  AND?: InputMaybe<Array<InputMaybe<ErrorFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<ErrorFilter>>>;
+  body_contains?: InputMaybe<Scalars['String']['input']>;
+  body_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  body_not_contains?: InputMaybe<Scalars['String']['input']>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  errorCode?: InputMaybe<Scalars['Int']['input']>;
+  errorCode_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  errorCode_gt?: InputMaybe<Scalars['Int']['input']>;
+  errorCode_gte?: InputMaybe<Scalars['Int']['input']>;
+  errorCode_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  errorCode_lt?: InputMaybe<Scalars['Int']['input']>;
+  errorCode_lte?: InputMaybe<Scalars['Int']['input']>;
+  errorCode_not?: InputMaybe<Scalars['Int']['input']>;
+  errorCode_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  heading?: InputMaybe<Scalars['String']['input']>;
+  heading_contains?: InputMaybe<Scalars['String']['input']>;
+  heading_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  heading_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  heading_not?: InputMaybe<Scalars['String']['input']>;
+  heading_not_contains?: InputMaybe<Scalars['String']['input']>;
+  heading_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  image_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  metaTitle?: InputMaybe<Scalars['String']['input']>;
+  metaTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  metaTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  metaTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  metaTitle_not?: InputMaybe<Scalars['String']['input']>;
+  metaTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  metaTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subhead?: InputMaybe<Scalars['String']['input']>;
+  subhead_contains?: InputMaybe<Scalars['String']['input']>;
+  subhead_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  subhead_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subhead_not?: InputMaybe<Scalars['String']['input']>;
+  subhead_not_contains?: InputMaybe<Scalars['String']['input']>;
+  subhead_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type ErrorLinkingCollections = {
+  __typename?: 'ErrorLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type ErrorLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum ErrorOrder {
+  ErrorCodeAsc = 'errorCode_ASC',
+  ErrorCodeDesc = 'errorCode_DESC',
+  HeadingAsc = 'heading_ASC',
+  HeadingDesc = 'heading_DESC',
+  MetaTitleAsc = 'metaTitle_ASC',
+  MetaTitleDesc = 'metaTitle_DESC',
+  SubheadAsc = 'subhead_ASC',
+  SubheadDesc = 'subhead_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -5333,6 +5531,8 @@ export type Query = {
   draftNavigationMenu?: Maybe<DraftNavigationMenu>;
   draftNavigationMenuCollection?: Maybe<DraftNavigationMenuCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  error?: Maybe<Error>;
+  errorCollection?: Maybe<ErrorCollection>;
   eventEntry?: Maybe<EventEntry>;
   eventEntryCollection?: Maybe<EventEntryCollection>;
   heroImage?: Maybe<HeroImage>;
@@ -5534,6 +5734,23 @@ export type QueryEntryCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EntryFilter>;
+};
+
+
+export type QueryErrorArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryErrorCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ErrorOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ErrorFilter>;
 };
 
 

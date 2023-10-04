@@ -70,7 +70,13 @@ const baseQuery = gql`
             }
           }
         }
-        serviceEntriesCollection(limit: 20) {
+        # We currently allow up to 50 references here (50 services, 50 core
+        #   content, or a mix of the two). This is mainly to account for the
+        #   Boards and Commissions page, which has somewhere around 28
+        #   individual Board / Commission core content pages that it links to
+        #   via cards, and we want to set a high limit so that LDAF isn't
+        #   restrained by this in the future.
+        serviceEntriesCollection(limit: 50) {
           items {
             __typename
             ... on ServiceEntry {
@@ -214,7 +220,7 @@ const childServiceEntriesQuery = gql`
 
 const childServiceGroupsQuery = gql`
   query ServiceGroupChildGroups($ids: [String]!) {
-    serviceGroupCollection(preview: true, limit: 10, where: { sys: { id_in: $ids } }) {
+    serviceGroupCollection(preview: true, limit: 50, where: { sys: { id_in: $ids } }) {
       items {
         sys {
           id

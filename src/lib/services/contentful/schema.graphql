@@ -92,6 +92,7 @@ input AssetFilter {
 type AssetLinkingCollections {
   documentWrapperCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsDocumentWrapperCollectionOrder], preview: Boolean, skip: Int = 0): DocumentWrapperCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  errorCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsErrorCollectionOrder], preview: Boolean, skip: Int = 0): ErrorCollection
   heroImageCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsHeroImageCollectionOrder], preview: Boolean, skip: Int = 0): HeroImageCollection
   imageWrapperCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsImageWrapperCollectionOrder], preview: Boolean, skip: Int = 0): ImageWrapperCollection
   testRichTextCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsTestRichTextCollectionOrder], preview: Boolean, skip: Int = 0): TestRichTextCollection
@@ -100,6 +101,25 @@ type AssetLinkingCollections {
 enum AssetLinkingCollectionsDocumentWrapperCollectionOrder {
   docWrapperName_ASC
   docWrapperName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum AssetLinkingCollectionsErrorCollectionOrder {
+  errorCode_ASC
+  errorCode_DESC
+  heading_ASC
+  heading_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  subhead_ASC
+  subhead_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1389,6 +1409,118 @@ input EntryFilter {
 }
 
 enum EntryOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error)
+"""
+type Error implements Entry {
+  body(locale: String): ErrorBody
+  contentfulMetadata: ContentfulMetadata!
+  errorCode(locale: String): Int
+  heading(locale: String): String
+  image(locale: String, preview: Boolean): Asset
+  linkedFrom(allowedLocales: [String]): ErrorLinkingCollections
+  metaTitle(locale: String): String
+  subhead(locale: String): String
+  sys: Sys!
+}
+
+type ErrorBody {
+  json: JSON!
+  links: ErrorBodyLinks!
+}
+
+type ErrorBodyAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type ErrorBodyEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type ErrorBodyLinks {
+  assets: ErrorBodyAssets!
+  entries: ErrorBodyEntries!
+  resources: ErrorBodyResources!
+}
+
+type ErrorBodyResources {
+  block: [ResourceLink!]!
+}
+
+type ErrorCollection {
+  items: [Error]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input ErrorFilter {
+  AND: [ErrorFilter]
+  OR: [ErrorFilter]
+  body_contains: String
+  body_exists: Boolean
+  body_not_contains: String
+  contentfulMetadata: ContentfulMetadataFilter
+  errorCode: Int
+  errorCode_exists: Boolean
+  errorCode_gt: Int
+  errorCode_gte: Int
+  errorCode_in: [Int]
+  errorCode_lt: Int
+  errorCode_lte: Int
+  errorCode_not: Int
+  errorCode_not_in: [Int]
+  heading: String
+  heading_contains: String
+  heading_exists: Boolean
+  heading_in: [String]
+  heading_not: String
+  heading_not_contains: String
+  heading_not_in: [String]
+  image_exists: Boolean
+  metaTitle: String
+  metaTitle_contains: String
+  metaTitle_exists: Boolean
+  metaTitle_in: [String]
+  metaTitle_not: String
+  metaTitle_not_contains: String
+  metaTitle_not_in: [String]
+  subhead: String
+  subhead_contains: String
+  subhead_exists: Boolean
+  subhead_in: [String]
+  subhead_not: String
+  subhead_not_contains: String
+  subhead_not_in: [String]
+  sys: SysFilter
+}
+
+type ErrorLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum ErrorOrder {
+  errorCode_ASC
+  errorCode_DESC
+  heading_ASC
+  heading_DESC
+  metaTitle_ASC
+  metaTitle_DESC
+  subhead_ASC
+  subhead_DESC
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -3609,6 +3741,8 @@ type Query {
   draftNavigationMenu(id: String!, locale: String, preview: Boolean): DraftNavigationMenu
   draftNavigationMenuCollection(limit: Int = 100, locale: String, order: [DraftNavigationMenuOrder], preview: Boolean, skip: Int = 0, where: DraftNavigationMenuFilter): DraftNavigationMenuCollection
   entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
+  error(id: String!, locale: String, preview: Boolean): Error
+  errorCollection(limit: Int = 100, locale: String, order: [ErrorOrder], preview: Boolean, skip: Int = 0, where: ErrorFilter): ErrorCollection
   eventEntry(id: String!, locale: String, preview: Boolean): EventEntry
   eventEntryCollection(limit: Int = 100, locale: String, order: [EventEntryOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): EventEntryCollection
   heroImage(id: String!, locale: String, preview: Boolean): HeroImage
