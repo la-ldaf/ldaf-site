@@ -49,6 +49,8 @@
       });
     });
 
+    // Just like the service group CTAs, do the same thing
+    // for embedded CTAs in the general description.
     document
       .querySelectorAll(".embedded-entry-CTA p > a")
       .forEach((ctaElement) => ctaElement.classList.add("usa-button"));

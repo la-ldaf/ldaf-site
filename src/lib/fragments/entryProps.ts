@@ -47,7 +47,7 @@ export default gql`
         links {
           assets {
             hyperlink {
-              ...ImageProps
+              ...AssetProps
             }
           }
         }
