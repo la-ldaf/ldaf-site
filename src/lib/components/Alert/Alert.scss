@@ -22,9 +22,6 @@
   }
 }
 
-.ldaf-alert--site-wide.usa-alert--info .usa-alert__body .usa-link {
-  color: $primary-light;
-  &:visited {
-    color: $primary-light;
-  }
+.ldaf-alert--site-wide.usa-alert--info .usa-alert__body .usa-link:visited {
+  color: $link-color;
 }

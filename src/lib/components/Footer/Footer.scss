@@ -11,6 +11,18 @@
     white-space: nowrap;
   }
 
+  .usa-footer__return-to-top a.usa-link:visited {
+    color: $link-color;
+  }
+
+  // adjust default focus outline for the darker footer background
+  .ldaf-footer__primary-section,
+  .ldaf-footer__secondary-section {
+    [href]:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
+  }
+
   .ldaf-footer__primary-section {
     background-color: $primary-dark;
     .ldaf-footer__nav {
@@ -28,7 +40,6 @@
       @include u-font("sans", "sm");
     }
     .ldaf-footer__secondary-link a {
-      color: $white;
       line-height: 1.3;
     }
   }
