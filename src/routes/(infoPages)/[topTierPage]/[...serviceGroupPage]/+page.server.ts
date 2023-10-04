@@ -147,6 +147,7 @@ const childServiceEntriesQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!) {
+    # Limiting to requesting 10 at once; we always make this request in chunks.
     serviceEntryCollection(preview: true, limit: 10, where: { sys: { id_in: $ids } }) {
       items {
         sys {
