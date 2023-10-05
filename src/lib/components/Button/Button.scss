@@ -19,7 +19,7 @@ $filters: (
     contrast(102%),
   "primary-dark": invert(14%) sepia(71%) saturate(2991%) hue-rotate(202deg) brightness(91%)
     contrast(95%),
-  "primary-darkest": invert(11%) sepia(90%) saturate(1645%) hue-rotate(191deg) brightness(89%)
+  "primary-darker": invert(11%) sepia(90%) saturate(1645%) hue-rotate(191deg) brightness(89%)
     contrast(101%),
   "disabled": invert(88%) sepia(0%) saturate(135%) hue-rotate(146deg) brightness(86%) contrast(110%),
   "disabled-dark": invert(73%) sepia(17%) saturate(0%) hue-rotate(174deg) brightness(91%)
@@ -149,7 +149,7 @@ $filters: (
   }
   &:active {
     .usa-icon {
-      filter: map.get($filters, "base-darker");
+      filter: map.get($filters, "primary-darker");
     }
   }
   &:disabled,

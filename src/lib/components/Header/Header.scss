@@ -6,7 +6,7 @@ $header-height-without-navbar: 148px;
 
 .ldaf-header {
   position: relative;
-  background: linear-gradient(to right, transparent, $primary-darkest 30%);
+  background: linear-gradient(to right, transparent, $primary-darker 30%);
 }
 
 .ldaf-header .ldaf-header-bg-img {
@@ -112,7 +112,7 @@ $header-height-without-navbar: 148px;
 
 @include at-media-max("desktop") {
   .usa-header--extended .ldaf-nav.usa-navbar {
-    background: $primary-darkest;
+    background: $primary-darker;
     border-bottom: none;
   }
 
