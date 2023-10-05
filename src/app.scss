@@ -62,26 +62,26 @@
   $theme-color-success: $success,
   $theme-color-success-dark: $success-dark,
   $theme-color-success-darker: $success-darker,
-  // TODO: Uncomment once we upgrade the USWDS to >= 3.6.0
+  // TODO: Add a disabled-lighter color once we upgrade the USWDS to >= 3.6.0
   // $theme-color-disabled-lighter: $disabled-lighter,
   $theme-color-disabled-light: $disabled-light,
   $theme-color-disabled: $disabled,
   $theme-color-disabled-dark: $disabled-dark,
-  // TODO: Uncomment once we upgrade the USWDS to >= 3.6.0
+  // TODO: Add a disabled-darker color once we upgrade the USWDS to >= 3.6.0
   // $theme-color-disabled-darker: $disabled-darker,
   //
   //// Colors - Uncustomizable Component Colors ////
   // The following color declarations must use strings that refer to above
-  //   declared colors. There are some declarations that are commented-out
-  //   since they need to be set to a custom color that is not captured by the
-  //   above tokens and thus cannot use a token.
+  //   declared colors.
   // Links
   $theme-link-color: "primary-light",
+  // This declaration is commented-out since it needs to be set to a custom
+  //   color that is not captured by the above tokens (and thus we don't have
+  //   a token we can use for it).
   // $theme-link-visited-color
   $theme-link-hover-color: "primary",
   $theme-link-active-color: "primary-dark",
   $theme-link-reverse-color: "primary-lightest",
-  // $theme-link-reverse-visited-color
   $theme-link-reverse-hover-color: "primary-lighter",
   $theme-link-reverse-active-color: "primary-light",
   // Focus Styling

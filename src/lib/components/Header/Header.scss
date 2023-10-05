@@ -23,7 +23,26 @@ $header-height-without-navbar: 148px;
   }
 
   a {
-    color: $primary-light;
+    color: $link-color;
+  }
+}
+
+// use a lighter focus style on darker header backgrounds
+.ldaf-header {
+  .usa-logo a,
+  .usa-menu-btn {
+    &:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
+  }
+  @include at-media("desktop") {
+    .usa-nav__secondary-item a,
+    .usa-search .usa-input,
+    .usa-search .usa-search__submit {
+      &:focus {
+        outline-color: $focus-reverse-outline-color;
+      }
+    }
   }
 }
 
@@ -65,7 +84,13 @@ $header-height-without-navbar: 148px;
     }
 
     a {
-      color: $primary-lightest;
+      color: $link-reverse-color;
+      &:hover {
+        color: $link-reverse-hover-color;
+      }
+      &:active {
+        color: $link-reverse-active-color;
+      }
     }
   }
 

@@ -39,8 +39,18 @@
       color: $accent-warm;
       @include u-font("sans", "sm");
     }
-    .ldaf-footer__secondary-link a {
+    .ldaf-footer__secondary-link .usa-link {
       line-height: 1.3;
+      // ignore visited state
+      &:visited {
+        color: $link-reverse-color;
+      }
+      &:hover {
+        color: $link-reverse-hover-color;
+      }
+      &:active {
+        color: $link-reverse-active-color;
+      }
     }
   }
 

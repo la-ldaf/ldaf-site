@@ -11,6 +11,10 @@
   &--hero {
     color: $white;
     background: $primary-darkest;
+    // set a lighter focus outline against the darker background
+    [href]:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
   }
   &--primary {
     background: $accent-light;
