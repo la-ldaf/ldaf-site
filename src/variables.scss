@@ -73,11 +73,13 @@ $disabled-light: #e6e6e6;
 $disabled: #c9c9c9;
 $disabled-dark: #adadad;
 
-// We already set most links with this color via USWDS settings in
-//   src/app.scss, but there are a few cases where we need to provide this
-//   color as an override (e.g. to override the visited link color to set it to
-//   the normal color).
+// We already set most links with these colors via USWDS settings in
+//   src/app.scss, but there are a few cases where we need to provide these
+//   colors as an override (e.g. to override the visited link color to set it
+//   to the normal color).
 $link-color: $primary-light;
+$link-hover-color: $primary;
+$link-active-color: $primary-dark;
 
 // The default behavior is to only apply the reverse link style if the link has
 //   a parent with the "usa-dark-background" class, which is overly

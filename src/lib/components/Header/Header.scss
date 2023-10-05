@@ -22,8 +22,16 @@ $header-height-without-navbar: 148px;
     border-radius: 5px 0 0 5px;
   }
 
+  // secondary nav links use primary styling on mobile and inverse styling on
+  //   desktop, and a class like `desktop:usa-link--alt` doesn't work
   a {
     color: $link-color;
+    &:hover {
+      color: $link-hover-color;
+    }
+    &:active {
+      color: $link-active-color;
+    }
   }
 }
 
@@ -83,6 +91,8 @@ $header-height-without-navbar: 148px;
       bottom: 7.5rem;
     }
 
+    // see note above about secondary nav links; for desktop we need to use the
+    //   inverse styling
     a {
       color: $link-reverse-color;
       &:hover {

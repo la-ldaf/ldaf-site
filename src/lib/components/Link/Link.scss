@@ -1,10 +1,15 @@
 // Since we can't set a custom color for $theme-link-visited-color in the
-//   USWDS settings in src/app.scss, we need a bit more specific to override
-//   the default value.
+//   USWDS settings in src/app.scss, we need to be a bit more specific to
+//   override the default value.
 // Additionally, there are a ton of places where we never want to display a
 //   link as visited, such as links rendered as buttons, links in the primary
-//   and secondary nav in the header, and links in the side nav.
-a.usa-link:visited:not(.usa-button, .usa-header .usa-link, .usa-sidenav .usa-link) {
+//   and secondary nav in the header, links in the side nav, etc.
+a.usa-link:visited:not(
+    .usa-button,
+    .usa-header .usa-link,
+    .usa-sidenav .usa-link,
+    .youtube-subscribe-link
+  ) {
   color: $link-visited-color;
 }
 // For some reason the USWDS rules for alternate color links depends on the
