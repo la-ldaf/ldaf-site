@@ -18,6 +18,7 @@ const errorPageMap: ErrorPageMap = new Map();
 const query = gql`
   ${assetProps}
   ${entryProps}
+  # eslint-disable @graphql-eslint/selection-set-depth
   query ErrorPageCollection {
     # Limit is rather arbitrary; there are 40 possible client and server error
     #   messages, but it's unlikely that LDAF will write content for more than
@@ -25,7 +26,6 @@ const query = gql`
     errorCollection(limit: 10) {
       items {
         sys {
-          # eslint-disable-next-line @graphql-eslint/selection-set-depth
           id
         }
         metaTitle
@@ -37,6 +37,7 @@ const query = gql`
         }
         heading
         subhead
+
         body {
           json
           links {
@@ -45,6 +46,7 @@ const query = gql`
                 ...AssetProps
               }
             }
+
             entries {
               hyperlink {
                 ...EntryProps
@@ -61,6 +63,8 @@ type BaseErrorPage = ExtractQueryType<
   ErrorPageCollectionQuery,
   ["errorCollection", "items", number]
 >;
+// eslint-enable @graphql-eslint/selection-set-depth
+
 type ErrorPage = BaseErrorPage & {
   image?: BaseErrorPage["image"] & {
     blurhash?: string | null | undefined;
