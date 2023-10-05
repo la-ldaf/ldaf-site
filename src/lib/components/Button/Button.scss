@@ -205,7 +205,7 @@ $filters: (
 }
 
 .usa-button.usa-button--big-inverse {
-  background: #fff;
+  background: $white;
   color: $primary;
   .usa-icon {
     filter: map.get($filters, "primary");
