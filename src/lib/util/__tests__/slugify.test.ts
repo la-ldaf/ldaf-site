@@ -27,6 +27,11 @@ describe("slugify", () => {
   it("handles ampersands", () => {
     const title = "Planning, preparation, & practice";
 
-    expect(slugify(title)).toEqual("planning-preparation-&-practice");
+    expect(slugify(title)).toEqual("planning-preparation-and-practice");
+  });
+  it("removes extraneous white space", () => {
+    const title = "  This  has  too  much  space  ";
+
+    expect(slugify(title)).toEqual("this-has-too-much-space");
   });
 });

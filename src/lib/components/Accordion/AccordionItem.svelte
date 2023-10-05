@@ -49,8 +49,10 @@
   </button>
 </h3>
 <div class="usa-accordion__content usa-prose" {id} hidden={!expanded}>
-  <Link class="accordion-deeplink font font-body-xs" href={`#${titleHref}`}
-    >Link to item <Icon src={linkIcon} title="Link to item" /></Link
-  >
+  <div class="accordion-deeplink--wrapper">
+    <Link class="accordion-deeplink font-body-xs" href={`#${titleHref}`}
+      >Link to item <Icon src={linkIcon} title="Link to item" /></Link
+    >
+  </div>
   <slot />
 </div>
