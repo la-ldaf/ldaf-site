@@ -3,8 +3,6 @@
   border: none;
 }
 .ldaf-alert--site-wide.usa-alert--error {
-  background-color: $error-dark;
-
   .usa-alert__body {
     color: $white;
     background-color: $error-dark;
@@ -15,13 +13,8 @@
         color: $white;
       }
     }
-
     &::before {
       filter: invert(1);
     }
   }
-}
-
-.ldaf-alert--site-wide.usa-alert--info .usa-alert__body .usa-link:visited {
-  color: $link-color;
 }
