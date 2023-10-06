@@ -19,6 +19,167 @@ export type Scalars = {
   Quality: { input: any; output: any; }
 };
 
+/**
+ * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+ * Currently we only support the Licensing and Permits aggregation page.
+ * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+ */
+export type Aggregation = Entry & {
+  __typename?: 'Aggregation';
+  body?: Maybe<AggregationBody>;
+  contentfulMetadata: ContentfulMetadata;
+  linkedFrom?: Maybe<AggregationLinkingCollections>;
+  pageMetadata?: Maybe<PageMetadata>;
+  subhead?: Maybe<Scalars['String']['output']>;
+  sys: Sys;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+
+/**
+ * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+ * Currently we only support the Licensing and Permits aggregation page.
+ * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+ */
+export type AggregationBodyArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/**
+ * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+ * Currently we only support the Licensing and Permits aggregation page.
+ * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+ */
+export type AggregationLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/**
+ * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+ * Currently we only support the Licensing and Permits aggregation page.
+ * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+ */
+export type AggregationPageMetadataArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<PageMetadataFilter>;
+};
+
+
+/**
+ * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+ * Currently we only support the Licensing and Permits aggregation page.
+ * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+ */
+export type AggregationSubheadArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/**
+ * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
+ * Currently we only support the Licensing and Permits aggregation page.
+ * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
+ */
+export type AggregationTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AggregationBody = {
+  __typename?: 'AggregationBody';
+  json: Scalars['JSON']['output'];
+  links: AggregationBodyLinks;
+};
+
+export type AggregationBodyAssets = {
+  __typename?: 'AggregationBodyAssets';
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type AggregationBodyEntries = {
+  __typename?: 'AggregationBodyEntries';
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type AggregationBodyLinks = {
+  __typename?: 'AggregationBodyLinks';
+  assets: AggregationBodyAssets;
+  entries: AggregationBodyEntries;
+  resources: AggregationBodyResources;
+};
+
+export type AggregationBodyResources = {
+  __typename?: 'AggregationBodyResources';
+  block: Array<ResourceLink>;
+};
+
+export type AggregationCollection = {
+  __typename?: 'AggregationCollection';
+  items: Array<Maybe<Aggregation>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type AggregationFilter = {
+  AND?: InputMaybe<Array<InputMaybe<AggregationFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<AggregationFilter>>>;
+  body_contains?: InputMaybe<Scalars['String']['input']>;
+  body_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  body_not_contains?: InputMaybe<Scalars['String']['input']>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  pageMetadata?: InputMaybe<CfPageMetadataNestedFilter>;
+  pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  subhead?: InputMaybe<Scalars['String']['input']>;
+  subhead_contains?: InputMaybe<Scalars['String']['input']>;
+  subhead_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  subhead_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subhead_not?: InputMaybe<Scalars['String']['input']>;
+  subhead_not_contains?: InputMaybe<Scalars['String']['input']>;
+  subhead_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys?: InputMaybe<SysFilter>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  title_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type AggregationLinkingCollections = {
+  __typename?: 'AggregationLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type AggregationLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum AggregationOrder {
+  SubheadAsc = 'subhead_ASC',
+  SubheadDesc = 'subhead_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
+}
+
 /** Represents a binary file in a space. An asset can be any file type. */
 export type Asset = {
   __typename?: 'Asset';
@@ -174,6 +335,7 @@ export type AssetLinkingCollections = {
   errorCollection?: Maybe<ErrorCollection>;
   heroImageCollection?: Maybe<HeroImageCollection>;
   imageWrapperCollection?: Maybe<ImageWrapperCollection>;
+  serviceGroupCollection?: Maybe<ServiceGroupCollection>;
   testRichTextCollection?: Maybe<TestRichTextCollection>;
 };
 
@@ -217,6 +379,15 @@ export type AssetLinkingCollectionsImageWrapperCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Array<InputMaybe<AssetLinkingCollectionsImageWrapperCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AssetLinkingCollectionsServiceGroupCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<AssetLinkingCollectionsServiceGroupCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -292,6 +463,25 @@ export enum AssetLinkingCollectionsImageWrapperCollectionOrder {
   SysPublishedAtDesc = 'sys_publishedAt_DESC',
   SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export enum AssetLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
+  ServiceListNameAsc = 'serviceListName_ASC',
+  ServiceListNameDesc = 'serviceListName_DESC',
+  SubheadingAsc = 'subheading_ASC',
+  SubheadingDesc = 'subheading_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
 }
 
 export enum AssetLinkingCollectionsTestRichTextCollectionOrder {
@@ -720,6 +910,7 @@ export type CallToActionLinkingCollections = {
   entryCollection?: Maybe<EntryCollection>;
   promoBannerWithCtaCollection?: Maybe<PromoBannerWithCtaCollection>;
   serviceEntryCollection?: Maybe<ServiceEntryCollection>;
+  serviceTempTestCollection?: Maybe<ServiceTempTestCollection>;
 };
 
 
@@ -748,6 +939,15 @@ export type CallToActionLinkingCollectionsServiceEntryCollectionArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
+export type CallToActionLinkingCollectionsServiceTempTestCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<CallToActionLinkingCollectionsServiceTempTestCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export enum CallToActionLinkingCollectionsPromoBannerWithCtaCollectionOrder {
   PromoInternalNameAsc = 'promoInternalName_ASC',
   PromoInternalNameDesc = 'promoInternalName_DESC',
@@ -772,6 +972,21 @@ export enum CallToActionLinkingCollectionsServiceEntryCollectionOrder {
   SysPublishedAtDesc = 'sys_publishedAt_DESC',
   SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export enum CallToActionLinkingCollectionsServiceTempTestCollectionOrder {
+  EntryTitleAsc = 'entryTitle_ASC',
+  EntryTitleDesc = 'entryTitle_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  UrltypeAsc = 'urltype_ASC',
+  UrltypeDesc = 'urltype_DESC'
 }
 
 export enum CallToActionOrder {
@@ -1209,6 +1424,7 @@ export type ContactLinkingCollections = {
   pressReleaseCollection?: Maybe<PressReleaseCollection>;
   serviceEntryCollection?: Maybe<ServiceEntryCollection>;
   serviceGroupCollection?: Maybe<ServiceGroupCollection>;
+  serviceTempTestCollection?: Maybe<ServiceTempTestCollection>;
 };
 
 
@@ -1278,6 +1494,15 @@ export type ContactLinkingCollectionsServiceGroupCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Array<InputMaybe<ContactLinkingCollectionsServiceGroupCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ContactLinkingCollectionsServiceTempTestCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ContactLinkingCollectionsServiceTempTestCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1393,6 +1618,8 @@ export enum ContactLinkingCollectionsServiceEntryCollectionOrder {
 }
 
 export enum ContactLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -1407,6 +1634,21 @@ export enum ContactLinkingCollectionsServiceGroupCollectionOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
   TitleAsc = 'title_ASC',
   TitleDesc = 'title_DESC'
+}
+
+export enum ContactLinkingCollectionsServiceTempTestCollectionOrder {
+  EntryTitleAsc = 'entryTitle_ASC',
+  EntryTitleDesc = 'entryTitle_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  UrltypeAsc = 'urltype_ASC',
+  UrltypeDesc = 'urltype_DESC'
 }
 
 export enum ContactOrder {
@@ -2107,7 +2349,7 @@ export enum EntryOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type Error = Entry & {
   __typename?: 'Error';
   body?: Maybe<ErrorBody>;
@@ -2122,44 +2364,44 @@ export type Error = Entry & {
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorErrorCodeArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorHeadingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorMetaTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorSubheadArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2734,6 +2976,8 @@ export enum HeroImageLinkingCollectionsNewsCollectionOrder {
 }
 
 export enum HeroImageLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -2937,6 +3181,8 @@ export type HomeFeaturedServiceCardsCollection = {
 };
 
 export enum HomeFeaturedServiceCardsCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -3028,6 +3274,8 @@ export type HomePopularResourcesListCollection = {
 };
 
 export enum HomePopularResourcesListCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -4853,6 +5101,7 @@ export type PageMetadataFilter = {
 
 export type PageMetadataLinkingCollections = {
   __typename?: 'PageMetadataLinkingCollections';
+  aggregationCollection?: Maybe<AggregationCollection>;
   boardsAndCommissionsCollection?: Maybe<BoardsAndCommissionsCollection>;
   entryCollection?: Maybe<EntryCollection>;
   homeCollection?: Maybe<HomeCollection>;
@@ -4862,6 +5111,15 @@ export type PageMetadataLinkingCollections = {
   pressReleaseCollection?: Maybe<PressReleaseCollection>;
   serviceGroupCollection?: Maybe<ServiceGroupCollection>;
   topTierCollection?: Maybe<TopTierCollection>;
+};
+
+
+export type PageMetadataLinkingCollectionsAggregationCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<PageMetadataLinkingCollectionsAggregationCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -4943,6 +5201,21 @@ export type PageMetadataLinkingCollectionsTopTierCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
+
+export enum PageMetadataLinkingCollectionsAggregationCollectionOrder {
+  SubheadAsc = 'subhead_ASC',
+  SubheadDesc = 'subhead_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
+}
 
 export enum PageMetadataLinkingCollectionsBoardsAndCommissionsCollectionOrder {
   SubheadingAsc = 'subheading_ASC',
@@ -5045,6 +5318,8 @@ export enum PageMetadataLinkingCollectionsPressReleaseCollectionOrder {
 }
 
 export enum PageMetadataLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -5512,6 +5787,8 @@ export enum PromoBannerWithCtaPromoCategoryCollectionOrder {
 
 export type Query = {
   __typename?: 'Query';
+  aggregation?: Maybe<Aggregation>;
+  aggregationCollection?: Maybe<AggregationCollection>;
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
   boardsAndCommissions?: Maybe<BoardsAndCommissions>;
@@ -5565,12 +5842,31 @@ export type Query = {
   serviceEntryCollection?: Maybe<ServiceEntryCollection>;
   serviceGroup?: Maybe<ServiceGroup>;
   serviceGroupCollection?: Maybe<ServiceGroupCollection>;
+  serviceTempTest?: Maybe<ServiceTempTest>;
+  serviceTempTestCollection?: Maybe<ServiceTempTestCollection>;
   testRichText?: Maybe<TestRichText>;
   testRichTextCollection?: Maybe<TestRichTextCollection>;
   topTier?: Maybe<TopTier>;
   topTierCollection?: Maybe<TopTierCollection>;
   videoWrapper?: Maybe<VideoWrapper>;
   videoWrapperCollection?: Maybe<VideoWrapperCollection>;
+};
+
+
+export type QueryAggregationArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryAggregationCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<AggregationOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AggregationFilter>;
 };
 
 
@@ -6026,6 +6322,23 @@ export type QueryServiceGroupCollectionArgs = {
 };
 
 
+export type QueryServiceTempTestArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryServiceTempTestCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ServiceTempTestOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ServiceTempTestFilter>;
+};
+
+
 export type QueryTestRichTextArgs = {
   id: Scalars['String']['input'];
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6251,6 +6564,8 @@ export type ServiceEntryLinkingCollectionsServiceGroupCollectionArgs = {
 };
 
 export enum ServiceEntryLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -6309,6 +6624,8 @@ export type ServiceGroup = Entry & {
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<ServiceGroupDescription>;
   heroImage?: Maybe<HeroImage>;
+  imageGalleryCollection?: Maybe<AssetCollection>;
+  imageGalleryTitle?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<ServiceGroupLinkingCollections>;
   pageMetadata?: Maybe<PageMetadata>;
   serviceEntriesCollection?: Maybe<ServiceGroupServiceEntriesCollection>;
@@ -6347,6 +6664,21 @@ export type ServiceGroupHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<HeroImageFilter>;
+};
+
+
+/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+export type ServiceGroupImageGalleryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+export type ServiceGroupImageGalleryTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -6502,6 +6834,14 @@ export type ServiceGroupFilter = {
   description_not_contains?: InputMaybe<Scalars['String']['input']>;
   heroImage?: InputMaybe<CfHeroImageNestedFilter>;
   heroImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  imageGalleryCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  imageGalleryTitle?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  imageGalleryTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  imageGalleryTitle_not?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   pageMetadata?: InputMaybe<CfPageMetadataNestedFilter>;
   pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
   serviceEntries?: InputMaybe<CfserviceEntriesMultiTypeNestedFilter>;
@@ -6589,6 +6929,8 @@ export enum ServiceGroupLinkingCollectionsHomeCollectionOrder {
 }
 
 export enum ServiceGroupLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -6621,6 +6963,8 @@ export enum ServiceGroupLinkingCollectionsTopTierCollectionOrder {
 }
 
 export enum ServiceGroupOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -6656,6 +7000,208 @@ export type ServiceGroupServiceEntriesFilter = {
 };
 
 export type ServiceGroupServiceEntriesItem = ServiceEntry | ServiceGroup;
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTest = Entry & {
+  __typename?: 'ServiceTempTest';
+  contactInformationCollection?: Maybe<ServiceTempTestContactInformationCollection>;
+  contentfulMetadata: ContentfulMetadata;
+  description?: Maybe<ServiceTempTestDescription>;
+  entryTitle?: Maybe<Scalars['String']['output']>;
+  linkedFrom?: Maybe<ServiceTempTestLinkingCollections>;
+  serviceCtaCollection?: Maybe<ServiceTempTestServiceCtaCollection>;
+  sys: Sys;
+  urltype?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTestContactInformationCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ServiceTempTestContactInformationCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContactFilter>;
+};
+
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTestDescriptionArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTestEntryTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTestLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTestServiceCtaCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ServiceTempTestServiceCtaCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CallToActionFilter>;
+};
+
+
+/** sandbox test [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceTempTest) */
+export type ServiceTempTestUrltypeArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ServiceTempTestCollection = {
+  __typename?: 'ServiceTempTestCollection';
+  items: Array<Maybe<ServiceTempTest>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type ServiceTempTestContactInformationCollection = {
+  __typename?: 'ServiceTempTestContactInformationCollection';
+  items: Array<Maybe<Contact>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export enum ServiceTempTestContactInformationCollectionOrder {
+  EmailAsc = 'email_ASC',
+  EmailDesc = 'email_DESC',
+  EntityNameAsc = 'entityName_ASC',
+  EntityNameDesc = 'entityName_DESC',
+  PhoneExtAsc = 'phoneExt_ASC',
+  PhoneExtDesc = 'phoneExt_DESC',
+  PhoneAsc = 'phone_ASC',
+  PhoneDesc = 'phone_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export type ServiceTempTestDescription = {
+  __typename?: 'ServiceTempTestDescription';
+  json: Scalars['JSON']['output'];
+  links: ServiceTempTestDescriptionLinks;
+};
+
+export type ServiceTempTestDescriptionAssets = {
+  __typename?: 'ServiceTempTestDescriptionAssets';
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type ServiceTempTestDescriptionEntries = {
+  __typename?: 'ServiceTempTestDescriptionEntries';
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type ServiceTempTestDescriptionLinks = {
+  __typename?: 'ServiceTempTestDescriptionLinks';
+  assets: ServiceTempTestDescriptionAssets;
+  entries: ServiceTempTestDescriptionEntries;
+  resources: ServiceTempTestDescriptionResources;
+};
+
+export type ServiceTempTestDescriptionResources = {
+  __typename?: 'ServiceTempTestDescriptionResources';
+  block: Array<ResourceLink>;
+};
+
+export type ServiceTempTestFilter = {
+  AND?: InputMaybe<Array<InputMaybe<ServiceTempTestFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<ServiceTempTestFilter>>>;
+  contactInformation?: InputMaybe<CfContactNestedFilter>;
+  contactInformationCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  description_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  entryTitle?: InputMaybe<Scalars['String']['input']>;
+  entryTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  entryTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  entryTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  entryTitle_not?: InputMaybe<Scalars['String']['input']>;
+  entryTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  entryTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  serviceCta?: InputMaybe<CfCallToActionNestedFilter>;
+  serviceCtaCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  sys?: InputMaybe<SysFilter>;
+  urltype?: InputMaybe<Scalars['String']['input']>;
+  urltype_contains?: InputMaybe<Scalars['String']['input']>;
+  urltype_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  urltype_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  urltype_not?: InputMaybe<Scalars['String']['input']>;
+  urltype_not_contains?: InputMaybe<Scalars['String']['input']>;
+  urltype_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type ServiceTempTestLinkingCollections = {
+  __typename?: 'ServiceTempTestLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type ServiceTempTestLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum ServiceTempTestOrder {
+  EntryTitleAsc = 'entryTitle_ASC',
+  EntryTitleDesc = 'entryTitle_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  UrltypeAsc = 'urltype_ASC',
+  UrltypeDesc = 'urltype_DESC'
+}
+
+export type ServiceTempTestServiceCtaCollection = {
+  __typename?: 'ServiceTempTestServiceCtaCollection';
+  items: Array<Maybe<CallToAction>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export enum ServiceTempTestServiceCtaCollectionOrder {
+  CtaInternalNameAsc = 'ctaInternalName_ASC',
+  CtaInternalNameDesc = 'ctaInternalName_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
 
 export type Sys = {
   __typename?: 'Sys';
@@ -6945,6 +7491,8 @@ export type TopTierFeaturedServiceListCollection = {
 };
 
 export enum TopTierFeaturedServiceListCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
   ServiceListNameAsc = 'serviceListName_ASC',
   ServiceListNameDesc = 'serviceListName_DESC',
   SubheadingAsc = 'subheading_ASC',
@@ -7679,6 +8227,14 @@ export type CfServiceGroupNestedFilter = {
   description_exists?: InputMaybe<Scalars['Boolean']['input']>;
   description_not_contains?: InputMaybe<Scalars['String']['input']>;
   heroImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  imageGalleryCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  imageGalleryTitle?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  imageGalleryTitle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  imageGalleryTitle_not?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_not_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGalleryTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
   serviceEntriesCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   serviceListName?: InputMaybe<Scalars['String']['input']>;

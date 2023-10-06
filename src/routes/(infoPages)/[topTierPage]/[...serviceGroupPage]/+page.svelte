@@ -1,5 +1,6 @@
 <script lang="ts">
   import "../page.scss";
+  import chunk from "lodash/chunk";
   import { getSources } from "$lib/imageServices/contentful";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button";
@@ -19,9 +20,11 @@
       description,
       heroImage,
       serviceListName,
+      imageGalleryTitle,
       contactInfoCollection,
       additionalResources,
     },
+    imageGallery,
     childServiceEntries,
     childServiceGroups,
   } = data);
@@ -142,6 +145,35 @@
 {/if}
 
 <div />
+
+{#if imageGallery?.images.length > 0}
+  {#if imageGalleryTitle}
+    <h2>{imageGalleryTitle}</h2>
+  {/if}
+
+  <div>
+    {#each chunk(imageGallery.images, 4) as row}
+      <div class="grid-row">
+        {#each row as item (item.sys.id)}
+          {#if item.url}
+            <div class="grid-col-3 margin-1">
+              <Image
+                src={item.url}
+                sources={getSources}
+                blurhash={imageGallery.blurhashes[item.sys.id] ?? undefined}
+                alt={item?.description ?? "Hero image"}
+                width={item?.width ?? undefined}
+                height={item?.height ?? undefined}
+                sizeType="col-9"
+                loading="eager"
+              />
+            </div>
+          {/if}
+        {/each}
+      </div>
+    {/each}
+  </div>
+{/if}
 
 {#if contactInfoCollection?.items && contactInfoCollection.items.length > 0}
   <ContactCard address={undefined} contacts={contactInfoCollection.items} class="margin-top-6" />

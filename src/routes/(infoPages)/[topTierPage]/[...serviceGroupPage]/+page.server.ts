@@ -2,9 +2,17 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
+import {
+  CONTENTFUL_SPACE_ID,
+  CONTENTFUL_DELIVERY_API_TOKEN,
+  CONTENTFUL_PREVIEW_API_TOKEN,
+} from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
-import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
+import {
+  getBlurhash,
+  getBlurhashMapFromAssetList,
+  getBlurhashMapFromRichText,
+} from "$lib/services/blurhashes";
 
 import type {
   ServiceGroupQuery,
@@ -24,7 +32,11 @@ const baseQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroup($metadataID: String!) {
-    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+    serviceGroupCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: true
+    ) {
       items {
         sys {
           id
@@ -81,6 +93,12 @@ const baseQuery = gql`
                 id
               }
             }
+          }
+        }
+        imageGalleryTitle
+        imageGalleryCollection {
+          items {
+            ...AssetProps
           }
         }
         contactInfoCollection(limit: 5) {
@@ -238,6 +256,7 @@ type ServiceGroup = ExtractQueryType<
 
 type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
 
+type ImageGallery = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
 type ChildServiceEntryOrGroupStub = ExtractQueryType<
   ServiceGroup,
   ["serviceEntriesCollection", "items", number]
@@ -273,6 +292,10 @@ export type ServiceGroupPage = {
     };
   })[];
   childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
+  imageGallery: {
+    images: ImageGallery[];
+    blurhashes: Record<string, string>;
+  };
   pageMetadata?: ServiceGroupMetadata;
   pageMetadataMap?: PageMetadataMap;
 };
@@ -305,7 +328,7 @@ export const load = async ({
     if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
+      token: CONTENTFUL_PREVIEW_API_TOKEN,
     });
 
     const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
@@ -322,6 +345,10 @@ export const load = async ({
       getBlurhashMapFromRichText(serviceGroup.description, {
         fetch,
       });
+
+    const imageGallery = serviceGroup.imageGalleryCollection?.items ?? [];
+    const imageGalleryBlurhashesPromise =
+      imageGallery.length > 0 && getBlurhashMapFromAssetList(imageGallery, { fetch });
 
     const childServiceEntryIDs =
       serviceGroup.serviceEntriesCollection?.items
@@ -397,11 +424,13 @@ export const load = async ({
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
-    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
-      heroImageBlurhashPromise,
-      descriptionBlurhashesPromise,
-      childServiceEntriesPromise,
-    ]);
+    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries, imageGalleryBlurhashes] =
+      await Promise.all([
+        heroImageBlurhashPromise,
+        descriptionBlurhashesPromise,
+        childServiceEntriesPromise,
+        imageGalleryBlurhashesPromise,
+      ]);
 
     return {
       serviceGroup: {
@@ -420,6 +449,10 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
+      },
+      imageGallery: {
+        images: [...imageGallery],
+        blurhashes: imageGalleryBlurhashes ?? {},
       },
       pageMetadata,
       pageMetadataMap,
