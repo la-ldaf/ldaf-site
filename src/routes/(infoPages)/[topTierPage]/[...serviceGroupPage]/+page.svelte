@@ -152,7 +152,9 @@
   {/if}
 
   <div>
-    {#each chunk(imageGallery.images, 4) as row}
+    <!-- Display a maximum of 8 images (2 rows of 4) -->
+    <!-- TODO: Enhance with a "show more" button revealing lightbox gallery -->
+    {#each chunk(imageGallery.images, 4).slice(0, 2) as row}
       <div class="grid-row">
         {#each row as item (item.sys.id)}
           {#if item.url}
