@@ -452,7 +452,7 @@ export const load = async ({
       },
       imageGallery: {
         images: [...imageGallery],
-        blurhashes: imageGalleryBlurhashes ?? {},
+        blurhashes: imageGalleryBlurhashes ? imageGalleryBlurhashes : {},
       },
       pageMetadata,
       pageMetadataMap,
