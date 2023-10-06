@@ -10,7 +10,7 @@ $white: #fff;
 $base-lightest: #f2f1f0;
 $base-lighter: #dfe1e2;
 $base-light: #a9aeb1;
-$base-base: #71767a;
+$base: #71767a;
 $base-dark: #565c65;
 $base-darker: #3d4551;
 $base-ink: #1b1b1b;
@@ -21,7 +21,7 @@ $primary-lighter: #6fb1fc;
 $primary-light: #1670d9;
 $primary: #0051ad;
 $primary-dark: #063c7a;
-$primary-darkest: #00284d;
+$primary-darker: #00284d;
 
 $accent-super-light: #fff7e5;
 $accent-lightest: #fff0cf;
@@ -41,6 +41,7 @@ $grayscale-90: #171717;
 
 /* Miscellaneous */
 $primary-vivid: #0050d8;
+$color-violet-50v: #d1b3ff;
 $color-violet-70v: #562b97;
 
 /* Warnings, Alerts, and Errors */
@@ -68,6 +69,34 @@ $success: #00a91c;
 $success-dark: #33803f;
 $success-darker: #3c643b;
 
-$disabled: #e6e6e6;
-$disabled-dark: #c9c9c9;
-$disabled-darker: #adadad;
+$disabled-light: #e6e6e6;
+$disabled: #c9c9c9;
+$disabled-dark: #adadad;
+
+// We already set most links with these colors via USWDS settings in
+//   src/app.scss, but there are a few cases where we need to provide these
+//   colors as an override (e.g. to override the visited link color to set it
+//   to the normal color).
+$link-color: $primary-light;
+$link-hover-color: $primary;
+$link-active-color: $primary-dark;
+
+// The default behavior is to only apply the reverse link style if the link has
+//   a parent with the "usa-dark-background" class, which is overly
+//   restrictive. Again, we already set this in the USWDS settings, but we need
+//   to redeclare it here so we can override as appropriate.
+//   See $lib/components/Link/Link.scss for more info.
+$link-reverse-color: $primary-lightest;
+$link-reverse-hover-color: $primary-lighter;
+$link-reverse-active-color: $primary-light;
+
+// We can't set custom colors for the visited link state in the settings, so we
+//   need to use overrides.
+$link-visited-color: $color-violet-70v;
+$link-reverse-visited-color: $color-violet-50v;
+
+// The USWDS allows us to set a focus outline color, but it expects it to work
+//   on both light and dark backgrounds.
+// Our default focus color only works on light backgrounds, so we need to
+//   provide a lighter focus color for dark backgrounds.
+$focus-reverse-outline-color: $primary-lightest;

@@ -40,6 +40,10 @@ export const Disabled: Story = {
   args: { disabled: true },
 };
 
+export const Secondary: Story = {
+  args: { variant: "secondary" },
+};
+
 export const Base: Story = {
   args: {
     variant: "base",

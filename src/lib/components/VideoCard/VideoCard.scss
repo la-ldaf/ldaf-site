@@ -1,7 +1,3 @@
-@use "uswds-core" as * with (
-  $theme-show-notifications: false
-);
-
 .ldaf-video-card {
   display: flex;
   flex-wrap: wrap;
@@ -10,7 +6,11 @@
   // change colors based on variation
   &--hero {
     color: $white;
-    background: $primary-darkest;
+    background: $primary-darker;
+    // set a lighter focus outline against the darker background
+    [href]:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
   }
   &--primary {
     background: $accent-light;

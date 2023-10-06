@@ -6,7 +6,7 @@ $header-height-without-navbar: 148px;
 
 .ldaf-header {
   position: relative;
-  background: linear-gradient(to right, transparent, $primary-darkest 30%);
+  background: linear-gradient(to right, transparent, $primary-darker 30%);
 }
 
 .ldaf-header .ldaf-header-bg-img {
@@ -22,8 +22,35 @@ $header-height-without-navbar: 148px;
     border-radius: 5px 0 0 5px;
   }
 
+  // secondary nav links use primary styling on mobile and inverse styling on
+  //   desktop, and a class like `desktop:usa-link--alt` doesn't work
   a {
-    color: $primary-light;
+    color: $link-color;
+    &:hover {
+      color: $link-hover-color;
+    }
+    &:active {
+      color: $link-active-color;
+    }
+  }
+}
+
+// use a lighter focus style on darker header backgrounds
+.ldaf-header {
+  .usa-logo a,
+  .usa-menu-btn {
+    &:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
+  }
+  @include at-media("desktop") {
+    .usa-nav__secondary-item a,
+    .usa-search .usa-input,
+    .usa-search .usa-search__submit {
+      &:focus {
+        outline-color: $focus-reverse-outline-color;
+      }
+    }
   }
 }
 
@@ -64,8 +91,16 @@ $header-height-without-navbar: 148px;
       bottom: 7.5rem;
     }
 
+    // see note above about secondary nav links; for desktop we need to use the
+    //   inverse styling
     a {
-      color: $primary-lightest;
+      color: $link-reverse-color;
+      &:hover {
+        color: $link-reverse-hover-color;
+      }
+      &:active {
+        color: $link-reverse-active-color;
+      }
     }
   }
 
@@ -77,7 +112,7 @@ $header-height-without-navbar: 148px;
 
 @include at-media-max("desktop") {
   .usa-header--extended .ldaf-nav.usa-navbar {
-    background: $primary-darkest;
+    background: $primary-darker;
     border-bottom: none;
   }
 
