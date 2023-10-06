@@ -1,6 +1,7 @@
 <script lang="ts">
   import "../page.scss";
   import chunk from "lodash/chunk";
+  import { afterUpdate } from "svelte";
   import { getSources } from "$lib/imageServices/contentful";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button";
@@ -8,9 +9,9 @@
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
-  import { url as arrowIcon } from "$icons/arrow_forward";
   import Image from "$lib/components/Image";
-  import { afterUpdate } from "svelte";
+  import Link from "$lib/components/Link";
+  import { url as arrowIcon } from "$icons/arrow_forward";
 
   export let data;
   $: ({
@@ -154,21 +155,23 @@
   <div>
     <!-- Display a maximum of 8 images (2 rows of 4) -->
     <!-- TODO: Enhance with a "show more" button revealing lightbox gallery -->
-    {#each chunk(imageGallery.images, 4).slice(0, 2) as row}
+    {#each chunk( imageGallery.images.flatMap((i) => [i, i]), 4, ).slice(0, 2) as row}
       <div class="grid-row">
         {#each row as item (item.sys.id)}
           {#if item.url}
-            <div class="grid-col-3 margin-1">
-              <Image
-                src={item.url}
-                sources={getSources}
-                blurhash={imageGallery.blurhashes[item.sys.id] ?? undefined}
-                alt={item?.description ?? "Hero image"}
-                width={item?.width ?? undefined}
-                height={item?.height ?? undefined}
-                sizeType="col-9"
-                loading="eager"
-              />
+            <div class="grid-col-3 gallery-image">
+              <Link href={item.url}>
+                <Image
+                  src={item.url}
+                  sources={getSources}
+                  blurhash={imageGallery.blurhashes[item.sys.id] ?? undefined}
+                  alt={item?.description ?? "Hero image"}
+                  width={item?.width ?? undefined}
+                  height={item?.height ?? undefined}
+                  sizeType="col-9"
+                  loading="eager"
+                />
+              </Link>
             </div>
           {/if}
         {/each}
