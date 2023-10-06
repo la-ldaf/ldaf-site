@@ -1,10 +1,8 @@
 <script lang="ts">
-  import "./page.scss";
-
   import { url as arrowIcon } from "$icons/arrow_forward";
 
   import Button from "$lib/components/Button";
-  import Card from "$lib/components/Card";
+  import Card, { CardGroup } from "$lib/components/Card";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
   import VideoCard from "$lib/components/VideoCard";
@@ -33,6 +31,7 @@
 {/if}
 {#if videoUrl}
   <VideoCard
+    class="margin-bottom-4"
     url={videoUrl}
     title={videoTitle}
     description={videoDescription}
@@ -42,11 +41,11 @@
   />
 {/if}
 {#if featuredServices && featuredServices.length > 0}
-  <ul class="service-group-list">
+  <CardGroup>
     {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
       <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
       {#if item?.heroImage?.imageSource?.url}
-        <Card>
+        <Card class={`ldaf-card--size-${index < 1 ? "full" : "half"}`}>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
           <Image
             slot="image"
@@ -73,7 +72,7 @@
           </Button>
         </Card>
       {:else}
-        <Card>
+        <Card class={`ldaf-card--size-${index < 1 ? "full" : "half"}`}>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
           <svelte:fragment slot="body">
             {#if item.subheading}
@@ -91,7 +90,7 @@
         </Card>
       {/if}
     {/each}
-  </ul>
+  </CardGroup>
 {/if}
 {#if relatedNews?.items && relatedNews.items.length > 0}
   <h3>Recent news</h3>

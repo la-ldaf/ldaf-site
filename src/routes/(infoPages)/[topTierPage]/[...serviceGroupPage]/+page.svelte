@@ -1,9 +1,8 @@
 <script lang="ts">
-  import "../page.scss";
   import { getSources } from "$lib/imageServices/contentful";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button";
-  import Card from "$lib/components/Card";
+  import Card, { CardGroup } from "$lib/components/Card";
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
@@ -124,9 +123,9 @@
 {/if}
 
 {#if childServiceGroups.length > 0}
-  <ul class="service-group-list">
+  <CardGroup>
     {#each childServiceGroups as item, i}
-      <Card class="service-group-card">
+      <Card class={`ldaf-card--size-${i < 1 ? "full" : "half"}`}>
         <h3 class="usa-card__heading" slot="header">{item.title}</h3>
         <svelte:fragment slot="body">
           {#if item.subheading}
@@ -138,7 +137,7 @@
         </Button>
       </Card>
     {/each}
-  </ul>
+  </CardGroup>
 {/if}
 
 <div />

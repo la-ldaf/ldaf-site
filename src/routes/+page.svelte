@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "./(infoPages)/[topTierPage]/page.scss";
   import "./page.scss";
 
   import chunk from "lodash/chunk";
@@ -9,7 +8,7 @@
   import { getSources } from "$lib/imageServices/contentful";
 
   import Button, { type Variant } from "$lib/components/Button";
-  import Card from "$lib/components/Card";
+  import Card, { CardGroup } from "$lib/components/Card";
   import Icon from "$lib/components/Icon";
   import Image from "$lib/components/Image";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
@@ -63,8 +62,7 @@
     />
   {/if}
   {#if featuredServices}
-    <!-- TODO: [LDAF-370] Set up a <CardGroup/> component to handle layout. -->
-    <ul class="service-group-list">
+    <CardGroup size="col-12">
       {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
         {@const { card: cardSize, button: buttonVariant, imageLoading } = getCardSettings(index)}
         <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
@@ -74,7 +72,7 @@
               imageSource: { url, title, blurhash, width, height },
             },
           } = item}
-          <Card class={`usa-card--${cardSize}`}>
+          <Card class={`ldaf-card--size-${cardSize}`}>
             <h2 class="usa-card__heading" slot="header">{item.title}</h2>
             <Image
               slot="image"
@@ -97,7 +95,7 @@
             </Button>
           </Card>
         {:else}
-          <Card class={`usa-card--${cardSize}`}>
+          <Card class={`ldaf-card--size-${cardSize}`}>
             <h2 class="usa-card__heading" slot="header">{item.title}</h2>
             <svelte:fragment slot="body">
               {#if item.subheading}
@@ -110,7 +108,7 @@
           </Card>
         {/if}
       {/each}
-    </ul>
+    </CardGroup>
   {/if}
   {#if popularResources && popularResources.length > 0}
     <div class="margin-top-6 margin-bottom-10">
