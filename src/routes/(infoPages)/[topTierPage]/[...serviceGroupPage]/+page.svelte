@@ -25,6 +25,14 @@
     childServiceGroups,
   } = data);
 
+  // TODO: This is the same card layout as [topTierPage]/+page.svelte; we might
+  //       want to make it reusable.
+  const getCardSize = (index: number, total: number): "full" | "half" => {
+    if (index === 0) return "full";
+    if ((total - 1) % 2 === 1 && index + 1 === total) return "full";
+    else return "half";
+  };
+
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
@@ -125,7 +133,7 @@
 {#if childServiceGroups.length > 0}
   <CardGroup>
     {#each childServiceGroups as item, i}
-      <Card class={`ldaf-card--size-${i < 1 ? "full" : "half"}`}>
+      <Card class={`ldaf-card--size-${getCardSize(i, childServiceGroups.length)}`}>
         <h3 class="usa-card__heading" slot="header">{item.title}</h3>
         <svelte:fragment slot="body">
           {#if item.subheading}

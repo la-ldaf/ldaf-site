@@ -41,9 +41,6 @@ $gap-size-col-9: 1.5rem;
   align-items: stretch;
   flex-wrap: wrap;
   .usa-card {
-    // TODO: We should probably allow cards to grow so that we don't force LDAF
-    //       to supply a set number. For example, if there's only one card in
-    //       a row that supports three, that card should grow to full width.
     flex: 0 1 auto;
     width: 100%;
   }
@@ -64,7 +61,6 @@ $gap-size-col-9: 1.5rem;
     }
   }
   &.ldaf-card-group--size-col-9 {
-    //margin-top: 2rem;
     column-gap: $gap-size-col-9;
     .usa-card {
       margin-bottom: $gap-size-col-9;

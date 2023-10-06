@@ -19,6 +19,19 @@
   $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
   $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
   $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));
+
+  // Layout should be organized roughly like so:
+  //   |         Card 1          |
+  //   |   Card 2   |   Card 3   |
+  //   |   Card 4   |   Card 5   |
+  //   |   Card 6   |   Card 7   |
+  // If we have an oprhan, it should take up the full width:
+  //   |         Card 8          |
+  const getCardSize = (index: number, total: number): "full" | "half" => {
+    if (index === 0) return "full";
+    if ((total - 1) % 2 === 1 && index + 1 === total) return "full";
+    else return "half";
+  };
 </script>
 
 {#if subheading}
@@ -45,7 +58,7 @@
     {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
       <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
       {#if item?.heroImage?.imageSource?.url}
-        <Card class={`ldaf-card--size-${index < 1 ? "full" : "half"}`}>
+        <Card class={`ldaf-card--size-${getCardSize(index, featuredServices.length)}`}>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
           <Image
             slot="image"
@@ -72,7 +85,7 @@
           </Button>
         </Card>
       {:else}
-        <Card class={`ldaf-card--size-${index < 1 ? "full" : "half"}`}>
+        <Card class={`ldaf-card--size-${getCardSize(index, featuredServices.length)}`}>
           <h3 class="usa-card__heading" slot="header">{item.title}</h3>
           <svelte:fragment slot="body">
             {#if item.subheading}
