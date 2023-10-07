@@ -2,7 +2,7 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText/ContentfulRichText.svelte";
   import Link from "$lib/components/Link";
   export let data;
-  $: ({ aggregationPage, taggedServicesByParent } = data);
+  $: ({ aggregationPage, serviceGroupMap } = data);
 </script>
 
 <div class="grid-container">
@@ -12,15 +12,20 @@
       <p class="usa-intro">{aggregationPage.subhead}</p>
     {/if}
     {#if aggregationPage?.body}
-      <ContentfulRichText document={aggregationPage.body.json} />
+      <ContentfulRichText document={aggregationPage.body.json} links={aggregationPage.body.links} />
     {/if}
-    {#if taggedServicesByParent}
+    {#if serviceGroupMap}
       <ul>
-        {#each Object.keys(taggedServicesByParent).sort() as pageName}
+        {#each Array.from( serviceGroupMap, ([id, serviceGroup]) => ({ id, ...serviceGroup }), ) as serviceGroup (serviceGroup.id)}
           <li>
-            {pageName}
+            <Link href={serviceGroup.url}>
+              {serviceGroup.title}
+            </Link>
+            {#if serviceGroup?.subheading}
+              | {serviceGroup.subheading}
+            {/if}
             <ul>
-              {#each taggedServicesByParent[pageName] as service (service?.id)}
+              {#each serviceGroup.services as service (service?.id)}
                 <li>
                   <Link href={service?.url}>{service?.title}</Link>
                 </li>

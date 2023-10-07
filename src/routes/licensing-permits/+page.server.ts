@@ -15,7 +15,6 @@ type TaggedService =
       id: string;
       title: string;
       url: string;
-      parentTitle: string;
     }
   | undefined;
 
@@ -78,6 +77,7 @@ const taggedServicesQuery = gql`
                   id
                 }
               }
+              subheading
             }
           }
         }
@@ -112,41 +112,56 @@ export const load = async ({ parent }) => {
     const aggregationTag = aggregationPageTags.find((tag) => tag?.startsWith("type-"));
     if (!aggregationTag) break fetchData;
 
-    // Use the aggregation tag to grab all the relevant services
+    // Use the aggregation tag to grab all the relevant services and their
+    //   parent pages.
     const taggedServicesData = await client.fetch<TaggedServicesQuery>(
       printQuery(taggedServicesQuery),
       { variables: { aggregationTag } },
     );
     if (!taggedServicesData?.serviceEntryCollection?.items) break fetchData;
-    // Create array of all tagged services and create links.
-    const taggedServices: TaggedService[] = taggedServicesData.serviceEntryCollection.items.map(
-      (taggedService) => {
-        // The Core Content entry that the service appears on.
-        const [serviceGroupEntry] = taggedService?.linkedFrom?.serviceGroupCollection?.items ?? [];
-        const pageMetadataID = serviceGroupEntry?.pageMetadata?.sys.id;
-        if (taggedService?.entryTitle && pageMetadataID) {
-          const pageMetadataForServiceGroup = pageMetadataMap.get(pageMetadataID);
-          if (pageMetadataForServiceGroup?.title) {
-            const url = `${pageMetadataForServiceGroup.url}#${slugify(taggedService.entryTitle)}`;
-            return {
-              id: taggedService?.sys.id,
-              title: taggedService?.entryTitle,
-              url,
-              parentTitle: pageMetadataForServiceGroup.title,
+    // Create a map where the key is the page metadata ID for a core content
+    //   page, and the value is an object containing page information and the
+    //   services that appear on that page.
+    const serviceGroupMap = new Map<
+      string,
+      {
+        title: string;
+        subheading: string | null | undefined;
+        url: string | null | undefined;
+        services: TaggedService[];
+      }
+    >();
+    taggedServicesData.serviceEntryCollection.items.forEach((taggedService) => {
+      // Get information about the core content entry that houses the service.
+      // Every service should appear on only one page.
+      const [serviceGroupEntry] = taggedService?.linkedFrom?.serviceGroupCollection?.items ?? [];
+      const pageMetadataID = serviceGroupEntry?.pageMetadata?.sys?.id;
+      // To construct the URL to the service accordion, we'll need the service
+      //   title and the core content page URL.
+      if (taggedService?.entryTitle && pageMetadataID) {
+        // To render everything on the page, we'll also need the page metadata
+        //   title. The core content page subheading is optional.
+        const pageMetadataForServiceGroup = pageMetadataMap.get(pageMetadataID);
+        if (pageMetadataForServiceGroup?.title) {
+          // Construct the URL for the service accordion.
+          const url = `${pageMetadataForServiceGroup.url}#${slugify(taggedService.entryTitle)}`;
+          // Add the service group to the map if it doesn't already exist, then
+          //   add the service under it.
+          let serviceGroupMapEntry = serviceGroupMap.get(pageMetadataID);
+          if (!serviceGroupMapEntry) {
+            serviceGroupMapEntry = {
+              title: pageMetadataForServiceGroup.title,
+              subheading: serviceGroupEntry.subheading,
+              url: pageMetadataForServiceGroup.url,
+              services: [],
             };
           }
-        }
-      },
-    );
-    // Organize tagged services under their respective Core Content pages.
-    const taggedServicesByParent: Record<string, TaggedService[]> = {};
-    taggedServices.forEach((taggedService) => {
-      if (taggedService && taggedService.parentTitle) {
-        const mapEntry = taggedServicesByParent[taggedService.parentTitle];
-        if (mapEntry) {
-          taggedServicesByParent[taggedService.parentTitle].push(taggedService);
-        } else {
-          taggedServicesByParent[taggedService.parentTitle] = [taggedService];
+          serviceGroupMapEntry.services.push({
+            id: taggedService?.sys.id,
+            title: taggedService?.entryTitle,
+            url,
+          });
+          serviceGroupMap.set(pageMetadataID, serviceGroupMapEntry);
         }
       }
     });
@@ -154,7 +169,7 @@ export const load = async ({ parent }) => {
     return {
       pageMetadata,
       aggregationPage,
-      taggedServicesByParent,
+      serviceGroupMap,
     };
   }
   throw error(404);
