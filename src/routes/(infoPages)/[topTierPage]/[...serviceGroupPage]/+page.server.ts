@@ -257,7 +257,6 @@ type ServiceGroup = ExtractQueryType<
 
 type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
 
-// type ImageGalleryItem = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
 type ImageGalleryItem = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
 type ChildServiceEntryOrGroupStub = ExtractQueryType<
   ServiceGroup,
