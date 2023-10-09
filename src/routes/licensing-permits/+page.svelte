@@ -1,12 +1,15 @@
 <script lang="ts">
-  import ContentfulRichText from "$lib/components/ContentfulRichText/ContentfulRichText.svelte";
+  import Breadcrumbs from "$lib/components/Breadcrumbs";
+  import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Link from "$lib/components/Link";
   export let data;
-  $: ({ aggregationPage, serviceGroupMap } = data);
+  $: ({ pageMetadata, aggregationPage, serviceGroups } = data);
+  $: breadcrumbs = pageMetadata?.breadcrumbs ?? [];
 </script>
 
-<div class="grid-container">
-  <main class="margin-top-2 usa-prose" id="main-content">
+<div class="grid-container margin-bottom-2">
+  <Breadcrumbs path={breadcrumbs} />
+  <main class="usa-prose" id="main-content">
     <h1>{aggregationPage?.title}</h1>
     {#if aggregationPage?.subhead}
       <p class="usa-intro">{aggregationPage.subhead}</p>
@@ -14,26 +17,20 @@
     {#if aggregationPage?.body}
       <ContentfulRichText document={aggregationPage.body.json} links={aggregationPage.body.links} />
     {/if}
-    {#if serviceGroupMap}
-      <ul>
-        {#each Array.from( serviceGroupMap, ([id, serviceGroup]) => ({ id, ...serviceGroup }), ) as serviceGroup (serviceGroup.id)}
-          <li>
-            <Link href={serviceGroup.url}>
-              {serviceGroup.title}
-            </Link>
-            {#if serviceGroup?.subheading}
-              | {serviceGroup.subheading}
-            {/if}
-            <ul>
-              {#each serviceGroup.services as service (service?.id)}
-                <li>
-                  <Link href={service?.url}>{service?.title}</Link>
-                </li>
-              {/each}
-            </ul>
-          </li>
-        {/each}
-      </ul>
+    {#if serviceGroups}
+      {#each serviceGroups as serviceGroup (serviceGroup.id)}
+        <h2>{serviceGroup.title}</h2>
+        {#if serviceGroup?.subheading}
+          <p>{serviceGroup.subheading}</p>
+        {/if}
+        <ul>
+          {#each serviceGroup.services as service (service?.id)}
+            <li>
+              <Link href={service?.url}>{service?.title}</Link>
+            </li>
+          {/each}
+        </ul>
+      {/each}
     {/if}
   </main>
 </div>

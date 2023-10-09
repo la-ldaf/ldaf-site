@@ -1,12 +1,11 @@
 <!-- This component is still incomplete. -->
 <!-- TODO: https://ldaf.atlassian.net/browse/LDAF-293 -->
 <script lang="ts">
+  import type { Breadcrumbs } from "./types.ts";
   import Link from "$lib/components/Link";
-  export let path: {
-    id: string | null | undefined;
-    title: string | null | undefined;
-    link: string | null | undefined;
-  }[];
+
+  export let path: Breadcrumbs;
+
   $: currentPage = path[path.length - 1];
   $: previousPages = path.slice(0, -1);
 </script>

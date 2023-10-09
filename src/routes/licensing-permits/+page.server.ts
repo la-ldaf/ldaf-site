@@ -127,7 +127,6 @@ export const load = async ({ parent }) => {
       {
         title: string;
         subheading: string | null | undefined;
-        url: string | null | undefined;
         services: TaggedService[];
       }
     >();
@@ -152,7 +151,6 @@ export const load = async ({ parent }) => {
             serviceGroupMapEntry = {
               title: pageMetadataForServiceGroup.title,
               subheading: serviceGroupEntry.subheading,
-              url: pageMetadataForServiceGroup.url,
               services: [],
             };
           }
@@ -165,11 +163,16 @@ export const load = async ({ parent }) => {
         }
       }
     });
+    // Convert our map into an array and sort it alphabetically by title.
+    const serviceGroups = Array.from(serviceGroupMap, ([id, serviceGroup]) => ({
+      id,
+      ...serviceGroup,
+    })).sort((a, b) => (a.title > b.title ? 1 : -1));
 
     return {
       pageMetadata,
       aggregationPage,
-      serviceGroupMap,
+      serviceGroups,
     };
   }
   throw error(404);
