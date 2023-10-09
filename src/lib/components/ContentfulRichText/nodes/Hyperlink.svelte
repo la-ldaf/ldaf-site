@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Link from "$lib/components/Link";
   import type { Node as NodeType, Hyperlink } from "@contentful/rich-text-types";
   import Node from "./Node.svelte";
   import { isHyperlink } from "../predicates";
@@ -12,6 +13,6 @@
   hyperlink = node;
 </script>
 
-<a href={hyperlink.data.uri}
-  >{#each hyperlink.content as subNode}<Node node={subNode} />{/each}</a
+<Link href={hyperlink.data.uri}
+  >{#each hyperlink.content as subNode}<Node node={subNode} />{/each}</Link
 >

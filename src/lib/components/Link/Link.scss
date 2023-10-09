@@ -1,16 +1,33 @@
-@use "uswds-core" as uswds with (
-  $theme-show-notifications: false
-);
-// For some reason the USWDS rules for alternate color links depends on the link being a child of an element with the 'usa-dark-background' class.
-// This seems overly restrictive, so we'll set up the alternate style to be independent of its parent element.
-// Following styles were taken from: https://github.com/uswds/uswds/blob/30c61f34288bc706961b12b536fdc57537026385/packages/usa-dark-background/src/styles/_usa-dark-background.scss
-// TODO: Figure out how to get modified variables; if we change $theme-link-reverse-color it doesn't apply here.
+// Since we can't set a custom color for $theme-link-visited-color in the
+//   USWDS settings in src/app.scss, we need to be a bit more specific to
+//   override the default value.
+// Additionally, there are a ton of places where we never want to display a
+//   link as visited, such as links rendered as buttons, links in the primary
+//   and secondary nav in the header, links in the side nav, etc.
+a.usa-link:visited:not(
+    .usa-button,
+    .usa-header .usa-link,
+    .usa-sidenav .usa-link,
+    .youtube-subscribe-link
+  ) {
+  color: $link-visited-color;
+}
+// For some reason the USWDS rules for alternate color links depends on the
+//   link being a child of an element with the 'usa-dark-background' class.
+//   This seems overly restrictive, so we'll set up the alternate style to be
+//   independent of its parent element.
 .usa-link.usa-link--alt {
-  color: uswds.color(uswds.$theme-link-reverse-color);
-  &:visited {
-    color: uswds.color(uswds.$theme-link-reverse-color);
-  }
+  color: $link-reverse-color;
   &:hover {
-    color: uswds.color(uswds.$theme-link-reverse-hover-color);
+    color: $link-reverse-hover-color;
+  }
+  &:active {
+    color: $link-reverse-active-color;
+  }
+  &:visited {
+    color: $link-reverse-visited-color;
+  }
+  &:focus {
+    outline-color: $focus-reverse-outline-color;
   }
 }

@@ -3,7 +3,7 @@
 
   import { url as arrowIcon } from "$icons/arrow_forward";
 
-  import Button, { type Variant } from "$lib/components/Button";
+  import Button from "$lib/components/Button";
   import Card from "$lib/components/Card";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
@@ -21,17 +21,6 @@
   $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
   $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
   $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));
-
-  const getButtonVariant = (index: number): Variant => {
-    switch (index) {
-      case 0:
-        return "primary";
-      case 1:
-        return "secondary";
-      default:
-        return "outline";
-    }
-  };
 </script>
 
 {#if subheading}
@@ -74,7 +63,12 @@
               {item.subheading}
             {/if}
           </svelte:fragment>
-          <Button slot="footer" isLink={true} variant={getButtonVariant(index)} href={item.url}>
+          <Button
+            slot="footer"
+            isLink={true}
+            variant={index < 1 ? "primary" : "outline"}
+            href={item.url}
+          >
             <Icon src={arrowIcon} size={3} />
           </Button>
         </Card>
@@ -86,7 +80,12 @@
               {item.subheading}
             {/if}
           </svelte:fragment>
-          <Button slot="footer" isLink={true} variant={getButtonVariant(index)} href={item.url}>
+          <Button
+            slot="footer"
+            isLink={true}
+            variant={index < 1 ? "primary" : "outline"}
+            href={item.url}
+          >
             <Icon src={arrowIcon} size={3} />
           </Button>
         </Card>

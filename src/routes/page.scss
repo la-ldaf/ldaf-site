@@ -9,9 +9,9 @@
   // Columns are 7 and 5 (approx 60% and 40%), so lighten opacity at 60%
   background: linear-gradient(
     90deg,
-    rgba($primary-darkest, 0.95) 0%,
-    rgba($primary-darkest, 0.9) 60%,
-    rgba($primary-darkest, 0.8) 100%
+    rgba($primary-darker, 0.95) 0%,
+    rgba($primary-darker, 0.9) 60%,
+    rgba($primary-darker, 0.8) 100%
   );
   .greeting-background {
     position: absolute;

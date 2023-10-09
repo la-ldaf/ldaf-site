@@ -2,12 +2,103 @@
 @use "uswds" as * with (
   $theme-font-path: $theme-font-path,
   $theme-image-path: $theme-image-path,
+
+  //// Colors - Customizable Theme Colors ////
+  // Some of these color settings are no-ops since our LDAF theme palette has
+  //   some overlap with the default USWDS theme palette.
+  // Our LDAF color variables can be found in src/variables.scss
+  // USWDS default colors can be found in the documentation:
+  //   https://designsystem.digital.gov/design-tokens/color/theme-tokens/
+  // ... with some additional undocumented options in the repo:
+  //   https://github.com/uswds/uswds/blob/v3.4.1/packages/uswds-core/src/styles/settings/_settings-color.scss
+  $theme-color-base-lightest: $base-lightest,
+  $theme-color-base-lighter: $base-lighter,
+  $theme-color-base-light: $base-light,
+  $theme-color-base: $base,
+  $theme-color-base-dark: $base-dark,
+  $theme-color-base-darker: $base-darker,
+  $theme-color-base-darkest: $base-ink,
+  $theme-color-base-ink: $base-ink,
+  $theme-color-primary-lightest: $primary-lightest,
+  $theme-color-primary-lighter: $primary-lighter,
+  $theme-color-primary-light: $primary-light,
+  $theme-color-primary: $primary,
+  $theme-color-primary-vivid: $primary-vivid,
+  $theme-color-primary-dark: $primary-dark,
+  $theme-color-primary-darker: $primary-darker,
+  $theme-color-secondary-lighter: $accent-lighter,
+  $theme-color-secondary-light: $accent-light,
+  $theme-color-secondary: $accent-warm,
+  $theme-color-secondary-dark: $accent-dark,
+  $theme-color-secondary-darker: $accent-darker,
+  // Skip accent colors since we're not using them. Available options are:
+  // $theme-color-accent-cool-lighter
+  // $theme-color-accent-cool-light
+  // $theme-color-accent-cool
+  // $theme-color-accent-cool-dark
+  // $theme-color-accent-cool-darker
+  // $theme-color-accent-warm-lighter
+  // $theme-color-accent-warm-light
+  // $theme-color-accent-warm
+  // $theme-color-accent-warm-dark
+  // $theme-color-accent-warm-darker
+  $theme-color-info-lighter: $info-lighter,
+  $theme-color-info-light: $info-light,
+  $theme-color-info: $info,
+  $theme-color-info-dark: $info-dark,
+  $theme-color-info-darker: $info-darker,
+  $theme-color-error-lighter: $error-lighter,
+  $theme-color-error-light: $error-light,
+  $theme-color-error: $error,
+  $theme-color-error-dark: $error-dark,
+  $theme-color-error-darker: $error-darker,
+  $theme-color-warning-lighter: $warning-lighter,
+  $theme-color-warning-light: $warning-light,
+  $theme-color-warning: $warning,
+  $theme-color-warning-dark: $warning-dark,
+  $theme-color-warning-darker: $warning-darker,
+  $theme-color-success-lighter: $success-lighter,
+  $theme-color-success-light: $success-light,
+  $theme-color-success: $success,
+  $theme-color-success-dark: $success-dark,
+  $theme-color-success-darker: $success-darker,
+  // TODO: Add a disabled-lighter color once we upgrade the USWDS to >= 3.6.0
+  // $theme-color-disabled-lighter: $disabled-lighter,
+  $theme-color-disabled-light: $disabled-light,
+  $theme-color-disabled: $disabled,
+  $theme-color-disabled-dark: $disabled-dark,
+  // TODO: Add a disabled-darker color once we upgrade the USWDS to >= 3.6.0
+  // $theme-color-disabled-darker: $disabled-darker,
+  //
+  //// Colors - Uncustomizable Component Colors ////
+  // The following color declarations must use strings that refer to above
+  //   declared colors.
+  // Links
+  $theme-link-color: "primary-light",
+  // This declaration is commented-out since it needs to be set to a custom
+  //   color that is not captured by the above tokens (and thus we don't have
+  //   a token we can use for it).
+  // $theme-link-visited-color
+  $theme-link-hover-color: "primary",
+  $theme-link-active-color: "primary-dark",
+  $theme-link-reverse-color: "primary-lightest",
+  $theme-link-reverse-hover-color: "primary-lighter",
+  $theme-link-reverse-active-color: "primary-light",
+  // Focus Styling
+  $theme-focus-color: "primary-vivid",
+
+  //// Fonts ////
   $theme-font-type-sans: "public-sans",
   $theme-font-role-ui: "sans",
   $theme-font-role-heading: "sans",
   $theme-font-role-body: "sans",
   $theme-font-role-alt: "sans",
-  $theme-show-notifications: false
+
+  //// Logs Settings ////
+  // Turn off notifications to avoid noise in the logs.
+  $theme-show-notifications: false,
+  // Turn off compilation warnings due to excessive contrast a11y warnings.
+  $theme-show-compile-warnings: false
 );
 
 html,
