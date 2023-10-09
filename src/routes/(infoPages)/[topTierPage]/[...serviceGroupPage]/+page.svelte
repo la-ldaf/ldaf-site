@@ -157,7 +157,8 @@
     <!-- TODO: Enhance with a "show more" button revealing lightbox gallery -->
     {#each chunk( imageGallery.images.flatMap((i) => [i, i]), 4, ).slice(0, 2) as row}
       <div class="grid-row">
-        {#each row as item (item.sys.id)}
+        <!-- TODO: switch back to item.system.id for key once images are unique -->
+        {#each row as item, i (i)}
           {#if item.url}
             <div class="grid-col-3 gallery-image">
               <Link href={item.url}>

@@ -20,4 +20,9 @@
   .gallery-image:not(:first-child) {
     margin-left: 10px;
   }
+
+  .gallery-image div[role="img"] {
+    height: 100%;
+    width: 100%;
+  }
 }
