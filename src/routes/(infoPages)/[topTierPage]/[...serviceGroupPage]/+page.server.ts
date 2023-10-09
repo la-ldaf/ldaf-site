@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
+import isNotNull from "$lib/util/isNotNull";
 
 import {
   CONTENTFUL_SPACE_ID,
@@ -256,7 +257,8 @@ type ServiceGroup = ExtractQueryType<
 
 type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
 
-type ImageGallery = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
+// type ImageGalleryItem = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
+type ImageGalleryItem = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
 type ChildServiceEntryOrGroupStub = ExtractQueryType<
   ServiceGroup,
   ["serviceEntriesCollection", "items", number]
@@ -293,7 +295,7 @@ export type ServiceGroupPage = {
   })[];
   childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
   imageGallery: {
-    images: ImageGallery[];
+    images: NonNullable<ImageGalleryItem[]>;
     blurhashes: Record<string, string>;
   };
   pageMetadata?: ServiceGroupMetadata;
@@ -451,7 +453,7 @@ export const load = async ({
           : undefined,
       },
       imageGallery: {
-        images: [...imageGallery],
+        images: imageGallery.filter(isNotNull),
         blurhashes: imageGalleryBlurhashes ? imageGalleryBlurhashes : {},
       },
       pageMetadata,
