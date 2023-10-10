@@ -35,11 +35,11 @@
     height={entryBlock.linkedImage?.height ?? undefined}
     sizeType={getContext(imageSizeTypeKey)}
   />
-{:else if entryBlock?.__typename === "CallToAction"}
+{:else if entryBlock?.__typename === "CallToAction" && entryBlock?.callToActionDestination?.json}
   <span class="embedded-entry-CTA">
     <ContentfulRichText
-      document={entryBlock?.callToActionDestination?.json}
-      links={entryBlock?.callToActionDestination?.links}
+      document={entryBlock.callToActionDestination.json}
+      links={entryBlock.callToActionDestination?.links}
     />
   </span>
 {:else}
