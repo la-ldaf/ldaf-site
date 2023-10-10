@@ -40,7 +40,7 @@ export const Informational: Story = {
   args: {},
 };
 
-export const Emergency: Story = {
+export const Error: Story = {
   args: { variant: "error", heading: "Emergency", slottedContent: "Something dangerous..." },
 };
 

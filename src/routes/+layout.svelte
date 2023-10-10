@@ -13,6 +13,7 @@
   import Analytics from "$lib/components/Analytics";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
+  import Link from "$lib/components/Link";
   import { intersectionObserverSupport, lazyImageLoadingSupport } from "$lib/constants/support";
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
@@ -111,7 +112,7 @@
   <!-- TODO: Skip nav will always scroll user to main, but will only shift
              focus if the URL doesn't already include #main-content.
              Shift focus back to main if user hits this more than once. -->
-  <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+  <Link class="usa-skipnav" href="#main-content">Skip to main content</Link>
   <div class="usa-overlay" />
   <Header
     primaryNavItems={headerPrimaryNavItems}

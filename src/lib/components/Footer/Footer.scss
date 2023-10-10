@@ -11,6 +11,18 @@
     white-space: nowrap;
   }
 
+  .usa-footer__return-to-top a.usa-link:visited {
+    color: $link-color;
+  }
+
+  // adjust default focus outline for the darker footer background
+  .ldaf-footer__primary-section,
+  .ldaf-footer__secondary-section {
+    [href]:focus {
+      outline-color: $focus-reverse-outline-color;
+    }
+  }
+
   .ldaf-footer__primary-section {
     background-color: $primary-dark;
     .ldaf-footer__nav {
@@ -27,14 +39,23 @@
       color: $accent-warm;
       @include u-font("sans", "sm");
     }
-    .ldaf-footer__secondary-link a {
-      color: $white;
+    .ldaf-footer__secondary-link .usa-link {
       line-height: 1.3;
+      // ignore visited state
+      &:visited {
+        color: $link-reverse-color;
+      }
+      &:hover {
+        color: $link-reverse-hover-color;
+      }
+      &:active {
+        color: $link-reverse-active-color;
+      }
     }
   }
 
   .ldaf-footer__secondary-section {
-    background-color: $primary-darkest;
+    background-color: $primary-darker;
     color: $accent-warm;
 
     .usa-link {
