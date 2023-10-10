@@ -127,6 +127,7 @@ export const load = async ({ parent }) => {
       {
         title: string;
         subheading: string | null | undefined;
+        url: string | null | undefined;
         services: TaggedService[];
       }
     >();
@@ -151,6 +152,7 @@ export const load = async ({ parent }) => {
             serviceGroupMapEntry = {
               title: pageMetadataForServiceGroup.title,
               subheading: serviceGroupEntry.subheading,
+              url: pageMetadataForServiceGroup.url,
               services: [],
             };
           }

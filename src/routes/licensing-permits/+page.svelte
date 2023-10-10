@@ -24,6 +24,7 @@
           <p>{serviceGroup.subheading}</p>
         {/if}
         <ul>
+          <li><Link href={serviceGroup.url}>About {serviceGroup.title}</Link></li>
           {#each serviceGroup.services as service (service?.id)}
             <li>
               <Link href={service?.url}>{service?.title}</Link>
