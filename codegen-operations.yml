@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - src/lib/services/contentful/schema.graphql
+  - src/lib/services/server/contentful/schema.graphql
 documents:
   - "src/**/*.ts"
   - "!src/**/*.test.ts"
