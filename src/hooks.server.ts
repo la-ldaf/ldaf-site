@@ -18,13 +18,14 @@ const handleSetupKVClient = (async ({ event, resolve }) => {
 
 const handleSetupContentfulClient = (async ({ event, resolve }) => {
   const { fetch } = event;
-  event.locals.contentfulClient = CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN
-    ? getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-      fetch,
-    })
-    : undefined;
+  event.locals.contentfulClient =
+    CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN
+      ? getContentfulClient({
+          spaceID: CONTENTFUL_SPACE_ID,
+          token: CONTENTFUL_DELIVERY_API_TOKEN,
+          fetch,
+        })
+      : undefined;
   return resolve(event);
 }) satisfies Handle;
 
