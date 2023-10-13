@@ -11,6 +11,6 @@ generates:
     presetConfig:
       fileName: $queries
       extension: .generated.d.ts
-      baseTypesPath: lib/services/contentful/schema.ts
+      baseTypesPath: lib/services/server/contentful/schema.ts
     plugins:
       - typescript-operations
