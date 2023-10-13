@@ -6,7 +6,7 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
-export const load = async ({ fetch }) => {
+export const load = async ({ fetch, locals: { contentfulClient } }) => {
   // prod indicator is sent with page data and is currently used to determine:
   //   * whether we should connect to Vercel Speed Insights
   //   * if we should set up GA in debug mode or prod mode
@@ -16,7 +16,7 @@ export const load = async ({ fetch }) => {
     loadMainNav(pageMetadataMap),
   );
   const footerNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadFooterNav(pageMetadataMap),
+    loadFooterNav({ pageMetadataMap, contentfulClient }),
   );
   const sideNavMapPromise = Promise.all([
     pageMetadataMapPromise,
