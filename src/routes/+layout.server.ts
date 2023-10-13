@@ -22,7 +22,7 @@ export const load = async ({ fetch, locals: { contentfulClient } }) => {
     pageMetadataMapPromise,
     headerPrimaryNavItemsPromise,
   ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
-  const errorPageContentMap = await loadErrorPageContent({ fetch });
+  const errorPageContentMap = await loadErrorPageContent({ fetch, contentfulClient });
   return {
     isProd,
     // this env variable can't be renamed, so we send it with the page data
