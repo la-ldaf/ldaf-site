@@ -13,7 +13,7 @@ export const load = async ({ fetch, locals: { contentfulClient } }) => {
   const isProd = VERCEL_ENV === "production";
   const pageMetadataMapPromise = loadPageMetadataMap();
   const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadMainNav(pageMetadataMap),
+    loadMainNav({ pageMetadataMap, contentfulClient }),
   );
   const footerNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
     loadFooterNav({ pageMetadataMap, contentfulClient }),
