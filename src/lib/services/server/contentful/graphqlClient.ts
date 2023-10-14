@@ -13,6 +13,7 @@ type ClientOptions = {
   environment?: Environment;
   token: Token;
   apiPrefix?: APIPrefix;
+  fetch?: typeof global.fetch;
 };
 
 const delim = "#" as const;
@@ -24,7 +25,7 @@ const getKeyFromOptions = ({
   environment,
   token,
   apiPrefix = defaultAPIPrefix,
-}: ClientOptions): ClientKey =>
+}: Omit<ClientOptions, "fetch">): ClientKey =>
   `${apiPrefix}${delim}${spaceID}${delim}${environment}${delim}${token}`;
 
 export type Client = {
@@ -39,6 +40,7 @@ const getClient = ({
   spaceID,
   environment = CONTENTFUL_DEFAULT_ENVIRONMENT,
   token,
+  fetch = global.fetch,
   apiPrefix = defaultAPIPrefix,
 }: ClientOptions): Client => {
   const key = getKeyFromOptions({ spaceID, environment, token });
@@ -46,7 +48,7 @@ const getClient = ({
   if (existingClient) return existingClient;
 
   const client = {
-    options: { spaceID, environment, token, apiPrefix },
+    options: { spaceID, environment, token, apiPrefix, fetch },
     key,
     async fetch<T>(
       query: string,
