@@ -1,9 +1,7 @@
 import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
-import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID } from "$env/static/private";
 import { getBlurhash } from "$lib/services/blurhashes";
-import getContentfulClient from "$lib/services/contentful";
 import type { PageServerLoad } from "./$types";
 import type { DefaultPressReleaseContactInfoQuery, NewsQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
@@ -147,19 +145,15 @@ const defaultPressReleaseContactInfoQuery = gql`
   }
 `;
 
-export const load = (async ({ params: { slug }, parent, fetch }) => {
+export const load = (async ({ params: { slug }, locals: { contentfulClient }, parent, fetch }) => {
   if (!slug) throw error(404);
   // TODO: example contents
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) throw error(404);
+  if (!contentfulClient) throw error(404);
   const baseBreadcrumbsPromise = loadBaseBreadcrumbs({ parent });
-  const client = getContentfulClient({
-    spaceID: CONTENTFUL_SPACE_ID,
-    token: CONTENTFUL_DELIVERY_API_TOKEN,
-  });
   const variables = {
     slug,
   };
-  const newsArticleDataPromise = client.fetch<NewsQuery>(printQuery(newsQuery), {
+  const newsArticleDataPromise = contentfulClient.fetch<NewsQuery>(printQuery(newsQuery), {
     variables,
   });
   const [baseBreadcrumbs, newsArticleData] = await Promise.all([
@@ -177,9 +171,10 @@ export const load = (async ({ params: { slug }, parent, fetch }) => {
     newsArticle.type === "Press release" &&
     !newsArticle.contactInformationCollection?.items?.length
   ) {
-    defaultPressReleaseContactInfoPromise = client.fetch<DefaultPressReleaseContactInfoQuery>(
-      printQuery(defaultPressReleaseContactInfoQuery),
-    );
+    defaultPressReleaseContactInfoPromise =
+      contentfulClient.fetch<DefaultPressReleaseContactInfoQuery>(
+        printQuery(defaultPressReleaseContactInfoQuery),
+      );
   }
 
   const heroImageURL = newsArticle.heroImage?.imageSource?.url;
