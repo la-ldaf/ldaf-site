@@ -11,7 +11,7 @@ export const load = async ({ fetch, locals: { contentfulClient } }) => {
   //   * whether we should connect to Vercel Speed Insights
   //   * if we should set up GA in debug mode or prod mode
   const isProd = VERCEL_ENV === "production";
-  const pageMetadataMapPromise = loadPageMetadataMap();
+  const pageMetadataMapPromise = loadPageMetadataMap({ contentfulClient });
   const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
     loadMainNav({ pageMetadataMap, contentfulClient }),
   );
