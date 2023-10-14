@@ -2,7 +2,7 @@ import type { Handle } from "@sveltejs/kit";
 import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID, KV_URL } from "$env/static/private";
 import { sequence } from "@sveltejs/kit/hooks";
 import { getClient as getKVClient } from "$lib/services/server/kv";
-import { getClient as getContentfulClient } from "$lib/services/server/contentful";
+import getContentfulClient from "$lib/services/server/contentful";
 
 const handleSetupKVClient = (async ({ event, resolve }) => {
   // we intentionally don't await this promise here, so that other things can happen while redis is
