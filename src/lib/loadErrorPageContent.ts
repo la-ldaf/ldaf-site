@@ -1,8 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
+import type { ContentfulClient } from "$lib/services/server/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 
 import assetProps from "$lib/fragments/assetProps";
@@ -70,17 +69,15 @@ type ErrorPageMap = Map<number, ErrorPage>;
 
 export const loadErrorPageContent = async ({
   fetch,
+  contentfulClient,
 }: {
   fetch: typeof global.fetch;
+  contentfulClient?: ContentfulClient;
 }): Promise<ErrorPageMap> => {
   if (!ERROR_CONTENT_LOADED) {
     fetchData: {
-      if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) break fetchData;
-      const client = getContentfulClient({
-        spaceID: CONTENTFUL_SPACE_ID,
-        token: CONTENTFUL_DELIVERY_API_TOKEN,
-      });
-      const data = await client.fetch<ErrorPageCollectionQuery>(printQuery(query));
+      if (!contentfulClient) break fetchData;
+      const data = await contentfulClient.fetch<ErrorPageCollectionQuery>(printQuery(query));
       if (!data?.errorCollection?.items) break fetchData;
       const errorPagePromises =
         data.errorCollection.items.map(async (errorPage) => {
