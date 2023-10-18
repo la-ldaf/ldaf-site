@@ -6,23 +6,23 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
-export const load = async ({ fetch }) => {
+export const load = async ({ fetch, locals: { contentfulClient } }) => {
   // prod indicator is sent with page data and is currently used to determine:
   //   * whether we should connect to Vercel Speed Insights
   //   * if we should set up GA in debug mode or prod mode
   const isProd = VERCEL_ENV === "production";
-  const pageMetadataMapPromise = loadPageMetadataMap();
+  const pageMetadataMapPromise = loadPageMetadataMap({ contentfulClient });
   const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadMainNav(pageMetadataMap),
+    loadMainNav({ pageMetadataMap, contentfulClient }),
   );
   const footerNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadFooterNav(pageMetadataMap),
+    loadFooterNav({ pageMetadataMap, contentfulClient }),
   );
   const sideNavMapPromise = Promise.all([
     pageMetadataMapPromise,
     headerPrimaryNavItemsPromise,
   ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
-  const errorPageContentMap = await loadErrorPageContent({ fetch });
+  const errorPageContentMap = await loadErrorPageContent({ fetch, contentfulClient });
   return {
     isProd,
     // this env variable can't be renamed, so we send it with the page data

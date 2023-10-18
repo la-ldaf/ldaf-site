@@ -2,8 +2,6 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 
 import type {
@@ -292,9 +290,10 @@ const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
 export const load = async ({
   parent,
   params: { topTierPage, serviceGroupPage },
+  locals: { contentfulClient },
   fetch,
 }): Promise<ServiceGroupPage> => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
+  if (!contentfulClient) return serviceGroupPageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
   // construct URL for matching later
   const path = `/${topTierPage}/${serviceGroupPage}`;
@@ -303,12 +302,8 @@ export const load = async ({
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
 
-    const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
+    const baseData = await contentfulClient.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
       variables: { metadataID },
     });
     if (!baseData) break fetchData;
@@ -340,17 +335,23 @@ export const load = async ({
         childServiceEntryIDChunks.flatMap((chunk) =>
           chunk.length > 0
             ? [
-                client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
-                  variables: { ids: chunk },
-                }),
+                contentfulClient.fetch<ServiceGroupChildEntriesQuery>(
+                  printQuery(childServiceEntriesQuery),
+                  {
+                    variables: { ids: chunk },
+                  },
+                ),
               ]
             : [],
         ),
       ),
       childServiceGroupIDs.length > 0
-        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-            variables: { ids: childServiceGroupIDs },
-          })
+        ? contentfulClient.fetch<ServiceGroupChildGroupsQuery>(
+            printQuery(childServiceGroupsQuery),
+            {
+              variables: { ids: childServiceGroupIDs },
+            },
+          )
         : { serviceGroupCollection: { items: [] } },
     ]);
     const childServiceEntriesItems = inOrder(

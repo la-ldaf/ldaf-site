@@ -1,8 +1,6 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
@@ -145,19 +143,15 @@ export const load = async ({
   parent,
   params: { topTierPage: slug },
   fetch,
-  locals: { getKVClient },
+  locals: { getKVClient, contentfulClient },
 }) => {
   const { pageMetadataMap, pathsToIDs } = await parent();
   fetchData: {
     const metadataID = pathsToIDs.get(`/${slug}`);
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
-    if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<TopTierCollectionQuery>(printQuery(query), {
+    if (!pageMetadata || !contentfulClient) break fetchData;
+    const data = await contentfulClient.fetch<TopTierCollectionQuery>(printQuery(query), {
       variables: { metadataID },
     });
     if (!data) break fetchData;
@@ -215,7 +209,7 @@ export const load = async ({
       getCurrentDateInTZ(eventIANATimezone),
       eventIANATimezone,
     );
-    const taggedDataPromise = await client.fetch<TaggedNewsAndEventsQuery>(
+    const taggedDataPromise = await contentfulClient.fetch<TaggedNewsAndEventsQuery>(
       printQuery(taggedNewsAndEventsQuery),
       {
         variables: { tag, newsOldestDate, eventStartDate },

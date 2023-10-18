@@ -2,8 +2,6 @@ import { print as printQuery } from "graphql";
 import gql from "graphql-tag";
 import { error } from "@sveltejs/kit";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash } from "$lib/services/blurhashes";
 import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
@@ -178,8 +176,12 @@ const addBlurhashToImageWrapper = (
     : undefined;
 };
 
-export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<HomePage> => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return homePageTestContent;
+export const load = async ({
+  parent,
+  fetch,
+  locals: { getKVClient, contentfulClient },
+}): Promise<HomePage> => {
+  if (!contentfulClient) return homePageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
   fetchData: {
     // Based on how we construct URLs, we should only ever have one entry with the root path (and regardless, the key is unique).
@@ -187,15 +189,11 @@ export const load = async ({ parent, fetch, locals: { getKVClient } }): Promise<
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
     const eventStartDate = getStartOfDayForDateInTZ(
       getCurrentDateInTZ(eventIANATimezone),
       eventIANATimezone,
     );
-    const data = await client.fetch<HomePageQuery>(printQuery(query), {
+    const data = await contentfulClient.fetch<HomePageQuery>(printQuery(query), {
       variables: { metadataID, eventStartDate },
     });
     if (!data) break fetchData;
