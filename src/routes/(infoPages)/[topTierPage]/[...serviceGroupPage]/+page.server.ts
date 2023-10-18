@@ -2,11 +2,7 @@ import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 
-import {
-  CONTENTFUL_SPACE_ID,
-  CONTENTFUL_DELIVERY_API_TOKEN,
-  CONTENTFUL_PREVIEW_API_TOKEN,
-} from "$env/static/private";
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import getContentfulClient from "$lib/services/contentful";
 import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 
@@ -28,11 +24,7 @@ const baseQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroup($metadataID: String!) {
-    serviceGroupCollection(
-      preview: true
-      where: { pageMetadata: { sys: { id: $metadataID } } }
-      limit: 1
-    ) {
+    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         sys {
           id
@@ -148,7 +140,7 @@ const childServiceEntriesQuery = gql`
 
   query ServiceGroupChildEntries($ids: [String]!) {
     # Limiting to requesting 10 at once; we always make this request in chunks.
-    serviceEntryCollection(preview: true, limit: 10, where: { sys: { id_in: $ids } }) {
+    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
       items {
         sys {
           id
@@ -221,7 +213,7 @@ const childServiceEntriesQuery = gql`
 
 const childServiceGroupsQuery = gql`
   query ServiceGroupChildGroups($ids: [String]!) {
-    serviceGroupCollection(preview: true, limit: 50, where: { sys: { id_in: $ids } }) {
+    serviceGroupCollection(limit: 50, where: { sys: { id_in: $ids } }) {
       items {
         sys {
           id
@@ -313,7 +305,7 @@ export const load = async ({
     if (!pageMetadata) break fetchData;
     const client = getContentfulClient({
       spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_PREVIEW_API_TOKEN,
+      token: CONTENTFUL_DELIVERY_API_TOKEN,
     });
 
     const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {

@@ -36,12 +36,12 @@
     sizeType={getContext(imageSizeTypeKey)}
   />
 {:else if entryBlock?.__typename === "CallToAction" && entryBlock?.callToActionDestination?.json}
-  <span class="embedded-entry-CTA">
+  <div class="embedded-entry-CTA">
     <ContentfulRichText
       document={entryBlock.callToActionDestination.json}
       links={entryBlock.callToActionDestination?.links}
     />
-  </span>
+  </div>
 {:else}
   <!--
     TODO: Add support for the other types of
