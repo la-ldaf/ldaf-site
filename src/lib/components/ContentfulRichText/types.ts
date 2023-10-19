@@ -1,4 +1,4 @@
-import type { Asset, Entry, ImageWrapper, Contact } from "$lib/services/contentful/schema";
+import type { Asset, Entry, ImageWrapper, Contact } from "$lib/services/server/contentful/schema";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 type AssetWithMaybeBlurhash = Asset & {

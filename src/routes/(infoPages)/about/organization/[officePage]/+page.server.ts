@@ -2,11 +2,9 @@ import { error } from "@sveltejs/kit";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
 import assetPropsFragment from "$lib/fragments/assetProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 import { getBlurhashMapFromRichText } from "$lib/services/blurhashes";
-import getContentfulClient from "$lib/services/contentful";
 import officePageTestContent from "./__tests__/OfficePageTestContent";
 
 import type { OfficePageQuery } from "./$queries.generated";
@@ -100,8 +98,13 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, params: { officePage }, fetch }) => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+export const load = async ({
+  parent,
+  params: { officePage },
+  locals: { contentfulClient },
+  fetch,
+}) => {
+  if (!contentfulClient) {
     return { officePage: officePageTestContent, pageMetadata: {} };
   }
   const { pageMetadataMap, pathsToIDs } = await parent();
@@ -111,12 +114,8 @@ export const load = async ({ parent, params: { officePage }, fetch }) => {
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
 
-    const data = await client.fetch<OfficePageQuery>(printQuery(query), {
+    const data = await contentfulClient.fetch<OfficePageQuery>(printQuery(query), {
       variables: { metadataID },
     });
     if (!data) break fetchData;

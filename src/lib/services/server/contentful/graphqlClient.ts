@@ -39,8 +39,9 @@ const getClient = ({
   spaceID,
   environment = CONTENTFUL_DEFAULT_ENVIRONMENT,
   token,
+  fetch = global.fetch,
   apiPrefix = defaultAPIPrefix,
-}: ClientOptions): Client => {
+}: ClientOptions & { fetch?: typeof global.fetch }): Client => {
   const key = getKeyFromOptions({ spaceID, environment, token });
   const existingClient = clients.get(key);
   if (existingClient) return existingClient;
