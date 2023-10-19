@@ -49,7 +49,7 @@
     "@storybook/testing-library": "^0.2.1",
     "@storybook/theming": "^7.4.2",
     "@sveltejs/adapter-vercel": "^3.0.3",
-    "@sveltejs/kit": "^1.25.0",
+    "@sveltejs/kit": "^1.26.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/svelte": "^4.0.3",
     "@testing-library/user-event": "^14.4.3",
