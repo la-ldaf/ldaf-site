@@ -1,4 +1,5 @@
 import { VERCEL_ENV, VERCEL_ANALYTICS_ID } from "$env/static/private";
+import type { User } from "$lib/types";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadErrorPageContent } from "$lib/loadErrorPageContent";
 import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
@@ -6,11 +7,14 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
-export const load = async ({ fetch, locals: { contentfulClient } }) => {
+export const load = async ({ fetch, locals: { contentfulClient, currentUser } }) => {
   // prod indicator is sent with page data and is currently used to determine:
   //   * whether we should connect to Vercel Speed Insights
   //   * if we should set up GA in debug mode or prod mode
   const isProd = VERCEL_ENV === "production";
+  const clientCurrentUser: User | undefined = currentUser
+    ? { name: currentUser.name, email: currentUser.email, avatarURL: currentUser.avatarURL }
+    : undefined;
   const pageMetadataMapPromise = loadPageMetadataMap({ contentfulClient });
   const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
     loadMainNav({ pageMetadataMap, contentfulClient }),
@@ -35,5 +39,6 @@ export const load = async ({ fetch, locals: { contentfulClient } }) => {
     footerNavItems: footerNavItemsPromise,
     sideNavMap: sideNavMapPromise,
     errorPageContentMap,
+    currentUser: clientCurrentUser,
   };
 };

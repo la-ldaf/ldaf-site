@@ -18,6 +18,7 @@
   import { RootIntersectionObserver } from "$lib/components/IntersectionObserver";
   import { BlurhashRenderer } from "$lib/components/Image";
   import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
+  import { setCurrentUserStore } from "$lib/context/currentUser";
 
   export let data;
   $: ({
@@ -38,6 +39,8 @@
       analyticsID,
     });
   }
+
+  setCurrentUserStore(data.currentUser);
 
   $: ({ pageMetadata } = $page.data);
 
