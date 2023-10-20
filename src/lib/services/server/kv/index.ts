@@ -10,6 +10,7 @@ export type Client = {
   setYoutubeVideoDataByID: (id: string, data: YoutubeVideoData) => Promise<void>;
   getUserInfoByToken: (token: string) => Promise<ServerUser | null>;
   setUserInfoByToken: (token: string, userInfo: ServerUser) => Promise<void>;
+  deleteUserInfoByToken: (token: string) => Promise<void>;
 };
 
 type None = Record<never, never>;
@@ -103,6 +104,9 @@ export const createClient = async ({
         EX: tokenDuration,
       });
       if (result !== "OK") throw new Error("could not set user info in KV store");
+    },
+    deleteUserInfoByToken: async (token) => {
+      await redisClient.del(`${keys.userInfoByToken}:${token}`);
     },
   };
 
