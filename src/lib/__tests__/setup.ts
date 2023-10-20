@@ -1,3 +1,4 @@
+import "./extendExpect";
 import { vi } from "vitest";
 import type { Navigation, Page } from "@sveltejs/kit";
 import type * as stores from "$app/stores";
