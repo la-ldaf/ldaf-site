@@ -1,11 +1,15 @@
 import { createClient as createRedisClient } from "redis";
 import type { YoutubeVideoData } from "$lib/services/server/youtube";
+import type { ServerUserInfo } from "$lib/server/types";
+import tokenDuration from "$lib/constants/tokenDuration";
 
 export type Client = {
   getBlurhashByURL: (url: string) => Promise<string | null>;
   setBlurhashByURL: (url: string, blurhash: string) => Promise<void>;
   getYoutubeVideoDataByID: (id: string) => Promise<YoutubeVideoData | null>;
   setYoutubeVideoDataByID: (id: string, data: YoutubeVideoData) => Promise<void>;
+  getUserInfoByToken: (token: string) => Promise<ServerUserInfo | null>;
+  setUserInfoByToken: (token: string, userInfo: ServerUserInfo) => Promise<void>;
 };
 
 type None = Record<never, never>;
@@ -13,6 +17,7 @@ type None = Record<never, never>;
 const keys = {
   blurhashByURL: "blurhashByURL",
   youtubeVideoDataByID: "youtubeVideoDataByID",
+  userInfoByToken: "ldafUserInfoByToken",
 };
 
 type ClientOptions = {
@@ -86,6 +91,18 @@ export const createClient = async ({
         JSON.stringify(videoData),
       );
       if (result !== "OK") throw new Error("could not set youtube video data in KV store");
+    },
+    getUserInfoByToken: async (token) => {
+      const userInfoJSON = await redisClient.get(`${keys.userInfoByToken}:${token}`);
+      if (userInfoJSON === null) return null;
+      return JSON.parse(userInfoJSON);
+    },
+    setUserInfoByToken: async (token, userInfo) => {
+      const userInfoJSON = JSON.stringify(userInfo);
+      const result = await redisClient.set(`${keys.userInfoByToken}:${token}`, userInfoJSON, {
+        EX: tokenDuration,
+      });
+      if (result !== "OK") throw new Error("could not set user info in KV store");
     },
   };
 
