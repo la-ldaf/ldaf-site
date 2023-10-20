@@ -11,6 +11,7 @@ declare global {
     interface Error {
       // `message` is included by default
       title?: string;
+      status?: number;
     }
     interface Locals {
       getKVClient: () => Promise<KVClient | undefined>;
