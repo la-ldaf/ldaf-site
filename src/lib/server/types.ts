@@ -1,5 +1,5 @@
-import type { CurrentUser } from "$lib/types";
+import type { User } from "$lib/types";
 
-export type ServerUserInfo = CurrentUser & {
+export type ServerUser = User & {
   managementAPIToken: string;
 };

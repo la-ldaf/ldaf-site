@@ -1,12 +1,12 @@
 import { writable, type Writable } from "svelte/store";
 
-import type { CurrentUser } from "$lib/types";
-export type { CurrentUser };
+import type { User } from "$lib/types";
+export type { User };
 
 import { setContext, getContext } from "svelte";
 
 export const key = Symbol("currentUser");
 
-export const setCurrentUserStore = (initialValue?: CurrentUser) =>
-  setContext(key, writable<CurrentUser | undefined>(initialValue));
-export const getCurrentUserStore = () => getContext<Writable<CurrentUser | undefined>>(key);
+export const setCurrentUserStore = (initialValue?: User) =>
+  setContext(key, writable<User | undefined>(initialValue));
+export const getCurrentUserStore = () => getContext<Writable<User | undefined>>(key);

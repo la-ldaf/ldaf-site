@@ -1,6 +1,6 @@
 import { createClient as createRedisClient } from "redis";
 import type { YoutubeVideoData } from "$lib/services/server/youtube";
-import type { ServerUserInfo } from "$lib/server/types";
+import type { ServerUser } from "$lib/server/types";
 import tokenDuration from "$lib/constants/tokenDuration";
 
 export type Client = {
@@ -8,8 +8,8 @@ export type Client = {
   setBlurhashByURL: (url: string, blurhash: string) => Promise<void>;
   getYoutubeVideoDataByID: (id: string) => Promise<YoutubeVideoData | null>;
   setYoutubeVideoDataByID: (id: string, data: YoutubeVideoData) => Promise<void>;
-  getUserInfoByToken: (token: string) => Promise<ServerUserInfo | null>;
-  setUserInfoByToken: (token: string, userInfo: ServerUserInfo) => Promise<void>;
+  getUserInfoByToken: (token: string) => Promise<ServerUser | null>;
+  setUserInfoByToken: (token: string, userInfo: ServerUser) => Promise<void>;
 };
 
 type None = Record<never, never>;

@@ -1,10 +1,10 @@
 import { CONTENTFUL_MANAGEMENT_API_ENDPOINT } from "$env/static/private";
-import type { CurrentUser } from "$lib/types";
+import type { ServerUser } from "$lib/server/types";
 import getCurrentUser from "./getCurrentUser";
 
 type Client = {
   options: { token: string; apiEndpoint: string };
-  getCurrentUser: () => Promise<CurrentUser>;
+  getCurrentUser: () => Promise<ServerUser>;
 };
 
 const getClient = ({
