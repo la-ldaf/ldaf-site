@@ -14,7 +14,7 @@ declare global {
       status?: number;
     }
     interface Locals {
-      getKVClient: () => Promise<KVClient | undefined>;
+      getKVClient: () => Promise<KVClient>;
       contentfulClient?: ContentfulClient;
       currentUser?: CurrentUser;
     }
