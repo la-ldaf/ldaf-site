@@ -10,6 +10,7 @@ export const actions = {
       await kvClient.deleteUserInfoByToken(userToken);
     } catch (err) {
       console.error(err);
+      return { success: false };
     }
     return { success: true };
   },

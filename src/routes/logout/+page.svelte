@@ -15,6 +15,7 @@
     {#if form?.success}
       <p>Successfully logged out!</p>
     {:else}
+      <p>You are logged in as {$currentUser.name}.</p>
       <form method="POST" use:enhance>
         <input type="submit" value="Logout" />
       </form>

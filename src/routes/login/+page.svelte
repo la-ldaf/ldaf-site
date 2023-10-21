@@ -1,21 +1,39 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
+  import type { SubmitFunction } from "@sveltejs/kit";
+  import { applyAction, enhance } from "$app/forms";
   import { getCurrentUserStore } from "$lib/context/currentUser";
 
   export let form;
   const currentUser = getCurrentUserStore();
+
+  const enhanceLogoutForm: SubmitFunction<{ success: boolean }> = () => {
+    return async ({ result, update }) => {
+      if (result.type === "success" && result.data?.success) {
+        await applyAction({
+          type: "success",
+          status: result.status,
+          data: { success: true, currentUser: undefined },
+        });
+        currentUser.set(undefined);
+      }
+      await update();
+    };
+  };
+
+  $: if (form?.success) currentUser.set(form?.currentUser);
 </script>
 
 <div class="grid-container">
   {#if form?.success}
-    <p>Successfully logged in!</p>
-    {#if form.currentUser?.name}
-      <p>Welcome {form.currentUser.name}!</p>
+    {#if form.currentUser}
+      <p>Successfully logged in!</p>
+    {:else}
+      <p>Successfully logged out!</p>
     {/if}
-  {:else if $currentUser}
+  {/if}
+  {#if $currentUser}
     <p>Welcome {$currentUser.name}!</p>
-    <p>You are already logged in.</p>
-    <form method="POST" action="/logout" use:enhance>
+    <form method="POST" action="/logout" use:enhance={enhanceLogoutForm}>
       <input type="Submit" value="Logout" />
     </form>
   {:else}
