@@ -1,5 +1,3 @@
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import type { EventsQuery } from "./$queries.generated";
@@ -72,7 +70,8 @@ export const loadBaseBreadcrumbs = async ({
 export const loadEventsPage = async ({
   parent,
   params: { page },
-}: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
+  locals: { contentfulClient },
+}: Pick<Parameters<PageServerLoad>[0], "params" | "parent" | "locals">) => {
   const startDate = getStartOfDayForDateInTZ(
     getCurrentDateInTZ(eventIANATimezone),
     eventIANATimezone,
@@ -86,7 +85,7 @@ export const loadEventsPage = async ({
         ? [{ title: `Page ${pageNumber}`, link: `${eventsBasePath}/page/${pageNumber}` }]
         : []),
     ]);
-    if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+    if (!contentfulClient) {
       return {
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testEvents.length / limit),
@@ -99,11 +98,7 @@ export const loadEventsPage = async ({
     if (!pageMetadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(pageMetadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const eventsData = await client.fetch<EventsQuery>(printQuery(query), {
+    const eventsData = await contentfulClient.fetch<EventsQuery>(printQuery(query), {
       variables: {
         startDate,
         limit,
