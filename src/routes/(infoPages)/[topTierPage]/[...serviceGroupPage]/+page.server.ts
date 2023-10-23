@@ -379,7 +379,6 @@ export const load = async ({
           )
         : { serviceGroupCollection: { items: [] } },
     ]);
-
     const childServiceEntriesItems = inOrder(
       childEntriesDataChunks.flatMap(
         (dataChunk) =>

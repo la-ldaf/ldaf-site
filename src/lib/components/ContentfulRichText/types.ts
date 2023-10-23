@@ -1,5 +1,6 @@
 import type { Asset, Entry, ImageWrapper, Contact } from "$lib/services/server/contentful/schema";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type { Document } from "@contentful/rich-text-types";
 
 type AssetWithMaybeBlurhash = Asset & {
   blurhash?: string | null | undefined;
@@ -53,7 +54,9 @@ type RenderableImageWrapper = Pick<
 
 export type RenderableEntryBlock = { sys: Pick<Entry["sys"], "id">; __typename: string } & Partial<
   Pick<RenderableImageWrapper, RenderableEntryBlockImageWrapperKey> &
-    Pick<Contact, RenderableEntryBlockContactKey>
+    Pick<Contact, RenderableEntryBlockContactKey> & {
+      callToActionDestination?: { json: Document; links: Links } | null;
+    }
 >;
 
 export type RenderableAssetHyperlink = RenderableAssetBlock;
