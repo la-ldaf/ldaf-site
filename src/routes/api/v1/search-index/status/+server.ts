@@ -79,6 +79,17 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
 
     if (!isEqual(contentfulValue, algoliaValue)) {
       const mismatchedKeys = getMismatchedKeys(algoliaValue, contentfulValue);
+      if (key === "6a0lZm5lyuyihsxzHWbWiU") {
+        console.log(mismatchedKeys);
+        console.log({
+          id: key,
+          mismatched_values: mismatchedKeys.map((key: keyof typeof contentfulValue) => ({
+            key,
+            contentful_value: contentfulValue[key],
+            algolia_value: algoliaValue[key],
+          })),
+        });
+      }
       mismatches.push({
         id: key,
         mismatched_values: mismatchedKeys.map((key: keyof typeof contentfulValue) => ({
@@ -87,6 +98,9 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
           algolia_value: algoliaValue[key],
         })),
       });
+      if (key === "6a0lZm5lyuyihsxzHWbWiU") {
+        console.log(mismatches[mismatches.length - 1]);
+      }
     }
   }
 

@@ -57,6 +57,12 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
         },
         url: contentfulValue?.url,
         children: contentfulValue?.children,
+        metaTitle: body.fields?.metaTitle
+          ? body.fields.metaTitle["en-US"]
+          : contentfulValue?.metaTitle,
+        metaDescription: body.fields?.metaDescription
+          ? body.fields.metaDescription["en-US"]
+          : contentfulValue?.metaDescription,
       };
       for (const field in body.fields) {
         // The webhook body unfortunately prefaces each field with a sub-property equal to
