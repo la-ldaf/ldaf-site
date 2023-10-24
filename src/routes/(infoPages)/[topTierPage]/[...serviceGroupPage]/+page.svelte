@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "../page.scss";
   import chunk from "lodash/chunk";
   import { afterUpdate } from "svelte";
   import { getSources } from "$lib/imageServices/contentful";
