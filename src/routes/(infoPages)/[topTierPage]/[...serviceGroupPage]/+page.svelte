@@ -5,7 +5,7 @@
   import { getSources } from "$lib/imageServices/contentful";
   import Accordion, { AccordionItem } from "$lib/components/Accordion";
   import Button from "$lib/components/Button";
-  import Card from "$lib/components/Card";
+  import Card, { CardGroup } from "$lib/components/Card";
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
@@ -52,6 +52,12 @@
         });
       });
     });
+
+    // Just like the service group CTAs, do the same thing
+    // for embedded CTAs in the general description.
+    document
+      .querySelectorAll(".embedded-entry-CTA p > a")
+      .forEach((ctaElement) => ctaElement.classList.add("usa-button"));
   });
 </script>
 
@@ -128,21 +134,51 @@
 {/if}
 
 {#if childServiceGroups.length > 0}
-  <ul class="service-group-list">
-    {#each childServiceGroups as item, i}
-      <Card class="service-group-card">
-        <h3 class="usa-card__heading" slot="header">{item.title}</h3>
-        <svelte:fragment slot="body">
-          {#if item.subheading}
-            {item.subheading}
-          {/if}
-        </svelte:fragment>
-        <Button slot="footer" isLink={true} href={item.url} variant={i < 1 ? "primary" : "outline"}>
-          <Icon src={arrowIcon} size={3} />
-        </Button>
-      </Card>
+  <CardGroup>
+    {#each childServiceGroups as item (item?.sys?.id)}
+      <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
+      {#if item?.heroImage?.imageSource?.url}
+        <!-- Unlike the homepage and top tier pages, we use a very simple two-column
+       layout on desktop here. Cards should never stretch to full-width on
+       desktop. -->
+        <Card class="ldaf-card--size-half">
+          <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+          <Image
+            slot="image"
+            src={item.heroImage.imageSource.url}
+            sources={getSources}
+            alt={item.heroImage.imageSource.title ?? "Hero image"}
+            blurhash={item.heroImage.imageSource.blurhash ?? undefined}
+            height={item.heroImage.imageSource.height ?? undefined}
+            width={item.heroImage.imageSource.width ?? undefined}
+            sizeType="card"
+          />
+          <svelte:fragment slot="body">
+            {#if item.subheading}
+              {item.subheading}
+            {/if}
+          </svelte:fragment>
+          <!-- Since no card is more important than another, use the default
+             primary button style for all CTAs. -->
+          <Button slot="footer" isLink={true} href={item.url}>
+            <Icon src={arrowIcon} size={3} />
+          </Button>
+        </Card>
+      {:else}
+        <Card class="ldaf-card--size-half">
+          <h3 class="usa-card__heading" slot="header">{item.title}</h3>
+          <svelte:fragment slot="body">
+            {#if item.subheading}
+              {item.subheading}
+            {/if}
+          </svelte:fragment>
+          <Button slot="footer" isLink={true} href={item.url}>
+            <Icon src={arrowIcon} size={3} />
+          </Button>
+        </Card>
+      {/if}
     {/each}
-  </ul>
+  </CardGroup>
 {/if}
 
 <div />

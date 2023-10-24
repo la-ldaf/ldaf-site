@@ -238,6 +238,20 @@ const childServiceGroupsQuery = gql`
         __typename
         title
         subheading
+        heroImage {
+          ... on HeroImage {
+            imageSource {
+              title
+              description
+              contentType
+              fileName
+              size
+              url
+              width
+              height
+            }
+          }
+        }
       }
     }
   }
@@ -268,6 +282,11 @@ type ChildServiceGroup = ExtractQueryType<
   ServiceGroupChildGroupsQuery,
   ["serviceGroupCollection", "items", number]
 >;
+type ChildServiceGroupHeroImage = ExtractQueryType<ChildServiceGroup, ["heroImage"]>;
+type ChildServiceGroupHeroImageSource = ExtractQueryType<
+  ChildServiceGroupHeroImage,
+  ["imageSource"]
+>;
 
 export type ServiceGroupPage = {
   serviceGroup: ServiceGroup & {
@@ -285,7 +304,13 @@ export type ServiceGroupPage = {
       blurhashes?: Record<string, string> | null | undefined;
     };
   })[];
-  childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
+  childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined } & {
+    heroImage?: ChildServiceGroupHeroImage & {
+      imageSource?: ChildServiceGroupHeroImageSource & {
+        blurhash?: string | null | undefined;
+      };
+    };
+  })[];
   imageGallery: {
     images: NonNullable<ImageGalleryItem[]>;
     blurhashes: Record<string, string>;
@@ -377,7 +402,6 @@ export const load = async ({
           )
         : { serviceGroupCollection: { items: [] } },
     ]);
-
     const childServiceEntriesItems = inOrder(
       childEntriesDataChunks.flatMap(
         (dataChunk) =>
@@ -407,7 +431,7 @@ export const load = async ({
       ) ?? [],
     ).then((arr) => arr.flat());
 
-    const childServiceGroups = inOrder(
+    const childServiceGroupsItems = inOrder(
       childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
         if (!group) return [];
         const { id } = group.pageMetadata?.sys ?? {};
@@ -419,15 +443,45 @@ export const load = async ({
       childServiceGroupIDs,
     );
 
+    const childServiceGroupsPromise = Promise.all(
+      childServiceGroupsItems?.map(async (entry) => {
+        if (!entry) return [];
+        const heroImageURL = entry?.heroImage?.imageSource?.url;
+        const heroImageBlurhash = heroImageURL && (await getBlurhash(heroImageURL, { fetch }));
+        return [
+          {
+            ...entry,
+            heroImage: entry.heroImage
+              ? {
+                  ...entry.heroImage,
+                  imageSource: entry.heroImage.imageSource
+                    ? {
+                        ...entry.heroImage.imageSource,
+                        blurhash: heroImageBlurhash,
+                      }
+                    : undefined,
+                }
+              : undefined,
+          },
+        ];
+      }) ?? [],
+    ).then((arr) => arr.flat());
+
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
-    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries, imageGalleryBlurhashes] =
-      await Promise.all([
-        heroImageBlurhashPromise,
-        descriptionBlurhashesPromise,
-        childServiceEntriesPromise,
-        imageGalleryBlurhashesPromise,
-      ]);
+    const [
+      heroImageBlurhash,
+      descriptionBlurhashes,
+      childServiceEntries,
+      childServiceGroups,
+      imageGalleryBlurhashes,
+    ] = await Promise.all([
+      heroImageBlurhashPromise,
+      descriptionBlurhashesPromise,
+      childServiceEntriesPromise,
+      childServiceGroupsPromise,
+      imageGalleryBlurhashesPromise,
+    ]);
 
     return {
       serviceGroup: {
