@@ -1,8 +1,6 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import slugify from "$lib/util/slugify";
 
 import assetProps from "$lib/fragments/assetProps";
@@ -86,20 +84,16 @@ const taggedServicesQuery = gql`
   }
 `;
 
-export const load = async ({ parent }) => {
-  const { pageMetadataMap, pathsToIDs } = await parent();
+export const load = async ({ parent, locals: { contentfulClient } }) => {
   fetchData: {
+    if (!contentfulClient) break fetchData;
+    const { pageMetadataMap, pathsToIDs } = await parent();
     const metadataID = pathsToIDs.get(`/licensing-permits`);
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-
     // Fetch content for the page as well as the tag used for aggregation
-    const aggregationPageData = await client.fetch<AggregationPageQuery>(
+    const aggregationPageData = await contentfulClient.fetch<AggregationPageQuery>(
       printQuery(aggregationPageQuery),
       {
         variables: { metadataID },
@@ -114,7 +108,7 @@ export const load = async ({ parent }) => {
 
     // Use the aggregation tag to grab all the relevant services and their
     //   parent pages.
-    const taggedServicesData = await client.fetch<TaggedServicesQuery>(
+    const taggedServicesData = await contentfulClient.fetch<TaggedServicesQuery>(
       printQuery(taggedServicesQuery),
       { variables: { aggregationTag } },
     );
@@ -126,6 +120,7 @@ export const load = async ({ parent }) => {
     const serviceGroupMap = new Map<
       string,
       {
+        id: string;
         title: string;
         subheading: string | null | undefined;
         url: string | null | undefined;
@@ -165,7 +160,7 @@ export const load = async ({ parent }) => {
     });
 
     // Convert our map into an array and sort it alphabetically by title.
-    const serviceGroups = Array.from(serviceGroupMap, ([id, serviceGroup]) => serviceGroup).sort(
+    const serviceGroups = Array.from(serviceGroupMap, ([_, serviceGroup]) => serviceGroup).sort(
       (a, b) => (a.title > b.title ? 1 : -1),
     );
 
