@@ -1,9 +1,13 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
+import isNotNull from "$lib/util/isNotNull";
 
-import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
-
+import {
+  getBlurhash,
+  getBlurhashMapFromAssetList,
+  getBlurhashMapFromRichText,
+} from "$lib/services/blurhashes";
 import type {
   ServiceGroupQuery,
   ServiceGroupChildEntriesQuery,
@@ -79,6 +83,12 @@ const baseQuery = gql`
                 id
               }
             }
+          }
+        }
+        imageGalleryTitle
+        imageGalleryCollection {
+          items {
+            ...AssetProps
           }
         }
         contactInfoCollection(limit: 5) {
@@ -250,6 +260,7 @@ type ServiceGroup = ExtractQueryType<
 
 type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
 
+type ImageGalleryItem = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
 type ChildServiceEntryOrGroupStub = ExtractQueryType<
   ServiceGroup,
   ["serviceEntriesCollection", "items", number]
@@ -296,6 +307,10 @@ export type ServiceGroupPage = {
       };
     };
   })[];
+  imageGallery: {
+    images: NonNullable<ImageGalleryItem[]>;
+    blurhashes: Record<string, string>;
+  };
   pageMetadata?: ServiceGroupMetadata;
   pageMetadataMap?: PageMetadataMap;
 };
@@ -342,6 +357,10 @@ export const load = async ({
       getBlurhashMapFromRichText(serviceGroup.description, {
         fetch,
       });
+
+    const imageGallery = serviceGroup.imageGalleryCollection?.items ?? [];
+    const imageGalleryBlurhashesPromise =
+      imageGallery.length > 0 && getBlurhashMapFromAssetList(imageGallery, { fetch });
 
     const childServiceEntryIDs =
       serviceGroup.serviceEntriesCollection?.items
@@ -446,13 +465,19 @@ export const load = async ({
 
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
-    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries, childServiceGroups] =
-      await Promise.all([
-        heroImageBlurhashPromise,
-        descriptionBlurhashesPromise,
-        childServiceEntriesPromise,
-        childServiceGroupsPromise,
-      ]);
+    const [
+      heroImageBlurhash,
+      descriptionBlurhashes,
+      childServiceEntries,
+      childServiceGroups,
+      imageGalleryBlurhashes,
+    ] = await Promise.all([
+      heroImageBlurhashPromise,
+      descriptionBlurhashesPromise,
+      childServiceEntriesPromise,
+      childServiceGroupsPromise,
+      imageGalleryBlurhashesPromise,
+    ]);
 
     return {
       serviceGroup: {
@@ -471,6 +496,10 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
+      },
+      imageGallery: {
+        images: imageGallery.filter(isNotNull),
+        blurhashes: imageGalleryBlurhashes ? imageGalleryBlurhashes : {},
       },
       pageMetadata,
       pageMetadataMap,
