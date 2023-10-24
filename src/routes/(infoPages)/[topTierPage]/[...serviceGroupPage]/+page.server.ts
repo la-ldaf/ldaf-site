@@ -29,7 +29,6 @@ const baseQuery = gql`
     serviceGroupCollection(
       where: { pageMetadata: { sys: { id: $metadataID } } }
       limit: 1
-      preview: true
     ) {
       items {
         sys {
