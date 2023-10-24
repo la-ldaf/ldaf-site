@@ -6,8 +6,8 @@
   export let form;
   const currentUser = getCurrentUserStore();
 
-  const enhanceLogoutForm: SubmitFunction<{ success: boolean }> = () => {
-    return async ({ result, update }) => {
+  const enhanceLogoutForm: SubmitFunction<{ success: boolean }> = () =>
+    async ({ result, update }) => {
       if (result.type === "success" && result.data?.success) {
         await applyAction({
           type: "success",
@@ -18,7 +18,6 @@
       }
       await update();
     };
-  };
 
   $: if (form?.success) currentUser.set(form?.currentUser);
 </script>
