@@ -1,0 +1,75 @@
+@use "uswds-core" as * with (
+  $theme-show-notifications: false
+);
+
+// Remove default list styling.
+.usa-prose .ldaf-card-group {
+  list-style: none;
+  padding-left: 0;
+  .usa-card__container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// Overrides to the default usa-card--flag styling
+@mixin reset-flag-card {
+  &.usa-card--flag {
+    .usa-card__header,
+    .usa-card__body,
+    .usa-card__footer {
+      margin-left: 0;
+    }
+    .usa-card__media {
+      display: flex;
+      position: static;
+      width: 100%;
+      .usa-card__img {
+        border-top-left-radius: calc(0.5rem - 2px);
+        border-top-right-radius: calc(0.5rem - 2px);
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}
+
+$gap-size-col-12: 2rem;
+$gap-size-col-9: 1.5rem;
+
+.ldaf-card-group {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  .usa-card {
+    flex: 0 1 auto;
+    width: 100%;
+  }
+  &.ldaf-card-group--size-col-12 {
+    column-gap: $gap-size-col-12;
+    .usa-card {
+      margin-bottom: $gap-size-col-12;
+    }
+    @include at-media("desktop") {
+      .ldaf-card--size-half {
+        // https://wiryawanadipa.com/blog/calculate-percentage-width-of-flex-items-when-using-gap/
+        width: calc((100% / 2) - (((2 - 1) / 2) * $gap-size-col-12));
+      }
+      .ldaf-card--size-third {
+        width: calc((100% / 3) - (((3 - 1) / 3) * $gap-size-col-12));
+        @include reset-flag-card;
+      }
+    }
+  }
+  &.ldaf-card-group--size-col-9 {
+    column-gap: $gap-size-col-9;
+    .usa-card {
+      margin-bottom: $gap-size-col-9;
+    }
+    @include at-media("desktop") {
+      .ldaf-card--size-half {
+        width: calc((100% / 2) - (((2 - 1) / 2) * $gap-size-col-9));
+        @include reset-flag-card;
+      }
+    }
+  }
+}

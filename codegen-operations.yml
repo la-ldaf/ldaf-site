@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - src/lib/services/contentful/schema.graphql
+  - src/lib/services/server/contentful/schema.graphql
 documents:
   - "src/**/*.ts"
   - "!src/**/*.test.ts"
@@ -11,6 +11,6 @@ generates:
     presetConfig:
       fileName: $queries
       extension: .generated.d.ts
-      baseTypesPath: lib/services/contentful/schema.ts
+      baseTypesPath: lib/services/server/contentful/schema.ts
     plugins:
       - typescript-operations

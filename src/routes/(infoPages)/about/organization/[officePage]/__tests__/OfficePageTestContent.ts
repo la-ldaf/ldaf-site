@@ -1,4 +1,4 @@
-import type { OfficePage } from "$lib/services/contentful/schema";
+import type { OfficePage } from "$lib/services/server/contentful/schema";
 import documentWithParagraphData from "$lib/components/ContentfulRichText/__tests__/documents";
 
 export default {

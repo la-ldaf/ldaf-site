@@ -1,11 +1,13 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
+import isNotNull from "$lib/util/isNotNull";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
-import { getBlurhash, getBlurhashMapFromRichText } from "$lib/services/blurhashes";
-
+import {
+  getBlurhash,
+  getBlurhashMapFromAssetList,
+  getBlurhashMapFromRichText,
+} from "$lib/services/blurhashes";
 import type {
   ServiceGroupQuery,
   ServiceGroupChildEntriesQuery,
@@ -81,6 +83,12 @@ const baseQuery = gql`
                 id
               }
             }
+          }
+        }
+        imageGalleryTitle
+        imageGalleryCollection {
+          items {
+            ...AssetProps
           }
         }
         contactInfoCollection(limit: 5) {
@@ -226,6 +234,20 @@ const childServiceGroupsQuery = gql`
         __typename
         title
         subheading
+        heroImage {
+          ... on HeroImage {
+            imageSource {
+              title
+              description
+              contentType
+              fileName
+              size
+              url
+              width
+              height
+            }
+          }
+        }
       }
     }
   }
@@ -238,6 +260,7 @@ type ServiceGroup = ExtractQueryType<
 
 type ServiceGroupMetadata = ExtractQueryType<ServiceGroup, ["pageMetadata"]>;
 
+type ImageGalleryItem = ExtractQueryType<ServiceGroup, ["imageGalleryCollection", "items", number]>;
 type ChildServiceEntryOrGroupStub = ExtractQueryType<
   ServiceGroup,
   ["serviceEntriesCollection", "items", number]
@@ -254,6 +277,11 @@ type ChildServiceEntry = ExtractQueryType<
 type ChildServiceGroup = ExtractQueryType<
   ServiceGroupChildGroupsQuery,
   ["serviceGroupCollection", "items", number]
+>;
+type ChildServiceGroupHeroImage = ExtractQueryType<ChildServiceGroup, ["heroImage"]>;
+type ChildServiceGroupHeroImageSource = ExtractQueryType<
+  ChildServiceGroupHeroImage,
+  ["imageSource"]
 >;
 
 export type ServiceGroupPage = {
@@ -272,7 +300,17 @@ export type ServiceGroupPage = {
       blurhashes?: Record<string, string> | null | undefined;
     };
   })[];
-  childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined })[];
+  childServiceGroups: (ChildServiceGroup & { url?: string | null | undefined } & {
+    heroImage?: ChildServiceGroupHeroImage & {
+      imageSource?: ChildServiceGroupHeroImageSource & {
+        blurhash?: string | null | undefined;
+      };
+    };
+  })[];
+  imageGallery: {
+    images: NonNullable<ImageGalleryItem[]>;
+    blurhashes: Record<string, string>;
+  };
   pageMetadata?: ServiceGroupMetadata;
   pageMetadataMap?: PageMetadataMap;
 };
@@ -292,9 +330,10 @@ const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
 export const load = async ({
   parent,
   params: { topTierPage, serviceGroupPage },
+  locals: { contentfulClient },
   fetch,
 }): Promise<ServiceGroupPage> => {
-  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) return serviceGroupPageTestContent;
+  if (!contentfulClient) return serviceGroupPageTestContent;
   const { pageMetadataMap, pathsToIDs } = await parent();
   // construct URL for matching later
   const path = `/${topTierPage}/${serviceGroupPage}`;
@@ -303,12 +342,8 @@ export const load = async ({
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
 
-    const baseData = await client.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
+    const baseData = await contentfulClient.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
       variables: { metadataID },
     });
     if (!baseData) break fetchData;
@@ -322,6 +357,10 @@ export const load = async ({
       getBlurhashMapFromRichText(serviceGroup.description, {
         fetch,
       });
+
+    const imageGallery = serviceGroup.imageGalleryCollection?.items ?? [];
+    const imageGalleryBlurhashesPromise =
+      imageGallery.length > 0 && getBlurhashMapFromAssetList(imageGallery, { fetch });
 
     const childServiceEntryIDs =
       serviceGroup.serviceEntriesCollection?.items
@@ -340,20 +379,25 @@ export const load = async ({
         childServiceEntryIDChunks.flatMap((chunk) =>
           chunk.length > 0
             ? [
-                client.fetch<ServiceGroupChildEntriesQuery>(printQuery(childServiceEntriesQuery), {
-                  variables: { ids: chunk },
-                }),
+                contentfulClient.fetch<ServiceGroupChildEntriesQuery>(
+                  printQuery(childServiceEntriesQuery),
+                  {
+                    variables: { ids: chunk },
+                  },
+                ),
               ]
             : [],
         ),
       ),
       childServiceGroupIDs.length > 0
-        ? client.fetch<ServiceGroupChildGroupsQuery>(printQuery(childServiceGroupsQuery), {
-            variables: { ids: childServiceGroupIDs },
-          })
+        ? contentfulClient.fetch<ServiceGroupChildGroupsQuery>(
+            printQuery(childServiceGroupsQuery),
+            {
+              variables: { ids: childServiceGroupIDs },
+            },
+          )
         : { serviceGroupCollection: { items: [] } },
     ]);
-
     const childServiceEntriesItems = inOrder(
       childEntriesDataChunks.flatMap(
         (dataChunk) =>
@@ -383,7 +427,7 @@ export const load = async ({
       ) ?? [],
     ).then((arr) => arr.flat());
 
-    const childServiceGroups = inOrder(
+    const childServiceGroupsItems = inOrder(
       childGroupsData?.serviceGroupCollection?.items?.flatMap((group) => {
         if (!group) return [];
         const { id } = group.pageMetadata?.sys ?? {};
@@ -395,12 +439,44 @@ export const load = async ({
       childServiceGroupIDs,
     );
 
+    const childServiceGroupsPromise = Promise.all(
+      childServiceGroupsItems?.map(async (entry) => {
+        if (!entry) return [];
+        const heroImageURL = entry?.heroImage?.imageSource?.url;
+        const heroImageBlurhash = heroImageURL && (await getBlurhash(heroImageURL, { fetch }));
+        return [
+          {
+            ...entry,
+            heroImage: entry.heroImage
+              ? {
+                  ...entry.heroImage,
+                  imageSource: entry.heroImage.imageSource
+                    ? {
+                        ...entry.heroImage.imageSource,
+                        blurhash: heroImageBlurhash,
+                      }
+                    : undefined,
+                }
+              : undefined,
+          },
+        ];
+      }) ?? [],
+    ).then((arr) => arr.flat());
+
     // additionalResources is not yet used on the page, so we don't fetch its blurhashes
 
-    const [heroImageBlurhash, descriptionBlurhashes, childServiceEntries] = await Promise.all([
+    const [
+      heroImageBlurhash,
+      descriptionBlurhashes,
+      childServiceEntries,
+      childServiceGroups,
+      imageGalleryBlurhashes,
+    ] = await Promise.all([
       heroImageBlurhashPromise,
       descriptionBlurhashesPromise,
       childServiceEntriesPromise,
+      childServiceGroupsPromise,
+      imageGalleryBlurhashesPromise,
     ]);
 
     return {
@@ -420,6 +496,10 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
+      },
+      imageGallery: {
+        images: imageGallery.filter(isNotNull),
+        blurhashes: imageGalleryBlurhashes ? imageGalleryBlurhashes : {},
       },
       pageMetadata,
       pageMetadataMap,

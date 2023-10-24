@@ -1,3 +1,8 @@
+// TODO: We're using this fragment in queries where we know we only need
+// a subset of these properties (i.e., we're specifically targeting one
+// of either ImageWrapper, Contact, or Call to Action). We should try to
+// break this up into separate fragments for those different situations.
+// It will both simplify queries and make what's requested more explicit.
 import gql from "graphql-tag";
 export default gql`
   fragment EntryProps on Entry {
@@ -39,6 +44,18 @@ export default gql`
         city
         state
         zip
+      }
+    }
+    ... on CallToAction {
+      callToActionDestination {
+        json
+        links {
+          assets {
+            hyperlink {
+              ...AssetProps
+            }
+          }
+        }
       }
     }
   }

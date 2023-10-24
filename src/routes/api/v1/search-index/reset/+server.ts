@@ -13,10 +13,13 @@ const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
  * in any duplication of metadata records in the Algolia index, just a replacement
  * of the previous object value with the current value in Contentful
  **/
-export const POST = async ({ request }) => {
+export const POST = async ({ request, locals: { contentfulClient } }) => {
   authenticateRequest(request);
 
-  const { pageMetadataMap } = await loadPageMetadataMap({ includeBreadcrumbs: false });
+  const { pageMetadataMap } = await loadPageMetadataMap({
+    includeBreadcrumbs: false,
+    contentfulClient,
+  });
   const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
   /**

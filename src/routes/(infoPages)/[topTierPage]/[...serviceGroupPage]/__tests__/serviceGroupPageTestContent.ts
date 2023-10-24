@@ -49,6 +49,10 @@ export default {
     },
     serviceListName: "Sample service list name",
   },
+  imageGallery: {
+    images: [],
+    blurhashes: {},
+  },
   childServiceEntries: [
     {
       __typename: "ServiceEntry",

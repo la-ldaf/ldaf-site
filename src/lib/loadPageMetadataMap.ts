@@ -1,8 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
+import type { ContentfulClient } from "$lib/services/server/contentful";
 
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
@@ -98,60 +97,59 @@ const constructBreadcrumbs = (
   return breadcrumbs;
 };
 
-export const loadPageMetadataMap = async ({ includeBreadcrumbs = true } = {}): Promise<{
+export const loadPageMetadataMap = async ({
+  includeBreadcrumbs = true,
+  contentfulClient,
+}: { includeBreadcrumbs?: boolean; contentfulClient?: ContentfulClient } = {}): Promise<{
   pageMetadataMap: PageMetadataMap;
   pathsToIDs: Map<string, string>;
 }> => {
   const pageMetadataMap: PageMetadataMap = new Map();
   const pathsToIDs = new Map<string, string>();
 
-  if (CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN) {
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const data = await client.fetch<PageMetadataCollectionQuery>(printQuery(query));
-    if (data?.pageMetadataCollection?.items) {
-      const allPageMetadata = data.pageMetadataCollection.items;
-      // construct a sort-of site map, where each PageMetadata's key is its ID
-      allPageMetadata.forEach((page) => page && pageMetadataMap.set(page.sys.id, page));
-      // add an array of children ids to each parent so we can easily navigate top-down
-      //   (we can already navigate bottom-up via the parent field)
-      allPageMetadata.forEach((page) => {
-        if (page?.parent) {
-          const parent = pageMetadataMap.get(page.parent.sys.id);
-          if (parent) {
-            if (parent.children) {
-              parent.children.push(page.sys.id);
-            } else {
-              parent.children = [page.sys.id];
-            }
+  if (!contentfulClient) return { pageMetadataMap, pathsToIDs };
+
+  const data = await contentfulClient.fetch<PageMetadataCollectionQuery>(printQuery(query));
+  if (data?.pageMetadataCollection?.items) {
+    const allPageMetadata = data.pageMetadataCollection.items;
+    // construct a sort-of site map, where each PageMetadata's key is its ID
+    allPageMetadata.forEach((page) => page && pageMetadataMap.set(page.sys.id, page));
+    // add an array of children ids to each parent so we can easily navigate top-down
+    //   (we can already navigate bottom-up via the parent field)
+    allPageMetadata.forEach((page) => {
+      if (page?.parent) {
+        const parent = pageMetadataMap.get(page.parent.sys.id);
+        if (parent) {
+          if (parent.children) {
+            parent.children.push(page.sys.id);
           } else {
-            console.warn(
-              `The parent field was set but could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
-            );
+            parent.children = [page.sys.id];
           }
-        }
-      });
-      // construct full URLs for each page using their parent, and warn on pages if we can't resolve their path
-      // TODO: We may want to consider completely invalidating these entries instead, removing them from the map.
-      [...pageMetadataMap].forEach(([_, page]) => {
-        page.url = constructFullPathFromMap(pageMetadataMap, page);
-        if (!page.url) {
+        } else {
           console.warn(
-            `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
+            `The parent field was set but could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
           );
         }
-        // update the item in the map
-        pageMetadataMap.set(page.sys.id, page);
-        if (page.url) pathsToIDs.set(page.url, page.sys.id);
-      });
-      if (includeBreadcrumbs) {
-        // construct breadcrumbs for each page'
-        [...pageMetadataMap].forEach(([_, page]) => {
-          page.breadcrumbs = constructBreadcrumbs(pageMetadataMap, page);
-        });
       }
+    });
+    // construct full URLs for each page using their parent, and warn on pages if we can't resolve their path
+    // TODO: We may want to consider completely invalidating these entries instead, removing them from the map.
+    [...pageMetadataMap].forEach(([_, page]) => {
+      page.url = constructFullPathFromMap(pageMetadataMap, page);
+      if (!page.url) {
+        console.warn(
+          `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
+        );
+      }
+      // update the item in the map
+      pageMetadataMap.set(page.sys.id, page);
+      if (page.url) pathsToIDs.set(page.url, page.sys.id);
+    });
+    if (includeBreadcrumbs) {
+      // construct breadcrumbs for each page'
+      [...pageMetadataMap].forEach(([_, page]) => {
+        page.breadcrumbs = constructBreadcrumbs(pageMetadataMap, page);
+      });
     }
   }
   return { pageMetadataMap, pathsToIDs };

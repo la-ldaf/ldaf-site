@@ -1,10 +1,15 @@
-// TODO: [LDAF-370] Create a <CardGroup /> Wrapper to
-// avoid dealing with  the <ul> and styling overrides here.
-.usa-prose .service-group-list {
-  list-style: none;
-  padding-left: 0;
-  .usa-card__container {
-    margin-left: 0;
-    margin-right: 0;
+.grid-row.gallery-row {
+  flex-wrap: nowrap;
+  margin-bottom: 15px;
+  gap: 10px;
+
+  .gallery-image {
+    width: calc((100% - 30px) / 4);
+    flex-grow: 0;
+  }
+
+  .gallery-image div[role="img"] {
+    height: 100%;
+    width: 100%;
   }
 }

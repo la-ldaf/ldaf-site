@@ -1,5 +1,3 @@
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_API_TOKEN } from "$env/static/private";
-import getContentfulClient from "$lib/services/contentful";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import type { NewsEntriesQuery } from "./$queries.generated";
@@ -47,7 +45,8 @@ export const loadBaseBreadcrumbs = async ({
 export const loadNewsPage = async ({
   parent,
   params: { page },
-}: Pick<Parameters<PageServerLoad>[0], "params" | "parent">) => {
+  locals: { contentfulClient },
+}: Pick<Parameters<PageServerLoad>[0], "params" | "parent" | "locals">) => {
   fetchData: {
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
@@ -57,7 +56,7 @@ export const loadNewsPage = async ({
         ? [{ title: `Page ${pageNumber}`, link: `${newsBasePath}/page/${pageNumber}` }]
         : []),
     ]);
-    if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_DELIVERY_API_TOKEN) {
+    if (!contentfulClient) {
       return {
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testNewsEntries.length / limit),
@@ -70,11 +69,7 @@ export const loadNewsPage = async ({
     if (!pageMetadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(pageMetadataID);
     if (!pageMetadata) break fetchData;
-    const client = getContentfulClient({
-      spaceID: CONTENTFUL_SPACE_ID,
-      token: CONTENTFUL_DELIVERY_API_TOKEN,
-    });
-    const newsData = await client.fetch<NewsEntriesQuery>(printQuery(query), {
+    const newsData = await contentfulClient.fetch<NewsEntriesQuery>(printQuery(query), {
       variables: {
         limit,
         skip: limit * Math.max(pageNumber - 1, 0),

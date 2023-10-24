@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "./(infoPages)/[topTierPage]/page.scss";
   import "./page.scss";
 
   import chunk from "lodash/chunk";
@@ -9,7 +8,7 @@
   import { getSources } from "$lib/imageServices/contentful";
 
   import Button, { type Variant } from "$lib/components/Button";
-  import Card from "$lib/components/Card";
+  import Card, { CardGroup } from "$lib/components/Card";
   import Icon from "$lib/components/Icon";
   import Image from "$lib/components/Image";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
@@ -33,17 +32,48 @@
     },
   } = data);
 
-  const getCardSettings = (
-    index: number,
-  ): { card: "full" | "half" | "third"; button: Variant; imageLoading: "lazy" | "eager" } => {
-    switch (index) {
-      case 0:
-        return { card: "full", button: "primary", imageLoading: "eager" };
-      case 1:
-      case 2:
-        return { card: "half", button: "outline", imageLoading: "lazy" };
-      default:
-        return { card: "third", button: "outline", imageLoading: "lazy" };
+  type CardSize = "full" | "half" | "third";
+  type CardSettings = { card: CardSize; button: Variant; imageLoading: "lazy" | "eager" };
+
+  const getCardSettings = (index: number, total: number): CardSettings => {
+    if (index === 0) {
+      // first row is always a single card with a primary style
+      return { card: "full", button: "primary", imageLoading: "eager" };
+    } else {
+      // all other rows have variable sizes depending on the total,
+      //   but all have the outline style with lazy loading images
+      return { card: getCardSize(index, total), button: "outline", imageLoading: "lazy" };
+    }
+  };
+
+  // Layout should be organized roughly like so:
+  //   |          Card 1          |
+  //   |   Card 2    |   Card 3   |
+  //   | Card 4 | Card 5 | Card 6 |
+  // ... with all subsequent cards also taking up a third width.
+  // If we have a single orphan, it should take up full width:
+  //   |          Card 7          |
+  // If we have two orphans, they should take up a half width:
+  //   |   Card 7    |   Card 8   |
+  const getCardSize = (index: number, total: number): CardSize => {
+    if (index > 0 && index <= 2) {
+      // second row with only one card, no other cards following
+      if (total === 2) return "full";
+      // second row with two cards
+      else return "half";
+    } else {
+      const remainder = (total - 3) % 3;
+      // one orphan in the three column layout
+      if (remainder === 1 && index + 1 === total) {
+        // one orphan in the last row of a three column layout
+        return "full";
+      } else if (remainder === 2 && index + 2 >= total) {
+        // two orphans in the last row of a three column layout
+        return "half";
+      } else {
+        // not the last row, or no orphans in the last row of a three column layout
+        return "third";
+      }
     }
   };
 </script>
@@ -63,10 +93,13 @@
     />
   {/if}
   {#if featuredServices}
-    <!-- TODO: [LDAF-370] Set up a <CardGroup/> component to handle layout. -->
-    <ul class="service-group-list">
+    <CardGroup size="col-12">
       {#each featuredServices as item, index (item?.pageMetadata?.sys.id)}
-        {@const { card: cardSize, button: buttonVariant, imageLoading } = getCardSettings(index)}
+        {@const {
+          card: cardSize,
+          button: buttonVariant,
+          imageLoading,
+        } = getCardSettings(index, featuredServices.length)}
         <!-- TODO: Can't conditionally render a named slot, but ideally we only declare Card once here. -->
         {#if item?.heroImage?.imageSource?.url}
           {@const {
@@ -74,7 +107,7 @@
               imageSource: { url, title, blurhash, width, height },
             },
           } = item}
-          <Card class={`usa-card--${cardSize}`}>
+          <Card class={`ldaf-card--size-${cardSize}`}>
             <h2 class="usa-card__heading" slot="header">{item.title}</h2>
             <Image
               slot="image"
@@ -97,7 +130,7 @@
             </Button>
           </Card>
         {:else}
-          <Card class={`usa-card--${cardSize}`}>
+          <Card class={`ldaf-card--size-${cardSize}`}>
             <h2 class="usa-card__heading" slot="header">{item.title}</h2>
             <svelte:fragment slot="body">
               {#if item.subheading}
@@ -110,7 +143,7 @@
           </Card>
         {/if}
       {/each}
-    </ul>
+    </CardGroup>
   {/if}
   {#if popularResources && popularResources.length > 0}
     <div class="margin-top-6 margin-bottom-10">

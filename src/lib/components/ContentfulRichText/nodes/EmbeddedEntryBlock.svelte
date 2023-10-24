@@ -3,6 +3,7 @@
   import type { Node as NodeType, EntryLinkBlock } from "@contentful/rich-text-types";
   import { linksKey, type LinksContext, imageSizeTypeKey } from "../context";
   import { isEntryBlock } from "../predicates";
+  import ContentfulRichText from "../ContentfulRichText.svelte";
   import { getSources } from "$lib/imageServices/contentful";
   import ContactCard from "$lib/components/ContactCard";
   import Image from "$lib/components/Image";
@@ -34,6 +35,13 @@
     height={entryBlock.linkedImage?.height ?? undefined}
     sizeType={getContext(imageSizeTypeKey)}
   />
+{:else if entryBlock?.__typename === "CallToAction" && entryBlock?.callToActionDestination?.json}
+  <div class="embedded-entry-CTA">
+    <ContentfulRichText
+      document={entryBlock.callToActionDestination.json}
+      links={entryBlock.callToActionDestination?.links}
+    />
+  </div>
 {:else}
   <!--
     TODO: Add support for the other types of
