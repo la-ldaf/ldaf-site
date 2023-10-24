@@ -1,0 +1,15 @@
+.grid-row.gallery-row {
+  flex-wrap: nowrap;
+  margin-bottom: 15px;
+  gap: 10px;
+
+  .gallery-image {
+    width: calc((100% - 30px) / 4);
+    flex-grow: 0;
+  }
+
+  .gallery-image div[role="img"] {
+    height: 100%;
+    width: 100%;
+  }
+}

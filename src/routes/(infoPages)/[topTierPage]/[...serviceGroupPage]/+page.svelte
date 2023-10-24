@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../page.scss";
   import chunk from "lodash/chunk";
   import { afterUpdate } from "svelte";
   import { getSources } from "$lib/imageServices/contentful";
@@ -191,7 +192,7 @@
     <!-- Display a maximum of 8 images (2 rows of 4) -->
     <!-- TODO: Enhance with a "show more" button revealing lightbox gallery -->
     {#each chunk(imageGallery.images, 4).slice(0, 2) as row}
-      <div class="grid-row">
+      <div class="grid-row gallery-row">
         <!-- TODO: switch back to item.system.id for key once images are unique -->
         {#each row as item, i (i)}
           {#if item.url}
