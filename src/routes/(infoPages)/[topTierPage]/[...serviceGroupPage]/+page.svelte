@@ -191,7 +191,7 @@
   <div>
     <!-- Display a maximum of 8 images (2 rows of 4) -->
     <!-- TODO: Enhance with a "show more" button revealing lightbox gallery -->
-    {#each chunk( imageGallery.images.flatMap((i) => [i, i]), 4, ).slice(0, 2) as row}
+    {#each chunk(imageGallery.images, 4).slice(0, 2) as row}
       <div class="grid-row">
         <!-- TODO: switch back to item.system.id for key once images are unique -->
         {#each row as item, i (i)}
