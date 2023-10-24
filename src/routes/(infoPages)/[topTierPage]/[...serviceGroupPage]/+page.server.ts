@@ -26,10 +26,7 @@ const baseQuery = gql`
   ${entryPropsFragment}
 
   query ServiceGroup($metadataID: String!) {
-    serviceGroupCollection(
-      where: { pageMetadata: { sys: { id: $metadataID } } }
-      limit: 1
-    ) {
+    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
       items {
         sys {
           id
