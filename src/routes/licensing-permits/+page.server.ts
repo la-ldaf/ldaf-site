@@ -119,6 +119,7 @@ export const load = async ({ parent }) => {
       { variables: { aggregationTag } },
     );
     if (!taggedServicesData?.serviceEntryCollection?.items) break fetchData;
+
     // Create a map where the key is the page metadata ID for a core content
     //   page, and the value is an object containing page information and the
     //   services that appear on that page.
@@ -131,6 +132,7 @@ export const load = async ({ parent }) => {
         services: TaggedService[];
       }
     >();
+
     taggedServicesData.serviceEntryCollection.items.forEach((taggedService) => {
       // Get information about the core content entry that houses the service.
       // Every service should appear on only one page.
@@ -138,38 +140,34 @@ export const load = async ({ parent }) => {
       const pageMetadataID = serviceGroupEntry?.pageMetadata?.sys?.id;
       // To construct the URL to the service accordion, we'll need the service
       //   title and the core content page URL.
-      if (taggedService?.entryTitle && pageMetadataID) {
-        // To render everything on the page, we'll also need the page metadata
-        //   title. The core content page subheading is optional.
-        const pageMetadataForServiceGroup = pageMetadataMap.get(pageMetadataID);
-        if (pageMetadataForServiceGroup?.title) {
-          // Construct the URL for the service accordion.
-          const url = `${pageMetadataForServiceGroup.url}#${slugify(taggedService.entryTitle)}`;
-          // Add the service group to the map if it doesn't already exist, then
-          //   add the service under it.
-          let serviceGroupMapEntry = serviceGroupMap.get(pageMetadataID);
-          if (!serviceGroupMapEntry) {
-            serviceGroupMapEntry = {
-              title: pageMetadataForServiceGroup.title,
-              subheading: serviceGroupEntry.subheading,
-              url: pageMetadataForServiceGroup.url,
-              services: [],
-            };
-          }
-          serviceGroupMapEntry.services.push({
-            id: taggedService?.sys.id,
-            title: taggedService?.entryTitle,
-            url,
-          });
-          serviceGroupMap.set(pageMetadataID, serviceGroupMapEntry);
-        }
-      }
+      if (!taggedService?.entryTitle || !pageMetadataID) return;
+      // To render everything on the page, we'll also need the page metadata
+      //   title. The core content page subheading is optional.
+      const pageMetadataForServiceGroup = pageMetadataMap.get(pageMetadataID);
+      if (!pageMetadataForServiceGroup?.title) return;
+      // Construct the URL for the service accordion.
+      const url = `${pageMetadataForServiceGroup.url}#${slugify(taggedService.entryTitle)}`;
+      // Add the service group to the map if it doesn't already exist, then
+      //   add the service under it.
+      const serviceGroupMapEntry = serviceGroupMap.get(pageMetadataID) ?? {
+        id: pageMetadataID,
+        title: pageMetadataForServiceGroup.title,
+        subheading: serviceGroupEntry.subheading,
+        url: pageMetadataForServiceGroup.url,
+        services: [],
+      };
+      serviceGroupMapEntry.services.push({
+        id: taggedService?.sys.id,
+        title: taggedService?.entryTitle,
+        url,
+      });
+      serviceGroupMap.set(pageMetadataID, serviceGroupMapEntry);
     });
+
     // Convert our map into an array and sort it alphabetically by title.
-    const serviceGroups = Array.from(serviceGroupMap, ([id, serviceGroup]) => ({
-      id,
-      ...serviceGroup,
-    })).sort((a, b) => (a.title > b.title ? 1 : -1));
+    const serviceGroups = Array.from(serviceGroupMap, ([id, serviceGroup]) => serviceGroup).sort(
+      (a, b) => (a.title > b.title ? 1 : -1),
+    );
 
     return {
       pageMetadata,
