@@ -125,7 +125,11 @@ body {
   }
 }
 
-/* Override the max-width on paragraphs set by the USWDS */
-.usa-prose > p {
-  max-width: none;
+/* Override the max-width on paragraphs and list items set by the USWDS */
+.usa-prose {
+  & > p,
+  & > ul li,
+  & > ol li {
+    max-width: none;
+  }
 }
