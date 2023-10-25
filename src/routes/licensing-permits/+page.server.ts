@@ -53,7 +53,6 @@ const aggregationPageQuery = gql`
       }
     }
   }
-  # eslint-enable @graphql-eslint/selection-set-depth
 `;
 
 const taggedServicesQuery = gql`
