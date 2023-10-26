@@ -12,7 +12,7 @@ export default {
     links: {
       assets: { block: [], hyperlink: [] },
       entries: { block: [], hyperlink: [], inline: [] },
-      resources: { block: [] },
+      resources: { block: [], hyperlink: [], inline: [] },
     },
   },
   servicesAndPrograms: {
@@ -20,7 +20,7 @@ export default {
     links: {
       assets: { block: [], hyperlink: [] },
       entries: { block: [], hyperlink: [], inline: [] },
-      resources: { block: [] },
+      resources: { block: [], hyperlink: [], inline: [] },
     },
   },
   mailingAddress: {

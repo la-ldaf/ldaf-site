@@ -21,6 +21,9 @@ const query = gql`
         shortTitle
         internalName
         eventDescription
+        eventRichTextDescription {
+          json
+        }
         eventDateAndTime
         eventDocumentsCollection {
           items {

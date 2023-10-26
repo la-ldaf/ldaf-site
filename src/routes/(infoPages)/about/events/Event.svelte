@@ -10,7 +10,6 @@
   export let event: PageServerData["events"][number];
   export let headingLevel: HeadingLevel = 2;
   export let variation: "big" | "small" = "big";
-
   $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
 </script>
 
@@ -31,9 +30,9 @@
         </svelte:element>
       </Link>
     {/if}
-    {#if event?.eventDescription}
-      <p class="event-description">
-        {event.eventDescription}
+    {#if event?.eventSummary}
+      <p class="event-summary">
+        {event.eventSummary}
       </p>
     {/if}
   </div>
@@ -53,7 +52,7 @@
     margin: 0;
   }
 
-  .event-description {
+  .event-summary {
     margin: 0;
   }
 </style>

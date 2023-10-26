@@ -2,6 +2,7 @@
   import ContactCard from "$lib/components/ContactCard";
   import DateComponent from "$lib/components/Date";
   import Link from "$lib/components/Link";
+  import ContentfulRichText from "$lib/components/ContentfulRichText";
   import { months } from "$lib/constants/date.js";
 
   export let data;
@@ -13,8 +14,9 @@
   <h1 class="ldaf-event-page__header__h1">{data.event.shortTitle}</h1>
 </div>
 
-<p>{data.event.eventDescription}</p>
-
+{#if data.event?.eventRichTextDescription}
+  <ContentfulRichText document={data.event.eventRichTextDescription.json} />
+{/if}
 <p>
   <strong>Date:</strong>
   {months[date.getMonth()]}

@@ -116,6 +116,8 @@ export type AggregationBodyLinks = {
 export type AggregationBodyResources = {
   __typename?: 'AggregationBodyResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type AggregationCollection = {
@@ -626,6 +628,8 @@ export type BoardsAndCommissionsAdditionalInformationLinks = {
 export type BoardsAndCommissionsAdditionalInformationResources = {
   __typename?: 'BoardsAndCommissionsAdditionalInformationResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type BoardsAndCommissionsCollection = {
@@ -742,6 +746,8 @@ export type BoardsAndCommissionsMeetingsLinks = {
 export type BoardsAndCommissionsMeetingsResources = {
   __typename?: 'BoardsAndCommissionsMeetingsResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type BoardsAndCommissionsMembership = {
@@ -773,6 +779,8 @@ export type BoardsAndCommissionsMembershipLinks = {
 export type BoardsAndCommissionsMembershipResources = {
   __typename?: 'BoardsAndCommissionsMembershipResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export enum BoardsAndCommissionsOrder {
@@ -819,6 +827,8 @@ export type BoardsAndCommissionsOverviewLinks = {
 export type BoardsAndCommissionsOverviewResources = {
   __typename?: 'BoardsAndCommissionsOverviewResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 /** Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
@@ -878,6 +888,8 @@ export type CallToActionCallToActionDestinationLinks = {
 export type CallToActionCallToActionDestinationResources = {
   __typename?: 'CallToActionCallToActionDestinationResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type CallToActionCollection = {
@@ -1223,6 +1235,8 @@ export enum CategoryLinkingCollectionsEventEntryCollectionOrder {
   EventDateAndTimeDesc = 'eventDateAndTime_DESC',
   EventDescriptionAsc = 'eventDescription_ASC',
   EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
   InPersonOrOnlineAsc = 'inPersonOrOnline_ASC',
   InPersonOrOnlineDesc = 'inPersonOrOnline_DESC',
   InternalNameAsc = 'internalName_ASC',
@@ -1527,6 +1541,8 @@ export enum ContactLinkingCollectionsEventEntryCollectionOrder {
   EventDateAndTimeDesc = 'eventDateAndTime_DESC',
   EventDescriptionAsc = 'eventDescription_ASC',
   EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
   InPersonOrOnlineAsc = 'inPersonOrOnline_ASC',
   InPersonOrOnlineDesc = 'inPersonOrOnline_DESC',
   InternalNameAsc = 'internalName_ASC',
@@ -2030,6 +2046,8 @@ export enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   EventDateAndTimeDesc = 'eventDateAndTime_DESC',
   EventDescriptionAsc = 'eventDescription_ASC',
   EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
   InPersonOrOnlineAsc = 'inPersonOrOnline_ASC',
   InPersonOrOnlineDesc = 'inPersonOrOnline_DESC',
   InternalNameAsc = 'internalName_ASC',
@@ -2435,6 +2453,8 @@ export type ErrorBodyLinks = {
 export type ErrorBodyResources = {
   __typename?: 'ErrorBodyResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type ErrorCollection = {
@@ -2526,6 +2546,8 @@ export type EventEntry = Entry & {
   eventDateAndTime?: Maybe<Scalars['DateTime']['output']>;
   eventDescription?: Maybe<Scalars['String']['output']>;
   eventDocumentsCollection?: Maybe<EventEntryEventDocumentsCollection>;
+  eventRichTextDescription?: Maybe<EventEntryEventRichTextDescription>;
+  eventSummary?: Maybe<Scalars['String']['output']>;
   inPersonOrOnline?: Maybe<Scalars['String']['output']>;
   internalName?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<EventEntryLinkingCollections>;
@@ -2565,6 +2587,18 @@ export type EventEntryEventDocumentsCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventEntryEventDocumentsFilter>;
+};
+
+
+/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryEventRichTextDescriptionArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+export type EventEntryEventSummaryArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2645,6 +2679,39 @@ export type EventEntryEventDocumentsFilter = {
 
 export type EventEntryEventDocumentsItem = Contact | DocumentWrapper;
 
+export type EventEntryEventRichTextDescription = {
+  __typename?: 'EventEntryEventRichTextDescription';
+  json: Scalars['JSON']['output'];
+  links: EventEntryEventRichTextDescriptionLinks;
+};
+
+export type EventEntryEventRichTextDescriptionAssets = {
+  __typename?: 'EventEntryEventRichTextDescriptionAssets';
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type EventEntryEventRichTextDescriptionEntries = {
+  __typename?: 'EventEntryEventRichTextDescriptionEntries';
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type EventEntryEventRichTextDescriptionLinks = {
+  __typename?: 'EventEntryEventRichTextDescriptionLinks';
+  assets: EventEntryEventRichTextDescriptionAssets;
+  entries: EventEntryEventRichTextDescriptionEntries;
+  resources: EventEntryEventRichTextDescriptionResources;
+};
+
+export type EventEntryEventRichTextDescriptionResources = {
+  __typename?: 'EventEntryEventRichTextDescriptionResources';
+  block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
+};
+
 export type EventEntryFilter = {
   AND?: InputMaybe<Array<InputMaybe<EventEntryFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<EventEntryFilter>>>;
@@ -2669,6 +2736,16 @@ export type EventEntryFilter = {
   eventDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   eventDocuments?: InputMaybe<CfeventDocumentsMultiTypeNestedFilter>;
   eventDocumentsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventRichTextDescription_contains?: InputMaybe<Scalars['String']['input']>;
+  eventRichTextDescription_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventRichTextDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eventSummary?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_contains?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventSummary_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  eventSummary_not?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   inPersonOrOnline?: InputMaybe<Scalars['String']['input']>;
   inPersonOrOnline_contains?: InputMaybe<Scalars['String']['input']>;
   inPersonOrOnline_exists?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2782,6 +2859,8 @@ export enum EventEntryOrder {
   EventDateAndTimeDesc = 'eventDateAndTime_DESC',
   EventDescriptionAsc = 'eventDescription_ASC',
   EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
   InPersonOrOnlineAsc = 'inPersonOrOnline_ASC',
   InPersonOrOnlineDesc = 'inPersonOrOnline_DESC',
   InternalNameAsc = 'internalName_ASC',
@@ -3170,6 +3249,8 @@ export type HomeCommissionerGreetingLinks = {
 export type HomeCommissionerGreetingResources = {
   __typename?: 'HomeCommissionerGreetingResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type HomeFeaturedServiceCardsCollection = {
@@ -3701,6 +3782,8 @@ export type ListWithTitleParagraphOrListLinks = {
 export type ListWithTitleParagraphOrListResources = {
   __typename?: 'ListWithTitleParagraphOrListResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 /** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
@@ -4261,6 +4344,8 @@ export type NewsBodyLinks = {
 export type NewsBodyResources = {
   __typename?: 'NewsBodyResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type NewsCollection = {
@@ -4553,6 +4638,8 @@ export type NewsItemContentNewsItemBodyLinks = {
 export type NewsItemContentNewsItemBodyResources = {
   __typename?: 'NewsItemContentNewsItemBodyResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export enum NewsItemContentOrder {
@@ -4656,6 +4743,8 @@ export enum NewsRelatedEventsCollectionOrder {
   EventDateAndTimeDesc = 'eventDateAndTime_DESC',
   EventDescriptionAsc = 'eventDescription_ASC',
   EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
   InPersonOrOnlineAsc = 'inPersonOrOnline_ASC',
   InPersonOrOnlineDesc = 'inPersonOrOnline_DESC',
   InternalNameAsc = 'internalName_ASC',
@@ -4703,6 +4792,8 @@ export type NewsRelatedLinksLinks = {
 export type NewsRelatedLinksResources = {
   __typename?: 'NewsRelatedLinksResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type NewsRelatedNewsCollection = {
@@ -4874,6 +4965,8 @@ export type OfficePageDescriptionLinks = {
 export type OfficePageDescriptionResources = {
   __typename?: 'OfficePageDescriptionResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type OfficePageFilter = {
@@ -4966,6 +5059,8 @@ export type OfficePageServicesAndProgramsLinks = {
 export type OfficePageServicesAndProgramsResources = {
   __typename?: 'OfficePageServicesAndProgramsResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 /** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
@@ -5630,6 +5725,8 @@ export type PressReleasePressReleaseBodyLinks = {
 export type PressReleasePressReleaseBodyResources = {
   __typename?: 'PressReleasePressReleaseBodyResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 /** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
@@ -6517,6 +6614,8 @@ export type ServiceEntryDescriptionLinks = {
 export type ServiceEntryDescriptionResources = {
   __typename?: 'ServiceEntryDescriptionResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type ServiceEntryFilter = {
@@ -6752,6 +6851,8 @@ export type ServiceGroupAdditionalResourcesLinks = {
 export type ServiceGroupAdditionalResourcesResources = {
   __typename?: 'ServiceGroupAdditionalResourcesResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type ServiceGroupCollection = {
@@ -6818,6 +6919,8 @@ export type ServiceGroupDescriptionLinks = {
 export type ServiceGroupDescriptionResources = {
   __typename?: 'ServiceGroupDescriptionResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type ServiceGroupFilter = {
@@ -7124,6 +7227,8 @@ export type ServiceTempTestDescriptionLinks = {
 export type ServiceTempTestDescriptionResources = {
   __typename?: 'ServiceTempTestDescriptionResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type ServiceTempTestFilter = {
@@ -7315,6 +7420,8 @@ export type TestRichTextBodyLinks = {
 export type TestRichTextBodyResources = {
   __typename?: 'TestRichTextBodyResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type TestRichTextCollection = {
@@ -7480,6 +7587,8 @@ export type TopTierDescriptionLinks = {
 export type TopTierDescriptionResources = {
   __typename?: 'TopTierDescriptionResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type TopTierFeaturedServiceListCollection = {
@@ -7816,6 +7925,8 @@ export type VideoWrapperVideoLongerStoryLinks = {
 export type VideoWrapperVideoLongerStoryResources = {
   __typename?: 'VideoWrapperVideoLongerStoryResources';
   block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type CfCallToActionNestedFilter = {
@@ -7968,6 +8079,16 @@ export type CfEventEntryNestedFilter = {
   eventDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   eventDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   eventDocumentsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventRichTextDescription_contains?: InputMaybe<Scalars['String']['input']>;
+  eventRichTextDescription_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventRichTextDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eventSummary?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_contains?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  eventSummary_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  eventSummary_not?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eventSummary_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   inPersonOrOnline?: InputMaybe<Scalars['String']['input']>;
   inPersonOrOnline_contains?: InputMaybe<Scalars['String']['input']>;
   inPersonOrOnline_exists?: InputMaybe<Scalars['Boolean']['input']>;
