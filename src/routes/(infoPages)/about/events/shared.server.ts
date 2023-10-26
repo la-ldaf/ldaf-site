@@ -78,9 +78,6 @@ export const loadEventsPage = async ({
     getCurrentDateInTZ(eventIANATimezone),
     eventIANATimezone,
   );
-  console.log(getCurrentDateInTZ(eventIANATimezone));
-  console.log(eventIANATimezone);
-  console.log(startDate);
   fetchData: {
     const pageNumber = parseInt(page);
     if (isNaN(pageNumber)) break fetchData;
