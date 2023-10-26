@@ -4,12 +4,19 @@ import { print as printQuery } from "graphql";
 import type { PageServerLoad } from "./$types";
 import type { EventQuery } from "./$queries.generated";
 import { loadBaseBreadcrumbs } from "../../shared.server";
+import assetPropsFragment from "$lib/fragments/assetProps";
+import entryPropsFragment from "$lib/fragments/entryProps";
 import { eventIANATimezone } from "$lib/constants/date";
 import { getEndOfDayForDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 
 const query = gql`
+  # eslint-disable @graphql-eslint/selection-set-depth
+  ${assetPropsFragment}
+  ${entryPropsFragment}
+
   query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
     eventEntryCollection(
+      preview: true
       limit: 1
       where: { eventDateAndTime_gte: $dateStart, eventDateAndTime_lt: $dateEnd, slug: $slug }
     ) {
@@ -23,6 +30,24 @@ const query = gql`
         eventDescription
         eventRichTextDescription {
           json
+          links {
+            assets {
+              block {
+                ...AssetProps
+              }
+              hyperlink {
+                ...AssetProps
+              }
+            }
+            entries {
+              block {
+                ...EntryProps
+              }
+              hyperlink {
+                ...EntryProps
+              }
+            }
+          }
         }
         eventDateAndTime
         eventDocumentsCollection {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { afterUpdate } from "svelte";
   import ContactCard from "$lib/components/ContactCard";
   import DateComponent from "$lib/components/Date";
   import Link from "$lib/components/Link";
@@ -7,6 +8,12 @@
 
   export let data;
   $: date = new Date(data.event.eventDateAndTime);
+
+  afterUpdate(() => {
+    document
+      .querySelectorAll(".embedded-entry-CTA p > a")
+      .forEach((ctaElement) => ctaElement.classList.add("usa-button"));
+  });
 </script>
 
 <div class="ldaf-event-page__header">
@@ -15,7 +22,10 @@
 </div>
 
 {#if data.event?.eventRichTextDescription}
-  <ContentfulRichText document={data.event.eventRichTextDescription.json} />
+  <ContentfulRichText
+    document={data.event.eventRichTextDescription.json}
+    links={data.event.eventRichTextDescription.links}
+  />
 {/if}
 <p>
   <strong>Date:</strong>
@@ -41,6 +51,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-bottom: 1rem;
   }
   @media (min-width: 480px) {
     .ldaf-event-page__header {
