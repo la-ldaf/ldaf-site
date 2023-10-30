@@ -127,7 +127,7 @@
           </div>
           <address class="usa-footer__address">
             <div class="ldaf-footer__address-location">
-              5835 Florida Blvd
+              5825 Florida Blvd
               <br />
               Baton Rouge, LA 70806
               <hr />
@@ -142,7 +142,7 @@
               <div class="grid-col-6 text-left ldaf-footer__nowrap">Non-emergencies:</div>
               <div class="grid-col-6 text-right">
                 <Link href="tel:18669272476">1-866-927-2476</Link><br />or
-                <Link href="tel:12559221234">(255) 922-1234</Link>
+                <Link href="tel:12259221234">(225) 922-1234</Link>
               </div>
             </div>
           </address>
@@ -154,8 +154,7 @@
           <span class="ldaf-footer__nowrap">All rights reserved</span>
           <span class="ldaf-footer__nowrap">
             -
-            <Link href="/about/website/privacy-policy">Privacy Policy</Link> |
-            <Link href="/about/website/terms-of-use">Terms Of Use</Link>
+            <Link href="/about/website/privacy-policy">Privacy Policy</Link>
           </span>
         </div>
       </div>
