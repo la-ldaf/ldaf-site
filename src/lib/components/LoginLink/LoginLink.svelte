@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { ComponentProps } from "svelte";
-  import { afterNavigate, invalidate } from "$app/navigation";
   import { page } from "$app/stores";
   import Link from "$lib/components/Link";
 
@@ -14,8 +13,6 @@
   $: loginLinkLocation = `/login?${Object.entries(params)
     .map(([k, v]) => `${k}=${v}`)
     .join("&")}`;
-
-  afterNavigate(({ from }) => from && invalidate("app:previewAuthenticationError"));
 </script>
 
 <Link href={loginLinkLocation} on:click {...$$props}><slot>Login</slot></Link>
