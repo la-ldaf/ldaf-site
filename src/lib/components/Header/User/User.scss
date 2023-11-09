@@ -1,0 +1,10 @@
+.user {
+  color: $primary-lightest;
+}
+
+.login-link {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

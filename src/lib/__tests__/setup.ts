@@ -1,3 +1,4 @@
+import "./extendExpect";
 import { vi } from "vitest";
 import type { Navigation, Page } from "@sveltejs/kit";
 import type * as stores from "$app/stores";
@@ -30,3 +31,5 @@ vi.mock("$app/stores", (): typeof stores => {
 });
 
 vi.mock("$lib/components/Header/HeaderBackgroundImage.svelte");
+
+vi.mock("$lib/services/server/kv");
