@@ -12,17 +12,17 @@
 
   const enhanceLogoutForm: SubmitFunction<{ success: boolean }> =
     () =>
-      async ({ result, update }) => {
-        if (result.type === "success" && result.data?.success) {
-          await applyAction({
-            type: "success",
-            status: result.status,
-            data: { success: true, currentUser: undefined },
-          });
-          currentUser.set(undefined);
-        }
-        await update();
-      };
+    async ({ result, update }) => {
+      if (result.type === "success" && result.data?.success) {
+        await applyAction({
+          type: "success",
+          status: result.status,
+          data: { success: true, currentUser: undefined },
+        });
+        currentUser.set(undefined);
+      }
+      await update();
+    };
 
   $: if (form?.success) currentUser.set(form?.currentUser);
 
