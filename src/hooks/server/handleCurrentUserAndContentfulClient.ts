@@ -80,7 +80,7 @@ export const getHandleCurrentUserAndContentfulClient = ({
     // new token or get rid of the current one.
     if (isLogin(event) || isLogout(event)) return resolve(event);
 
-    const preview = url.searchParams.has("preview");
+    const preview = url.searchParams.get("preview") === "true";
 
     if (!preview) return resolve(event);
 
