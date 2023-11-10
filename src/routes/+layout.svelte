@@ -106,6 +106,13 @@
 
   $: inIframe = browser && isInIframe();
   $: loginLinkProps = inIframe ? { target: "_blank" } : {};
+
+  let pageLinkWithoutPreview: string;
+  $: {
+    const url = new URL($page.url);
+    url.searchParams.delete("preview");
+    pageLinkWithoutPreview = url.toString();
+  }
 </script>
 
 <svelte:head>
@@ -166,7 +173,7 @@
       <p>{previewAuthenticationError.message}</p>
       <p>
         (Do you need to <LoginLink {...loginLinkProps}>log in</LoginLink> or visit the
-        <a href={$page.url.toString()}>public version of the page</a>?)
+        <a href={pageLinkWithoutPreview}>public version of the page</a>?)
       </p>
     </div>
   {:else}
