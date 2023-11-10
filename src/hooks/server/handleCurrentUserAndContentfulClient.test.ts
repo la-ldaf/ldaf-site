@@ -157,8 +157,8 @@ describe("with an unauthenticated user", () => {
   describeRequestsFor(
     {
       "public content": getHandler(),
-      "login page": getHandler({ url: "http://localhost/login?preview" }),
-      "logout page": getHandler({ url: "http://localhost/logout?preview" }),
+      "login page": getHandler({ url: "http://localhost/login?preview=true" }),
+      "logout page": getHandler({ url: "http://localhost/logout?preview=true" }),
     },
     () => {
       itRespondsWithStatus(200);
@@ -169,7 +169,7 @@ describe("with an unauthenticated user", () => {
     },
   );
 
-  describeRequestFor("preview content", getHandler({ url: "http://localhost?preview" }), () => {
+  describeRequestFor("preview content", getHandler({ url: "http://localhost?preview=true" }), () => {
     itRespondsWithStatus(401);
     itInitializesNormalContentfulClient();
     itDoesntAuthorizeWithContentful();
@@ -195,8 +195,8 @@ describe("with a successfully authenticated user", () => {
   describeRequestsFor(
     {
       "public content": getAuthenticatedHandler(),
-      "login page": getAuthenticatedHandler({ url: "http://localhost/login?preview" }),
-      "logout page": getAuthenticatedHandler({ url: "http://localhost/logout?preview" }),
+      "login page": getAuthenticatedHandler({ url: "http://localhost/login?preview=true" }),
+      "logout page": getAuthenticatedHandler({ url: "http://localhost/logout?preview=true" }),
     },
     () => {
       itRespondsWithStatus(200);
@@ -210,7 +210,7 @@ describe("with a successfully authenticated user", () => {
 
   describeRequestFor(
     "preview content",
-    getAuthenticatedHandler({ url: "http://localhost?preview" }),
+    getAuthenticatedHandler({ url: "http://localhost?preview=true" }),
     () => {
       itRespondsWithStatus(200);
       itInitializesPreviewContentfulClient();
@@ -241,8 +241,8 @@ describe("with a user with a token that doesn't exist in KV", () => {
   describeRequestsFor(
     {
       "public content": getAuthenticatedHandler(),
-      "login page": getAuthenticatedHandler({ url: "http://localhost/login?preview" }),
-      "logout page": getAuthenticatedHandler({ url: "http://localhost/logout?preview" }),
+      "login page": getAuthenticatedHandler({ url: "http://localhost/login?preview=true" }),
+      "logout page": getAuthenticatedHandler({ url: "http://localhost/logout?preview=true" }),
     },
     () => {
       itRespondsWithStatus(200);
@@ -257,7 +257,7 @@ describe("with a user with a token that doesn't exist in KV", () => {
 
   describeRequestFor(
     "preview content",
-    getAuthenticatedHandler({ url: "http://localhost?preview" }),
+    getAuthenticatedHandler({ url: "http://localhost?preview=true" }),
     () => {
       itRespondsWithStatus(401);
       itInitializesNormalContentfulClient();
@@ -286,8 +286,8 @@ describe("with a user with a token that exists in KV but is not valid in Content
   describeRequestsFor(
     {
       "public content": getAuthenticatedHandler(),
-      "login page": getAuthenticatedHandler({ url: "http://localhost/login?preview" }),
-      "logout page": getAuthenticatedHandler({ url: "http://localhost/logout?preview" }),
+      "login page": getAuthenticatedHandler({ url: "http://localhost/login?preview=true" }),
+      "logout page": getAuthenticatedHandler({ url: "http://localhost/logout?preview=true" }),
     },
     () => {
       itRespondsWithStatus(200);
@@ -300,7 +300,7 @@ describe("with a user with a token that exists in KV but is not valid in Content
   );
   describeRequestFor(
     "preview content",
-    getAuthenticatedHandler({ url: "http://localhost?preview" }),
+    getAuthenticatedHandler({ url: "http://localhost?preview=true" }),
     () => {
       itRespondsWithStatus(401);
       itInitializesNormalContentfulClient();
