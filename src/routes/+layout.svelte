@@ -74,6 +74,7 @@
   $: if ($navigating) navMenuExpanded = false;
 
   // This is a workaround for https://github.com/sveltejs/kit/issues/10122
+  // eslint-disable-next-line no-undef
   let lastPageURL: URL | undefined, lastPageError: App.Error | null | undefined;
   $: ({ url: lastPageURL, error: lastPageError } = $page || {});
   beforeNavigate(async ({ to, type, cancel }) => {
