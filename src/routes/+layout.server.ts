@@ -7,7 +7,11 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 
-export const load = async ({ fetch, locals: { contentfulClient, currentUser } }) => {
+export const load = async ({
+  fetch,
+  depends,
+  locals: { contentfulClient, currentUser, previewAuthenticationError },
+}) => {
   // prod indicator is sent with page data and is currently used to determine:
   //   * whether we should connect to Vercel Speed Insights
   //   * if we should set up GA in debug mode or prod mode
@@ -27,8 +31,10 @@ export const load = async ({ fetch, locals: { contentfulClient, currentUser } })
     headerPrimaryNavItemsPromise,
   ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
   const errorPageContentMap = await loadErrorPageContent({ fetch, contentfulClient });
+  depends("app:previewAuthenticationError");
   return {
     isProd,
+    previewAuthenticationError,
     // this env variable can't be renamed, so we send it with the page data
     analyticsID: isProd ? VERCEL_ANALYTICS_ID : undefined,
     pageMetadataMap: pageMetadataMapPromise.then(({ pageMetadataMap }) => pageMetadataMap),

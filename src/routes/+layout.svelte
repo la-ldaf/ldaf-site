@@ -5,11 +5,12 @@
 
   import { partytownSnippet } from "@builder.io/partytown/integration";
   import { setContext } from "svelte";
-  import { afterNavigate } from "$app/navigation";
+  import { afterNavigate, beforeNavigate, goto, invalidate } from "$app/navigation";
   import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
 
   import { webVitals } from "$lib/vitals";
+  import isInIframe from "$lib/util/isInIframe";
   import Analytics from "$lib/components/Analytics";
   import Header from "$lib/components/Header";
   import Footer from "$lib/components/Footer";
@@ -19,6 +20,7 @@
   import { BlurhashRenderer } from "$lib/components/Image";
   import { key as pageMetadataMapKey } from "$lib/context/pageMetadataMap";
   import { setCurrentUserStore } from "$lib/context/currentUser";
+  import LoginLink from "$lib/components/LoginLink/LoginLink.svelte";
 
   export let data;
   $: ({
@@ -29,6 +31,7 @@
     siteTitle,
     pageMetadataMap,
     analyticsID,
+    previewAuthenticationError,
   } = data);
 
   // Vercel Speed Insights
@@ -69,6 +72,39 @@
 
   let navMenuExpanded = false;
   $: if ($navigating) navMenuExpanded = false;
+
+  // This is a workaround for https://github.com/sveltejs/kit/issues/10122
+  let lastPageURL: URL | undefined, lastPageError: App.Error | null | undefined;
+  $: ({ url: lastPageURL, error: lastPageError } = $page || {});
+  beforeNavigate(async ({ to, type, cancel }) => {
+    const previousPreviewValue = lastPageURL?.searchParams.get("preview");
+    if (
+      typeof previousPreviewValue === "string" &&
+      type === "link" &&
+      to &&
+      !to.url.searchParams.has("preview") &&
+      !lastPageError &&
+      !previewAuthenticationError &&
+      !(to.url.pathname === "/login" || to.url.pathname === "/logout")
+    ) {
+      to.url.searchParams.set("preview", previousPreviewValue);
+    }
+
+    if (
+      type === "link" &&
+      to &&
+      previewAuthenticationError &&
+      !(to.url.pathname === "/login" || to.url.pathname === "/logout")
+    ) {
+      to.url.searchParams.delete("preview");
+      cancel();
+      await goto(to.url.toString());
+      invalidate("app:previewAuthenticationError");
+    }
+  });
+
+  $: inIframe = browser && isInIframe();
+  $: loginLinkProps = inIframe ? { target: "_blank" } : {};
 </script>
 
 <svelte:head>
@@ -123,7 +159,18 @@
     {siteTitle}
     bind:navMenuExpanded
   />
-  <slot />
+  {#if previewAuthenticationError}
+    <div class="usa-section usa-prose grid-container">
+      <h1>{previewAuthenticationError.status}</h1>
+      <p>{previewAuthenticationError.message}</p>
+      <p>
+        (Do you need to <LoginLink {...loginLinkProps}>log in</LoginLink> or visit the
+        <a href={$page.url.toString()}>public version of the page</a>?)
+      </p>
+    </div>
+  {:else}
+    <slot />
+  {/if}
   <Footer navItems={footerNavItems} {siteTitle} {afterNavigate} />
 </RootIntersectionObserver>
 

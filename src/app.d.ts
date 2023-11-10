@@ -2,9 +2,7 @@
 // for information about these interfaces
 import type { Client as KVClient } from "$lib/services/server/kv";
 import type { ContentfulClient } from "$lib/services/server/contentful";
-import type { ServerUser } from "$lib/server/types";
-
-type None = Record<never, never>;
+import type { User } from "$lib/types";
 
 declare global {
   namespace App {
@@ -16,7 +14,11 @@ declare global {
     interface Locals {
       getKVClient: () => Promise<KVClient>;
       contentfulClient?: ContentfulClient;
-      currentUser?: ServerUser;
+      currentUser?: User;
+      previewAuthenticationError?: {
+        status: number;
+        message: string;
+      };
     }
     // interface PageData {}
     // interface Platform {}

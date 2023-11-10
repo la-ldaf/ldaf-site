@@ -5,6 +5,7 @@ type SpaceID = string;
 type Environment = string;
 type Token = string;
 type APIPrefix = string;
+type Preview = boolean;
 
 const defaultAPIPrefix: APIPrefix = "https://graphql.contentful.com/content/v1/spaces";
 
@@ -13,19 +14,22 @@ type ClientOptions = {
   environment?: Environment;
   token: Token;
   apiPrefix?: APIPrefix;
+  preview?: Preview;
 };
 
 const delim = "#" as const;
+type Delim = typeof delim;
 
 type ClientKey =
-  `${APIPrefix}${typeof delim}${SpaceID}${typeof delim}${Environment}${typeof delim}${Token}`;
+  `${APIPrefix}${Delim}${SpaceID}${Delim}${Environment}${Delim}${Token}${Delim}${Preview}`;
 const getKeyFromOptions = ({
   spaceID,
   environment,
   token,
   apiPrefix = defaultAPIPrefix,
+  preview = false,
 }: ClientOptions): ClientKey =>
-  `${apiPrefix}${delim}${spaceID}${delim}${environment}${delim}${token}`;
+  `${apiPrefix}${delim}${spaceID}${delim}${environment}${delim}${token}${delim}${preview}`;
 
 export type Client = {
   options: ClientOptions;
@@ -39,6 +43,7 @@ const getClient = ({
   spaceID,
   environment = CONTENTFUL_DEFAULT_ENVIRONMENT,
   token,
+  preview = false,
   fetch = global.fetch,
   apiPrefix = defaultAPIPrefix,
 }: ClientOptions & { fetch?: typeof global.fetch }): Client => {
@@ -47,7 +52,7 @@ const getClient = ({
   if (existingClient) return existingClient;
 
   const client = {
-    options: { spaceID, environment, token, apiPrefix },
+    options: { spaceID, environment, token, apiPrefix, preview },
     key,
     async fetch<T>(
       query: string,
@@ -61,7 +66,7 @@ const getClient = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query, variables }),
+        body: JSON.stringify({ query, variables: { preview, ...variables } }),
       });
       if (!response.ok) {
         const errorMessage = await getErrorMessageFromResponse(response);

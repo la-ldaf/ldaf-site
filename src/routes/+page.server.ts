@@ -29,8 +29,12 @@ const query = gql`
     }
   }
 
-  query HomePage($metadataID: String!, $eventStartDate: DateTime!) {
-    homeCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query HomePage($metadataID: String!, $eventStartDate: DateTime!, $preview: Boolean = false) {
+    homeCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         pageMetadata {
           sys {
@@ -83,7 +87,7 @@ const query = gql`
         }
       }
     }
-    newsCollection(order: [publicationDate_DESC], limit: 4) {
+    newsCollection(order: [publicationDate_DESC], limit: 4, preview: $preview) {
       items {
         sys {
           id
@@ -100,6 +104,7 @@ const query = gql`
       where: { eventDateAndTime_gte: $eventStartDate }
       order: [eventDateAndTime_ASC]
       limit: 4
+      preview: $preview
     ) {
       items {
         sys {

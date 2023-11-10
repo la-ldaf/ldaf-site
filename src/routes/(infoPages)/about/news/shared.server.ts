@@ -14,8 +14,8 @@ const limit = 10;
 
 export const query = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  query NewsEntries($limit: Int = 10, $skip: Int = 0) {
-    newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC]) {
+  query NewsEntries($limit: Int = 10, $skip: Int = 0, $preview: Boolean = false) {
+    newsCollection(limit: $limit, skip: $skip, order: [publicationDate_DESC], preview: $preview) {
       total
       items {
         sys {
