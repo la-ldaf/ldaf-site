@@ -169,13 +169,17 @@ describe("with an unauthenticated user", () => {
     },
   );
 
-  describeRequestFor("preview content", getHandler({ url: "http://localhost?preview=true" }), () => {
-    itRespondsWithStatus(401);
-    itInitializesNormalContentfulClient();
-    itDoesntAuthorizeWithContentful();
-    itDoesntUseKVClient();
-    itHasPreviewAuthenticationError();
-  });
+  describeRequestFor(
+    "preview content",
+    getHandler({ url: "http://localhost?preview=true" }),
+    () => {
+      itRespondsWithStatus(401);
+      itInitializesNormalContentfulClient();
+      itDoesntAuthorizeWithContentful();
+      itDoesntUseKVClient();
+      itHasPreviewAuthenticationError();
+    },
+  );
 });
 
 describe("with a successfully authenticated user", () => {
