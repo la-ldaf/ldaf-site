@@ -16,7 +16,6 @@ const query = gql`
 
   query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
     eventEntryCollection(
-      preview: true
       limit: 1
       where: { eventDateAndTime_gte: $dateStart, eventDateAndTime_lt: $dateEnd, slug: $slug }
     ) {

@@ -15,7 +15,6 @@ const limit = 20;
 export const query = gql`
   query Events($startDate: DateTime!, $limit: Int = 20, $skip: Int = 0) {
     eventEntryCollection(
-      preview: true
       limit: $limit
       skip: $skip
       order: [eventDateAndTime_ASC]
