@@ -106,10 +106,7 @@ export const loadEventsPage = async ({
         skip: limit * Math.max(pageNumber - 1, 0),
       },
     });
-    if (
-      !eventsData?.eventEntryCollection?.items ||
-      eventsData?.eventEntryCollection?.items?.length === 0
-    ) {
+    if (!eventsData?.eventEntryCollection?.items) {
       break fetchData;
     }
     return {

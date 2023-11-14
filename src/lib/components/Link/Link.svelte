@@ -28,6 +28,6 @@
   );
 </script>
 
-<a {...$$restProps} {href} class={linkClassNames} rel={external ? "external" : null}>
+<a {...$$restProps} {href} class={linkClassNames} rel={external ? "external" : null} on:click>
   <slot />
 </a>

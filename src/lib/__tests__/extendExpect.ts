@@ -1,8 +1,10 @@
-import { toMatchDOMNodes } from "./matchers";
+import { toMatchDOMNodes, toHaveBeenCalledOnceWith } from "./matchers";
 import { expect } from "vitest";
 
 interface CustomMatchers<R = unknown> {
   toMatchDOMNodes(expected: HTMLElement | Node[] | string): R;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  toHaveBeenCalledOnceWith(...expected: any[]): R;
 }
 
 declare global {
@@ -17,4 +19,4 @@ declare global {
   // Note: augmenting jest.Matchers interface will also work.
 }
 
-expect.extend({ toMatchDOMNodes });
+expect.extend({ toMatchDOMNodes, toHaveBeenCalledOnceWith });
