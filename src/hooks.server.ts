@@ -1,10 +1,5 @@
 import type { Handle } from "@sveltejs/kit";
-import {
-  CONTENTFUL_DELIVERY_API_TOKEN,
-  CONTENTFUL_SPACE_ID,
-  KV_URL,
-  CONTENTFUL_PREVIEW_API_TOKEN,
-} from "$env/static/private";
+import { CONTENTFUL_DELIVERY_API_TOKEN, CONTENTFUL_SPACE_ID, KV_URL } from "$env/static/private";
 import { sequence } from "@sveltejs/kit/hooks";
 import { getClient as getKVClient } from "$lib/services/server/kv";
 import getContentfulClient from "$lib/services/server/contentful";
@@ -27,7 +22,7 @@ const handleSetupContentfulClient = (async ({ event, resolve }) => {
     CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN
       ? getContentfulClient({
           spaceID: CONTENTFUL_SPACE_ID,
-          token: CONTENTFUL_PREVIEW_API_TOKEN,
+          token: CONTENTFUL_DELIVERY_API_TOKEN,
           fetch,
         })
       : undefined;
