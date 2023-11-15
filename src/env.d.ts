@@ -29,6 +29,9 @@ declare module "$env/static/public" {
   export const PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID: string;
   export const PUBLIC_YOUTUBE_API_KEY: string;
   export const PUBLIC_YOUTUBE_CHANNEL_ID: string;
+  export const PUBLIC_CONTENTFUL_OAUTH_ENDPOINT: string;
+  export const PUBLIC_CONTENTFUL_OAUTH_CLIENT_ID: string;
+  export const PUBLIC_CONTENTFUL_OAUTH_CLIENT_REDIRECT_URI: string;
 }
 /*
 // Uncomment to declare other environment variable strategies.
