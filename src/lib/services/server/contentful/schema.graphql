@@ -37,6 +37,8 @@ type AggregationBodyLinks {
 
 type AggregationBodyResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type AggregationCollection {
@@ -352,6 +354,8 @@ type BoardsAndCommissionsAdditionalInformationLinks {
 
 type BoardsAndCommissionsAdditionalInformationResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type BoardsAndCommissionsCollection {
@@ -452,6 +456,8 @@ type BoardsAndCommissionsMeetingsLinks {
 
 type BoardsAndCommissionsMeetingsResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type BoardsAndCommissionsMembership {
@@ -478,6 +484,8 @@ type BoardsAndCommissionsMembershipLinks {
 
 type BoardsAndCommissionsMembershipResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 enum BoardsAndCommissionsOrder {
@@ -519,6 +527,8 @@ type BoardsAndCommissionsOverviewLinks {
 
 type BoardsAndCommissionsOverviewResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 """
@@ -556,6 +566,8 @@ type CallToActionCallToActionDestinationLinks {
 
 type CallToActionCallToActionDestinationResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type CallToActionCollection {
@@ -756,6 +768,8 @@ enum CategoryLinkingCollectionsEventEntryCollectionOrder {
   eventDateAndTime_DESC
   eventDescription_ASC
   eventDescription_DESC
+  eventSummary_ASC
+  eventSummary_DESC
   inPersonOrOnline_ASC
   inPersonOrOnline_DESC
   internalName_ASC
@@ -941,6 +955,8 @@ enum ContactLinkingCollectionsEventEntryCollectionOrder {
   eventDateAndTime_DESC
   eventDescription_ASC
   eventDescription_DESC
+  eventSummary_ASC
+  eventSummary_DESC
   inPersonOrOnline_ASC
   inPersonOrOnline_DESC
   internalName_ASC
@@ -1331,6 +1347,8 @@ enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   eventDateAndTime_DESC
   eventDescription_ASC
   eventDescription_DESC
+  eventSummary_ASC
+  eventSummary_DESC
   inPersonOrOnline_ASC
   inPersonOrOnline_DESC
   internalName_ASC
@@ -1605,6 +1623,8 @@ type ErrorBodyLinks {
 
 type ErrorBodyResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type ErrorCollection {
@@ -1687,6 +1707,8 @@ type EventEntry implements Entry {
   eventDateAndTime(locale: String): DateTime
   eventDescription(locale: String): String
   eventDocumentsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: EventEntryEventDocumentsFilter): EventEntryEventDocumentsCollection
+  eventRichTextDescription(locale: String): EventEntryEventRichTextDescription
+  eventSummary(locale: String): String
   inPersonOrOnline(locale: String): String
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): EventEntryLinkingCollections
@@ -1740,6 +1762,34 @@ input EventEntryEventDocumentsFilter {
 
 union EventEntryEventDocumentsItem = Contact | DocumentWrapper
 
+type EventEntryEventRichTextDescription {
+  json: JSON!
+  links: EventEntryEventRichTextDescriptionLinks!
+}
+
+type EventEntryEventRichTextDescriptionAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type EventEntryEventRichTextDescriptionEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type EventEntryEventRichTextDescriptionLinks {
+  assets: EventEntryEventRichTextDescriptionAssets!
+  entries: EventEntryEventRichTextDescriptionEntries!
+  resources: EventEntryEventRichTextDescriptionResources!
+}
+
+type EventEntryEventRichTextDescriptionResources {
+  block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
+}
+
 input EventEntryFilter {
   AND: [EventEntryFilter]
   OR: [EventEntryFilter]
@@ -1764,6 +1814,16 @@ input EventEntryFilter {
   eventDescription_not_in: [String]
   eventDocuments: cfeventDocumentsMultiTypeNestedFilter
   eventDocumentsCollection_exists: Boolean
+  eventRichTextDescription_contains: String
+  eventRichTextDescription_exists: Boolean
+  eventRichTextDescription_not_contains: String
+  eventSummary: String
+  eventSummary_contains: String
+  eventSummary_exists: Boolean
+  eventSummary_in: [String]
+  eventSummary_not: String
+  eventSummary_not_contains: String
+  eventSummary_not_in: [String]
   inPersonOrOnline: String
   inPersonOrOnline_contains: String
   inPersonOrOnline_exists: Boolean
@@ -1850,6 +1910,8 @@ enum EventEntryOrder {
   eventDateAndTime_DESC
   eventDescription_ASC
   eventDescription_DESC
+  eventSummary_ASC
+  eventSummary_DESC
   inPersonOrOnline_ASC
   inPersonOrOnline_DESC
   internalName_ASC
@@ -2071,6 +2133,8 @@ type HomeCommissionerGreetingLinks {
 
 type HomeCommissionerGreetingResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type HomeFeaturedServiceCardsCollection {
@@ -2524,6 +2588,8 @@ type ListWithTitleParagraphOrListLinks {
 
 type ListWithTitleParagraphOrListResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 """
@@ -2826,6 +2892,8 @@ type NewsBodyLinks {
 
 type NewsBodyResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type NewsCollection {
@@ -3052,6 +3120,8 @@ type NewsItemContentNewsItemBodyLinks {
 
 type NewsItemContentNewsItemBodyResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 enum NewsItemContentOrder {
@@ -3136,6 +3206,8 @@ enum NewsRelatedEventsCollectionOrder {
   eventDateAndTime_DESC
   eventDescription_ASC
   eventDescription_DESC
+  eventSummary_ASC
+  eventSummary_DESC
   inPersonOrOnline_ASC
   inPersonOrOnline_DESC
   internalName_ASC
@@ -3178,6 +3250,8 @@ type NewsRelatedLinksLinks {
 
 type NewsRelatedLinksResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type NewsRelatedNewsCollection {
@@ -3285,6 +3359,8 @@ type OfficePageDescriptionLinks {
 
 type OfficePageDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input OfficePageFilter {
@@ -3363,6 +3439,8 @@ type OfficePageServicesAndProgramsLinks {
 
 type OfficePageServicesAndProgramsResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 """
@@ -3790,6 +3868,8 @@ type PressReleasePressReleaseBodyLinks {
 
 type PressReleasePressReleaseBodyResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 """
@@ -4038,6 +4118,8 @@ type ServiceEntryDescriptionLinks {
 
 type ServiceEntryDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input ServiceEntryFilter {
@@ -4162,6 +4244,8 @@ type ServiceGroupAdditionalResourcesLinks {
 
 type ServiceGroupAdditionalResourcesResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type ServiceGroupCollection {
@@ -4221,6 +4305,8 @@ type ServiceGroupDescriptionLinks {
 
 type ServiceGroupDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input ServiceGroupFilter {
@@ -4438,6 +4524,8 @@ type ServiceTempTestDescriptionLinks {
 
 type ServiceTempTestDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input ServiceTempTestFilter {
@@ -4589,6 +4677,8 @@ type TestRichTextBodyLinks {
 
 type TestRichTextBodyResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type TestRichTextCollection {
@@ -4680,6 +4770,8 @@ type TopTierDescriptionLinks {
 
 type TopTierDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type TopTierFeaturedServiceListCollection {
@@ -4923,6 +5015,8 @@ type VideoWrapperVideoLongerStoryLinks {
 
 type VideoWrapperVideoLongerStoryResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input cfCallToActionNestedFilter {
@@ -5075,6 +5169,16 @@ input cfEventEntryNestedFilter {
   eventDescription_not_contains: String
   eventDescription_not_in: [String]
   eventDocumentsCollection_exists: Boolean
+  eventRichTextDescription_contains: String
+  eventRichTextDescription_exists: Boolean
+  eventRichTextDescription_not_contains: String
+  eventSummary: String
+  eventSummary_contains: String
+  eventSummary_exists: Boolean
+  eventSummary_in: [String]
+  eventSummary_not: String
+  eventSummary_not_contains: String
+  eventSummary_not_in: [String]
   inPersonOrOnline: String
   inPersonOrOnline_contains: String
   inPersonOrOnline_exists: Boolean

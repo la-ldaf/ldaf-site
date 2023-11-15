@@ -30,6 +30,7 @@ export const query = gql`
         internalName
         shortTitle
         eventDescription
+        eventSummary
         eventDateAndTime
         eventDocumentsCollection {
           items {
