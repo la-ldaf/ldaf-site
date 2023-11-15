@@ -37,17 +37,9 @@
       });
     }
 
-    if (loginResponse.headers.get("Content-Type")?.startsWith("application/json")) {
-      throw error(500, {
-        message: `Failed to log in: got response with unexpected content type "${loginResponse.headers.get(
-          "Content-Type",
-        )}" when attempting to log in`,
-      });
-    }
-
-    const body = deserialize(await loginResponse.text()) as ActionResult<{
+    const body: ActionResult<{
       currentUser: User;
-    }>;
+    }> = deserialize(await loginResponse.text());
 
     if (body.type === "error") {
       throw error(500, {
