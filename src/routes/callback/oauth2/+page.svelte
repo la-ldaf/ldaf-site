@@ -45,7 +45,7 @@
       });
     }
 
-    const body = (deserialize(await loginResponse.text())) as ActionResult<{
+    const body = deserialize(await loginResponse.text()) as ActionResult<{
       currentUser: User;
     }>;
 
