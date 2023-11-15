@@ -29,16 +29,10 @@
     .map(([key, value]) => `${key}=${value}`)
     .join("&")}`;
 
-  let className: string | null | undefined = undefined;
+  let className: string | undefined = undefined;
   export { className as class };
 </script>
 
-<Link class={classNames("login-link", className)} href={loginLink} {...$$restProps}>
+<Link class={className} href={loginLink} {...$$restProps}>
   <slot>Login</slot>
 </Link>
-
-<style>
-  .login-link {
-    cursor: pointer;
-  }
-</style>
