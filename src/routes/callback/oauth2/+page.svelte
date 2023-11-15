@@ -3,6 +3,7 @@
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
+  import { deserialize } from "$app/forms";
   import getErrorMessageFromResponse from "$lib/util/getErrorMessageFromResponse";
   import parseHashQuery from "$lib/util/parseHashQuery";
   import timeout from "$lib/util/timeout";
@@ -26,9 +27,6 @@
     formData.append("token", accessToken);
     const loginResponse = await fetch("/login", {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-      },
       body: formData,
     });
 
@@ -47,7 +45,7 @@
       });
     }
 
-    const body = (await loginResponse.json()) as ActionResult<{
+    const body = (deserialize(await loginResponse.text())) as ActionResult<{
       currentUser: User;
     }>;
 
