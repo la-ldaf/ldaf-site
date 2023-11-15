@@ -27,7 +27,6 @@
     const loginResponse = await fetch("/login", {
       method: "POST",
       headers: {
-        "Content-Type": "multipart/form-data",
         Accept: "application/json",
       },
       body: formData,
