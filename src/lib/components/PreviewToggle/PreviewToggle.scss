@@ -1,0 +1,22 @@
+.usa-button.preview-toggle-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  color: $primary-lightest;
+  font-size: inherit;
+  filter: none;
+  gap: 0.5rem;
+
+  &:hover {
+    color: $primary-lighter;
+  }
+}
+
+.preview-toggle-button.usa-button .usa-icon.preview-toggle-icon {
+  filter: invert(82%) sepia(5%) saturate(1612%) hue-rotate(184deg) brightness(107%) contrast(107%);
+}
+
+.preview-toggle-button.usa-button:hover .usa-icon.preview-toggle-icon {
+  filter: invert(57%) sepia(93%) saturate(432%) hue-rotate(185deg) brightness(101%) contrast(98%);
+}
