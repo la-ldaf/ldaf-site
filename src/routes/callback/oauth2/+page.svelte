@@ -12,7 +12,6 @@
   const currentUser = getCurrentUserStore();
 
   let redirect: string | undefined;
-  let loginErrorMessage: string | undefined;
   let newUser: User | undefined;
 
   const handleHash = async () => {
@@ -80,10 +79,7 @@
 </script>
 
 <div class="grid-container">
-  {#if loginErrorMessage}
-    <p>Failed to log in!</p>
-    <p>{loginErrorMessage}</p>
-  {:else if newUser}
+  {#if newUser}
     <p>Hello {newUser.name}!</p>
     <p>You are now logged in!</p>
   {:else if $currentUser}
