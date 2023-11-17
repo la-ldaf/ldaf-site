@@ -6,7 +6,7 @@
   import { goto } from "$app/navigation";
   import { getCurrentUserStore } from "$lib/context/currentUser";
   import timeout from "$lib/util/timeout";
-  import ContentfulLoginLink from "$lib/components/ContentfulLoginLink/ContentfulLoginLink.svelte";
+  import ContentfulLoginLink from "$lib/components/ContentfulLoginLink";
 
   export let form;
   const currentUser = getCurrentUserStore();
