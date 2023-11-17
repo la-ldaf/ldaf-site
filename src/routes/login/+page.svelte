@@ -44,7 +44,10 @@
       <p>Successfully logged in!</p>
       {#if redirectURL}
         <p>Please wait to be redirected to the previous page.</p>
-        <p><a href={redirectURL}>Click here</a> to return to the previous page if you are not automatically redirected.</p>
+        <p>
+          <a href={redirectURL}>Click here</a> to return to the previous page if you are not automatically
+          redirected.
+        </p>
       {/if}
     {:else}
       <p>Successfully logged out!</p>
