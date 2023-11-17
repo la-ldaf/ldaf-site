@@ -25,8 +25,12 @@ const baseQuery = gql`
   ${assetPropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroup($metadataID: String!) {
-    serviceGroupCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query ServiceGroup($metadataID: String!, $preview: Boolean = false) {
+    serviceGroupCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         sys {
           id
@@ -146,9 +150,9 @@ const childServiceEntriesQuery = gql`
   ${assetPropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroupChildEntries($ids: [String]!) {
+  query ServiceGroupChildEntries($ids: [String]!, $preview: Boolean = false) {
     # Limiting to requesting 10 at once; we always make this request in chunks.
-    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }) {
+    serviceEntryCollection(limit: 10, where: { sys: { id_in: $ids } }, preview: $preview) {
       items {
         sys {
           id
@@ -220,8 +224,8 @@ const childServiceEntriesQuery = gql`
 `;
 
 const childServiceGroupsQuery = gql`
-  query ServiceGroupChildGroups($ids: [String]!) {
-    serviceGroupCollection(limit: 50, where: { sys: { id_in: $ids } }) {
+  query ServiceGroupChildGroups($ids: [String]!, $preview: Boolean = false) {
+    serviceGroupCollection(limit: 50, where: { sys: { id_in: $ids } }, preview: $preview) {
       items {
         sys {
           id

@@ -23,8 +23,8 @@ export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
 const query = gql`
-  query PageMetadataCollection {
-    pageMetadataCollection(limit: 500) {
+  query PageMetadataCollection($preview: Boolean = false) {
+    pageMetadataCollection(limit: 500, preview: $preview) {
       items {
         sys {
           id

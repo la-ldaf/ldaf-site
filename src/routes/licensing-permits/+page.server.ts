@@ -20,8 +20,12 @@ const aggregationPageQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
   ${assetProps}
   ${entryProps}
-  query AggregationPage($metadataID: String!) {
-    aggregationCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query AggregationPage($metadataID: String!, $preview: Boolean = false) {
+    aggregationCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         contentfulMetadata {
           tags {
@@ -56,10 +60,11 @@ const aggregationPageQuery = gql`
 `;
 
 const taggedServicesQuery = gql`
-  query TaggedServices($aggregationTag: String!) {
+  query TaggedServices($aggregationTag: String!, $preview: Boolean = false) {
     serviceEntryCollection(
       where: { contentfulMetadata: { tags: { id_contains_some: [$aggregationTag] } } }
       order: [entryTitle_ASC]
+      preview: $preview
     ) {
       items {
         sys {

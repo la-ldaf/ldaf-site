@@ -9,8 +9,8 @@ import type { NavLinkType, NavMenuType } from "$lib/components/Header/Nav/types"
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const footerNavQuery = gql`
-  query FooterNav {
-    menuCollection(limit: 1, where: { menuType: "Footer Menu" }) {
+  query FooterNav($preview: Boolean = false) {
+    menuCollection(limit: 1, where: { menuType: "Footer Menu" }, preview: $preview) {
       items {
         childrenCollection(limit: 5) {
           items {

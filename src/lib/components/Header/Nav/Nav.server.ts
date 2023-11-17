@@ -10,8 +10,8 @@ import type { NavLinkType, NavMenuType } from "./types";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
 const headerMainMenuQuery = gql`
-  query HeaderMainMenu {
-    menuCollection(limit: 1, where: { menuType: "Header Main Menu" }) {
+  query HeaderMainMenu($preview: Boolean = false) {
+    menuCollection(limit: 1, where: { menuType: "Header Main Menu" }, preview: $preview) {
       items {
         childrenCollection(limit: 10) {
           items {

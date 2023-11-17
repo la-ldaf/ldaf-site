@@ -14,10 +14,16 @@ const query = gql`
   ${assetPropsFragment}
   ${entryPropsFragment}
 
-  query Event($dateStart: DateTime!, $dateEnd: DateTime!, $slug: String!) {
+  query Event(
+    $dateStart: DateTime!
+    $dateEnd: DateTime!
+    $slug: String!
+    $preview: Boolean = false
+  ) {
     eventEntryCollection(
       limit: 1
       where: { eventDateAndTime_gte: $dateStart, eventDateAndTime_lt: $dateEnd, slug: $slug }
+      preview: $preview
     ) {
       items {
         sys {

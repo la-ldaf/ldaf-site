@@ -14,8 +14,12 @@ import {
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
 
 const query = gql`
-  query TopTierCollection($metadataID: String!) {
-    topTierCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query TopTierCollection($metadataID: String!, $preview: Boolean = false) {
+    topTierCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         __typename
         title
@@ -93,7 +97,12 @@ const query = gql`
 
 // TODO: Create fragment for News and Events snippets.
 const taggedNewsAndEventsQuery = gql`
-  query TaggedNewsAndEvents($tag: String!, $newsOldestDate: DateTime!, $eventStartDate: DateTime!) {
+  query TaggedNewsAndEvents(
+    $tag: String!
+    $newsOldestDate: DateTime!
+    $eventStartDate: DateTime!
+    $preview: Boolean = false
+  ) {
     newsCollection(
       where: {
         AND: [
@@ -103,6 +112,7 @@ const taggedNewsAndEventsQuery = gql`
       }
       order: [publicationDate_DESC]
       limit: 5
+      preview: $preview
     ) {
       items {
         sys {

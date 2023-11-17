@@ -18,11 +18,11 @@ const query = gql`
   ${assetProps}
   ${entryProps}
   # eslint-disable @graphql-eslint/selection-set-depth
-  query ErrorPageCollection {
+  query ErrorPageCollection($preview: Boolean = false) {
     # Limit is rather arbitrary; there are 40 possible client and server error
     #   messages, but it's unlikely that LDAF will write content for more than
     #   a few.
-    errorCollection(limit: 10) {
+    errorCollection(limit: 10, preview: $preview) {
       items {
         sys {
           id

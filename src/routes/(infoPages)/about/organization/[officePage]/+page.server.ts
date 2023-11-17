@@ -13,8 +13,12 @@ const query = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
   ${assetPropsFragment}
   ${entryPropsFragment}
-  query OfficePage($metadataID: String!) {
-    officePageCollection(where: { pageMetadata: { sys: { id: $metadataID } } }, limit: 1) {
+  query OfficePage($metadataID: String!, $preview: Boolean = false) {
+    officePageCollection(
+      where: { pageMetadata: { sys: { id: $metadataID } } }
+      limit: 1
+      preview: $preview
+    ) {
       items {
         sys {
           id

@@ -12,8 +12,8 @@ const newsQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
   ${assetPropsFragment}
   ${entryPropsFragment}
-  query News($slug: String!) {
-    newsCollection(limit: 1, where: { slug: $slug }) {
+  query News($slug: String!, $preview: Boolean = false) {
+    newsCollection(limit: 1, where: { slug: $slug }, preview: $preview) {
       items {
         sys {
           id
@@ -133,8 +133,8 @@ const newsQuery = gql`
 
 // TODO: Find a better way to grab the default press release contact
 const defaultPressReleaseContactInfoQuery = gql`
-  query DefaultPressReleaseContactInfo {
-    contact(id: "6lhNJaZ05vgqkoRSF2wNM8") {
+  query DefaultPressReleaseContactInfo($preview: Boolean = false) {
+    contact(id: "6lhNJaZ05vgqkoRSF2wNM8", preview: $preview) {
       sys {
         id
       }
