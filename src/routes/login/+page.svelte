@@ -6,6 +6,7 @@
   import { goto } from "$app/navigation";
   import { getCurrentUserStore } from "$lib/context/currentUser";
   import timeout from "$lib/util/timeout";
+  import ContentfulLoginLink from "$lib/components/ContentfulLoginLink";
 
   export let form;
   const currentUser = getCurrentUserStore();
@@ -60,7 +61,10 @@
   {:else}
     <h1>Login</h1>
 
-    <h2>Log in with Contentful personal access token</h2>
+    <h2>Login with Contentful account</h2>
+    <ContentfulLoginLink>Click here to log in with Contentful</ContentfulLoginLink>
+
+    <h2>Login with Contentful personal access token</h2>
     <form method="POST" use:enhance>
       <label>
         Token
