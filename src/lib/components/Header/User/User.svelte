@@ -2,6 +2,7 @@
   import "./User.scss";
   import { getCurrentUserStore } from "$lib/context/currentUser";
   import LogoutLink from "$lib/components/LogoutLink";
+  import PreviewToggle from "$lib/components/PreviewToggle";
 
   const currentUser = getCurrentUserStore();
 </script>
@@ -10,5 +11,8 @@
   <div class="user">
     <span>Welcome, {$currentUser.name}!</span>
     <LogoutLink />
+  </div>
+  <div>
+    <PreviewToggle />
   </div>
 {/if}
