@@ -7,7 +7,6 @@
   } from "$env/static/public";
   import { page } from "$app/stores";
   import Link from "$lib/components/Link";
-  import classNames from "$lib/util/classNames";
 
   type $$Props = Omit<ComponentProps<Link>, "href">;
 
