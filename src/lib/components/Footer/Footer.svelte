@@ -156,6 +156,10 @@
             -
             <Link href="/about/website/privacy-policy">Privacy Policy</Link>
           </span>
+          <span class="ldaf-footer__nowrap">
+            -
+            <Link href="/login">Admin login</Link>
+          </span>
         </div>
       </div>
     </div>
