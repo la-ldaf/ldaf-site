@@ -27,10 +27,6 @@ export default gql`
         width
         height
       }
-      imageCategory {
-        categoryName
-        categoryDescription
-      }
     }
 
     ... on Contact {
