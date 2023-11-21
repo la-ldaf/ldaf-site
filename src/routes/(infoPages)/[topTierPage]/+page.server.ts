@@ -135,6 +135,7 @@ const taggedNewsAndEventsQuery = gql`
       }
       order: [eventDateAndTime_ASC]
       limit: 5
+      preview: $preview
     ) {
       items {
         sys {
