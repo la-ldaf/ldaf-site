@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node-esm
-
 import runScript from "./runScript";
 
 await runScript(

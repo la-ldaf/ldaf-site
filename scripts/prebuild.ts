@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node-esm
-
 import { stat, copyFile } from "fs/promises";
 import runScript from "./runScript";
 
