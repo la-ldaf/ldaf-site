@@ -1,3 +1,4 @@
+import { redirect } from "@sveltejs/kit";
 import { VERCEL_ENV, VERCEL_ANALYTICS_ID } from "$env/static/private";
 import type { User } from "$lib/types";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
@@ -11,39 +12,52 @@ export const load = async ({
   fetch,
   depends,
   locals: { contentfulClient, currentUser, previewAuthenticationError },
+  url: { pathname },
 }) => {
   // prod indicator is sent with page data and is currently used to determine:
   //   * whether we should connect to Vercel Speed Insights
   //   * if we should set up GA in debug mode or prod mode
   const isProd = VERCEL_ENV === "production";
+
   const clientCurrentUser: User | undefined = currentUser
     ? { name: currentUser.name, email: currentUser.email, avatarURL: currentUser.avatarURL }
     : undefined;
-  const pageMetadataMapPromise = loadPageMetadataMap({ contentfulClient });
-  const headerPrimaryNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadMainNav({ pageMetadataMap, contentfulClient }),
-  );
-  const footerNavItemsPromise = pageMetadataMapPromise.then(({ pageMetadataMap }) =>
-    loadFooterNav({ pageMetadataMap, contentfulClient }),
-  );
-  const sideNavMapPromise = Promise.all([
-    pageMetadataMapPromise,
-    headerPrimaryNavItemsPromise,
-  ]).then(([{ pageMetadataMap }, navItems]) => loadSideNavMap(pageMetadataMap, navItems));
+
+  const { pageMetadataMap, pathsToIDs } = await loadPageMetadataMap({ contentfulClient });
+
+  // As soon as we have the requisite data, determine if we need to redirect
+  //   the user (whether internally or externally).
+  const metadataID = pathsToIDs.get(pathname);
+  if (metadataID) {
+    const pageMetadata = pageMetadataMap.get(metadataID);
+    if (pageMetadata) {
+      console.log("externalRedirect:", pageMetadata.externalRedirect);
+      if (pageMetadata.externalRedirect) {
+        throw redirect(301, pageMetadata.externalRedirect);
+      }
+    }
+  }
+
+  // Otherwise continue gathering data for the layout as normal.
+  const headerPrimaryNavItems = await loadMainNav({ pageMetadataMap, contentfulClient });
+  const footerNavItems = loadFooterNav({ pageMetadataMap, contentfulClient });
+  const sideNavMap = loadSideNavMap(pageMetadataMap, headerPrimaryNavItems);
   const errorPageContentMap = await loadErrorPageContent({ fetch, contentfulClient });
+
   depends("app:previewAuthenticationError");
+
   return {
     isProd,
     previewAuthenticationError,
     // this env variable can't be renamed, so we send it with the page data
     analyticsID: isProd ? VERCEL_ANALYTICS_ID : undefined,
-    pageMetadataMap: pageMetadataMapPromise.then(({ pageMetadataMap }) => pageMetadataMap),
-    pathsToIDs: pageMetadataMapPromise.then(({ pathsToIDs }) => pathsToIDs),
+    pageMetadataMap: pageMetadataMap,
+    pathsToIDs: pathsToIDs,
     siteTitle: loadSiteTitle(),
-    headerPrimaryNavItems: headerPrimaryNavItemsPromise,
+    headerPrimaryNavItems: headerPrimaryNavItems,
     headerSecondaryNavItems: loadSecondaryNav(),
-    footerNavItems: footerNavItemsPromise,
-    sideNavMap: sideNavMapPromise,
+    footerNavItems: footerNavItems,
+    sideNavMap: sideNavMap,
     errorPageContentMap,
     currentUser: clientCurrentUser,
   };

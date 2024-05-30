@@ -39,6 +39,7 @@ const query = gql`
             }
           }
         }
+        externalRedirect
         # Additional fields for search and setting <title> and <meta> tags in the <head>
         metaTitle
         metaDescription
