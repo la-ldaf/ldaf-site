@@ -2,7 +2,11 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 
 // https://kit.svelte.dev/docs/seo#manual-setup-sitemaps
 export async function GET({ locals: { contentfulClient } }) {
-  const { pathsToIDs } = await loadPageMetadataMap({ includeBreadcrumbs: false, contentfulClient });
+  const { pathsToIDs } = await loadPageMetadataMap({
+    includeBreadcrumbs: false,
+    includeRedirects: false,
+    contentfulClient,
+  });
   const urls = [...pathsToIDs]
     .map(
       ([path, _]) => `<url>

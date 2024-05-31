@@ -107,8 +107,13 @@ const constructBreadcrumbs = (
 
 export const loadPageMetadataMap = async ({
   includeBreadcrumbs = true,
+  includeRedirects = true,
   contentfulClient,
-}: { includeBreadcrumbs?: boolean; contentfulClient?: ContentfulClient } = {}): Promise<{
+}: {
+  includeBreadcrumbs?: boolean;
+  includeRedirects?: boolean;
+  contentfulClient?: ContentfulClient;
+} = {}): Promise<{
   pageMetadataMap: PageMetadataMap;
   pathsToIDs: Map<string, string>;
 }> => {
@@ -119,7 +124,13 @@ export const loadPageMetadataMap = async ({
 
   const data = await contentfulClient.fetch<PageMetadataCollectionQuery>(printQuery(query));
   if (data?.pageMetadataCollection?.items) {
-    const allPageMetadata = data.pageMetadataCollection.items;
+    let allPageMetadata = data.pageMetadataCollection.items;
+    // optionally filter out entries with redirects (e.g. for search indexing)
+    if (!includeRedirects) {
+      allPageMetadata = allPageMetadata.filter(
+        (page) => !page?.internalRedirect && !page?.externalRedirect,
+      );
+    }
     // construct a sort-of site map, where each PageMetadata's key is its ID
     allPageMetadata.forEach((page) => page && pageMetadataMap.set(page.sys.id, page));
     // add an array of children ids to each parent so we can easily navigate top-down

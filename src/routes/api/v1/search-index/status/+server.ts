@@ -17,6 +17,7 @@ const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const { pageMetadataMap } = await loadPageMetadataMap({
     includeBreadcrumbs: false,
+    includeRedirects: false,
     contentfulClient,
   });
 

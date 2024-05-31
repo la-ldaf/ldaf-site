@@ -5,6 +5,7 @@ import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const { pageMetadataMap } = await loadPageMetadataMap({
     includeBreadcrumbs: false,
+    includeRedirects: false,
     contentfulClient,
   });
   // exclude the home page and pages where we can't determine the URL

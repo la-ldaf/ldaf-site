@@ -19,6 +19,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
 
   const { pageMetadataMap } = await loadPageMetadataMap({
     includeBreadcrumbs: false,
+    includeRedirects: false,
     contentfulClient,
   });
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
