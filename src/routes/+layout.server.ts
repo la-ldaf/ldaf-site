@@ -31,7 +31,14 @@ export const load = async ({
   if (metadataID) {
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (pageMetadata) {
-      console.log("externalRedirect:", pageMetadata.externalRedirect);
+      if (pageMetadata.internalRedirect) {
+        const internalRedirectPageMetadata = pageMetadataMap.get(
+          pageMetadata.internalRedirect.sys.id,
+        );
+        if (internalRedirectPageMetadata?.url) {
+          throw redirect(301, internalRedirectPageMetadata.url);
+        }
+      }
       if (pageMetadata.externalRedirect) {
         throw redirect(301, pageMetadata.externalRedirect);
       }

@@ -39,6 +39,13 @@ const query = gql`
             }
           }
         }
+        internalRedirect {
+          ... on PageMetadata {
+            sys {
+              id
+            }
+          }
+        }
         externalRedirect
         # Additional fields for search and setting <title> and <meta> tags in the <head>
         metaTitle
