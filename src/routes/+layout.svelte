@@ -138,6 +138,14 @@
   {/if}
   {#if pageMetadata?.url}
     <meta name="og:url" content={`https://www.ldaf.la.gov${pageMetadata.url}`} />
+    <!-- Since we are serving the same site on multiple domains, we need to
+         mark `ldaf.la.gov` as the canonical domain to avoid issues where
+         search engines will split indexing of pages across different domains.
+         For example, without this element, Google might consider the canonical
+         homepage to be `ldaf.state.la.us` but might consider the canonical
+         "Contact Us" page to be `ldaf.la.gov/about/contact`, which can lead to
+         confusing search results split across the different domains. -->
+    <link rel="canonical" href={`https://www.ldaf.la.gov${pageMetadata.url}`} />
   {/if}
   <meta name="og:site_name" content="Louisiana Department of Agriculture and Forestry" />
   <!-- TODO: We could use our Contentful content types here instead. -->
