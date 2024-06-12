@@ -31,16 +31,32 @@ export const load = async ({
   if (metadataID) {
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (pageMetadata) {
-      if (pageMetadata.internalRedirect) {
-        const internalRedirectPageMetadata = pageMetadataMap.get(
-          pageMetadata.internalRedirect.sys.id,
-        );
-        if (internalRedirectPageMetadata?.url) {
-          throw redirect(301, internalRedirectPageMetadata.url);
+      const { internalRedirect, externalRedirect } = pageMetadata;
+      if (internalRedirect) {
+        // Since individual News and Events entries don't have corresponding
+        //   Page Metadata entries, we need to check which type of internal
+        //   redirect we're handling here.
+        if (internalRedirect.__typename === "PageMetadata") {
+          const internalRedirectPageMetadata = pageMetadataMap.get(internalRedirect.sys.id);
+          if (internalRedirectPageMetadata?.url) {
+            throw redirect(301, internalRedirectPageMetadata.url);
+          }
+        } else if (internalRedirect.__typename === "News" && internalRedirect.slug) {
+          throw redirect(301, `/about/news/article/${internalRedirect.slug}`);
+        } else if (
+          internalRedirect.__typename === "EventEntry" &&
+          internalRedirect.slug &&
+          internalRedirect.eventDateAndTime
+        ) {
+          const date = new Date(internalRedirect.eventDateAndTime);
+          throw redirect(
+            301,
+            `/about/events/event/${date.toISOString().split("T")[0]}-${internalRedirect.slug}`,
+          );
         }
       }
-      if (pageMetadata.externalRedirect) {
-        throw redirect(301, pageMetadata.externalRedirect);
+      if (externalRedirect) {
+        throw redirect(301, externalRedirect);
       }
     }
   }

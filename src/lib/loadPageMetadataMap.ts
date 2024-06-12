@@ -40,10 +40,18 @@ const query = gql`
           }
         }
         internalRedirect {
+          __typename
           ... on PageMetadata {
             sys {
               id
             }
+          }
+          ... on News {
+            slug
+          }
+          ... on EventEntry {
+            slug
+            eventDateAndTime
           }
         }
         externalRedirect
