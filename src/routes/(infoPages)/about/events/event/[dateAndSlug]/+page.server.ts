@@ -116,14 +116,13 @@ export const load = (async ({ params: { dateAndSlug }, locals: { contentfulClien
   ]);
   const [event] = eventData?.eventEntryCollection?.items ?? [];
   if (!event) throw error(404);
+  const url = `/about/events/event/${dateAndSlug}`;
   return {
     event,
     pageMetadata: {
       metaTitle: `Event - ${event.shortTitle}`,
-      breadcrumbs: [
-        ...baseBreadcrumbs,
-        { title: event.shortTitle, link: `/about/events/event/${dateAndSlug}` },
-      ],
+      url,
+      breadcrumbs: [...baseBreadcrumbs, { title: event.shortTitle, link: url }],
     },
   };
 }) satisfies PageServerLoad;
