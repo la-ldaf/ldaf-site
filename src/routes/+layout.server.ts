@@ -62,9 +62,25 @@ export const load = async ({
   }
 
   // Otherwise continue gathering data for the layout as normal.
-  const headerPrimaryNavItems = await loadMainNav({ pageMetadataMap, contentfulClient });
-  const footerNavItems = loadFooterNav({ pageMetadataMap, contentfulClient });
-  const sideNavMap = loadSideNavMap(pageMetadataMap, headerPrimaryNavItems);
+  // Create a new map and remove all pages that have redirects so that they
+  //   don't appear in navigation menus. We're creating a copy instead of
+  //   modifying the original so that links outside of nav menus don't cause
+  //   errors.
+  const pageMetadataMapSansRedirects = new Map(
+    [...pageMetadataMap].filter(([_, page]) => !page.internalRedirect && !page.externalRedirect),
+  );
+  const headerPrimaryNavItems = await loadMainNav({
+    pageMetadataMap: pageMetadataMapSansRedirects,
+    contentfulClient,
+  });
+  const footerNavItems = loadFooterNav({
+    pageMetadataMap: pageMetadataMapSansRedirects,
+    contentfulClient,
+  });
+  const sideNavMap = loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
+
+  // Since any route can error, we always need to have the error page content
+  //   available on every request.
   const errorPageContentMap = await loadErrorPageContent({ fetch, contentfulClient });
 
   depends("app:previewAuthenticationError");
