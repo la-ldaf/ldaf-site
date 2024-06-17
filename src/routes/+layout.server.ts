@@ -33,6 +33,9 @@ export const load = async ({
   //   the user (whether internally or externally).
   const metadataID = pathsToIDs.get(pathname);
   if (metadataID) {
+    // TODO: Since we have to look up the PageMetadataMapItem here, we can
+    //       likely provide this object in the return and simplify the load
+    //       functions on the other routes.
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (pageMetadata) {
       const { internalRedirect, externalRedirect } = pageMetadata;
