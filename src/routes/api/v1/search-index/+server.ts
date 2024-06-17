@@ -17,11 +17,7 @@ const CONTENTFUL_ACTIONS = {
 export const POST = async ({ request, locals: { contentfulClient } }) => {
   authenticateRequest(request);
 
-  const { pageMetadataMap } = await loadPageMetadataMap({
-    includeBreadcrumbs: false,
-    includeRedirects: false,
-    contentfulClient,
-  });
+  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;

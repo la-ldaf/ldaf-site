@@ -22,43 +22,65 @@ export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
 
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
-const query = gql`
-  query PageMetadataCollection($preview: Boolean = false) {
-    pageMetadataCollection(limit: 500, preview: $preview) {
-      items {
-        sys {
-          id
-        }
-        title
-        slug
-        isRoot
-        parent {
-          ... on PageMetadata {
-            sys {
-              id
-            }
-          }
-        }
-        internalRedirect {
-          __typename
-          ... on PageMetadata {
-            sys {
-              id
-            }
-          }
-          ... on News {
-            slug
-          }
-          ... on EventEntry {
-            slug
-            eventDateAndTime
-          }
-        }
-        externalRedirect
-        # Additional fields for search and setting <title> and <meta> tags in the <head>
-        metaTitle
-        metaDescription
+const pageMetadataItems = gql`
+  fragment PageMetadataItems on PageMetadataCollection {
+    items {
+      sys {
+        id
       }
+      title
+      slug
+      isRoot
+      parent {
+        ... on PageMetadata {
+          sys {
+            id
+          }
+        }
+      }
+      internalRedirect {
+        __typename
+        ... on PageMetadata {
+          sys {
+            id
+          }
+        }
+        ... on News {
+          slug
+        }
+        ... on EventEntry {
+          slug
+          eventDateAndTime
+        }
+      }
+      externalRedirect
+      # Additional fields for search and setting <title> and <meta> tags in the <head>
+      metaTitle
+      metaDescription
+    }
+  }
+`;
+
+const queryAll = gql`
+  ${pageMetadataItems}
+  query PageMetadataCollection($preview: Boolean = false) {
+    # TODO: A limit of 500 works until it doesn't. We should set up a way to paginate.
+    pageMetadataCollection(limit: 500, preview: $preview) {
+      ...PageMetadataItems
+    }
+  }
+`;
+
+const queryWithoutRedirects = gql`
+  ${pageMetadataItems}
+  query PageMetadataCollection($preview: Boolean = false) {
+    # TODO: A limit of 500 works until it doesn't. We should set up a way to paginate.
+    pageMetadataCollection(
+      limit: 500
+      preview: $preview
+      where: { AND: [{ internalRedirect_exists: false }, { externalRedirect_exists: false }] }
+    ) {
+      ...PageMetadataItems
     }
   }
 `;
@@ -114,8 +136,8 @@ const constructBreadcrumbs = (
 };
 
 export const loadPageMetadataMap = async ({
-  includeBreadcrumbs = true,
-  includeRedirects = true,
+  includeBreadcrumbs = false,
+  includeRedirects = false,
   contentfulClient,
 }: {
   includeBreadcrumbs?: boolean;
@@ -130,15 +152,17 @@ export const loadPageMetadataMap = async ({
 
   if (!contentfulClient) return { pageMetadataMap, pathsToIDs };
 
-  const data = await contentfulClient.fetch<PageMetadataCollectionQuery>(printQuery(query));
+  let data;
+  // Adjust query depending on whether we need to provide redirects.
+  if (includeRedirects) {
+    data = await contentfulClient.fetch<PageMetadataCollectionQuery>(printQuery(queryAll));
+  } else {
+    data = await contentfulClient.fetch<PageMetadataCollectionQuery>(
+      printQuery(queryWithoutRedirects),
+    );
+  }
   if (data?.pageMetadataCollection?.items) {
-    let allPageMetadata = data.pageMetadataCollection.items;
-    // optionally filter out entries with redirects (e.g. for search indexing)
-    if (!includeRedirects) {
-      allPageMetadata = allPageMetadata.filter(
-        (page) => !page?.internalRedirect && !page?.externalRedirect,
-      );
-    }
+    const allPageMetadata = data.pageMetadataCollection.items;
     // construct a sort-of site map, where each PageMetadata's key is its ID
     allPageMetadata.forEach((page) => page && pageMetadataMap.set(page.sys.id, page));
     // add an array of children ids to each parent so we can easily navigate top-down

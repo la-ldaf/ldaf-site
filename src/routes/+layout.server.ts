@@ -23,7 +23,11 @@ export const load = async ({
     ? { name: currentUser.name, email: currentUser.email, avatarURL: currentUser.avatarURL }
     : undefined;
 
-  const { pageMetadataMap, pathsToIDs } = await loadPageMetadataMap({ contentfulClient });
+  const { pageMetadataMap, pathsToIDs } = await loadPageMetadataMap({
+    includeBreadcrumbs: true,
+    includeRedirects: true,
+    contentfulClient,
+  });
 
   // As soon as we have the requisite data, determine if we need to redirect
   //   the user (whether internally or externally).
