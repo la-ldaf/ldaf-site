@@ -9,9 +9,11 @@
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
+  import VideoCard from "$lib/components/VideoCard";
   import Image from "$lib/components/Image";
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
+  import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 
   export let data;
   $: ({
@@ -24,14 +26,22 @@
       imageGalleryTitle,
       contactInfoCollection,
       additionalResources,
+      video,
     },
     imageGallery,
     childServiceEntries,
     childServiceGroups,
   } = data);
-
-  console.log(data);
-
+  $: ({ videoUrl, youtubeVideoData } = video);
+  $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
+  $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
+  $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));
+  // $: console.log("video", video);
+  // $: console.log("videourl", videoUrl);
+  // $: console.log("ytData", youtubeVideoData);
+  // $: console.log("videoTitle", videoTitle);
+  // $: console.log("videoDescription", videoDescription);
+  // $: console.log("videoThumbnails", videoThumbnails);
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
@@ -84,6 +94,18 @@
     document={description?.json}
     links={description?.links}
     imageSizeType="col-9"
+  />
+{/if}
+
+{#if videoUrl}
+  <VideoCard
+    class="margin-bottom-4"
+    url={videoUrl}
+    title={videoTitle}
+    description={videoDescription}
+    thumbnails={videoThumbnails}
+    variation="secondary"
+    sizeType="hero-col-9"
   />
 {/if}
 
