@@ -25,7 +25,7 @@
   //   |   Card 2   |   Card 3   |
   //   |   Card 4   |   Card 5   |
   //   |   Card 6   |   Card 7   |
-  // If we have an oprhan, it should take up the full width:
+  // If we have an orphan, it should take up the full width:
   //   |         Card 8          |
   const getCardSize = (index: number, total: number): "full" | "half" => {
     if (index === 0) return "full";

@@ -17,6 +17,7 @@ export default {
     title: "Sample Service Group Page",
     subheading:
       "This page is loaded with test data since a connection with Contentful could not be established.",
+    video: {},
     description: {
       json: documentWithParagraphData.documentWithParagraph.document,
       links: {
