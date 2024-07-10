@@ -94,7 +94,7 @@
   "type": "module",
   "dependencies": {
     "@builder.io/partytown": "^0.8.0",
-    "@contentful/rich-text-types": "^16.2.1",
+    "@contentful/rich-text-types": "^16.3.0",
     "@poppanator/sveltekit-svg": "^4.1.0",
     "@uswds/uswds": "^3.4.1",
     "algoliasearch": "^4.20.0",
