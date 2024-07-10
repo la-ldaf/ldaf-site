@@ -17,7 +17,24 @@ export default {
     title: "Sample Service Group Page",
     subheading:
       "This page is loaded with test data since a connection with Contentful could not be established.",
-    video: {},
+    video: {
+      youtubeVideoData: {
+        publishedAt: "",
+        channelId: "",
+        channelTitle: "",
+        title: "",
+        description: "",
+        categoryId: "",
+        liveBroadcastContent: "",
+        localized: {
+          title: "",
+          description: "",
+        },
+        thumbnails: {},
+        defaultAudioLanguage: "",
+      },
+      blurhash: "",
+    },
     description: {
       json: documentWithParagraphData.documentWithParagraph.document,
       links: {

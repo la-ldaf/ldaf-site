@@ -13,7 +13,6 @@
   import Image from "$lib/components/Image";
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
-  import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 
   export let data;
   $: ({
@@ -32,7 +31,7 @@
     childServiceEntries,
     childServiceGroups,
   } = data);
-  $: ({ videoUrl, youtubeVideoData } = video);
+  $: ({ videoUrl, youtubeVideoData } = video ?? {});
   $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
   $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
   $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));

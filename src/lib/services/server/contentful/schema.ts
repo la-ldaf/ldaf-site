@@ -5739,6 +5739,7 @@ export type ServiceGroup = Entry & {
   subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
   title?: Maybe<Scalars['String']['output']>;
+  video?: Maybe<VideoWrapper>;
 };
 
 
@@ -5827,6 +5828,14 @@ export type ServiceGroupSubheadingArgs = {
 /** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+export type ServiceGroupVideoArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<VideoWrapperFilter>;
 };
 
 export type ServiceGroupAdditionalResources = {
@@ -6008,6 +6017,8 @@ export type ServiceGroupFilter = {
   title_not?: InputMaybe<Scalars['String']['input']>;
   title_not_contains?: InputMaybe<Scalars['String']['input']>;
   title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  video?: InputMaybe<CfVideoWrapperNestedFilter>;
+  video_exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type ServiceGroupLinkingCollections = {
@@ -6681,6 +6692,7 @@ export type VideoWrapperLinkingCollections = {
   __typename?: 'VideoWrapperLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
   homeCollection?: Maybe<HomeCollection>;
+  serviceGroupCollection?: Maybe<ServiceGroupCollection>;
   topTierCollection?: Maybe<TopTierCollection>;
 };
 
@@ -6697,6 +6709,15 @@ export type VideoWrapperLinkingCollectionsHomeCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Array<InputMaybe<VideoWrapperLinkingCollectionsHomeCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type VideoWrapperLinkingCollectionsServiceGroupCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<VideoWrapperLinkingCollectionsServiceGroupCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -6723,6 +6744,25 @@ export enum VideoWrapperLinkingCollectionsHomeCollectionOrder {
   SysPublishedAtDesc = 'sys_publishedAt_DESC',
   SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export enum VideoWrapperLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
+  ServiceListNameAsc = 'serviceListName_ASC',
+  ServiceListNameDesc = 'serviceListName_DESC',
+  SubheadingAsc = 'subheading_ASC',
+  SubheadingDesc = 'subheading_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
 }
 
 export enum VideoWrapperLinkingCollectionsTopTierCollectionOrder {
@@ -7227,6 +7267,7 @@ export type CfServiceGroupNestedFilter = {
   title_not?: InputMaybe<Scalars['String']['input']>;
   title_not_contains?: InputMaybe<Scalars['String']['input']>;
   title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  video_exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type CfVideoWrapperNestedFilter = {

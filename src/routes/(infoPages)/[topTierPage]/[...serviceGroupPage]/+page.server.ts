@@ -20,7 +20,10 @@ import assetPropsFragment from "$lib/fragments/assetProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
-import { getYoutubeVideoDataWithBlurhash } from "$lib/services/server/youtube";
+import {
+  getYoutubeVideoDataWithBlurhash,
+  type YoutubeVideoData,
+} from "$lib/services/server/youtube";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
@@ -306,6 +309,10 @@ export type ServiceGroupPage = {
     };
     description?: ServiceGroup["description"] & {
       blurhashes?: Record<string, string> | null | undefined;
+    };
+    video?: ServiceGroup["video"] & {
+      youtubeVideoData?: YoutubeVideoData;
+      blurhash?: string;
     };
   };
   childServiceEntries: (ChildServiceEntry & {
