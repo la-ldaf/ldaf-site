@@ -35,12 +35,7 @@
   $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
   $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
   $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));
-  // $: console.log("video", video);
-  // $: console.log("videourl", videoUrl);
-  // $: console.log("ytData", youtubeVideoData);
-  // $: console.log("videoTitle", videoTitle);
-  // $: console.log("videoDescription", videoDescription);
-  // $: console.log("videoThumbnails", videoThumbnails);
+
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
     // leaving no way to designate additional formatting/styling for them.
