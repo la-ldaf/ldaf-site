@@ -19,6 +19,11 @@ import chunks from "$lib/util/chunks";
 import assetPropsFragment from "$lib/fragments/assetProps";
 import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
+import {
+  getYoutubeVideoDataWithBlurhash,
+  type YoutubeVideoData,
+} from "$lib/services/server/youtube";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
@@ -47,6 +52,13 @@ const baseQuery = gql`
         }
         title
         subheading
+        video {
+          ... on VideoWrapper {
+            videoTitle
+            videoSubhead
+            videoUrl
+          }
+        }
         description {
           json
           links {
@@ -298,6 +310,10 @@ export type ServiceGroupPage = {
     description?: ServiceGroup["description"] & {
       blurhashes?: Record<string, string> | null | undefined;
     };
+    video?: ServiceGroup["video"] & {
+      youtubeVideoData?: YoutubeVideoData;
+      blurhash?: string;
+    };
   };
   childServiceEntries: (ChildServiceEntry & {
     description?: ChildServiceEntry["description"] & {
@@ -334,7 +350,7 @@ const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
 export const load = async ({
   parent,
   params: { topTierPage, serviceGroupPage },
-  locals: { contentfulClient },
+  locals: { getKVClient, contentfulClient },
   fetch,
 }): Promise<ServiceGroupPage> => {
   if (!contentfulClient) return serviceGroupPageTestContent;
@@ -356,6 +372,15 @@ export const load = async ({
 
     const heroImageURL = serviceGroup?.heroImage?.imageSource?.url;
     const heroImageBlurhashPromise = heroImageURL && getBlurhash(heroImageURL, { fetch });
+
+    const youtubeVideoID =
+      serviceGroup.video?.videoUrl && getYoutubeVideoIDFromURL(serviceGroup.video.videoUrl);
+    const youtubeVideoDataPromise = youtubeVideoID
+      ? getKVClient().then((kvClient) =>
+          getYoutubeVideoDataWithBlurhash(youtubeVideoID, { fetch, kvClient }),
+        )
+      : undefined;
+
     const descriptionBlurhashesPromise =
       serviceGroup.description &&
       getBlurhashMapFromRichText(serviceGroup.description, {
@@ -471,12 +496,14 @@ export const load = async ({
 
     const [
       heroImageBlurhash,
+      youtubeVideoData,
       descriptionBlurhashes,
       childServiceEntries,
       childServiceGroups,
       imageGalleryBlurhashes,
     ] = await Promise.all([
       heroImageBlurhashPromise,
+      youtubeVideoDataPromise,
       descriptionBlurhashesPromise,
       childServiceEntriesPromise,
       childServiceGroupsPromise,
@@ -486,6 +513,10 @@ export const load = async ({
     return {
       serviceGroup: {
         ...serviceGroup,
+        video: {
+          ...serviceGroup.video,
+          youtubeVideoData,
+        },
         description: serviceGroup.description
           ? {
               ...serviceGroup.description,

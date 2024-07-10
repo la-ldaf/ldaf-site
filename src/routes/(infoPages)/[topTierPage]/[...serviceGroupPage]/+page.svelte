@@ -9,6 +9,7 @@
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import Icon from "$lib/components/Icon";
+  import VideoCard from "$lib/components/VideoCard";
   import Image from "$lib/components/Image";
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
@@ -24,11 +25,16 @@
       imageGalleryTitle,
       contactInfoCollection,
       additionalResources,
+      video,
     },
     imageGallery,
     childServiceEntries,
     childServiceGroups,
   } = data);
+  $: ({ videoUrl, youtubeVideoData } = video ?? {});
+  $: videoTitle = video?.videoTitle ?? youtubeVideoData?.title;
+  $: videoDescription = video?.videoSubhead ?? youtubeVideoData?.description;
+  $: ({ thumbnails: videoThumbnails } = youtubeVideoData ?? ({} as Record<string, undefined>));
 
   afterUpdate(() => {
     // Call To Actions within service entry accordions are rich text,
@@ -82,6 +88,18 @@
     document={description?.json}
     links={description?.links}
     imageSizeType="col-9"
+  />
+{/if}
+
+{#if videoUrl}
+  <VideoCard
+    class="margin-bottom-4"
+    url={videoUrl}
+    title={videoTitle}
+    description={videoDescription}
+    thumbnails={videoThumbnails}
+    variation="secondary"
+    sizeType="hero-col-9"
   />
 {/if}
 
