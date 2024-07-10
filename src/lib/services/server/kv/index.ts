@@ -46,7 +46,7 @@ export const createClient = async ({
   });
 
   redisClient.on("error", (err) => {
-    console.error(err);
+    console.error(`Error in Redis client: ${err}`);
   });
 
   const tryToConnect = async () => {
@@ -54,7 +54,7 @@ export const createClient = async ({
     try {
       await redisClient.connect();
     } catch (err) {
-      console.error(err);
+      console.error(`Error in Redis connection: ${err}`);
     }
   };
 
@@ -64,14 +64,13 @@ export const createClient = async ({
   type AnyAsyncFunction = (...args: any[]) => Promise<any>;
 
   const getMethod =
-    <F extends AnyAsyncFunction>(fn: F) =>
+    <F extends AnyAsyncFunction>(key: string, fn: F) =>
     async (...args: Parameters<F>) => {
       try {
         await tryToConnect();
         return await fn(...args);
       } catch (err) {
-        // TODO: better logging
-        console.error(err);
+        console.error(`Error in Redis method ${key}: ${err}`);
       }
     };
 
@@ -111,7 +110,7 @@ export const createClient = async ({
   };
 
   return Object.fromEntries(
-    Object.entries(methods).map(([key, fn]) => [key, getMethod(fn)]),
+    Object.entries(methods).map(([key, fn]) => [key, getMethod(key, fn)]),
   ) as Client;
 };
 
