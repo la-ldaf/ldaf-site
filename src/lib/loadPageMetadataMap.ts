@@ -1,3 +1,5 @@
+import { VERCEL_ENV } from "$env/static/private";
+
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
@@ -5,6 +7,8 @@ import type { ContentfulClient } from "$lib/services/server/contentful";
 
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
+
+const isProd = VERCEL_ENV === "production";
 
 // extend the type of the items we get back from the query so we can add children and a full URL
 export type PageMetadataMapItem = NonNullable<
@@ -176,7 +180,7 @@ export const loadPageMetadataMap = async ({
           } else {
             parent.children = [page.sys.id];
           }
-        } else {
+        } else if (!isProd) {
           console.warn(
             `The parent field was set but could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
           );
@@ -187,7 +191,7 @@ export const loadPageMetadataMap = async ({
     // TODO: We may want to consider completely invalidating these entries instead, removing them from the map.
     [...pageMetadataMap].forEach(([_, page]) => {
       page.url = constructFullPathFromMap(pageMetadataMap, page);
-      if (!page.url) {
+      if (!page.url && !isProd) {
         console.warn(
           `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
         );

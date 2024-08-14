@@ -71,13 +71,14 @@ const getClient = ({
       if (!response.ok) {
         const errorMessage = await getErrorMessageFromResponse(response);
         throw new Error(
-          `Got failed response with status code ${response.status} ${response.statusText}${
-            errorMessage ? `\n${errorMessage}` : ""
-          }`,
+          `Received failed response from Contentful with status code ${response.status} ${
+            response.statusText
+          }${errorMessage ? `\n${errorMessage}` : ""}`,
         );
       }
       const { data } = await response.json();
-      if (!data) throw new Error("Got successful response with unexpected structure!");
+      if (!data)
+        throw new Error("Received successful response from Contentful with unexpected structure!");
       return data as T;
     },
   };
