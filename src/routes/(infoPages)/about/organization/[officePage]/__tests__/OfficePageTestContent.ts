@@ -2,6 +2,7 @@ import type { OfficePage } from "$lib/services/server/contentful/schema";
 import documentWithParagraphData from "$lib/components/ContentfulRichText/__tests__/documents";
 
 export default {
+  _id: "0",
   sys: { id: "0", environmentId: "", spaceId: "" },
   contentfulMetadata: { tags: [] },
   pageTitle: "Sample Office Page",
@@ -24,6 +25,7 @@ export default {
     },
   },
   mailingAddress: {
+    _id: "1",
     sys: {
       id: "1",
       environmentId: "",
@@ -43,6 +45,7 @@ export default {
     total: 2,
     items: [
       {
+        _id: "2",
         sys: { id: "2", environmentId: "", spaceId: "" },
         contentfulMetadata: { tags: [] },
         entityName: "Contact Person 1",
@@ -51,6 +54,7 @@ export default {
         email: "contact1@example.com",
       },
       {
+        _id: "3",
         sys: { id: "3", environmentId: "", spaceId: "" },
         contentfulMetadata: { tags: [] },
         entityName: "Contact Person 2",
