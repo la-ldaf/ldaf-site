@@ -3,7 +3,8 @@ A unique page that aggregates links to other content on the site using tags. Whi
 Currently we only support the Licensing and Permits aggregation page. 
 Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
 """
-type Aggregation implements Entry {
+type Aggregation implements Entry & _Node {
+  _id: ID!
   body(locale: String): AggregationBody
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): AggregationLinkingCollections
@@ -232,7 +233,8 @@ enum AssetOrder {
 """
 Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction)
 """
-type CallToAction implements Entry {
+type CallToAction implements Entry & _Node {
+  _id: ID!
   callToActionDestination(locale: String): CallToActionCallToActionDestination
   contentfulMetadata: ContentfulMetadata!
   ctaInternalName(locale: String): String
@@ -352,7 +354,8 @@ enum CallToActionOrder {
 """
 The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact)
 """
-type Contact implements Entry {
+type Contact implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   email(locale: String): String
   entityName(locale: String): String
@@ -553,7 +556,8 @@ enum ContactOrder {
 """
 A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location)
 """
-type ContentTypeLocation implements Entry {
+type ContentTypeLocation implements Entry & _Node {
+  _id: ID!
   city(locale: String): String
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): ContentTypeLocationLinkingCollections
@@ -701,7 +705,7 @@ input ContentfulMetadataTagsFilter {
 
 """
 Represents a tag entity for finding and organizing content easily.
-    Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
+      Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
 """
 type ContentfulTag {
   id: String
@@ -724,7 +728,8 @@ scalar Dimension
 """
 "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper)
 """
-type DocumentWrapper implements Entry {
+type DocumentWrapper implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   docWrapperName(locale: String): String
   documentDescription(locale: String): String
@@ -806,7 +811,8 @@ enum DocumentWrapperOrder {
 """
 A draft of how we will structure individual navigation links that can appear either in the main menu in the header, in a submenu under the main menu in the header, or in a section sidebar. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink)
 """
-type DraftNavigationLink implements Entry {
+type DraftNavigationLink implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   link(locale: String): String
   linkedFrom(allowedLocales: [String]): DraftNavigationLinkLinkingCollections
@@ -880,7 +886,8 @@ enum DraftNavigationLinkOrder {
 """
 A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu)
 """
-type DraftNavigationMenu implements Entry {
+type DraftNavigationMenu implements Entry & _Node {
+  _id: ID!
   childrenCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: DraftNavigationMenuChildrenFilter): DraftNavigationMenuChildrenCollection
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): DraftNavigationMenuLinkingCollections
@@ -1010,7 +1017,8 @@ enum EntryOrder {
 """
 Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error)
 """
-type Error implements Entry {
+type Error implements Entry & _Node {
+  _id: ID!
   body(locale: String): ErrorBody
   contentfulMetadata: ContentfulMetadata!
   errorCode(locale: String): Int
@@ -1136,7 +1144,8 @@ enum ErrorOrder {
 """
 LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry)
 """
-type EventEntry implements Entry {
+type EventEntry implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   eventDateAndTime(locale: String): DateTime
   eventDescription(locale: String): String
@@ -1367,7 +1376,8 @@ enum EventEntryOrder {
 """
 Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage)
 """
-type HeroImage implements Entry {
+type HeroImage implements Entry & _Node {
+  _id: ID!
   altField(locale: String): String
   contentfulMetadata: ContentfulMetadata!
   fotogCredit(locale: String): String
@@ -1520,7 +1530,8 @@ scalar HexColor
 """
 The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home)
 """
-type Home implements Entry {
+type Home implements Entry & _Node {
+  _id: ID!
   commissionerBackground(locale: String, preview: Boolean, where: ImageWrapperFilter): ImageWrapper
   commissionerByline(locale: String): String
   commissionerGreeting(locale: String): HomeCommissionerGreeting
@@ -1843,7 +1854,8 @@ input ImageTransformOptions {
 """
 "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper)
 """
-type ImageWrapper implements Entry {
+type ImageWrapper implements Entry & _Node {
+  _id: ID!
   altText(locale: String): String
   contentfulMetadata: ContentfulMetadata!
   internalTitle(locale: String): String
@@ -1938,7 +1950,8 @@ scalar JSON
 """
 Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu)
 """
-type Menu implements Entry {
+type Menu implements Entry & _Node {
+  _id: ID!
   childrenCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: MenuChildrenFilter): MenuChildrenCollection
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): MenuLinkingCollections
@@ -2003,7 +2016,8 @@ input MenuFilter {
 """
 A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem)
 """
-type MenuItem implements Entry {
+type MenuItem implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   externalLink(locale: String): String
   internalLink(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
@@ -2115,7 +2129,8 @@ enum MenuOrder {
 """
 A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news)
 """
-type News implements Entry {
+type News implements Entry & _Node {
+  _id: ID!
   body(locale: String): NewsBody
   byline(locale: String): String
   contactInformationCollection(limit: Int = 100, locale: String, order: [NewsContactInformationCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): NewsContactInformationCollection
@@ -2138,7 +2153,8 @@ type News implements Entry {
 """
 Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle)
 """
-type NewsArticle implements Entry {
+type NewsArticle implements Entry & _Node {
+  _id: ID!
   authorName(locale: String): String
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): NewsArticleLinkingCollections
@@ -2366,7 +2382,8 @@ input NewsFilter {
 """
 Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent)
 """
-type NewsItemContent implements Entry {
+type NewsItemContent implements Entry & _Node {
+  _id: ID!
   byline(locale: String): String
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): NewsItemContentLinkingCollections
@@ -2685,7 +2702,8 @@ enum NewsRelatedNewsCollectionOrder {
 """
 Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage)
 """
-type OfficePage implements Entry {
+type OfficePage implements Entry & _Node {
+  _id: ID!
   contactsCollection(limit: Int = 100, locale: String, order: [OfficePageContactsCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): OfficePageContactsCollection
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): OfficePageDescription
@@ -2866,7 +2884,8 @@ type OfficePageServicesAndProgramsResourcesInline implements ResourceLink {
 """
 Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata)
 """
-type PageMetadata implements Entry {
+type PageMetadata implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   externalRedirect(locale: String): String
   internalRedirect(locale: String, preview: Boolean): PageMetadataInternalRedirect
@@ -3107,7 +3126,8 @@ enum PageMetadataOrder {
 """
 Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease)
 """
-type PressRelease implements Entry {
+type PressRelease implements Entry & _Node {
+  _id: ID!
   contactsHed(locale: String): String
   contentfulMetadata: ContentfulMetadata!
   eventOrArticle(locale: String, preview: Boolean): PressReleaseEventOrArticle
@@ -3267,7 +3287,8 @@ type PressReleasePressReleaseBodyResourcesInline implements ResourceLink {
 """
 Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta)
 """
-type PromoBannerWithCta implements Entry {
+type PromoBannerWithCta implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): PromoBannerWithCtaLinkingCollections
   promoCta(locale: String, preview: Boolean, where: CallToActionFilter): CallToAction
@@ -3410,7 +3431,8 @@ type ResourceSys {
 """
 Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry)
 """
-type ServiceEntry implements Entry {
+type ServiceEntry implements Entry & _Node {
+  _id: ID!
   contactInformationCollection(limit: Int = 100, locale: String, order: [ServiceEntryContactInformationCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): ServiceEntryContactInformationCollection
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): ServiceEntryDescription
@@ -3574,7 +3596,8 @@ enum ServiceEntryServiceCtaCollectionOrder {
 """
 Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup)
 """
-type ServiceGroup implements Entry {
+type ServiceGroup implements Entry & _Node {
+  _id: ID!
   additionalResources(locale: String): ServiceGroupAdditionalResources
   contactInfoCollection(limit: Int = 100, locale: String, order: [ServiceGroupContactInfoCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): ServiceGroupContactInfoCollection
   contentfulMetadata: ContentfulMetadata!
@@ -3900,7 +3923,8 @@ input SysFilter {
 """
 Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText)
 """
-type TestRichText implements Entry {
+type TestRichText implements Entry & _Node {
+  _id: ID!
   body(locale: String): TestRichTextBody
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): TestRichTextLinkingCollections
@@ -3994,7 +4018,8 @@ enum TestRichTextOrder {
 """
 Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier)
 """
-type TopTier implements Entry {
+type TopTier implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): TopTierDescription
   featuredServiceListCollection(limit: Int = 100, locale: String, order: [TopTierFeaturedServiceListCollectionOrder], preview: Boolean, skip: Int = 0, where: ServiceGroupFilter): TopTierFeaturedServiceListCollection
@@ -4150,7 +4175,8 @@ enum TopTierOrder {
 """
 Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper)
 """
-type VideoWrapper implements Entry {
+type VideoWrapper implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): VideoWrapperLinkingCollections
