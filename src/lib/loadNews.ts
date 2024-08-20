@@ -28,7 +28,6 @@ export const loadNews = async ({
   const data = await contentfulClient.fetch<NewsCollectionQuery>(printQuery(query));
   if (data?.newsCollection?.items) {
     newsItems = data.newsCollection.items;
-    console.log(newsItems);
   }
   return newsItems;
 };
