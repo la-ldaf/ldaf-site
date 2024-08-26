@@ -15,10 +15,7 @@ const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
 export const GET = (async ({ locals: { contentfulClient } }) => {
-  const { pageMetadataMap } = await loadPageMetadataMap({
-    includeBreadcrumbs: false,
-    contentfulClient,
-  });
+  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
 
   let hits: PageMetadataMapItem[] = [];
 

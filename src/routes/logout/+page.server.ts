@@ -9,7 +9,7 @@ export const actions = {
       const kvClient = await getKVClient();
       await kvClient.deleteUserInfoByToken(userToken);
     } catch (err) {
-      console.error(err);
+      console.error("Error deleting user info from Redis on logout:", err);
       return { success: false };
     }
     return { success: true };

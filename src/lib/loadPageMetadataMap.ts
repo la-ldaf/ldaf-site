@@ -1,3 +1,5 @@
+import { VERCEL_ENV } from "$env/static/private";
+
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 
@@ -5,6 +7,8 @@ import type { ContentfulClient } from "$lib/services/server/contentful";
 
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
+
+const isProd = VERCEL_ENV === "production";
 
 // extend the type of the items we get back from the query so we can add children and a full URL
 export type PageMetadataMapItem = NonNullable<
@@ -22,27 +26,65 @@ export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
 
 export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
-const query = gql`
-  query PageMetadataCollection($preview: Boolean = false) {
-    pageMetadataCollection(limit: 500, preview: $preview) {
-      items {
-        sys {
-          id
-        }
-        title
-        slug
-        isRoot
-        parent {
-          ... on PageMetadata {
-            sys {
-              id
-            }
+const pageMetadataItems = gql`
+  fragment PageMetadataItems on PageMetadataCollection {
+    items {
+      sys {
+        id
+      }
+      title
+      slug
+      isRoot
+      parent {
+        ... on PageMetadata {
+          sys {
+            id
           }
         }
-        # Additional fields for search and setting <title> and <meta> tags in the <head>
-        metaTitle
-        metaDescription
       }
+      internalRedirect {
+        __typename
+        ... on PageMetadata {
+          sys {
+            id
+          }
+        }
+        ... on News {
+          slug
+        }
+        ... on EventEntry {
+          slug
+          eventDateAndTime
+        }
+      }
+      externalRedirect
+      # Additional fields for search and setting <title> and <meta> tags in the <head>
+      metaTitle
+      metaDescription
+    }
+  }
+`;
+
+const queryAll = gql`
+  ${pageMetadataItems}
+  query PageMetadataCollection($preview: Boolean = false) {
+    # TODO: A limit of 500 works until it doesn't. We should set up a way to paginate.
+    pageMetadataCollection(limit: 500, preview: $preview) {
+      ...PageMetadataItems
+    }
+  }
+`;
+
+const queryWithoutRedirects = gql`
+  ${pageMetadataItems}
+  query PageMetadataCollection($preview: Boolean = false) {
+    # TODO: A limit of 500 works until it doesn't. We should set up a way to paginate.
+    pageMetadataCollection(
+      limit: 500
+      preview: $preview
+      where: { AND: [{ internalRedirect_exists: false }, { externalRedirect_exists: false }] }
+    ) {
+      ...PageMetadataItems
     }
   }
 `;
@@ -98,9 +140,14 @@ const constructBreadcrumbs = (
 };
 
 export const loadPageMetadataMap = async ({
-  includeBreadcrumbs = true,
+  includeBreadcrumbs = false,
+  includeRedirects = false,
   contentfulClient,
-}: { includeBreadcrumbs?: boolean; contentfulClient?: ContentfulClient } = {}): Promise<{
+}: {
+  includeBreadcrumbs?: boolean;
+  includeRedirects?: boolean;
+  contentfulClient?: ContentfulClient;
+} = {}): Promise<{
   pageMetadataMap: PageMetadataMap;
   pathsToIDs: Map<string, string>;
 }> => {
@@ -109,7 +156,15 @@ export const loadPageMetadataMap = async ({
 
   if (!contentfulClient) return { pageMetadataMap, pathsToIDs };
 
-  const data = await contentfulClient.fetch<PageMetadataCollectionQuery>(printQuery(query));
+  let data;
+  // Adjust query depending on whether we need to provide redirects.
+  if (includeRedirects) {
+    data = await contentfulClient.fetch<PageMetadataCollectionQuery>(printQuery(queryAll));
+  } else {
+    data = await contentfulClient.fetch<PageMetadataCollectionQuery>(
+      printQuery(queryWithoutRedirects),
+    );
+  }
   if (data?.pageMetadataCollection?.items) {
     const allPageMetadata = data.pageMetadataCollection.items;
     // construct a sort-of site map, where each PageMetadata's key is its ID
@@ -125,7 +180,7 @@ export const loadPageMetadataMap = async ({
           } else {
             parent.children = [page.sys.id];
           }
-        } else {
+        } else if (!isProd) {
           console.warn(
             `The parent field was set but could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
           );
@@ -136,7 +191,7 @@ export const loadPageMetadataMap = async ({
     // TODO: We may want to consider completely invalidating these entries instead, removing them from the map.
     [...pageMetadataMap].forEach(([_, page]) => {
       page.url = constructFullPathFromMap(pageMetadataMap, page);
-      if (!page.url) {
+      if (!page.url && !isProd) {
         console.warn(
           `A path to the root could not be resolved for Page Metadata entry with ID ${page.sys.id} and title "${page.title}"`,
         );

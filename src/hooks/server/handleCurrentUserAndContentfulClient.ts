@@ -71,7 +71,7 @@ export const getHandleCurrentUserAndContentfulClient = ({
           ({ managementAPIToken } = userInfo);
           event.locals.currentUser = { email, name, avatarURL };
         } catch (err) {
-          console.error(err);
+          console.error("Error reading user info from Redis:", err);
         }
       }
     }
@@ -92,7 +92,7 @@ export const getHandleCurrentUserAndContentfulClient = ({
         const kvClient = await getKVClient();
         await kvClient.deleteUserInfoByToken(ldafUserToken);
       } catch (err) {
-        console.error(err);
+        console.error("Error deleting user info in Redis on bad token", err);
       }
       return "Token was invalid; you have been logged out. Please log in again to view preview content.";
     };
