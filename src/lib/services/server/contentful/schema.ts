@@ -24,8 +24,9 @@ export type Scalars = {
  * Currently we only support the Licensing and Permits aggregation page.
  * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
  */
-export type Aggregation = Entry & {
+export type Aggregation = Entry & _Node & {
   __typename?: 'Aggregation';
+  _id: Scalars['ID']['output'];
   body?: Maybe<AggregationBody>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<AggregationLinkingCollections>;
@@ -436,8 +437,9 @@ export enum AssetOrder {
 }
 
 /** Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
-export type CallToAction = Entry & {
+export type CallToAction = Entry & _Node & {
   __typename?: 'CallToAction';
+  _id: Scalars['ID']['output'];
   callToActionDestination?: Maybe<CallToActionCallToActionDestination>;
   contentfulMetadata: ContentfulMetadata;
   ctaInternalName?: Maybe<Scalars['String']['output']>;
@@ -609,8 +611,9 @@ export enum CallToActionOrder {
 }
 
 /** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
-export type Contact = Entry & {
+export type Contact = Entry & _Node & {
   __typename?: 'Contact';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   email?: Maybe<Scalars['String']['output']>;
   entityName?: Maybe<Scalars['String']['output']>;
@@ -911,8 +914,9 @@ export enum ContactOrder {
 }
 
 /** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
-export type ContentTypeLocation = Entry & {
+export type ContentTypeLocation = Entry & _Node & {
   __typename?: 'ContentTypeLocation';
+  _id: Scalars['ID']['output'];
   city?: Maybe<Scalars['String']['output']>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<ContentTypeLocationLinkingCollections>;
@@ -1131,7 +1135,7 @@ export type ContentfulMetadataTagsFilter = {
 
 /**
  * Represents a tag entity for finding and organizing content easily.
- *     Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
+ *       Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
  */
 export type ContentfulTag = {
   __typename?: 'ContentfulTag';
@@ -1140,8 +1144,9 @@ export type ContentfulTag = {
 };
 
 /** "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
-export type DocumentWrapper = Entry & {
+export type DocumentWrapper = Entry & _Node & {
   __typename?: 'DocumentWrapper';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   docWrapperName?: Maybe<Scalars['String']['output']>;
   documentDescription?: Maybe<Scalars['String']['output']>;
@@ -1265,8 +1270,9 @@ export enum DocumentWrapperOrder {
 }
 
 /** A draft of how we will structure individual navigation links that can appear either in the main menu in the header, in a submenu under the main menu in the header, or in a section sidebar. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
-export type DraftNavigationLink = Entry & {
+export type DraftNavigationLink = Entry & _Node & {
   __typename?: 'DraftNavigationLink';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   link?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<DraftNavigationLinkLinkingCollections>;
@@ -1375,8 +1381,9 @@ export enum DraftNavigationLinkOrder {
 }
 
 /** A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
-export type DraftNavigationMenu = Entry & {
+export type DraftNavigationMenu = Entry & _Node & {
   __typename?: 'DraftNavigationMenu';
+  _id: Scalars['ID']['output'];
   childrenCollection?: Maybe<DraftNavigationMenuChildrenCollection>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<DraftNavigationMenuLinkingCollections>;
@@ -1553,8 +1560,9 @@ export enum EntryOrder {
 }
 
 /** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
-export type Error = Entry & {
+export type Error = Entry & _Node & {
   __typename?: 'Error';
+  _id: Scalars['ID']['output'];
   body?: Maybe<ErrorBody>;
   contentfulMetadata: ContentfulMetadata;
   errorCode?: Maybe<Scalars['Int']['output']>;
@@ -1739,8 +1747,9 @@ export enum ErrorOrder {
 }
 
 /** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
-export type EventEntry = Entry & {
+export type EventEntry = Entry & _Node & {
   __typename?: 'EventEntry';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   eventDateAndTime?: Maybe<Scalars['DateTime']['output']>;
   eventDescription?: Maybe<Scalars['String']['output']>;
@@ -2073,8 +2082,9 @@ export enum EventEntryOrder {
 }
 
 /** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
-export type HeroImage = Entry & {
+export type HeroImage = Entry & _Node & {
   __typename?: 'HeroImage';
+  _id: Scalars['ID']['output'];
   altField?: Maybe<Scalars['String']['output']>;
   contentfulMetadata: ContentfulMetadata;
   fotogCredit?: Maybe<Scalars['String']['output']>;
@@ -2299,8 +2309,9 @@ export enum HeroImageOrder {
 }
 
 /** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
-export type Home = Entry & {
+export type Home = Entry & _Node & {
   __typename?: 'Home';
+  _id: Scalars['ID']['output'];
   commissionerBackground?: Maybe<ImageWrapper>;
   commissionerByline?: Maybe<Scalars['String']['output']>;
   commissionerGreeting?: Maybe<HomeCommissionerGreeting>;
@@ -2698,8 +2709,9 @@ export type ImageTransformOptions = {
 };
 
 /** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
-export type ImageWrapper = Entry & {
+export type ImageWrapper = Entry & _Node & {
   __typename?: 'ImageWrapper';
+  _id: Scalars['ID']['output'];
   altText?: Maybe<Scalars['String']['output']>;
   contentfulMetadata: ContentfulMetadata;
   internalTitle?: Maybe<Scalars['String']['output']>;
@@ -2840,8 +2852,9 @@ export enum ImageWrapperOrder {
 }
 
 /** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
-export type Menu = Entry & {
+export type Menu = Entry & _Node & {
   __typename?: 'Menu';
+  _id: Scalars['ID']['output'];
   childrenCollection?: Maybe<MenuChildrenCollection>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<MenuLinkingCollections>;
@@ -2934,8 +2947,9 @@ export type MenuFilter = {
 };
 
 /** A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
-export type MenuItem = Entry & {
+export type MenuItem = Entry & _Node & {
   __typename?: 'MenuItem';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   externalLink?: Maybe<Scalars['String']['output']>;
   internalLink?: Maybe<PageMetadata>;
@@ -3108,8 +3122,9 @@ export enum MenuOrder {
 }
 
 /** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
-export type News = Entry & {
+export type News = Entry & _Node & {
   __typename?: 'News';
+  _id: Scalars['ID']['output'];
   body?: Maybe<NewsBody>;
   byline?: Maybe<Scalars['String']['output']>;
   contactInformationCollection?: Maybe<NewsContactInformationCollection>;
@@ -3237,8 +3252,9 @@ export type NewsTypeArgs = {
 };
 
 /** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
-export type NewsArticle = Entry & {
+export type NewsArticle = Entry & _Node & {
   __typename?: 'NewsArticle';
+  _id: Scalars['ID']['output'];
   authorName?: Maybe<Scalars['String']['output']>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<NewsArticleLinkingCollections>;
@@ -3531,8 +3547,9 @@ export type NewsFilter = {
 };
 
 /** Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
-export type NewsItemContent = Entry & {
+export type NewsItemContent = Entry & _Node & {
   __typename?: 'NewsItemContent';
+  _id: Scalars['ID']['output'];
   byline?: Maybe<Scalars['String']['output']>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<NewsItemContentLinkingCollections>;
@@ -3946,8 +3963,9 @@ export enum NewsRelatedNewsCollectionOrder {
 }
 
 /** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
-export type OfficePage = Entry & {
+export type OfficePage = Entry & _Node & {
   __typename?: 'OfficePage';
+  _id: Scalars['ID']['output'];
   contactsCollection?: Maybe<OfficePageContactsCollection>;
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<OfficePageDescription>;
@@ -4210,8 +4228,9 @@ export type OfficePageServicesAndProgramsResourcesInline = ResourceLink & {
 };
 
 /** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
-export type PageMetadata = Entry & {
+export type PageMetadata = Entry & _Node & {
   __typename?: 'PageMetadata';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   externalRedirect?: Maybe<Scalars['String']['output']>;
   internalRedirect?: Maybe<PageMetadataInternalRedirect>;
@@ -4589,8 +4608,9 @@ export enum PageMetadataOrder {
 }
 
 /** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
-export type PressRelease = Entry & {
+export type PressRelease = Entry & _Node & {
   __typename?: 'PressRelease';
+  _id: Scalars['ID']['output'];
   contactsHed?: Maybe<Scalars['String']['output']>;
   contentfulMetadata: ContentfulMetadata;
   eventOrArticle?: Maybe<PressReleaseEventOrArticle>;
@@ -4829,8 +4849,9 @@ export type PressReleasePressReleaseBodyResourcesInline = ResourceLink & {
 };
 
 /** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
-export type PromoBannerWithCta = Entry & {
+export type PromoBannerWithCta = Entry & _Node & {
   __typename?: 'PromoBannerWithCta';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<PromoBannerWithCtaLinkingCollections>;
   promoCta?: Maybe<CallToAction>;
@@ -5491,8 +5512,9 @@ export type ResourceSys = {
 };
 
 /** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
-export type ServiceEntry = Entry & {
+export type ServiceEntry = Entry & _Node & {
   __typename?: 'ServiceEntry';
+  _id: Scalars['ID']['output'];
   contactInformationCollection?: Maybe<ServiceEntryContactInformationCollection>;
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<ServiceEntryDescription>;
@@ -5723,8 +5745,9 @@ export enum ServiceEntryServiceCtaCollectionOrder {
 }
 
 /** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
-export type ServiceGroup = Entry & {
+export type ServiceGroup = Entry & _Node & {
   __typename?: 'ServiceGroup';
+  _id: Scalars['ID']['output'];
   additionalResources?: Maybe<ServiceGroupAdditionalResources>;
   contactInfoCollection?: Maybe<ServiceGroupContactInfoCollection>;
   contentfulMetadata: ContentfulMetadata;
@@ -6202,8 +6225,9 @@ export type SysFilter = {
 };
 
 /** Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
-export type TestRichText = Entry & {
+export type TestRichText = Entry & _Node & {
   __typename?: 'TestRichText';
+  _id: Scalars['ID']['output'];
   body?: Maybe<TestRichTextBody>;
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<TestRichTextLinkingCollections>;
@@ -6338,8 +6362,9 @@ export enum TestRichTextOrder {
 }
 
 /** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
-export type TopTier = Entry & {
+export type TopTier = Entry & _Node & {
   __typename?: 'TopTier';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<TopTierDescription>;
   featuredServiceListCollection?: Maybe<TopTierFeaturedServiceListCollection>;
@@ -6580,8 +6605,9 @@ export enum TopTierOrder {
 }
 
 /** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
-export type VideoWrapper = Entry & {
+export type VideoWrapper = Entry & _Node & {
   __typename?: 'VideoWrapper';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   internalTitle?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<VideoWrapperLinkingCollections>;
