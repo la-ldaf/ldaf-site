@@ -1,3 +1,5 @@
+directive @contentSourceMaps on QUERY
+
 """
 A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
 Currently we only support the Licensing and Permits aggregation page. 
@@ -3612,6 +3614,7 @@ type ServiceGroup implements Entry & _Node {
   subheading(locale: String): String
   sys: Sys!
   title(locale: String): String
+  video(locale: String, preview: Boolean, where: VideoWrapperFilter): VideoWrapper
 }
 
 type ServiceGroupAdditionalResources {
@@ -3775,6 +3778,8 @@ input ServiceGroupFilter {
   title_not: String
   title_not_contains: String
   title_not_in: [String]
+  video: cfVideoWrapperNestedFilter
+  video_exists: Boolean
 }
 
 type ServiceGroupLinkingCollections {
@@ -4243,6 +4248,7 @@ input VideoWrapperFilter {
 type VideoWrapperLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   homeCollection(limit: Int = 100, locale: String, order: [VideoWrapperLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
+  serviceGroupCollection(limit: Int = 100, locale: String, order: [VideoWrapperLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   topTierCollection(limit: Int = 100, locale: String, order: [VideoWrapperLinkingCollectionsTopTierCollectionOrder], preview: Boolean, skip: Int = 0): TopTierCollection
 }
 
@@ -4259,6 +4265,25 @@ enum VideoWrapperLinkingCollectionsHomeCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+enum VideoWrapperLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
+  serviceListName_ASC
+  serviceListName_DESC
+  subheading_ASC
+  subheading_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
 }
 
 enum VideoWrapperLinkingCollectionsTopTierCollectionOrder {
@@ -4755,6 +4780,7 @@ input cfServiceGroupNestedFilter {
   title_not: String
   title_not_contains: String
   title_not_in: [String]
+  video_exists: Boolean
 }
 
 input cfVideoWrapperNestedFilter {
