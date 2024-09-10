@@ -11,6 +11,8 @@ export type Client = {
   getUserInfoByToken: (token: string) => Promise<ServerUser | null>;
   setUserInfoByToken: (token: string, userInfo: ServerUser) => Promise<void>;
   deleteUserInfoByToken: (token: string) => Promise<void>;
+  setFireWeatherData: (fireData: string) => Promise<void>;
+  getFireWeatherData: () => Promise<object | null>;
 };
 
 type None = Record<never, never>;
@@ -19,6 +21,7 @@ const keys = {
   blurhashByURL: "blurhashByURL",
   youtubeVideoDataByID: "youtubeVideoDataByID",
   userInfoByToken: "ldafUserInfoByToken",
+  fireWeatherData: "fireWeatherData",
 };
 
 type ClientOptions = {
@@ -106,6 +109,15 @@ export const createClient = async ({
     },
     deleteUserInfoByToken: async (token) => {
       await redisClient.del(`${keys.userInfoByToken}:${token}`);
+    },
+    setFireWeatherData: async (fireData) => {
+      const result = await redisClient.set(`${keys.fireWeatherData}`, JSON.stringify(fireData));
+      if (result !== "OK") throw new Error("could not set fire weather data in KV store");
+    },
+    getFireWeatherData: async () => {
+      const json = await redisClient.get(`${keys.fireWeatherData}`);
+      if (!json) return json;
+      return JSON.parse(json);
     },
   };
 
