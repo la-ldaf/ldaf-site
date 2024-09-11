@@ -1,6 +1,4 @@
 import { parse } from "csv-parse/sync";
-// import { getClient } from "$lib/services/server/kv";
-// import { KV_URL } from "$env/static/private";
 
 export type FilteredParishData = {
   ParishNumber: string;
@@ -13,20 +11,6 @@ type ParishData = FilteredParishData & {
   Coordinates: string;
   LabelXOffset: string;
 };
-
-// async function initializeKVClient() {
-//   if (!KV_URL) {
-//     throw new Error("Could not get KV client; no KV_URL was specified");
-//   }
-
-//   try {
-//     const kvClient = await getClient({ url: KV_URL });
-//     return kvClient;
-//   } catch (error) {
-//     console.error("Failed to initialize KV client:", error);
-//     throw error;
-//   }
-// }
 
 export const GET = async ({ locals: { getKVClient } }) => {
   try {
@@ -69,13 +53,6 @@ export async function POST({ request, locals: { getKVClient } }) {
       }),
     );
 
-    // try {
-    //   const kvClient = await initializeKVClient();
-    //   kvClient.setFireWeatherData(filteredData);
-    // } catch (error) {
-    //   console.log("Failed to use KV client:", error);
-    // }
-
     const kvClient = await getKVClient();
     kvClient.setFireWeatherData(filteredData);
 
@@ -86,6 +63,8 @@ export async function POST({ request, locals: { getKVClient } }) {
       },
     });
   } catch (error) {
+    // TODO: Improve error handling to more
+    // specifically describe parsing errors
     return new Response(JSON.stringify(error), {
       status: 500,
       headers: {
