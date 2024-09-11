@@ -1,6 +1,7 @@
 import { parse } from "csv-parse/sync";
+import { formatInTimeZone } from "date-fns-tz";
 
-export type FilteredParishData = {
+type FilteredParishData = {
   ParishNumber: string;
   ParishName: string;
   ObservationDate: string;
@@ -10,6 +11,11 @@ export type FilteredParishData = {
 type ParishData = FilteredParishData & {
   Coordinates: string;
   LabelXOffset: string;
+};
+
+export type FireWeatherData = {
+  parishes: FilteredParishData[];
+  lastUpdated: string;
 };
 
 export const GET = async ({ locals: { getKVClient } }) => {
@@ -53,10 +59,22 @@ export async function POST({ request, locals: { getKVClient } }) {
       }),
     );
 
-    const kvClient = await getKVClient();
-    kvClient.setFireWeatherData(filteredData);
+    // Make sure the time zone is always presented in Louisiana local time
+    const lastUpdated = formatInTimeZone(
+      new Date(),
+      "America/Chicago",
+      "yyyy-MM-dd hh:mm:ss a zzz",
+    );
 
-    return new Response(JSON.stringify(filteredData), {
+    const finalData = {
+      parishes: filteredData,
+      lastUpdated,
+    };
+
+    const kvClient = await getKVClient();
+    kvClient.setFireWeatherData(finalData);
+
+    return new Response(JSON.stringify(finalData), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 import { createClient as createRedisClient } from "redis";
 import type { YoutubeVideoData } from "$lib/services/server/youtube";
 import type { ServerUser } from "$lib/server/types";
-import type { FilteredParishData } from "../../../../routes/api/v1/fire-weather/+server";
+import type { FireWeatherData } from "../../../../routes/api/v1/fire-weather/+server";
 import tokenDuration from "$lib/constants/tokenDuration";
 
 export type Client = {
@@ -12,7 +12,7 @@ export type Client = {
   getUserInfoByToken: (token: string) => Promise<ServerUser | null>;
   setUserInfoByToken: (token: string, userInfo: ServerUser) => Promise<void>;
   deleteUserInfoByToken: (token: string) => Promise<void>;
-  setFireWeatherData: (fireData: FilteredParishData[]) => Promise<void>;
+  setFireWeatherData: (fireData: FireWeatherData) => Promise<void>;
   getFireWeatherData: () => Promise<object | null>;
 };
 
