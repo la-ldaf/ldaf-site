@@ -13,7 +13,7 @@ export type Client = {
   setUserInfoByToken: (token: string, userInfo: ServerUser) => Promise<void>;
   deleteUserInfoByToken: (token: string) => Promise<void>;
   setFireWeatherData: (fireData: FireWeatherData) => Promise<void>;
-  getFireWeatherData: () => Promise<object | null>;
+  getFireWeatherData: () => Promise<FireWeatherData | null>;
 };
 
 type None = Record<never, never>;

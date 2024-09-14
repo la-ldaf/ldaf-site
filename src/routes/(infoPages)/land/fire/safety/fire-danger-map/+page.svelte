@@ -22,7 +22,7 @@
   // TODO: understand difference between topojson.feature vs topojson.mesh
   // const louisiana = topojson.mesh(parishData,parishData.objects['parishes-fullsize']);
 
-  let div;
+  let div: HTMLElement;
 
   const fireRiskLevels = ["Low", "Medium", "High", "Very High", "Extreme"];
   const colors = [
@@ -43,7 +43,6 @@
   ]);
 
   $: {
-    console.log(parishes);
     div?.firstChild?.remove(); // remove old chart, if any
     div?.append(
       Plot.plot({
@@ -63,11 +62,7 @@
           Plot.geo(parishes, {
             stroke: "black",
             strokeOpacity: 0.5,
-            fill: (d) => {
-              console.log("risk", d.properties.fireRisk, typeof d.properties.fireRisk);
-              console.log("map", colorsMap.get(d.properties.fireRisk));
-              return colorsMap.get(Number(d.properties.fireRisk));
-            },
+            fill: (d) => colorsMap.get(Number(d.properties.fireRisk)),
           }),
           Plot.tip(
             parishes,
