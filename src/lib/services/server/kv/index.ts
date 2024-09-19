@@ -117,7 +117,7 @@ export const createClient = async ({
     },
     getFireWeatherData: async () => {
       const json = await redisClient.get(`${keys.fireWeatherData}`);
-      if (!json) return json;
+      if (!json) throw new Error("could not get fire weather data from KV store");
       return JSON.parse(json);
     },
   };

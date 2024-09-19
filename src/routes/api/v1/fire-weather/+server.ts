@@ -1,5 +1,4 @@
 import { parse } from "csv-parse/sync";
-import { formatInTimeZone } from "date-fns-tz";
 
 type FilteredParishData = {
   ParishNumber: string;
@@ -59,16 +58,9 @@ export async function POST({ request, locals: { getKVClient } }) {
       }),
     );
 
-    // Make sure the time zone is always presented in Louisiana local time
-    const lastUpdated = formatInTimeZone(
-      new Date(),
-      "America/Chicago",
-      "yyyy-MM-dd hh:mm:ss a zzz",
-    );
-
     const finalData = {
       parishes: filteredData,
-      lastUpdated,
+      lastUpdated: new Date().toISOString(),
     };
 
     const kvClient = await getKVClient();

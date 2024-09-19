@@ -1,15 +1,24 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import * as topojson from "topojson-client";
   import * as Plot from "@observablehq/plot";
+  import { format } from "date-fns";
+  import "./page.scss";
 
   export let data;
-  $: ({ fireWeatherData } = data);
+  $: ({ fireWeatherData, error = null } = data);
+  $: console.log("firedata", fireWeatherData, "ERROR", error);
   $: parishGeodata = fireWeatherData?.topoJSON ?? [];
   $: fireData = fireWeatherData?.parishes ?? [];
-  $: parishes = topojson.feature(
-    parishGeodata,
-    parishGeodata.objects["parishes-fullsize"],
-  ).features;
+  $: parishes =
+    fireWeatherData &&
+    parishGeodata &&
+    // @ts-ignore
+    topojson.feature(parishGeodata, parishGeodata.objects["parishes-fullsize"]).features;
+
+  $: formattedTime =
+    fireWeatherData?.lastUpdated &&
+    format(new Date(fireWeatherData.lastUpdated), "MMMM d, yyyy 'at' h:mm aaa");
 
   $: if (parishes) {
     parishes.forEach((parish: any) => {
@@ -19,40 +28,38 @@
     });
   }
 
-  // TODO: understand difference between topojson.feature vs topojson.mesh
-  // const louisiana = topojson.mesh(parishData,parishData.objects['parishes-fullsize']);
-
   let div: HTMLElement;
 
   const fireRiskLevels = ["Low", "Medium", "High", "Very High", "Extreme"];
-  const colors = [
-    // "#D0D0D0", Omitted here because we don't want the 'null' value to be included in the legend
-    "#75982E",
-    "#5597F7",
-    "#FBEF54",
-    "#E89E3F",
-    "#DF352D",
-  ];
+  // TODO: convert map colors to match site color palette?
+  const colors = {
+    // TODO: is 'missing' considered no risk or actually missing?
+    missing: "#D0D0D0",
+    low: "#75982E", // green
+    medium: "#5597F7", // blue
+    high: "#FBEF54", // yellow
+    veryHigh: "#E89E3F", // orange
+    extreme: "#DF352D", // red
+  };
   const colorsMap = new Map([
-    [0, "#D0D0D0"],
-    [1, "#75982E"],
-    [2, "#5597F7"],
-    [3, "#FBEF54"],
-    [4, "#E89E3F"],
-    [5, "#DF352D"],
+    [0, colors.missing],
+    [1, colors.low],
+    [2, colors.medium],
+    [3, colors.high],
+    [4, colors.veryHigh],
+    [5, colors.extreme],
   ]);
 
-  $: {
+  onMount(() => {
     div?.firstChild?.remove(); // remove old chart, if any
     div?.append(
       Plot.plot({
         title: "Fire Danger Levels",
-        // projection: 'albers-usa',
         color: {
-          type: "categorical",
           domain: fireRiskLevels,
-          range: colors,
-          label: "Fire Danger (Low - Extreme)", // TODO: how to get this to show up when type is 'categorical'
+          range: Object.values(colors).slice(1), // remove 'missing' color from the displayed range,
+          type: "categorical",
+          label: "Fire Danger (Low - Extreme)", // TODO: figure out how to have this display when type is 'categorical'
           legend: true,
         },
         axis: false,
@@ -76,7 +83,19 @@
         ],
       }),
     );
-  }
+
+    // The timestamp will render prematurely, i.e. before the map is rendered,
+    // if we don't wrap all of this in onMount
+    const timestamp = document.createElement("p");
+    timestamp.innerHTML = `<b>Data last updated:</b> ${formattedTime}`;
+    div?.append(timestamp);
+  });
 </script>
 
-<div bind:this={div}></div>
+{#if !fireWeatherData && !error}
+  <p>Loading...</p>
+{:else if error}
+  <p>{error}</p>
+{:else}
+  <div bind:this={div}></div>
+{/if}
