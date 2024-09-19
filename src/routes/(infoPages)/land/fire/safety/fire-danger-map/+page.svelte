@@ -15,6 +15,10 @@
     parishGeodata &&
     // @ts-ignore
     topojson.feature(parishGeodata, parishGeodata.objects["parishes-fullsize"]).features;
+  // TODO: parishGeodata is valid TopoJSON from this public data source:
+  // https://github.com/TheLens/geographic-data/blob/master/exports/topojson/parishes/parishes-simplified.json
+  // but topojson.feature is not recognizing it as such. Revisit this in the future, but acceptable to ignore
+  // for the time being.
 
   $: formattedTime =
     fireWeatherData?.lastUpdated &&
