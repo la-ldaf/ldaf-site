@@ -13,7 +13,7 @@
   $: parishes =
     fireWeatherData &&
     parishGeodata &&
-    // @ts-ignore
+    // @ts-ignore eslint disable @typescript-eslint/ban-ts-comment
     topojson.feature(parishGeodata, parishGeodata.objects["parishes-fullsize"]).features;
   // TODO: parishGeodata is valid TopoJSON from this public data source:
   // https://github.com/TheLens/geographic-data/blob/master/exports/topojson/parishes/parishes-simplified.json
@@ -27,7 +27,7 @@
   $: if (parishes) {
     parishes.forEach((parish: any) => {
       const name = parish.properties.parishname.replaceAll(".", "");
-      const match = fireData.find((parish: any) => parish.ParishName === name);
+      const match = fireData.find((parish) => parish.ParishName === name);
       parish.properties.fireRisk = match?.DangerClassDay || 0;
     });
   }
