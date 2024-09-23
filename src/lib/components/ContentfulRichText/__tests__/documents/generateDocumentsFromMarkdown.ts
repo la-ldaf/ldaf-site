@@ -165,7 +165,6 @@ if (failedResults.length === 0) {
   console.log("All files written successfully!");
 } else {
   failedResults.forEach((result) => {
-    if (result.status === "fulfilled") return;
     result.reason?.message && console.error(result.reason.message);
     result.reason?.cause && console.error(result.reason.cause);
   });

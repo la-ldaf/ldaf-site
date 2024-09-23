@@ -3,8 +3,9 @@ import tokenDuration from "$lib/constants/tokenDuration.js";
 import getContentfulManagementClient from "$lib/services/server/contentfulManagement";
 import getErrorMessage from "$lib/util/getErrorMessage.js";
 import { error, fail } from "@sveltejs/kit";
+import type { Actions } from "../$types";
 
-export const actions = {
+export const actions: Actions = {
   default: async ({ request, locals, cookies, fetch }) => {
     const data = await request.formData();
 

@@ -7,6 +7,7 @@ import assetProps from "$lib/fragments/assetProps";
 import entryProps from "$lib/fragments/entryProps";
 
 import type { AggregationPageQuery, TaggedServicesQuery } from "./$queries.generated";
+import type { PageServerLoad } from "../$types";
 
 type TaggedService =
   | {
@@ -88,7 +89,7 @@ const taggedServicesQuery = gql`
   }
 `;
 
-export const load = async ({ parent, locals: { contentfulClient } }) => {
+export const load: PageServerLoad = async ({ parent, locals: { contentfulClient } }) => {
   fetchData: {
     if (!contentfulClient) break fetchData;
     const { pageMetadataMap, pathsToIDs } = await parent();

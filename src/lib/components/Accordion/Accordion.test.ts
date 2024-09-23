@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/svelte";
 import { describe, it, expect } from "vitest";
 
 // AccordionView functions similarly to CardView.svelte
-import AccordionView from "../../../stories/AccordionView.svelte";
+import { AccordionView } from "stories/AccordionView.svelte";
 
 const defaultProps = {
   accordionOneContent: "Content 1",

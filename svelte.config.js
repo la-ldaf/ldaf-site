@@ -10,6 +10,9 @@ const config = {
   kit: {
     // https://kit.svelte.dev/docs/adapter-vercel
     adapter: adapter(),
+    alias: {
+      stories: "src/stories",
+    },
   },
   onwarn: (warning, handler) => {
     const { code } = warning;
