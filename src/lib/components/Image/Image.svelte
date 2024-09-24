@@ -197,7 +197,6 @@
     ].join("; ");
 
   $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
-
 </script>
 
 {#key src}
