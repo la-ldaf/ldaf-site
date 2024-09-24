@@ -110,7 +110,9 @@ describe("Image", () => {
 
     describe("when mean color of image is provided", () => {
       beforeEach(() =>
-        render(Image, { props: { src: sampleImage, alt: "Sample image with mean", mean: sampleImageMean } }),
+        render(Image, {
+          props: { src: sampleImage, alt: "Sample image with mean", mean: sampleImageMean },
+        }),
       );
       it("renders a background div with the mean background color", () => {
         expect(getMeanBg()).toHaveAttribute(
@@ -125,7 +127,11 @@ describe("Image", () => {
     describe("when blurhash of image is provided", () => {
       it("renders a background canvas", () => {
         render(Image, {
-          props: { src: sampleImage, alt: "Sample image with blurhash", blurhash: sampleImageBlurhash },
+          props: {
+            src: sampleImage,
+            alt: "Sample image with blurhash",
+            blurhash: sampleImageBlurhash,
+          },
         });
         expect(getBlurBg()).toBeInTheDocument();
       });
