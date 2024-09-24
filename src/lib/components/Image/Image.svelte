@@ -198,7 +198,7 @@
 
   $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
 
-  $: role = alt ? "img" : role
+  $: role = alt ? "img" : role;
 </script>
 
 {#key src}
@@ -209,7 +209,7 @@
     enabled={lazyLoadingType === "intersectionObserver"}
   >
     <div
-      role={role}
+      {role}
       aria-label={alt}
       class={classNames(
         "ldaf-img",
