@@ -87,7 +87,7 @@
       url={videoUrl}
       title={videoTitle ?? title}
       description={videoSubhead ?? description}
-      titleHeadingLevel="h3"
+      titleHeadingLevel="h2"
       {thumbnails}
       {blurhash}
       variation="hero"
