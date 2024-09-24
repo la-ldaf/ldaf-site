@@ -64,7 +64,7 @@
   unstyled={true}
   on:click={() => copyToClipboard(contentToCopy)}
 >
-  <Icon src={statusDisplay.icon} title="Copy to clipboard" />
+  <span class="usa-sr-only">Copy to Clipboard</span><Icon src={statusDisplay.icon} title="Copy to clipboard" aria-hidden="true" />
 </Button>
 <div
   class="font-sans-3xs {statusDisplay.messageClass}"

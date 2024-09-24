@@ -87,6 +87,7 @@
       url={videoUrl}
       title={videoTitle ?? title}
       description={videoSubhead ?? description}
+      titleHeadingLevel="h3"
       {thumbnails}
       {blurhash}
       variation="hero"
@@ -126,7 +127,7 @@
               {/if}
             </svelte:fragment>
             <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
-              <Icon src={arrowIcon} size={3} />
+              <Icon src={arrowIcon} size={3} /><span class="usa-sr-only">View {item.title}</span>
             </Button>
           </Card>
         {:else}
@@ -138,7 +139,7 @@
               {/if}
             </svelte:fragment>
             <Button slot="footer" isLink={true} variant={buttonVariant} href={item.url}>
-              <Icon src={arrowIcon} size={3} />
+              <Icon src={arrowIcon} size={3} /><span class="usa-sr-only">View {item.title}</span>
             </Button>
           </Card>
         {/if}

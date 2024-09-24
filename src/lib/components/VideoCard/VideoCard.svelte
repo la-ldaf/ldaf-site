@@ -17,6 +17,7 @@
     blurhash?: string | null | undefined;
     thumbnails?: Thumbnails;
     sizeType?: SizeType;
+    titleHeadingLevel?: 'h2' | 'h3' | 'h4';
   }
 
   let className = "";
@@ -56,6 +57,7 @@
 
   type SizeType = "hero-full-width" | "hero-col-9";
   export let sizeType: SizeType = "hero-full-width";
+  export let titleHeadingLevel = "h3";
 
   const bodyPadding = "2rem";
   const videoCardPadding = "3rem";
@@ -136,6 +138,7 @@
             canUpscaleImage={true}
             loading="eager"
             class="ldaf-video-thumbnail"
+            title={title && title}
             on:click={() => (showYoutubeEmbed = true)}
             on:keydown={handleKeyDown}
           />
@@ -143,9 +146,8 @@
       {/if}
     </div>
     <div class="ldaf-video-info">
-      <!-- TODO: [LDAF-369] Support different heading level for hero variation. -->
       {#if title}
-        <h3 class="ldaf-video-title">{title}</h3>
+        <svelte:element this={titleHeadingLevel} class="ldaf-video-title">{title}</svelte:element>
       {/if}
       {#if description}
         <p class="ldaf-video-description">{trimmedFirstParagraph}</p>

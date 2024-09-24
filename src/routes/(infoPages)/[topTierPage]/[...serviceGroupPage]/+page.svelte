@@ -179,7 +179,7 @@
           <!-- Since no card is more important than another, use the default
              primary button style for all CTAs. -->
           <Button slot="footer" isLink={true} href={item.url}>
-            <Icon src={arrowIcon} size={3} />
+            <Icon src={arrowIcon} size={3} /><span class="usa-sr-only">View {item.title}</span>
           </Button>
         </Card>
       {:else}
@@ -191,7 +191,7 @@
             {/if}
           </svelte:fragment>
           <Button slot="footer" isLink={true} href={item.url}>
-            <Icon src={arrowIcon} size={3} />
+            <Icon src={arrowIcon} size={3} /><span class="usa-sr-only">View {item.title}</span>
           </Button>
         </Card>
       {/if}
