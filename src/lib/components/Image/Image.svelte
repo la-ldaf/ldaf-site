@@ -10,6 +10,7 @@
 
   export let height: number | null | undefined = undefined;
   export let width: number | null | undefined = undefined;
+  export let role: "img" | null = null;
 
   // Whether the image should fit its container
   export let fit = true;
@@ -196,6 +197,8 @@
     ].join("; ");
 
   $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
+
+  $: role = alt ? "img" : role
 </script>
 
 {#key src}
@@ -206,7 +209,7 @@
     enabled={lazyLoadingType === "intersectionObserver"}
   >
     <div
-      role="img"
+      role={role}
       aria-label={alt}
       class={classNames(
         "ldaf-img",

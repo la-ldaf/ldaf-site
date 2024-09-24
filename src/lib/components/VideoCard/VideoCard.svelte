@@ -131,14 +131,13 @@
             sources={thumbSources}
             sizes={sizesBySizeType[sizeType]}
             {blurhash}
-            alt=""
+            alt={title || ""}
             width={thumbWidth}
             height={thumbHeight}
             preserveAspectRatio={false}
             canUpscaleImage={true}
             loading="eager"
             class="ldaf-video-thumbnail"
-            title={title && title}
             on:click={() => (showYoutubeEmbed = true)}
             on:keydown={handleKeyDown}
           />
