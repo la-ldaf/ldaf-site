@@ -10,7 +10,6 @@
 
   export let height: number | null | undefined = undefined;
   export let width: number | null | undefined = undefined;
-  export let role: "img" | null = null;
 
   // Whether the image should fit its container
   export let fit = true;
@@ -106,6 +105,7 @@
   let className: string | undefined = undefined;
   export { className as class };
   export let imageClass: string | undefined = undefined;
+  export const role: "img" | null = alt ? "img" : null;
 
   const getLazyLoadingType = (
     loading: Loading,
@@ -198,7 +198,6 @@
 
   $: styleProp = getContainerStyleProps(width, height, fit, preserveAspectRatio, canUpscaleImage);
 
-  $: role = alt ? "img" : role;
 </script>
 
 {#key src}
