@@ -17,7 +17,7 @@
     blurhash?: string | null | undefined;
     thumbnails?: Thumbnails;
     sizeType?: SizeType;
-    titleHeadingLevel?: 'h2' | 'h3' | 'h4';
+    titleHeadingLevel?: "h2" | "h3" | "h4";
   }
 
   let className = "";
