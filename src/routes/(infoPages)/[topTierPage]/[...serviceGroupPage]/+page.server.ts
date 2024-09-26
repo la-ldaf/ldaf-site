@@ -542,5 +542,5 @@ export const load = async ({
       childServiceGroups,
     };
   }
-  throw error(404);
+  error(404);
 };
