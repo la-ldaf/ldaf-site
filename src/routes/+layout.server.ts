@@ -80,11 +80,11 @@ export const load = async ({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
-  const footerNavItems = loadFooterNav({
+  const footerNavItems = await loadFooterNav({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
-  const sideNavMap = loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
+  const sideNavMap = await loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
 
   // Since any route can error, we always need to have the error page content
   //   available on every request.
