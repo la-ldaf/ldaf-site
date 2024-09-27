@@ -7,7 +7,6 @@
 
   export let data;
   $: ({ fireWeatherData, error = null } = data);
-  $: console.log("firedata", fireWeatherData, "ERROR", error);
   $: parishGeodata = fireWeatherData?.topoJSON ?? [];
   $: fireData = fireWeatherData?.parishes ?? [];
   $: parishes =
