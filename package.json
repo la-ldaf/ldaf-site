@@ -55,6 +55,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/gtag.js": "^0.0.13",
     "@types/prettier": "^3.0.0",
+    "@types/topojson-client": "^3.1.4",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.2",
     "@vitest/coverage-v8": "^0.34.4",
@@ -95,6 +96,7 @@
   "dependencies": {
     "@builder.io/partytown": "^0.8.0",
     "@contentful/rich-text-types": "^16.2.1",
+    "@observablehq/plot": "^0.6.16",
     "@poppanator/sveltekit-svg": "^4.1.0",
     "@uswds/uswds": "^3.4.1",
     "algoliasearch": "^4.20.0",
@@ -109,6 +111,7 @@
     "jpeg-js": "^0.4.4",
     "lodash": "^4.17.21",
     "redis": "^4.6.10",
+    "topojson-client": "^3.1.0",
     "web-vitals": "^3.4.0"
   }
 }

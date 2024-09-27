@@ -1,6 +1,7 @@
 import { createClient as createRedisClient } from "redis";
 import type { YoutubeVideoData } from "$lib/services/server/youtube";
 import type { ServerUser } from "$lib/server/types";
+import type { FireWeatherData } from "../../../../routes/api/v1/fire-weather/+server";
 import tokenDuration from "$lib/constants/tokenDuration";
 
 export type Client = {
@@ -11,6 +12,8 @@ export type Client = {
   getUserInfoByToken: (token: string) => Promise<ServerUser | null>;
   setUserInfoByToken: (token: string, userInfo: ServerUser) => Promise<void>;
   deleteUserInfoByToken: (token: string) => Promise<void>;
+  setFireWeatherData: (fireData: FireWeatherData) => Promise<void>;
+  getFireWeatherData: () => Promise<FireWeatherData | null>;
 };
 
 type None = Record<never, never>;
@@ -19,6 +22,7 @@ const keys = {
   blurhashByURL: "blurhashByURL",
   youtubeVideoDataByID: "youtubeVideoDataByID",
   userInfoByToken: "ldafUserInfoByToken",
+  fireWeatherData: "fireWeatherData",
 };
 
 type ClientOptions = {
@@ -106,6 +110,15 @@ export const createClient = async ({
     },
     deleteUserInfoByToken: async (token) => {
       await redisClient.del(`${keys.userInfoByToken}:${token}`);
+    },
+    setFireWeatherData: async (fireData) => {
+      const result = await redisClient.set(`${keys.fireWeatherData}`, JSON.stringify(fireData));
+      if (result !== "OK") throw new Error("could not set fire weather data in KV store");
+    },
+    getFireWeatherData: async () => {
+      const json = await redisClient.get(`${keys.fireWeatherData}`);
+      if (!json) throw new Error("could not get fire weather data from KV store");
+      return JSON.parse(json);
     },
   };
 
