@@ -13,22 +13,36 @@
   $: parishes =
     fireWeatherData &&
     parishGeodata &&
-    // @ts-ignore eslint disable @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     topojson.feature(parishGeodata, parishGeodata.objects["parishes-fullsize"]).features;
   // TODO: parishGeodata is valid TopoJSON from this public data source:
   // https://github.com/TheLens/geographic-data/blob/master/exports/topojson/parishes/parishes-simplified.json
   // but topojson.feature is not recognizing it as such. Revisit this in the future, but acceptable to ignore
   // for the time being.
 
+  type Parish = {
+    geometry: {
+      type: string;
+      coordinates: number[][][];
+    };
+    properties: {
+      parishcode: string;
+      parishname: string;
+      fireRisk: string;
+    };
+    type: "Feature";
+  };
+
   $: formattedTime =
     fireWeatherData?.lastUpdated &&
     format(new Date(fireWeatherData.lastUpdated), "MMMM d, yyyy 'at' h:mm aaa");
 
   $: if (parishes) {
-    parishes.forEach((parish: any) => {
+    parishes.forEach((parish: Parish) => {
       const name = parish.properties.parishname.replaceAll(".", "");
       const match = fireData.find((parish) => parish.ParishName === name);
-      parish.properties.fireRisk = match?.DangerClassDay || 0;
+      parish.properties.fireRisk = match?.DangerClassDay || "0";
     });
   }
 
