@@ -33,9 +33,9 @@
 
   $: if (!isDocument(document)) {
     error(500, {
-            title: "We could not render this page.",
-            message: "Contentful connection failed and fallback document does not match expected format.",
-          });
+      title: "We could not render this page.",
+      message: "Contentful connection failed and fallback document does not match expected format.",
+    });
   }
 </script>
 

@@ -165,8 +165,8 @@
   $: imageLoadClass = imageLoaded
     ? "ldaf-img__loaded"
     : src
-    ? "ldaf-img__loading"
-    : "ldaf-img__unloaded";
+      ? "ldaf-img__loading"
+      : "ldaf-img__unloaded";
 
   // This theoretically shouldn't be needed since the BlurhashRenderer script will have already run and
   // drawn the blurhash before Svelte has mounted and this runs. Unfortunately, when Svelte first

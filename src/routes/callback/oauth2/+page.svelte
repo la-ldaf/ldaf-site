@@ -32,8 +32,8 @@
     if (!loginResponse.ok) {
       const errorMessage = getErrorMessageFromResponse(loginResponse);
       error(loginResponse.status, {
-                message: `Failed to log in: ${loginResponse.status} ${loginResponse.statusText}: ${errorMessage}`,
-              });
+        message: `Failed to log in: ${loginResponse.status} ${loginResponse.statusText}: ${errorMessage}`,
+      });
     }
 
     const body: ActionResult<{
@@ -42,28 +42,28 @@
 
     if (body.type === "error") {
       error(500, {
-                message: `Failed to log in: request to login endpoint errored: ${body.status} ${
-                  body.error?.message ?? ""
-                }`,
-              });
+        message: `Failed to log in: request to login endpoint errored: ${body.status} ${
+          body.error?.message ?? ""
+        }`,
+      });
     }
 
     if (body.type === "failure") {
       error(body.status, {
-                message: `Failed to log in: request to login endpoint failed: ${body.status}`,
-              });
+        message: `Failed to log in: request to login endpoint failed: ${body.status}`,
+      });
     }
 
     if (body.type === "redirect") {
       error(500, {
-                message: `Failed to log in: request to login endpoint redirected unexpectedly`,
-              });
+        message: `Failed to log in: request to login endpoint redirected unexpectedly`,
+      });
     }
 
     if (!body.data) {
       error(500, {
-                message: `Failed to log in: login endpoint response had no data`,
-              });
+        message: `Failed to log in: login endpoint response had no data`,
+      });
     }
 
     currentUser.set(body.data.currentUser);

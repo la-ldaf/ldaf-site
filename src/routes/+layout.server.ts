@@ -57,9 +57,9 @@ export const load = async ({
         ) {
           const date = new Date(internalRedirect.eventDateAndTime);
           redirect(
-                        301,
-                        `/about/events/event/${date.toISOString().split("T")[0]}-${internalRedirect.slug}`,
-                      );
+            301,
+            `/about/events/event/${date.toISOString().split("T")[0]}-${internalRedirect.slug}`,
+          );
         }
       }
       if (externalRedirect) {

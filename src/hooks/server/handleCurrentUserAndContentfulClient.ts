@@ -64,7 +64,7 @@ export const getHandleCurrentUserAndContentfulClient = ({
           const kvClient = await getKVClient();
           const userInfo = await kvClient.getUserInfoByToken(ldafUserToken);
           if (userInfo === null) {
-            event.cookies.delete("ldafUserToken", {path: '/'});
+            event.cookies.delete("ldafUserToken", { path: "/" });
             break setCurrentUser;
           }
           const { email, name, avatarURL } = userInfo;
@@ -87,7 +87,7 @@ export const getHandleCurrentUserAndContentfulClient = ({
     const handleBadTokenAndGetMessage = async () => {
       if (event.locals.currentUser) event.locals.currentUser = undefined;
       if (!ldafUserToken) return "You must log in to view preview content.";
-      if (event.cookies.get("ldafUserToken")) event.cookies.delete("ldafUserToken", {path: '/'});
+      if (event.cookies.get("ldafUserToken")) event.cookies.delete("ldafUserToken", { path: "/" });
       try {
         const kvClient = await getKVClient();
         await kvClient.deleteUserInfoByToken(ldafUserToken);

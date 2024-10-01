@@ -21,10 +21,10 @@ export default async ({
   if (!currentUserResponse.ok) {
     const errorMessage = await getErrorMessageFromResponse(currentUserResponse);
     error(currentUserResponse.status, {
-            message: `${currentUserResponse.status}${
-              currentUserResponse.statusText ? ` ${currentUserResponse.statusText}` : ""
-            }: ${errorMessage}`,
-          });
+      message: `${currentUserResponse.status}${
+        currentUserResponse.statusText ? ` ${currentUserResponse.statusText}` : ""
+      }: ${errorMessage}`,
+    });
   }
 
   const {
