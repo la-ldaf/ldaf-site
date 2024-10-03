@@ -153,7 +153,7 @@ const baseQuery = gql`
             metaDescription
           }
         }
-        recentNewsCollection(where: {publicationDate_gte: $newsOldestDate}) {
+        recentNewsCollection(where: { publicationDate_gte: $newsOldestDate }) {
           items {
             sys {
               id
