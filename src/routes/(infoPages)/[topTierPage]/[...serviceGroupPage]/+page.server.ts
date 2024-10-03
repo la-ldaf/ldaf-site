@@ -153,16 +153,18 @@ const baseQuery = gql`
             metaDescription
           }
         }
-        recentNewsCollection {
-          sys {
-            id
+        recentNewsCollection(where: {publicationDate_gte: $newsOldestDate}) {
+          items {
+            sys {
+              id
+            }
+            type
+            title
+            subhead
+            publicationDate
+            slug
+            byline
           }
-          type
-          title
-          subhead
-          publicationDate
-          slug
-          byline
         }
       }
     }
