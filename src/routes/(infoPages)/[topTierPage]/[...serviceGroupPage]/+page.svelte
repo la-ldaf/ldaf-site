@@ -13,6 +13,7 @@
   import Image from "$lib/components/Image";
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
+  import NewsEntrySnippet from "../../about/news/NewsEntrySnippet.svelte";
 
   export let data;
   $: ({
@@ -26,6 +27,7 @@
       contactInfoCollection,
       additionalResources,
       video,
+      recentNewsCollection: news,
     },
     imageGallery,
     childServiceEntries,
@@ -246,4 +248,13 @@
     links={additionalResources.links}
     imageSizeType="col-9"
   />
+{/if}
+
+{#if news?.items && news.items.length > 0}
+  <h2>Recent news</h2>
+  {#each news.items as entry (entry?.sys.id)}
+    {#if entry}
+      <NewsEntrySnippet {entry} headingLevel={4} />
+    {/if}
+  {/each}
 {/if}

@@ -24,13 +24,15 @@ import {
   getYoutubeVideoDataWithBlurhash,
   type YoutubeVideoData,
 } from "$lib/services/server/youtube";
+import { getDateSixMonthsAgoInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
+import { eventIANATimezone } from "$lib/constants/date";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
   ${assetPropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroup($metadataID: String!, $preview: Boolean = false) {
+  query ServiceGroup($metadataID: String!, $newsOldestDate: DateTime!, $preview: Boolean = false) {
     serviceGroupCollection(
       where: { pageMetadata: { sys: { id: $metadataID } } }
       limit: 1
@@ -150,6 +152,17 @@ const baseQuery = gql`
             metaTitle
             metaDescription
           }
+        }
+        recentNewsCollection {
+          sys {
+            id
+          }
+          type
+          title
+          subhead
+          publicationDate
+          slug
+          byline
         }
       }
     }
@@ -363,8 +376,13 @@ export const load = async ({
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
 
+    const newsOldestDate = getStartOfDayForDateInTZ(
+      getDateSixMonthsAgoInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
+
     const baseData = await contentfulClient.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
-      variables: { metadataID },
+      variables: { metadataID, newsOldestDate },
     });
     if (!baseData) break fetchData;
     const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];
