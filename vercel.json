@@ -2,5 +2,5 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "framework": "sveltekit",
-  "installCommand": "npm install"
+  "installCommand": "rm -rf node_modules && rm -rf package-lock.json && npm install"
 }
