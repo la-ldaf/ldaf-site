@@ -15,10 +15,11 @@ import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$querie
 
 const query = gql`
   query TopTierCollection(
-    $metadataID: String!,
-    $newsOldestDate: DateTime!,
-    $eventStartDate: DateTime!,
-    $preview: Boolean = false) {
+    $metadataID: String!
+    $newsOldestDate: DateTime!
+    $eventStartDate: DateTime!
+    $preview: Boolean = false
+  ) {
     topTierCollection(
       where: { pageMetadata: { sys: { id: $metadataID } } }
       limit: 1
@@ -94,7 +95,7 @@ const query = gql`
             slug
           }
         }
-        recentNewsCollection(where: {publicationDate_gt: $newsOldestDate }) {
+        recentNewsCollection(where: { publicationDate_gt: $newsOldestDate }) {
           items {
             sys {
               id
@@ -107,7 +108,7 @@ const query = gql`
             byline
           }
         }
-        upcomingEventsCollection(where: {eventDateAndTime_gte: $eventStartDate}) {
+        upcomingEventsCollection(where: { eventDateAndTime_gte: $eventStartDate }) {
           items {
             sys {
               id
@@ -282,12 +283,16 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
-        relatedNews: taggedData?.newsCollection?.items.length 
-          ? taggedData?.newsCollection : (matchedTopTier.recentNewsCollection?.items.length
-          ? matchedTopTier.recentNewsCollection : {items: []} ),
-        relatedEvents: taggedData?.eventEntryCollection?.items.length 
-          ? taggedData?.eventEntryCollection : (matchedTopTier.upcomingEventsCollection?.items.length
-          ? matchedTopTier.upcomingEventsCollection : {items: []}),
+        relatedNews: taggedData?.newsCollection?.items.length
+          ? taggedData?.newsCollection
+          : matchedTopTier.recentNewsCollection?.items.length
+          ? matchedTopTier.recentNewsCollection
+          : { items: [] },
+        relatedEvents: taggedData?.eventEntryCollection?.items.length
+          ? taggedData?.eventEntryCollection
+          : matchedTopTier.upcomingEventsCollection?.items.length
+          ? matchedTopTier.upcomingEventsCollection
+          : { items: [] },
       },
       pageMetadata,
     };
