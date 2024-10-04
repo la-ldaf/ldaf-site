@@ -105,7 +105,7 @@
     {/each}
   </CardGroup>
 {/if}
-{#if relatedNews?.items && relatedNews.items.length > 0}
+{#if relatedNews.items.length > 0}
   <h3>Recent news</h3>
   {#each relatedNews.items as entry (entry?.sys.id)}
     {#if entry}
@@ -114,7 +114,7 @@
   {/each}
 {/if}
 
-{#if relatedEvents?.items && relatedEvents.items.length > 0}
+{#if relatedEvents.items.length > 0}
   <h3>Upcoming events</h3>
   <div class="ldaf-events-list-container">
     {#each relatedEvents.items as event (event?.sys.id)}

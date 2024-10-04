@@ -14,7 +14,11 @@ import {
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
 
 const query = gql`
-  query TopTierCollection($metadataID: String!, $preview: Boolean = false) {
+  query TopTierCollection(
+    $metadataID: String!,
+    $newsOldestDate: DateTime!,
+    $eventStartDate: DateTime!,
+    $preview: Boolean = false) {
     topTierCollection(
       where: { pageMetadata: { sys: { id: $metadataID } } }
       limit: 1
@@ -90,6 +94,30 @@ const query = gql`
             slug
           }
         }
+        recentNewsCollection(where: {publicationDate_gt: $newsOldestDate }) {
+          items {
+            sys {
+              id
+            }
+            type
+            title
+            subhead
+            publicationDate
+            slug
+            byline
+          }
+        }
+        upcomingEventsCollection(where: {eventDateAndTime_gte: $eventStartDate}) {
+          items {
+            sys {
+              id
+            }
+            slug
+            shortTitle
+            eventDescription
+            eventDateAndTime
+          }
+        }
       }
     }
   }
@@ -162,8 +190,16 @@ export const load = async ({
     if (!metadataID) break fetchData;
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata || !contentfulClient) break fetchData;
+    const newsOldestDate = getStartOfDayForDateInTZ(
+      getDateSixMonthsAgoInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
+    const eventStartDate = getStartOfDayForDateInTZ(
+      getCurrentDateInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
     const data = await contentfulClient.fetch<TopTierCollectionQuery>(printQuery(query), {
-      variables: { metadataID },
+      variables: { metadataID, newsOldestDate, eventStartDate },
     });
     if (!data) break fetchData;
 
@@ -212,14 +248,6 @@ export const load = async ({
     // Get related news and events based on the "subject" tag.
     // There is a tag that corresponds to each top tier, based on the slug.
     const tag = `subject-${slug}`;
-    const newsOldestDate = getStartOfDayForDateInTZ(
-      getDateSixMonthsAgoInTZ(eventIANATimezone),
-      eventIANATimezone,
-    );
-    const eventStartDate = getStartOfDayForDateInTZ(
-      getCurrentDateInTZ(eventIANATimezone),
-      eventIANATimezone,
-    );
     const taggedDataPromise = await contentfulClient.fetch<TaggedNewsAndEventsQuery>(
       printQuery(taggedNewsAndEventsQuery),
       {
@@ -254,8 +282,12 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
-        relatedNews: taggedData?.newsCollection ?? { items: [] },
-        relatedEvents: taggedData?.eventEntryCollection ?? { items: [] },
+        relatedNews: taggedData?.newsCollection?.items.length 
+          ? taggedData?.newsCollection : (matchedTopTier.recentNewsCollection?.items.length
+          ? matchedTopTier.recentNewsCollection : {items: []} ),
+        relatedEvents: taggedData?.eventEntryCollection?.items.length 
+          ? taggedData?.eventEntryCollection : (matchedTopTier.upcomingEventsCollection?.items.length
+          ? matchedTopTier.upcomingEventsCollection : {items: []}),
       },
       pageMetadata,
     };

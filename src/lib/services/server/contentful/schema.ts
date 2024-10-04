@@ -6520,6 +6520,7 @@ export type TopTier = Entry & _Node & {
   subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
   title?: Maybe<Scalars['String']['output']>;
+  upcomingEventsCollection?: Maybe<TopTierUpcomingEventsCollection>;
   video?: Maybe<VideoWrapper>;
 };
 
@@ -6567,9 +6568,10 @@ export type TopTierPageMetadataArgs = {
 export type TopTierRecentNewsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<TopTierRecentNewsCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<TopTierRecentNewsFilter>;
+  where?: InputMaybe<NewsFilter>;
 };
 
 
@@ -6582,6 +6584,17 @@ export type TopTierSubheadingArgs = {
 /** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+export type TopTierUpcomingEventsCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<TopTierUpcomingEventsCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EventEntryFilter>;
 };
 
 
@@ -6688,7 +6701,7 @@ export type TopTierFilter = {
   heroImage_exists?: InputMaybe<Scalars['Boolean']['input']>;
   pageMetadata?: InputMaybe<CfPageMetadataNestedFilter>;
   pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  recentNews?: InputMaybe<CfrecentNewsMultiTypeNestedFilter>;
+  recentNews?: InputMaybe<CfNewsNestedFilter>;
   recentNewsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   subheading?: InputMaybe<Scalars['String']['input']>;
   subheading_contains?: InputMaybe<Scalars['String']['input']>;
@@ -6705,6 +6718,8 @@ export type TopTierFilter = {
   title_not?: InputMaybe<Scalars['String']['input']>;
   title_not_contains?: InputMaybe<Scalars['String']['input']>;
   title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  upcomingEvents?: InputMaybe<CfEventEntryNestedFilter>;
+  upcomingEventsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   video?: InputMaybe<CfVideoWrapperNestedFilter>;
   video_exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -6764,27 +6779,67 @@ export enum TopTierOrder {
 
 export type TopTierRecentNewsCollection = {
   __typename?: 'TopTierRecentNewsCollection';
-  items: Array<Maybe<TopTierRecentNewsItem>>;
+  items: Array<Maybe<News>>;
   limit: Scalars['Int']['output'];
   skip: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
-export type TopTierRecentNewsFilter = {
-  AND?: InputMaybe<Array<InputMaybe<TopTierRecentNewsFilter>>>;
-  OR?: InputMaybe<Array<InputMaybe<TopTierRecentNewsFilter>>>;
-  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  slug_contains?: InputMaybe<Scalars['String']['input']>;
-  slug_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  slug_not?: InputMaybe<Scalars['String']['input']>;
-  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
-  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  sys?: InputMaybe<SysFilter>;
+export enum TopTierRecentNewsCollectionOrder {
+  BylineAsc = 'byline_ASC',
+  BylineDesc = 'byline_DESC',
+  MetaTitleAsc = 'metaTitle_ASC',
+  MetaTitleDesc = 'metaTitle_DESC',
+  PublicationDateAsc = 'publicationDate_ASC',
+  PublicationDateDesc = 'publicationDate_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  SubheadAsc = 'subhead_ASC',
+  SubheadDesc = 'subhead_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  TypeAsc = 'type_ASC',
+  TypeDesc = 'type_DESC'
+}
+
+export type TopTierUpcomingEventsCollection = {
+  __typename?: 'TopTierUpcomingEventsCollection';
+  items: Array<Maybe<EventEntry>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
-export type TopTierRecentNewsItem = EventEntry | News;
+export enum TopTierUpcomingEventsCollectionOrder {
+  EventDateAndTimeAsc = 'eventDateAndTime_ASC',
+  EventDateAndTimeDesc = 'eventDateAndTime_DESC',
+  EventDescriptionAsc = 'eventDescription_ASC',
+  EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
+  InternalNameAsc = 'internalName_ASC',
+  InternalNameDesc = 'internalName_DESC',
+  ShortTitleAsc = 'shortTitle_ASC',
+  ShortTitleDesc = 'shortTitle_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
 
 /** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapper = Entry & _Node & {
@@ -7543,20 +7598,6 @@ export type CfeventDocumentsMultiTypeNestedFilter = {
   AND?: InputMaybe<Array<InputMaybe<CfeventDocumentsMultiTypeNestedFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<CfeventDocumentsMultiTypeNestedFilter>>>;
   contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  sys?: InputMaybe<SysFilter>;
-};
-
-export type CfrecentNewsMultiTypeNestedFilter = {
-  AND?: InputMaybe<Array<InputMaybe<CfrecentNewsMultiTypeNestedFilter>>>;
-  OR?: InputMaybe<Array<InputMaybe<CfrecentNewsMultiTypeNestedFilter>>>;
-  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  slug_contains?: InputMaybe<Scalars['String']['input']>;
-  slug_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  slug_not?: InputMaybe<Scalars['String']['input']>;
-  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
-  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
 };
 
