@@ -14,6 +14,7 @@
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
   import NewsEntrySnippet from "../../about/news/NewsEntrySnippet.svelte";
+  import Event from "../../about/events/Event.svelte";
 
   export let data;
   $: ({
@@ -28,6 +29,7 @@
       additionalResources,
       video,
       recentNewsCollection: news,
+      upcomingEventsCollection: events,
     },
     imageGallery,
     childServiceEntries,
@@ -257,4 +259,13 @@
       <NewsEntrySnippet {entry} headingLevel={4} />
     {/if}
   {/each}
+{/if}
+
+{#if events && events.items.length > 0}
+  <h2>Upcoming events</h2>
+  <div class="ldaf-events-list-container">
+    {#each events.items as event (event?.sys.id)}
+      <Event {event} headingLevel={4} />
+    {/each}
+  </div>
 {/if}

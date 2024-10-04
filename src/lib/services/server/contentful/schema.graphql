@@ -1285,6 +1285,7 @@ type EventEntryLinkingCollections {
   newsCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsNewsCollectionOrder], preview: Boolean, skip: Int = 0): NewsCollection
   pageMetadataCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsPageMetadataCollectionOrder], preview: Boolean, skip: Int = 0): PageMetadataCollection
   pressReleaseCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsPressReleaseCollectionOrder], preview: Boolean, skip: Int = 0): PressReleaseCollection
+  serviceGroupCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsServiceGroupCollectionOrder], preview: Boolean, skip: Int = 0): ServiceGroupCollection
   topTierCollection(limit: Int = 100, locale: String, order: [EventEntryLinkingCollectionsTopTierCollectionOrder], preview: Boolean, skip: Int = 0): TopTierCollection
 }
 
@@ -1351,6 +1352,25 @@ enum EventEntryLinkingCollectionsPressReleaseCollectionOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+enum EventEntryLinkingCollectionsServiceGroupCollectionOrder {
+  imageGalleryTitle_ASC
+  imageGalleryTitle_DESC
+  serviceListName_ASC
+  serviceListName_DESC
+  subheading_ASC
+  subheading_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
 }
 
 enum EventEntryLinkingCollectionsTopTierCollectionOrder {
@@ -3676,6 +3696,7 @@ type ServiceGroup implements Entry & _Node {
   subheading(locale: String): String
   sys: Sys!
   title(locale: String): String
+  upcomingEventsCollection(limit: Int = 100, locale: String, order: [ServiceGroupUpcomingEventsCollectionOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): ServiceGroupUpcomingEventsCollection
   video(locale: String, preview: Boolean, where: VideoWrapperFilter): VideoWrapper
 }
 
@@ -3842,6 +3863,8 @@ input ServiceGroupFilter {
   title_not: String
   title_not_contains: String
   title_not_in: [String]
+  upcomingEvents: cfEventEntryNestedFilter
+  upcomingEventsCollection_exists: Boolean
   video: cfVideoWrapperNestedFilter
   video_exists: Boolean
 }
@@ -3971,6 +3994,36 @@ input ServiceGroupServiceEntriesFilter {
 }
 
 union ServiceGroupServiceEntriesItem = ServiceEntry | ServiceGroup
+
+type ServiceGroupUpcomingEventsCollection {
+  items: [EventEntry]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+enum ServiceGroupUpcomingEventsCollectionOrder {
+  eventDateAndTime_ASC
+  eventDateAndTime_DESC
+  eventDescription_ASC
+  eventDescription_DESC
+  eventSummary_ASC
+  eventSummary_DESC
+  internalName_ASC
+  internalName_DESC
+  shortTitle_ASC
+  shortTitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
 
 type Sys {
   environmentId: String!
@@ -4946,6 +4999,7 @@ input cfServiceGroupNestedFilter {
   title_not: String
   title_not_contains: String
   title_not_in: [String]
+  upcomingEventsCollection_exists: Boolean
   video_exists: Boolean
 }
 

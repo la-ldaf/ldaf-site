@@ -24,7 +24,11 @@ import {
   getYoutubeVideoDataWithBlurhash,
   type YoutubeVideoData,
 } from "$lib/services/server/youtube";
-import { getDateSixMonthsAgoInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
+import {
+  getDateSixMonthsAgoInTZ,
+  getStartOfDayForDateInTZ,
+  getCurrentDateInTZ,
+} from "$lib/util/dates";
 import { eventIANATimezone } from "$lib/constants/date";
 
 const baseQuery = gql`
@@ -32,7 +36,12 @@ const baseQuery = gql`
   ${assetPropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroup($metadataID: String!, $newsOldestDate: DateTime!, $preview: Boolean = false) {
+  query ServiceGroup(
+    $metadataID: String!
+    $newsOldestDate: DateTime!
+    $eventStartDate: DateTime!
+    $preview: Boolean = false
+  ) {
     serviceGroupCollection(
       where: { pageMetadata: { sys: { id: $metadataID } } }
       limit: 1
@@ -164,6 +173,17 @@ const baseQuery = gql`
             publicationDate
             slug
             byline
+          }
+        }
+        upcomingEventsCollection(where: { eventDateAndTime_gte: $eventStartDate }) {
+          items {
+            sys {
+              id
+            }
+            slug
+            shortTitle
+            eventDescription
+            eventDateAndTime
           }
         }
       }
@@ -382,9 +402,13 @@ export const load = async ({
       getDateSixMonthsAgoInTZ(eventIANATimezone),
       eventIANATimezone,
     );
+    const eventStartDate = getStartOfDayForDateInTZ(
+      getCurrentDateInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
 
     const baseData = await contentfulClient.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
-      variables: { metadataID, newsOldestDate },
+      variables: { metadataID, newsOldestDate, eventStartDate },
     });
     if (!baseData) break fetchData;
     const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];

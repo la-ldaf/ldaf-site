@@ -1956,6 +1956,7 @@ export type EventEntryLinkingCollections = {
   newsCollection?: Maybe<NewsCollection>;
   pageMetadataCollection?: Maybe<PageMetadataCollection>;
   pressReleaseCollection?: Maybe<PressReleaseCollection>;
+  serviceGroupCollection?: Maybe<ServiceGroupCollection>;
   topTierCollection?: Maybe<TopTierCollection>;
 };
 
@@ -1990,6 +1991,15 @@ export type EventEntryLinkingCollectionsPressReleaseCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Array<InputMaybe<EventEntryLinkingCollectionsPressReleaseCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type EventEntryLinkingCollectionsServiceGroupCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<EventEntryLinkingCollectionsServiceGroupCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -2066,6 +2076,25 @@ export enum EventEntryLinkingCollectionsPressReleaseCollectionOrder {
   SysPublishedAtDesc = 'sys_publishedAt_DESC',
   SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export enum EventEntryLinkingCollectionsServiceGroupCollectionOrder {
+  ImageGalleryTitleAsc = 'imageGalleryTitle_ASC',
+  ImageGalleryTitleDesc = 'imageGalleryTitle_DESC',
+  ServiceListNameAsc = 'serviceListName_ASC',
+  ServiceListNameDesc = 'serviceListName_DESC',
+  SubheadingAsc = 'subheading_ASC',
+  SubheadingDesc = 'subheading_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
 }
 
 export enum EventEntryLinkingCollectionsTopTierCollectionOrder {
@@ -5861,6 +5890,7 @@ export type ServiceGroup = Entry & _Node & {
   subheading?: Maybe<Scalars['String']['output']>;
   sys: Sys;
   title?: Maybe<Scalars['String']['output']>;
+  upcomingEventsCollection?: Maybe<ServiceGroupUpcomingEventsCollection>;
   video?: Maybe<VideoWrapper>;
 };
 
@@ -5961,6 +5991,17 @@ export type ServiceGroupSubheadingArgs = {
 /** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+export type ServiceGroupUpcomingEventsCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<ServiceGroupUpcomingEventsCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EventEntryFilter>;
 };
 
 
@@ -6152,6 +6193,8 @@ export type ServiceGroupFilter = {
   title_not?: InputMaybe<Scalars['String']['input']>;
   title_not_contains?: InputMaybe<Scalars['String']['input']>;
   title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  upcomingEvents?: InputMaybe<CfEventEntryNestedFilter>;
+  upcomingEventsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   video?: InputMaybe<CfVideoWrapperNestedFilter>;
   video_exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -6319,6 +6362,37 @@ export type ServiceGroupServiceEntriesFilter = {
 };
 
 export type ServiceGroupServiceEntriesItem = ServiceEntry | ServiceGroup;
+
+export type ServiceGroupUpcomingEventsCollection = {
+  __typename?: 'ServiceGroupUpcomingEventsCollection';
+  items: Array<Maybe<EventEntry>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export enum ServiceGroupUpcomingEventsCollectionOrder {
+  EventDateAndTimeAsc = 'eventDateAndTime_ASC',
+  EventDateAndTimeDesc = 'eventDateAndTime_DESC',
+  EventDescriptionAsc = 'eventDescription_ASC',
+  EventDescriptionDesc = 'eventDescription_DESC',
+  EventSummaryAsc = 'eventSummary_ASC',
+  EventSummaryDesc = 'eventSummary_DESC',
+  InternalNameAsc = 'internalName_ASC',
+  InternalNameDesc = 'internalName_DESC',
+  ShortTitleAsc = 'shortTitle_ASC',
+  ShortTitleDesc = 'shortTitle_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
 
 export type Sys = {
   __typename?: 'Sys';
@@ -7532,6 +7606,7 @@ export type CfServiceGroupNestedFilter = {
   title_not?: InputMaybe<Scalars['String']['input']>;
   title_not_contains?: InputMaybe<Scalars['String']['input']>;
   title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  upcomingEventsCollection_exists?: InputMaybe<Scalars['Boolean']['input']>;
   video_exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
