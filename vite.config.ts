@@ -3,7 +3,6 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { partytownVite } from "@builder.io/partytown/utils";
 import svg from "@poppanator/sveltekit-svg";
 import type { PluginOption } from "vite";
-import { purgeCss } from "vite-plugin-tailwind-purgecss";
 import ldafIcon from "./vite-plugin-ldaf-icon";
 import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
@@ -22,10 +21,6 @@ const plugins: PluginOption[] = [
   bundlestring(),
   ldafIcon(),
 ];
-
-if (process.env.NODE_ENV === "production") {
-  plugins.push(purgeCss());
-}
 
 export default defineConfig({
   plugins,
