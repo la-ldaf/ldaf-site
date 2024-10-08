@@ -14,6 +14,7 @@ vi.mock("$app/stores", (): typeof stores => {
       error: null,
       route: { id: null },
       form: null,
+      state: {},
       data: {},
     }),
     updated: {

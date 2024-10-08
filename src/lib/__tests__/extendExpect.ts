@@ -19,4 +19,7 @@ declare global {
   // Note: augmenting jest.Matchers interface will also work.
 }
 
-expect.extend({ toMatchDOMNodes, toHaveBeenCalledOnceWith });
+expect.extend({
+  toMatchDOMNodes,
+  toHaveBeenCalledOnceWith,
+});

@@ -1,3 +1,4 @@
+import type { MatcherFunction } from "@testing-library/svelte";
 import prettier from "prettier";
 
 const domParser = new DOMParser();
@@ -203,12 +204,11 @@ const nodeArrayToString = (nodeArray: Node[]) => nodeArray.map(nodeToString).joi
 // The exported matchers _must not_ be arrow functions, because they depend on `this` being bound
 // dynamically
 
-export function toMatchDOMNodes<R>(
+export function toMatchDOMNodes(
   this: {
     isNot: boolean;
-    utils: { diff: (a: string, b: string) => string | null };
   },
-  received: R,
+  received: string | Node[] | HTMLElement | NodeList,
   expected: string | Node[] | HTMLElement | NodeList,
   { ignoreAttributes = [] }: { ignoreAttributes?: string[] } = {},
 ) {

@@ -1,8 +1,8 @@
 import type { PageMetadataMap, PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { NavMenuType } from "$lib/components/Header/Nav/types";
-import type SideNavItem from "./types";
+import type { SideNavItemType } from "./types";
 
-type SideNavMap = Map<string, SideNavItem>;
+type SideNavMap = Map<string, SideNavItemType>;
 
 const sideNavMap: SideNavMap = new Map();
 
@@ -11,8 +11,8 @@ const buildSideNavTree = (
   pageMetadataMap: PageMetadataMap,
   featuredPages: string[],
   children: PageMetadataMapItem["children"],
-): SideNavItem[] => {
-  const tree: SideNavItem[] = [];
+): SideNavItemType[] => {
+  const tree: SideNavItemType[] = [];
   if (children) {
     featuredPages.forEach((featuredPageId) => {
       const matchedChildId = children.find((childId) => childId === featuredPageId);
@@ -30,7 +30,7 @@ const buildSideNavTree = (
       }
     });
     // then add the rest in alphabetical order
-    const nonFeaturedPages: SideNavItem[] = [];
+    const nonFeaturedPages: SideNavItemType[] = [];
     children.forEach((childId) => {
       // skip if we've already added it
       const childAlreadyInTree = tree.find((leaf) => leaf.id === childId);

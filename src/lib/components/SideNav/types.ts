@@ -1,8 +1,6 @@
-type SideNavItem = {
+export type SideNavItemType = {
   id: string;
   title: string;
   link: string;
-  children?: SideNavItem[];
+  children?: SideNavItemType[];
 };
-
-export default SideNavItem;

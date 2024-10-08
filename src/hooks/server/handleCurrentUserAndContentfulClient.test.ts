@@ -151,7 +151,7 @@ const itDeletesUserFromKV = () =>
 
 const itDeletesCookie = () =>
   it<Ctx>("deletes cookie", ({ event }) =>
-    expect(event.cookies.delete).toHaveBeenCalledWith("ldafUserToken"));
+    expect(event.cookies.delete).toHaveBeenCalledWith("ldafUserToken", {path: "/"}));
 
 describe("with an unauthenticated user", () => {
   describeRequestsFor(
