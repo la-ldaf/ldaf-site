@@ -6,8 +6,6 @@ labels: ""
 assignees: ""
 ---
 
-Jira ticket: [TICKET_NUMBER](URL)
-
 Related issues:
 
 -
