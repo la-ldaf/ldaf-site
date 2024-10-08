@@ -8,8 +8,8 @@
   import { afterNavigate, beforeNavigate, goto, invalidate } from "$app/navigation";
   import { navigating, page } from "$app/stores";
   import { browser } from "$app/environment";
+  import { injectSpeedInsights } from "@vercel/speed-insights/sveltekit";
 
-  import { webVitals } from "$lib/vitals";
   import isInIframe from "$lib/util/isInIframe";
   import Analytics from "$lib/components/Analytics";
   import Header from "$lib/components/Header";
@@ -30,17 +30,18 @@
     footerNavItems,
     siteTitle,
     pageMetadataMap,
-    analyticsID,
     previewAuthenticationError,
   } = data);
 
   // Vercel Speed Insights
-  $: if (browser && analyticsID) {
-    webVitals({
-      path: $page.url.pathname,
-      params: $page.params,
-      analyticsID,
-    });
+  $: if (browser) {
+    //&& isProd) {
+    injectSpeedInsights();
+    // webVitals({
+    //   path: $page.url.pathname,
+    //   params: $page.params,
+    //   analyticsID,
+    // });
   }
 
   setCurrentUserStore(data.currentUser);

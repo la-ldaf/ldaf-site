@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit";
-import { VERCEL_ENV, VERCEL_ANALYTICS_ID } from "$env/static/private";
+import { VERCEL_ENV } from "$env/static/private";
 import type { User } from "$lib/types";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadErrorPageContent } from "$lib/loadErrorPageContent";
@@ -95,8 +95,6 @@ export const load = async ({
   return {
     isProd,
     previewAuthenticationError,
-    // this env variable can't be renamed, so we send it with the page data
-    analyticsID: isProd ? VERCEL_ANALYTICS_ID : undefined,
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
     siteTitle: loadSiteTitle(),
