@@ -139,11 +139,19 @@ npm run test:unit:coverage
 
 #### End-to-end tests
 
+Before you can run the end-to-end tests you'll need to install the browsers that Playwright uses under the hood:
+
+```
+npx playwright install --with-deps
+```
+
+Afterwards you can run the tests in a headless browser via:
+
 ```
 npm run test:e2e
 ```
 
-You can also open up a UI with Playwright for debugging:
+You can also open up a UI with Playwright to see what it's doing (useful for debugging):
 
 ```
 npm run test:e2e:ui
