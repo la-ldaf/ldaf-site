@@ -1,4 +1,5 @@
 import {
+  CONTENTFUL_DEFAULT_ENVIRONMENT,
   VERCEL_ENV,
   VERCEL_GIT_REPO_OWNER,
   VERCEL_GIT_REPO_SLUG,
@@ -7,6 +8,7 @@ import {
 } from "$env/static/private";
 
 export const load = () => ({
+  CONTENTFUL_DEFAULT_ENVIRONMENT,
   VERCEL_ENV,
   VERCEL_GIT_REPO_OWNER,
   VERCEL_GIT_REPO_SLUG,

@@ -1,10 +1,8 @@
-<!-- PR title should start with Jira ticket number if applicable, e.g. `LDAF-12345 Fix a bug that was causing a problem` -->
+<!-- PR title should start with GitHub issue number if applicable, e.g. `[Issue #12345] Fix a bug that was causing a problem` -->
 
 ## Fixes #12345 <!-- Link to GitHub issue. If only part of a fix, use Part of #12345 instead. -->
 
 <!-- If there is not yet an issue for your bug, please open a new issue and then link to that issue in your pull request. -->
-
-Jira ticket: [TICKET_NUMBER](URL)
 
 <!-- Summarize the bug described in the related issue. -->
 
@@ -30,4 +28,4 @@ Jira ticket: [TICKET_NUMBER](URL)
 ## Requested feedback
 
 <!-- What type of feedback would you like from reviewers? -->
-<!-- If you plan on leaving a self-review, note that here. >
+<!-- If you plan on leaving a self-review, note that here. -->
