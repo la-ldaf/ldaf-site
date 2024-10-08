@@ -139,6 +139,8 @@ npm run test:unit:coverage
 
 #### End-to-end tests
 
+Note that the end-to-end tests expect to be run on test data; currently the only way to get this working locally is to remove your `.env` file if you pulled it from Vercel.
+
 Before you can run the end-to-end tests you'll need to install the browsers that Playwright uses under the hood:
 
 ```
