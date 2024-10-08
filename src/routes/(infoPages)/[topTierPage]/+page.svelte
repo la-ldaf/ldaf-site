@@ -81,7 +81,9 @@
             variant={index < 1 ? "primary" : "outline"}
             href={item.url}
           >
-            <Icon src={arrowIcon} size={3} />
+            <Icon src={arrowIcon} size={3} aria-hidden="true" /><span class="usa-sr-only"
+              >View {item.title}</span
+            >
           </Button>
         </Card>
       {:else}
@@ -98,7 +100,9 @@
             variant={index < 1 ? "primary" : "outline"}
             href={item.url}
           >
-            <Icon src={arrowIcon} size={3} />
+            <Icon src={arrowIcon} size={3} aria-hidden="true" /><span class="usa-sr-only"
+              >View {item.title}</span
+            >
           </Button>
         </Card>
       {/if}
