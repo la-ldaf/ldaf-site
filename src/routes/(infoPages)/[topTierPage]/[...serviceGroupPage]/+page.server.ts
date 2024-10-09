@@ -16,7 +16,7 @@ import type {
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
 import chunks from "$lib/util/chunks";
-import assetPropsFragment from "$lib/fragments/assetProps";
+// assetProps are included with entry props
 import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
@@ -33,7 +33,6 @@ import { eventIANATimezone } from "$lib/constants/date";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${assetPropsFragment}
   ${entryPropsFragment}
 
   query ServiceGroup(
@@ -180,7 +179,6 @@ const baseQuery = gql`
 
 const childServiceEntriesQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${assetPropsFragment}
   ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!, $preview: Boolean = false) {

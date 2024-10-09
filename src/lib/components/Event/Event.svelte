@@ -11,7 +11,7 @@
     slug?: string | null;
     shortTitle?: string | null;
     eventDescription?: string | null;
-    eventDateAndTime?: any | null;
+    eventDateAndTime?: Date | string | null;
     eventSummary?: string | null;
     sys: {
       __typename?: "Sys";
@@ -22,12 +22,15 @@
   export let event: NonNullable<EventData>;
   export let headingLevel: HeadingLevel = 2;
   export let variation: "big" | "small" = "big";
-  $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;
+
+  const dateString = event?.eventDateAndTime as string;
+
+  $: date = event?.eventDateAndTime ? new Date(dateString) : undefined;
 </script>
 
 <div class="event">
   {#if event?.eventDateAndTime}
-    <DateComponent dateString={event.eventDateAndTime} {variation} />
+    <DateComponent {dateString} {variation} />
   {/if}
   <div class="event-details">
     {#if event?.shortTitle}

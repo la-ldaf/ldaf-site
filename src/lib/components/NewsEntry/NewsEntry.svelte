@@ -12,7 +12,7 @@
     type?: string | null;
     title?: string | null;
     subhead?: string | null;
-    publicationDate?: any | null;
+    publicationDate?: Date | string | null;
     slug?: string | null;
     byline?: string | null;
     sys: {
@@ -28,7 +28,7 @@
 
   $: ({ slug, title, subhead, byline, type, publicationDate } = entry);
 
-  $: dateString = getDateStringFromUTCDate(publicationDate);
+  $: dateString = getDateStringFromUTCDate(publicationDate as string);
 
   $: isArticle = type === "News article";
 </script>

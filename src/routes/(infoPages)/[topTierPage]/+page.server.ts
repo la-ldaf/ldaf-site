@@ -12,11 +12,13 @@ import {
 } from "$lib/util/dates";
 
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
+// assetProps are included with entryProps
 import entryPropsFragment from "$lib/fragments/entryProps";
 
 const query = gql`
-  ${entryPropsFragment}
+  # eslint-disable @graphql-eslint/selection-set-depth
 
+  ${entryPropsFragment}
   query TopTierCollection(
     $metadataID: String!
     $newsOldestDate: DateTime!
@@ -272,6 +274,7 @@ export const load = async ({
                 : undefined,
             }
           : undefined,
+        // relatedNews and relatedEvents default to tagged data
         relatedNews: taggedData?.newsCollection?.items.length
           ? taggedData?.newsCollection
           : matchedTopTier.recentNewsCollection?.items.length
