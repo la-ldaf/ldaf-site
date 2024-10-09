@@ -261,7 +261,7 @@
   {/each}
 {/if}
 
-{#if events && events.items.length > 0}
+{#if events?.items && events.items.length > 0}
   <h2>Upcoming events</h2>
   <div class="ldaf-events-list-container">
     {#each events.items as event (event?.sys.id)}

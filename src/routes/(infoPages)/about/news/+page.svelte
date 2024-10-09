@@ -9,11 +9,13 @@
 <h1 class="ldaf-news-page--heading">News</h1>
 
 <div>
-  {#each newsEntries as entry}
-    {#if entry}
-      <NewsEntry {entry} />
-    {/if}
-  {/each}
+  {#if newsEntries && newsEntries.length}
+    {#each newsEntries as entry}
+      {#if entry}
+        <NewsEntry {entry} />
+      {/if}
+    {/each}
+  {/if}
 </div>
 
 <Pagination

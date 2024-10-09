@@ -14,11 +14,13 @@
 
 <!-- See src/routes/(infoPages)/layout.scss for styling. -->
 <div class="ldaf-events-list-container">
-  {#each events as event}
-    {#if event}
-      <Event {event} />
-    {/if}
-  {/each}
+  {#if events && events.length}
+    {#each events as event}
+      {#if event}
+        <Event {event} />
+      {/if}
+    {/each}
+  {/if}
 </div>
 
 <Pagination
