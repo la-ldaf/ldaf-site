@@ -159,11 +159,7 @@
       <div class="grid-row grid-gap-lg">
         <div class="tablet:grid-col-6">
           {#if featuredEntry}
-            <NewsEntry
-              entry={featuredEntry}
-              headingLevel={3}
-              variation="homepage-featured"
-            />
+            <NewsEntry entry={featuredEntry} headingLevel={3} variation="homepage-featured" />
           {/if}
         </div>
         <div class="tablet:grid-col-6">

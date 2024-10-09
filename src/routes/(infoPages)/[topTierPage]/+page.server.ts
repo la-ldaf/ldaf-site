@@ -12,7 +12,7 @@ import {
 } from "$lib/util/dates";
 
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
-import entryPropsFragment from '$lib/fragments/entryProps';
+import entryPropsFragment from "$lib/fragments/entryProps";
 
 const query = gql`
   ${entryPropsFragment}

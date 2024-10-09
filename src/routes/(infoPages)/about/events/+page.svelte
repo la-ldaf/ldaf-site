@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Event from "$lib/components/Event";
+  import Event from "$lib/components/Event";
   import Pagination from "$lib/components/Pagination";
 
   export let data;

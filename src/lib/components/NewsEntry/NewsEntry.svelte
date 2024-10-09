@@ -19,7 +19,7 @@
       __typename?: "Sys";
       id: string;
     };
-  }
+  };
   type NewsSnippetVariation = "default" | "homepage-featured" | "homepage-listed";
 
   export let entry: NonNullable<NewsEntry>;

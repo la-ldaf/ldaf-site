@@ -4,7 +4,7 @@
 // break this up into separate fragments for those different situations.
 // It will both simplify queries and make what's requested more explicit.
 import gql from "graphql-tag";
-import assetProps from "$lib/fragments/assetProps"; 
+import assetProps from "$lib/fragments/assetProps";
 
 export default gql`
   ${assetProps}
@@ -57,7 +57,7 @@ export default gql`
         }
       }
     }
-    
+
     ... on EventEntry {
       sys {
         id
@@ -67,7 +67,7 @@ export default gql`
       eventDescription
       eventDateAndTime
     }
-    
+
     ... on News {
       sys {
         id

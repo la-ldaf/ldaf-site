@@ -118,7 +118,7 @@
   <h3>Upcoming events</h3>
   <div class="ldaf-events-list-container">
     {#each relatedEvents.items as event (event?.sys.id)}
-      {#if event }
+      {#if event}
         <Event {event} headingLevel={4} />
       {/if}
     {/each}

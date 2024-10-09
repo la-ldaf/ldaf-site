@@ -14,8 +14,8 @@
     eventDateAndTime?: any | null;
     eventSummary?: string | null;
     sys: {
-        __typename?: "Sys";
-        id: string;
+      __typename?: "Sys";
+      id: string;
     };
   }
 
