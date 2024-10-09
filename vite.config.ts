@@ -29,6 +29,8 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     coverage: {
+      include: ["src/**/*.{js,ts}"],
+      exclude: ["src/stories/**/*.{js,ts}"],
       reporter: ["text", "json", "html", "lcov"],
     },
     setupFiles: ["src/lib/__tests__/setup.ts"],
