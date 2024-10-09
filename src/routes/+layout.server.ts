@@ -14,11 +14,9 @@ export const load = async ({
   locals: { contentfulClient, currentUser, previewAuthenticationError },
   url: { pathname },
 }) => {
-  // prod indicator is sent with page data and is currently used to determine:
-  //   * whether we should connect to Vercel Speed Insights
-  //   * if we should set up GA in debug mode or prod mode
+  // `isProd` indicator is sent with page data and is currently used to
+  //   determine if we should set up GA in debug mode or prod mode.
   const isProd = VERCEL_ENV === "production";
-  const isPreview = VERCEL_ENV === "preview";
 
   const clientCurrentUser: User | undefined = currentUser
     ? { name: currentUser.name, email: currentUser.email, avatarURL: currentUser.avatarURL }
@@ -96,7 +94,6 @@ export const load = async ({
   return {
     isProd,
     previewAuthenticationError,
-    speedInsightsEnabled: isProd || isPreview,
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
     siteTitle: loadSiteTitle(),
