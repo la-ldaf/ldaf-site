@@ -25,6 +25,7 @@
   export let data;
   $: ({
     isProd,
+    speedInsightsEnabled,
     headerPrimaryNavItems,
     headerSecondaryNavItems,
     footerNavItems,
@@ -34,14 +35,17 @@
   } = data);
 
   // Vercel Speed Insights
-  $: if (browser) {
-    //&& isProd) {
-    injectSpeedInsights();
-    // webVitals({
-    //   path: $page.url.pathname,
-    //   params: $page.params,
-    //   analyticsID,
-    // });
+  $: if (browser && speedInsightsEnabled) {
+    injectSpeedInsights({
+      // The percentage of events to send (between 0 and 1); default is 1.
+      // TODO: Decrease this to 0.75 for cost savings, if needed.
+      sampleRate: 1,
+      debug: true,
+      beforeSend: (data) => {
+        console.log("beforeSend", data);
+        return data;
+      },
+    });
   }
 
   setCurrentUserStore(data.currentUser);
