@@ -19,7 +19,6 @@ export const load = async ({
   //   * if we should set up GA in debug mode or prod mode
   const isProd = VERCEL_ENV === "production";
   const isPreview = VERCEL_ENV === "preview";
-  const speedInsightsEnabled = isProd || isPreview;
 
   const clientCurrentUser: User | undefined = currentUser
     ? { name: currentUser.name, email: currentUser.email, avatarURL: currentUser.avatarURL }
@@ -97,7 +96,7 @@ export const load = async ({
   return {
     isProd,
     previewAuthenticationError,
-    speedInsightsEnabled,
+    speedInsightsEnabled: isProd || isPreview,
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
     siteTitle: loadSiteTitle(),

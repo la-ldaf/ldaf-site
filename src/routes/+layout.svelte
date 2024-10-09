@@ -35,18 +35,16 @@
   } = data);
 
   // Vercel Speed Insights
-  $: if (browser) {
-    injectSpeedInsights({
-      // The percentage of events to send (between 0 and 1); default is 1.
-      // TODO: Decrease this to 0.75 for cost savings, if needed.
-      sampleRate: 1,
-      // Unfortunately this will only provide a success or error message
-      //   indicating whether the package was loaded but does not include any
-      //   event information. If you want to see what's happening, you'll need
-      //   to deploy to a preview environment and inspect the network requests.
-      debug: !speedInsightsEnabled,
-    });
-  }
+  injectSpeedInsights({
+    // The percentage of events to send (between 0 and 1); default is 1.
+    // TODO: Decrease this to 0.75 for cost savings, if needed.
+    sampleRate: 1,
+    // Unfortunately this will only provide a success or error message
+    //   indicating whether the package was loaded but does not include any
+    //   event information. If you want to see what's happening, you'll need
+    //   to deploy to a preview environment and inspect the network requests.
+    debug: !speedInsightsEnabled,
+  });
 
   setCurrentUserStore(data.currentUser);
 
