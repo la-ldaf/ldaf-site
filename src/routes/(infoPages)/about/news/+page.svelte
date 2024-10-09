@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NewsEntrySnippet from "./NewsEntrySnippet.svelte";
+  import NewsEntry from "$lib/components/NewsEntry";
   import Pagination from "$lib/components/Pagination";
 
   export let data;
@@ -9,11 +9,13 @@
 <h1 class="ldaf-news-page--heading">News</h1>
 
 <div>
-  {#each newsEntries as entry}
-    {#if entry}
-      <NewsEntrySnippet {entry} />
-    {/if}
-  {/each}
+  {#if newsEntries && newsEntries.length}
+    {#each newsEntries as entry}
+      {#if entry}
+        <NewsEntry {entry} />
+      {/if}
+    {/each}
+  {/if}
 </div>
 
 <Pagination

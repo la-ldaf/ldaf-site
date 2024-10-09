@@ -4,7 +4,10 @@
 // break this up into separate fragments for those different situations.
 // It will both simplify queries and make what's requested more explicit.
 import gql from "graphql-tag";
+import assetProps from "$lib/fragments/assetProps";
+
 export default gql`
+  ${assetProps}
   fragment EntryProps on Entry {
     __typename
     sys {
@@ -53,6 +56,28 @@ export default gql`
           }
         }
       }
+    }
+
+    ... on EventEntry {
+      sys {
+        id
+      }
+      slug
+      shortTitle
+      eventDescription
+      eventDateAndTime
+    }
+
+    ... on News {
+      sys {
+        id
+      }
+      type
+      title
+      subhead
+      publicationDate
+      slug
+      byline
     }
   }
 `;

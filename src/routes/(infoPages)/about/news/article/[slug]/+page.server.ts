@@ -101,29 +101,12 @@ const newsQuery = gql`
         }
         relatedEventsCollection {
           items {
-            ... on EventEntry {
-              sys {
-                id
-              }
-              eventDateAndTime
-              shortTitle
-              slug
-              eventDescription
-            }
+            ...EntryProps
           }
         }
         relatedNewsCollection {
           items {
-            ... on News {
-              sys {
-                id
-              }
-              slug
-              title
-              byline
-              type
-              publicationDate
-            }
+            ...EntryProps
           }
         }
       }
