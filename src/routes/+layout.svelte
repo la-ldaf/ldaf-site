@@ -35,7 +35,7 @@
   } = data);
 
   // Vercel Speed Insights
-  $: if (browser) {
+  $: if (browser && $page.url.pathname && $page.params) {
     injectSpeedInsights({
       // The percentage of events to send (between 0 and 1); default is 1.
       // TODO: Decrease this to 0.75 for cost savings, if needed.
@@ -44,6 +44,10 @@
       //   indicating whether the package was loaded but does not include any
       //   event information.
       debug: !speedInsightsEnabled,
+      beforeSend: (data) => {
+        console.log("beforeSend", data);
+        return null;
+      },
     });
   }
 
