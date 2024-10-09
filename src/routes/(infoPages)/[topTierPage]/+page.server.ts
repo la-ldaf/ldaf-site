@@ -12,8 +12,11 @@ import {
 } from "$lib/util/dates";
 
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
+import entryPropsFragment from '$lib/fragments/entryProps';
 
 const query = gql`
+  ${entryPropsFragment}
+
   query TopTierCollection(
     $metadataID: String!
     $newsOldestDate: DateTime!
@@ -97,26 +100,12 @@ const query = gql`
         }
         recentNewsCollection(where: { publicationDate_gt: $newsOldestDate }) {
           items {
-            sys {
-              id
-            }
-            type
-            title
-            subhead
-            publicationDate
-            slug
-            byline
+            ...EntryProps
           }
         }
         upcomingEventsCollection(where: { eventDateAndTime_gte: $eventStartDate }) {
           items {
-            sys {
-              id
-            }
-            slug
-            shortTitle
-            eventDescription
-            eventDateAndTime
+            ...EntryProps
           }
         }
       }

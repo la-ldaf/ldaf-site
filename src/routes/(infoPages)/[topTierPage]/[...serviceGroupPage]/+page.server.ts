@@ -164,26 +164,12 @@ const baseQuery = gql`
         }
         recentNewsCollection(where: { publicationDate_gte: $newsOldestDate }) {
           items {
-            sys {
-              id
-            }
-            type
-            title
-            subhead
-            publicationDate
-            slug
-            byline
+            ...EntryProps
           }
         }
         upcomingEventsCollection(where: { eventDateAndTime_gte: $eventStartDate }) {
           items {
-            sys {
-              id
-            }
-            slug
-            shortTitle
-            eventDescription
-            eventDateAndTime
+            ...EntryProps
           }
         }
       }
