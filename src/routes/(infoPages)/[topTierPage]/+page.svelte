@@ -7,9 +7,9 @@
   import Icon from "$lib/components/Icon";
   import VideoCard from "$lib/components/VideoCard";
   import Image from "$lib/components/Image";
-  import NewsEntrySnippet from "../about/news/NewsEntrySnippet.svelte";
-  import Event from "../about/events/Event.svelte";
   import { getSources } from "$lib/imageServices/contentful";
+  import NewsEntry from "$lib/components/NewsEntry";
+  import Event from "$lib/components/Event";
 
   export let data;
   $: ({ topTierPage } = data);
@@ -109,7 +109,7 @@
   <h3>Recent news</h3>
   {#each relatedNews.items as entry (entry?.sys.id)}
     {#if entry}
-      <NewsEntrySnippet {entry} headingLevel={4} />
+      <NewsEntry {entry} headingLevel={4} />
     {/if}
   {/each}
 {/if}
@@ -118,7 +118,9 @@
   <h3>Upcoming events</h3>
   <div class="ldaf-events-list-container">
     {#each relatedEvents.items as event (event?.sys.id)}
-      <Event {event} headingLevel={4} />
+      {#if event }
+        <Event {event} headingLevel={4} />
+      {/if}
     {/each}
   </div>
 {/if}

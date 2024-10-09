@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { PageServerData } from "./$types";
   import DateComponent from "$lib/components/Date";
   import Link from "$lib/components/Link";
   import {
@@ -7,7 +6,20 @@
     type HeadingLevel,
   } from "$lib/components/ContentfulRichText/headings";
 
-  export let event: PageServerData["events"][number];
+  interface EventData {
+    __typename?: "EventEntry";
+    slug?: string | null;
+    shortTitle?: string | null;
+    eventDescription?: string | null;
+    eventDateAndTime?: any | null;
+    eventSummary?: string | null;
+    sys: {
+        __typename?: "Sys";
+        id: string;
+    };
+  }
+
+  export let event: NonNullable<EventData>;
   export let headingLevel: HeadingLevel = 2;
   export let variation: "big" | "small" = "big";
   $: date = event?.eventDateAndTime ? new Date(event?.eventDateAndTime) : undefined;

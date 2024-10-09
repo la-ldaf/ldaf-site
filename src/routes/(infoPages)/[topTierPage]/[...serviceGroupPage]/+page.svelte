@@ -13,8 +13,8 @@
   import Image from "$lib/components/Image";
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
-  import NewsEntrySnippet from "../../about/news/NewsEntrySnippet.svelte";
-  import Event from "../../about/events/Event.svelte";
+  import NewsEntry from "$lib/components/NewsEntry";
+  import Event from "$lib/components/Event";
 
   export let data;
   $: ({
@@ -256,7 +256,7 @@
   <h2>Recent news</h2>
   {#each news.items as entry (entry?.sys.id)}
     {#if entry}
-      <NewsEntrySnippet {entry} headingLevel={4} />
+      <NewsEntry {entry} headingLevel={4} />
     {/if}
   {/each}
 {/if}
@@ -265,7 +265,9 @@
   <h2>Upcoming events</h2>
   <div class="ldaf-events-list-container">
     {#each events.items as event (event?.sys.id)}
-      <Event {event} headingLevel={4} />
+      {#if event }
+        <Event {event} headingLevel={4} />
+      {/if}
     {/each}
   </div>
 {/if}

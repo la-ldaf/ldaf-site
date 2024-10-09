@@ -1,6 +1,6 @@
 <script lang="ts">
+    import Event from "$lib/components/Event";
   import Pagination from "$lib/components/Pagination";
-  import Event from "./Event.svelte";
 
   export let data;
   $: ({ events, currentPageNumber, totalPages } = data);
@@ -15,7 +15,9 @@
 <!-- See src/routes/(infoPages)/layout.scss for styling. -->
 <div class="ldaf-events-list-container">
   {#each events as event}
-    <Event {event} />
+    {#if event}
+      <Event {event} />
+    {/if}
   {/each}
 </div>
 

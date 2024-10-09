@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NewsEntrySnippet from "./NewsEntrySnippet.svelte";
+  import NewsEntry from "$lib/components/NewsEntry";
   import Pagination from "$lib/components/Pagination";
 
   export let data;
@@ -11,7 +11,7 @@
 <div>
   {#each newsEntries as entry}
     {#if entry}
-      <NewsEntrySnippet {entry} />
+      <NewsEntry {entry} />
     {/if}
   {/each}
 </div>
