@@ -1,4 +1,3 @@
-import type { MatcherFunction } from "@testing-library/svelte";
 import prettier from "prettier";
 
 const domParser = new DOMParser();
