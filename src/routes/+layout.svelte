@@ -34,16 +34,20 @@
   } = data);
 
   // Vercel Speed Insights
+  // We don't wrap this in any checks like `browser` or `isProd` because this
+  //   is already handled by the Vercel package.
+  // When running locally, it will inject the debug version of the script,
+  //   which will only provide a success or error message indicating whether
+  //   the package was loaded (does not log even information).
+  // When running in production or a preview environment, the production
+  //   version of the script is injected. You can see what the script is doing
+  //   by inspecting the network requests for POSTs to a route on the domain
+  //   created by Vercel, /_vercel/speed-insights/vitals
+  // This will only track the initial page load, not subsequent page loads.
   injectSpeedInsights({
     // The percentage of events to send (between 0 and 1); default is 1.
-    // TODO: Decrease this to 0.75 for cost savings, if needed.
+    // This can be decreased for cost savings if needed.
     sampleRate: 1,
-    // Unfortunately this will only provide a success or error message
-    //   indicating whether the package was loaded but does not include any
-    //   event information. If you want to see what's happening, you'll need
-    //   to deploy to a preview environment and inspect the network requests
-    //   for POSTs to /_vercel/speed-insights/vitals
-    //debug: !speedInsightsEnabled,
   });
 
   setCurrentUserStore(data.currentUser);
