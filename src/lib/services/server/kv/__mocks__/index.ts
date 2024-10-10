@@ -1,14 +1,10 @@
 import type { ServerUser } from "$lib/server/types";
-import { vi, type Mock, type MockedObject } from "vitest";
-import type { createClient as originalCreateClient } from "..";
+import { vi } from "vitest";
 import type { YoutubeVideoData } from "$lib/services/server/youtube";
 import type { FireWeatherData } from "../../../../../routes/api/v1/fire-weather/+server";
 
-export const createClient: Mock<
-  Parameters<typeof originalCreateClient>,
-  Promise<MockedObject<Awaited<ReturnType<typeof originalCreateClient>>>>
-> = vi.fn(async (_) => {
-  const userInfos: Record<string, ServerUser> = {};
+export const createClient = vi.fn(async () => {
+  const userInfos: Record<string, ServerUser | null> = {};
   const blurhashes: Record<string, string> = {};
   const youtubeVideoDatas: Record<string, YoutubeVideoData> = {};
   let fireWeatherData: FireWeatherData = { parishes: [], lastUpdated: "" };

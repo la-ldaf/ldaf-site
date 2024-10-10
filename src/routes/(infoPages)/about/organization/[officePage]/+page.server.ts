@@ -152,5 +152,5 @@ export const load = async ({
       pageMetadata,
     };
   }
-  throw error(404);
+  error(404);
 };

@@ -20,7 +20,7 @@ export default async ({
 
   if (!currentUserResponse.ok) {
     const errorMessage = await getErrorMessageFromResponse(currentUserResponse);
-    throw error(currentUserResponse.status, {
+    error(currentUserResponse.status, {
       message: `${currentUserResponse.status}${
         currentUserResponse.statusText ? ` ${currentUserResponse.statusText}` : ""
       }: ${errorMessage}`,

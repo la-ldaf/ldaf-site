@@ -6,7 +6,7 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "@storybook/addon-viewport",
-    "storybook-addon-designs", // Figma plugin
+    "@storybook/addon-designs", // Figma plugin
   ],
   framework: {
     name: "@storybook/sveltekit",

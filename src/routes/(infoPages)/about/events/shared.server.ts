@@ -125,5 +125,5 @@ export const loadEventsPage = async ({
       events: eventsData.eventEntryCollection.items,
     };
   }
-  throw error(404);
+  error(404);
 };

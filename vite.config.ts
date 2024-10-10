@@ -3,7 +3,6 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { partytownVite } from "@builder.io/partytown/utils";
 import svg from "@poppanator/sveltekit-svg";
 import type { PluginOption } from "vite";
-import { purgeCss } from "vite-plugin-svelte-purgecss";
 import ldafIcon from "./vite-plugin-ldaf-icon";
 import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
@@ -23,10 +22,6 @@ const plugins: PluginOption[] = [
   ldafIcon(),
 ];
 
-if (process.env.NODE_ENV === "production") {
-  plugins.push(purgeCss());
-}
-
 export default defineConfig({
   plugins,
   test: {
@@ -34,6 +29,8 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     coverage: {
+      include: ["src/**/*.{js,ts}"],
+      exclude: ["src/stories/**/*.{js,ts}"],
       reporter: ["text", "json", "html", "lcov"],
     },
     setupFiles: ["src/lib/__tests__/setup.ts"],
@@ -43,6 +40,7 @@ export default defineConfig({
       scss: {
         additionalData: '@use "src/variables.scss" as *;',
         includePaths: ["./node_modules/@uswds/uswds/packages"],
+        quietDeps: true
       },
     },
   },

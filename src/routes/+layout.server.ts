@@ -46,24 +46,24 @@ export const load = async ({
         if (internalRedirect.__typename === "PageMetadata") {
           const internalRedirectPageMetadata = pageMetadataMap.get(internalRedirect.sys.id);
           if (internalRedirectPageMetadata?.url) {
-            throw redirect(301, internalRedirectPageMetadata.url);
+            redirect(301, internalRedirectPageMetadata.url);
           }
         } else if (internalRedirect.__typename === "News" && internalRedirect.slug) {
-          throw redirect(301, `/about/news/article/${internalRedirect.slug}`);
+          redirect(301, `/about/news/article/${internalRedirect.slug}`);
         } else if (
           internalRedirect.__typename === "EventEntry" &&
           internalRedirect.slug &&
           internalRedirect.eventDateAndTime
         ) {
           const date = new Date(internalRedirect.eventDateAndTime);
-          throw redirect(
+          redirect(
             301,
             `/about/events/event/${date.toISOString().split("T")[0]}-${internalRedirect.slug}`,
           );
         }
       }
       if (externalRedirect) {
-        throw redirect(301, externalRedirect);
+        redirect(301, externalRedirect);
       }
     }
   }
@@ -80,11 +80,11 @@ export const load = async ({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
-  const footerNavItems = loadFooterNav({
+  const footerNavItems = await loadFooterNav({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
-  const sideNavMap = loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
+  const sideNavMap = await loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
 
   // Since any route can error, we always need to have the error page content
   //   available on every request.
