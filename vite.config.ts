@@ -40,6 +40,7 @@ export default defineConfig({
       scss: {
         additionalData: '@use "src/variables.scss" as *;',
         includePaths: ["./node_modules/@uswds/uswds/packages"],
+        quietDeps: true
       },
     },
   },
