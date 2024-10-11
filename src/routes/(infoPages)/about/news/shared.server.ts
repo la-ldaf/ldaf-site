@@ -93,5 +93,5 @@ export const loadNewsPage = async ({
       newsEntries: newsData.newsCollection.items,
     };
   }
-  throw error(404);
+  error(404);
 };

@@ -233,7 +233,7 @@
               linkedImage: { url, height, width, blurhash },
               altText,
             } = commissionerHeadshot}
-            {@const diameter = width && height ? Math.min(width, height) : width ?? height}
+            {@const diameter = width && height ? Math.min(width, height) : (width ?? height)}
             <Image
               class="greeting-commissioner-portrait"
               src={url}

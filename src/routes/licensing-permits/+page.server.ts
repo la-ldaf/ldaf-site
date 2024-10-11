@@ -174,5 +174,5 @@ export const load = async ({ parent, locals: { contentfulClient } }) => {
       serviceGroups,
     };
   }
-  throw error(404);
+  error(404);
 };
