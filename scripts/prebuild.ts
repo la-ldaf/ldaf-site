@@ -25,7 +25,6 @@ const copyExampleEnvFile = async () => {
     const emptyString = '""';
     const defaultSystemVariables = {
       VERCEL: '"0"',
-      VERCEL_ANALYTICS_ID: emptyString,
       VERCEL_ENV: '"development"',
       VERCEL_GIT_REPO_OWNER: emptyString,
       VERCEL_GIT_REPO_SLUG: emptyString,
