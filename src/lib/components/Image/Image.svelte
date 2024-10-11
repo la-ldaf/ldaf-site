@@ -105,6 +105,7 @@
   let className: string | undefined = undefined;
   export { className as class };
   export let imageClass: string | undefined = undefined;
+  export const role: "img" | null = alt ? "img" : null;
 
   const getLazyLoadingType = (
     loading: Loading,
@@ -206,7 +207,7 @@
     enabled={lazyLoadingType === "intersectionObserver"}
   >
     <div
-      role="img"
+      {role}
       aria-label={alt}
       class={classNames(
         "ldaf-img",

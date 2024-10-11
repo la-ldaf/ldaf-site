@@ -63,6 +63,10 @@
     width: 100%;
     .ldaf-video-title {
       margin-top: 0;
+      font-size: 1.17em;
+      margin-block-end: 1em;
+      font-weight: bold;
+      unicode-bidi: isolate;
     }
     .ldaf-video-description {
       // cut off description after 5 lines
