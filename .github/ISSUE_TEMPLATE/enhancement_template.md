@@ -6,14 +6,9 @@ labels: ""
 assignees: ""
 ---
 
-Jira ticket: [TICKET_NUMBER](URL)
-
 Related issues:
 
 -
-
-<!-- Note that most of this template (besides the implementation details) overlaps with Jira. -->
-<!-- If this issue is effectively mirroring a Jira ticket, just be sure to copy some of that information over so that public (non-Jira) users can still receive the necessary context. -->
 
 ## Problem statement
 

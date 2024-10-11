@@ -2,6 +2,7 @@
   import Link from "$lib/components/Link";
   export let data;
   const {
+    CONTENTFUL_DEFAULT_ENVIRONMENT,
     VERCEL_ENV,
     VERCEL_GIT_REPO_OWNER,
     VERCEL_GIT_REPO_SLUG,
@@ -27,6 +28,14 @@
 
 <div class="usa-section grid-container">
   <main id="main-content">
+    <p>
+      {#if CONTENTFUL_DEFAULT_ENVIRONMENT}
+        Contentful environment: <code>{CONTENTFUL_DEFAULT_ENVIRONMENT}</code>
+      {:else}
+        Could not output Contentful environment information.
+      {/if}
+    </p>
+
     <p>
       {#if VERCEL_ENV}
         Vercel environment: <code>{VERCEL_ENV}</code>
