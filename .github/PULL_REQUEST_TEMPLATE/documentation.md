@@ -6,7 +6,7 @@
 
 <!-- Add detailed description of changes here. -->
 
-- <!-- Bulleted summary of changes -->
+<!-- Bulleted summary of changes -->
 -
 
 ## Requested feedback
