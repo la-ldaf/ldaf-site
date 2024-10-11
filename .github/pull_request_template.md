@@ -9,9 +9,8 @@
 
 ## Proposed changes
 
-<!-- Add detailed description of changes here. -->
+<!-- Add detailed description of changes here, including a bulleted summary of changes. -->
 
-<!-- Bulleted summary of changes -->
 -
 
 ## Screenshots
@@ -24,6 +23,7 @@
 
 - [ ] <!-- Fulfilled acceptance criteria -->
 - [ ] <!-- Tests added to cover the change -->
+
 <!-- If not, why not? -->
 
 ## Other details

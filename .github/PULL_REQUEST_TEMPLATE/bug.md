@@ -8,9 +8,8 @@
 
 ## Proposed changes
 
-<!-- Add detailed description of changes here. -->
+<!-- Add detailed description of changes here, including a bulleted summary of changes. -->
 
-<!-- Bulleted summary of changes -->
 -
 
 ## Screenshots
