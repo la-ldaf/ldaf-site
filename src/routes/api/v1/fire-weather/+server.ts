@@ -44,10 +44,14 @@ export async function POST({ request, locals: { getKVClient } }) {
     const decoder = new TextDecoder();
     const csvString = decoder.decode(arrayBuffer);
 
+    console.log(`Raw CSV string: ${csvString}`);
+
     const fireData: ParishData[] = await parse(csvString, {
       columns: true,
       skip_empty_lines: true,
     });
+
+    console.log(`Parsed Fire data:\n ${JSON.stringify(fireData, null, 2)}`);
 
     const filteredData: FilteredParishData[] = fireData.map(
       ({ ParishNumber, ParishName, ObservationDate, DangerClassDay }) => ({
@@ -57,6 +61,8 @@ export async function POST({ request, locals: { getKVClient } }) {
         DangerClassDay,
       }),
     );
+
+    console.log(`Filtered Fire data:\n ${JSON.stringify(fireData, null, 2)}`);
 
     const finalData = {
       parishes: filteredData,
@@ -75,6 +81,7 @@ export async function POST({ request, locals: { getKVClient } }) {
   } catch (error) {
     // TODO: Improve error handling to more
     // specifically describe parsing errors
+    console.error(error);
     return new Response(JSON.stringify(error), {
       status: 500,
       headers: {
