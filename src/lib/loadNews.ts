@@ -8,6 +8,7 @@ type NewsItem = NonNullable<NewsCollectionQuery["newsCollection"]>["items"][numb
 
 const query = gql`
   query NewsCollection($preview: Boolean = false) {
+    # TODO: A limit of 500 works until it doesn't. We should set up a way to paginate.
     newsCollection(limit: 500, order: [publicationDate_DESC], preview: $preview) {
       items {
         title

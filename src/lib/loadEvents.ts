@@ -8,6 +8,7 @@ type EventItem = NonNullable<EventCollectionQuery["eventEntryCollection"]>["item
 
 const query = gql`
   query EventCollection($preview: Boolean = false) {
+    # TODO: A limit of 500 works until it doesn't. We should set up a way to paginate.
     eventEntryCollection(limit: 500, order: [eventDateAndTime_ASC], preview: $preview) {
       items {
         eventDateAndTime
