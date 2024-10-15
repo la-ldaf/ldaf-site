@@ -1,6 +1,7 @@
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadNews } from "$lib/loadNews";
 import { loadEvents } from "$lib/loadEvents.js";
+import constructEventSlug from "../(infoPages)/about/events/constructEventSlug";
 
 // Need to escape special characters to ensure generated XML is valid.
 // Stole most of this from https://www.npmjs.com/package/xml-escape
@@ -43,9 +44,10 @@ export async function GET({ locals: { contentfulClient } }) {
         const isPastEvent = date < new Date();
         return `
         <url>
-          <loc>https://www.ldaf.la.gov/about/events/event/${date.toISOString().split("T")[0]}-${
-            item.slug
-          }</loc>
+          <loc>https://www.ldaf.la.gov/about/events/event/${constructEventSlug(
+            date,
+            item.slug,
+          )}</loc>
           <changefreq>${isPastEvent ? "never" : "daily"}</changefreq>
         </url>`;
       } else return "";

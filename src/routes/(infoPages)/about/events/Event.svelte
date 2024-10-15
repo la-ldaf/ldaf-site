@@ -6,6 +6,7 @@
     headingTagByLevel,
     type HeadingLevel,
   } from "$lib/components/ContentfulRichText/headings";
+  import constructEventSlug from "./constructEventSlug";
 
   export let event: PageServerData["events"][number];
   export let headingLevel: HeadingLevel = 2;
@@ -22,7 +23,7 @@
       <Link
         class="display-block"
         href={date && event?.slug
-          ? `/about/events/event/${date.toISOString().split("T")[0]}-${event.slug}`
+          ? `/about/events/event/${constructEventSlug(date, event.slug)}`
           : undefined}
       >
         <svelte:element this={headingTagByLevel[headingLevel]} class="event-title">
