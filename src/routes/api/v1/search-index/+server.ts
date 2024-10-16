@@ -14,6 +14,24 @@ const CONTENTFUL_ACTIONS = {
   DELETE: "ContentManagement.Entry.delete",
 };
 
+type AlgoliaMetadataRecord = {
+  objectID: string;
+  sys: { id: string };
+  url?: string | null | undefined;
+  children?: string[];
+  parent?: {
+    sys: {
+      id: string;
+      linkType?: string;
+      type?: string;
+    };
+  };
+  // Unfortunately, we can't know what all of what will exist in the the `fields`
+  // property from Contentful (especially once we're adding Service Entries),
+  // so we have to allow for some dynamic flexibility here
+  [key: string]: string | null | undefined | object;
+};
+
 export const POST = async ({ request, locals: { contentfulClient } }) => {
   authenticateRequest(request);
 
@@ -21,26 +39,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
-
   const contentTypes = ["pageMetadata"];
-
-  type AlgoliaMetadataRecord = {
-    objectID: string;
-    sys: { id: string };
-    url?: string | null | undefined;
-    children?: string[];
-    parent?: {
-      sys: {
-        id: string;
-        linkType?: string;
-        type?: string;
-      };
-    };
-    // Unfortunately, we can't know what all of what will exist in the the `fields`
-    // property from Contentful (especially once we're adding Service Entries),
-    // so we have to allow for some dynamic flexibility here
-    [key: string]: string | null | undefined | object;
-  };
 
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
