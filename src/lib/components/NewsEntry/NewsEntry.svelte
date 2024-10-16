@@ -7,17 +7,28 @@
   } from "$lib/components/ContentfulRichText/headings";
   import { getDateStringFromUTCDate } from "$lib/util/dates";
 
-  import type { PageServerData } from "./$types";
-
+  type NewsEntry = {
+    __typename?: "News";
+    type?: string | null;
+    title?: string | null;
+    subhead?: string | null;
+    publicationDate?: Date | string | null;
+    slug?: string | null;
+    byline?: string | null;
+    sys: {
+      __typename?: "Sys";
+      id: string;
+    };
+  };
   type NewsSnippetVariation = "default" | "homepage-featured" | "homepage-listed";
 
-  export let entry: NonNullable<PageServerData["newsEntries"][number]>;
+  export let entry: NonNullable<NewsEntry>;
   export let headingLevel: HeadingLevel = 2;
   export let variation: NewsSnippetVariation = "default";
 
   $: ({ slug, title, subhead, byline, type, publicationDate } = entry);
 
-  $: dateString = getDateStringFromUTCDate(publicationDate);
+  $: dateString = getDateStringFromUTCDate(publicationDate as string);
 
   $: isArticle = type === "News article";
 </script>
