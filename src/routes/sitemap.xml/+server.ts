@@ -1,7 +1,7 @@
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadNews } from "$lib/loadNews";
 import { loadEvents } from "$lib/loadEvents.js";
-import constructEventSlug from "../(infoPages)/about/events/constructEventSlug";
+import constructEventSlug from "$lib/util/constructEventSlug";
 
 // Need to escape special characters to ensure generated XML is valid.
 // Stole most of this from https://www.npmjs.com/package/xml-escape

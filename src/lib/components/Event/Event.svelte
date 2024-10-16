@@ -5,7 +5,7 @@
     headingTagByLevel,
     type HeadingLevel,
   } from "$lib/components/ContentfulRichText/headings";
-  import constructEventSlug from "./constructEventSlug";
+  import constructEventSlug from "$lib/util/constructEventSlug";
 
   interface EventData {
     __typename?: "EventEntry";

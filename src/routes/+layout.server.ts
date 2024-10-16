@@ -7,7 +7,7 @@ import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
 import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.server";
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
-import constructEventSlug from "./(infoPages)/about/events/constructEventSlug.js";
+import constructEventSlug from "$lib/util/constructEventSlug";
 
 export const load = async ({
   fetch,
