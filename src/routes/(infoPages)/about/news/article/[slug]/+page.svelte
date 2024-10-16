@@ -3,12 +3,12 @@
 
   import ContactCard from "$lib/components/ContactCard";
   import ContentfulRichText from "$lib/components/ContentfulRichText";
-  import Event from "../../../events/Event.svelte";
   import Image from "$lib/components/Image";
-  import NewsEntrySnippet from "../../NewsEntrySnippet.svelte";
   import Tag from "$lib/components/Tag";
   import { getSources } from "$lib/imageServices/contentful";
   import { getDateStringFromUTCDate } from "$lib/util/dates";
+  import Event from "$lib/components/Event";
+  import NewsEntry from "$lib/components/NewsEntry";
 
   export let data;
   $: ({
@@ -102,7 +102,9 @@
   <!-- See src/routes/(infoPages)/layout.scss for styling. -->
   <div class="ldaf-events-list-container">
     {#each relatedEventsCollection?.items as event (event?.sys.id)}
-      <Event {event} />
+      {#if event}
+        <Event {event} />
+      {/if}
     {/each}
   </div>
 {/if}
@@ -111,7 +113,7 @@
   <h2>Related news</h2>
   {#each relatedNewsCollection?.items as entry (entry?.sys.id)}
     {#if entry}
-      <NewsEntrySnippet {entry} />
+      <NewsEntry {entry} />
     {/if}
   {/each}
 {/if}
