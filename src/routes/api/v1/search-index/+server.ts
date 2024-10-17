@@ -29,7 +29,7 @@ type AlgoliaMetadataRecord = {
   // Unfortunately, we can't know what all of what will exist in the the `fields`
   // property from Contentful (especially once we're adding Service Entries),
   // so we have to allow for some dynamic flexibility here
-  [key: string]: string | null | undefined | object;
+  [key: string]: string | null | undefined | object | boolean;
 };
 
 export const POST = async ({ request, locals: { contentfulClient } }) => {
@@ -99,3 +99,62 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
     throw error(400, message as string);
   }
 };
+
+export const GET = async ({ locals: { contentfulClient } }) => {
+  const {pageMetadataMap} = await loadPageMetadataMap({contentfulClient})
+  let data: AlgoliaMetadataRecord[] = [];
+  
+  const deletedIds = [
+    // first batch
+    'kX46qBuNEqAkXCm1htmbR',
+    'OHDePUTRZoWzor1v9SyaN',
+    'LD5d437pCcWlbY91Xx3Ww', 
+    'JU2cjVhLHMir0ihxDITfQ',
+    'JGUrx5RQ5MNZi6OaVDQMv',
+    'I9JfjlmWnDGnVCpMCO5sI',
+    'FdYl8HyaMuvXcxR9t4OjQ',
+    'FYWHMfJjgfleDMrizm6EE',
+    'BXAHzgfT3Xqht3hjkm6N6',
+    // second batch
+    'PO19KMVSCWMETGGTvekxi',
+    'UsrsjMMc2FaF4rYMZYpdc',
+    'RubO0bJBsOriYrw65wvMS',
+    'V0euSDw1Gt0tpTYtwsGWv',
+    'bp7UuVNob35mioGpnv7lp',
+    'ngHRjVJHVCoNNjZBmALtC'
+  ]
+  const transformedFieldsMap: Map<string, AlgoliaMetadataRecord> = new Map();
+  if (pageMetadataMap) {
+    [...pageMetadataMap].forEach(([_, page]) => {
+      if (deletedIds.includes(page.sys.id)) {
+
+        const transformedFields: AlgoliaMetadataRecord = {
+          sys: {
+            id: page.sys.id
+          },
+          slug: page.slug,
+          objectID: page.sys.id,
+          url: page?.url,
+          children: page?.children,
+          metaDescription: page?.metaDescription,
+          metaTitle: page?.metaTitle,
+          title: page.title,
+          isRoot: page.isRoot,
+        }
+
+        if (page.parent) {
+          transformedFields.parent = {
+            sys: {
+              id: page.parent.sys.id
+            }
+          }
+        }
+        transformedFieldsMap.set(page.sys.id, transformedFields)
+      }
+    });
+  }
+  data = Array.from(transformedFieldsMap.values());
+
+  return json(data)
+
+}
