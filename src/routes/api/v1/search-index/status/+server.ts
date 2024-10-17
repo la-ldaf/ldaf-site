@@ -2,7 +2,7 @@ import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "@sveltejs/kit";
 import {
   loadPageMetadataMap,
-  type PageMetadataMapItem,
+  type MetadataMapItem,
   type PageMetadataMapItemWithObjectID,
 } from "$lib/loadPageMetadataMap";
 import uniq from "lodash/uniq";
@@ -17,7 +17,7 @@ const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
 
-  let hits: PageMetadataMapItem[] = [];
+  let hits: MetadataMapItem[] = [];
 
   await index.browseObjects({
     query: "",
@@ -36,16 +36,16 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
   const algoliaMap = new Map();
   hits.forEach((hit) => algoliaMap.set(hit.sys.id, hit));
 
-  const getMismatchedKeys = (oldData: PageMetadataMapItem, newData: PageMetadataMapItem) => {
+  const getMismatchedKeys = (oldData: MetadataMapItem, newData: MetadataMapItem) => {
     const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
     const keys = [];
-    for (const key of data as (keyof PageMetadataMapItem)[]) {
+    for (const key of data as (keyof MetadataMapItem)[]) {
       if (!isEqual(oldData[key], newData[key])) {
         keys.push(key);
       }
     }
 
-    return keys as (keyof PageMetadataMapItem)[];
+    return keys as (keyof MetadataMapItem)[];
   };
 
   const nullURLs = [];

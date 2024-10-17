@@ -1,0 +1,3202 @@
+{
+  "total_contentful_records": 165,
+  "total_algolia_records": 8,
+  "expected_algolia_records": 0,
+  "missing_in_algolia": [
+      {
+          "sys": {
+              "id": "1uNZAirA6PTWS7nH9bVE5C"
+          },
+          "title": "Prescribed Burning",
+          "slug": "prescribed-burning",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Prescribed burning",
+          "metaDescription": "Set fires safely and legally for forest management, fire suppression, farming, or restoration",
+          "parent": {
+              "sys": {
+                  "id": "64dubUyhTXG9OZAsgliGDv"
+              }
+          },
+          "url": "/land/fire/prescribed-burning"
+      },
+      {
+          "sys": {
+              "id": "4KOsBcTfpy3XwEtdocvZgO"
+          },
+          "title": "Book your stay at Indian Creek ",
+          "slug": "book-your-stay-today",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Book your stay at Indian Creek Recreation Area",
+          "metaDescription": "Check availability and make a reservation at Indian Creek Recreation Area",
+          "parent": {
+              "sys": {
+                  "id": "2SxqvPiinK3SFhKPSlIiNU"
+              }
+          },
+          "url": "/indian-creek-recreation-area/book-your-stay-today"
+      },
+      {
+          "sys": {
+              "id": "1ztgzJrkiSyG4kOWnxtaLk"
+          },
+          "title": "Weights and Measures Service Portal",
+          "slug": "weights-and-measures-service-portal",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Weights and Measures Service Portal",
+          "metaDescription": "Weights and Measures Service Portal",
+          "parent": {
+              "sys": {
+                  "id": "76LJryp2U1a3c4gOodTPqC"
+              }
+          },
+          "url": "/about/contact/weights-and-measures-service-portal"
+      },
+      {
+          "sys": {
+              "id": "77FFASeu6qIDcvYMk4eSNW"
+          },
+          "title": "Custom exempt information",
+          "slug": "custom-exempt-information",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Custom exempt information",
+          "metaDescription": "Custom exempt information",
+          "parent": {
+              "sys": {
+                  "id": "1RZENs1OPEdlRUPb8ACv4T"
+              }
+          },
+          "url": "/food/selling/meat-poultry/custom-exempt-information"
+      },
+      {
+          "sys": {
+              "id": "1RZENs1OPEdlRUPb8ACv4T"
+          },
+          "title": "Meat and Poultry",
+          "slug": "meat-poultry",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Meat and poultry",
+          "metaDescription": "Learn about safe and humane meat processing in Louisiana through approved processing plants and slaughterhouses, facility inspections, and registration for meat and poultry handlers.",
+          "parent": {
+              "sys": {
+                  "id": "4MPejhj8QzmO4qrp8HB7N"
+              }
+          },
+          "children": [
+              "77FFASeu6qIDcvYMk4eSNW",
+              "1Do6shSHSyz5hslQ3xveCY",
+              "2Eyfj59qjgeLdg7mpJPO8T",
+              "78yx0guGInRk2pyI2cl7ml",
+              "7dkN6RanXFDoxPb4CuGPUQ"
+          ],
+          "url": "/food/selling/meat-poultry"
+      },
+      {
+          "sys": {
+              "id": "4fWrOorxeifZjssLSvtIyf"
+          },
+          "title": "Milk and Dairy",
+          "slug": "dairy",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Milk and dairy",
+          "metaDescription": "Get authorized to process and sell milk and dairy products in Louisiana",
+          "parent": {
+              "sys": {
+                  "id": "4MPejhj8QzmO4qrp8HB7N"
+              }
+          },
+          "url": "/food/selling/dairy"
+      },
+      {
+          "sys": {
+              "id": "1Do6shSHSyz5hslQ3xveCY"
+          },
+          "title": "Labeling information",
+          "slug": "labeling-information",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Labeling information",
+          "metaDescription": "Labeling information",
+          "parent": {
+              "sys": {
+                  "id": "1RZENs1OPEdlRUPb8ACv4T"
+              }
+          },
+          "url": "/food/selling/meat-poultry/labeling-information"
+      },
+      {
+          "sys": {
+              "id": "2Eyfj59qjgeLdg7mpJPO8T"
+          },
+          "title": "Poultry exempt information",
+          "slug": "poultry-exempt-information",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Poultry exempt information",
+          "metaDescription": "Poultry exempt information",
+          "parent": {
+              "sys": {
+                  "id": "1RZENs1OPEdlRUPb8ACv4T"
+              }
+          },
+          "url": "/food/selling/meat-poultry/poultry-exempt-information"
+      },
+      {
+          "sys": {
+              "id": "78yx0guGInRk2pyI2cl7ml"
+          },
+          "title": "Wholesale inspection information ",
+          "slug": "wholesale-inspection-information",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Wholesale inspection information ",
+          "metaDescription": "Wholesale inspection information ",
+          "parent": {
+              "sys": {
+                  "id": "1RZENs1OPEdlRUPb8ACv4T"
+              }
+          },
+          "url": "/food/selling/meat-poultry/wholesale-inspection-information"
+      },
+      {
+          "sys": {
+              "id": "7dkN6RanXFDoxPb4CuGPUQ"
+          },
+          "title": "Applying for inspection and exemptions",
+          "slug": "applying-for-inspection-and-exemptions",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "application for meat inspection services",
+          "metaDescription": null,
+          "parent": {
+              "sys": {
+                  "id": "1RZENs1OPEdlRUPb8ACv4T"
+              }
+          },
+          "url": "/food/selling/meat-poultry/applying-for-inspection-and-exemptions"
+      },
+      {
+          "sys": {
+              "id": "4FbBKFzPna1PlgAA5fAfn6"
+          },
+          "title": "Flower Dealer Licensing",
+          "slug": "florists",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Flower dealer licensing",
+          "metaDescription": "Get authorized to arrange, cut, and sell flowers and ornamental plants in the state of Louisiana with a retail florist license, cut flower dealer permit, or wholesale florist license.",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "url": "/plants/florists"
+      },
+      {
+          "sys": {
+              "id": "I9JfjlmWnDGnVCpMCO5sI"
+          },
+          "title": "Transporting Livestock",
+          "slug": "transporting",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Transporting livestock",
+          "metaDescription": "Learn health certificate requirements and other regulations to safely and legally move animals into and out of Louisiana. i.e. premise id\n",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "url": "/animals/transporting"
+      },
+      {
+          "sys": {
+              "id": "7kq1BeHRi8D78rAg0YFM9i"
+          },
+          "title": "Louisiana Agricultural Workforce Development Program",
+          "slug": "louisiana-agricultural-workforce-development-program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Agricultural Workforce Development Program",
+          "metaDescription": "The LAWDP provides businesses a monetary incentive to establish intern programs to train students for careers in the agriculture and forestry fields.",
+          "parent": {
+              "sys": {
+                  "id": "53nj3eX9UbAozp6nHuQVZX"
+              }
+          },
+          "url": "/business/grants-funding/louisiana-agricultural-workforce-development-program"
+      },
+      {
+          "sys": {
+              "id": "5IVeQ7pyZQssJNmuB25gDh"
+          },
+          "title": "SWCD Spotlights",
+          "slug": "swcd-spotlights",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "SWCD spotlights",
+          "metaDescription": null,
+          "parent": {
+              "sys": {
+                  "id": "2R4jHM0fS6nebPK2XFB4JD"
+              }
+          },
+          "url": "/land/conservation/swcd-spotlights"
+      },
+      {
+          "sys": {
+              "id": "6Dhh9Qtg1m2gd9LQIQEUZ0"
+          },
+          "title": "Soil & Water Conservation Districts",
+          "slug": "soil-and-water-conservation-districts",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Soil & Water Conservation Districts",
+          "metaDescription": "Louisiana’s 44 Soil & Water Conservation Districts (SWCDs) provide conservation planning services to landowners within their individual districts. ",
+          "parent": {
+              "sys": {
+                  "id": "2R4jHM0fS6nebPK2XFB4JD"
+              }
+          },
+          "url": "/land/conservation/soil-and-water-conservation-districts"
+      },
+      {
+          "sys": {
+              "id": "BXAHzgfT3Xqht3hjkm6N6"
+          },
+          "title": "Commercial Feed and Pet Food",
+          "slug": "feed",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Commercial feed and pet food",
+          "metaDescription": "Learn how to stay in compliance with Louisiana's commercial feed and pet food registration and reporting rules.",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "url": "/animals/feed"
+      },
+      {
+          "sys": {
+              "id": "JU2cjVhLHMir0ihxDITfQ"
+          },
+          "title": "Food Distribution ",
+          "slug": "distribution-assistance",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Food distribution ",
+          "metaDescription": "Reduce food insecurity, get access to school lunch programs, and learn about emergency food assistance",
+          "parent": {
+              "sys": {
+                  "id": "35Y981dIqqduwghyZSD3H8"
+              }
+          },
+          "url": "/food/distribution-assistance"
+      },
+      {
+          "sys": {
+              "id": "39A2sjWCSntNuAtV16eVZ9"
+          },
+          "title": "Structural Pest Control Recertification Opportunities",
+          "slug": "pest-control-training-opportunities",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Structural pest control training opportunities",
+          "metaDescription": "Fulfill your annual training and recertification requirements as a structural pest control professional in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "2Nf7dZpB5teZBt9npEZMft"
+              }
+          },
+          "url": "/business/pest-control/pest-control-training-opportunities"
+      },
+      {
+          "sys": {
+              "id": "51y45pOGxw56iwTEqMujYC"
+          },
+          "title": "Forest Legacy Program",
+          "slug": "forestry-legacy-program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forest Legacy Program",
+          "metaDescription": "Protect privately-owned forestlands in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "UsrsjMMc2FaF4rYMZYpdc"
+              }
+          },
+          "url": "/land/forestry/forestry-legacy-program"
+      },
+      {
+          "sys": {
+              "id": "2iFjOVHJryLWTFSfaoKeYv"
+          },
+          "title": "Commercial & Private Applicator Recertification Opportunities",
+          "slug": "commercial-applicator-recertification-opportunities",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Commercial & private applicator recertification opportunities",
+          "metaDescription": "Fulfill your annual training and recertification requirements",
+          "parent": {
+              "sys": {
+                  "id": "6mf53B2N7MbIZYueiTiYyk"
+              }
+          },
+          "url": "/plants/pesticides/commercial-applicator-recertification-opportunities"
+      },
+      {
+          "sys": {
+              "id": "5xqkFI1drrp2JzBExb2gfq"
+          },
+          "title": "Seed Sample Test Results",
+          "slug": "seed-sample-test-results",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Seed sample test results",
+          "metaDescription": null,
+          "parent": {
+              "sys": {
+                  "id": "4Op8L4UGuA0S9KX5q8B39"
+              }
+          },
+          "url": "/plants/seeds/seed-sample-test-results"
+      },
+      {
+          "sys": {
+              "id": "7jrUBoFZjkSnEN12D9pH7E"
+          },
+          "title": "Animal Branding and Tattoos",
+          "slug": "branding",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animal branding and tattoos",
+          "metaDescription": "Ensure you're identified as your animals' owner if they get lost or stolen by registering permanent markings on your livestock with the Louisiana's Livestock Brand Commission. Download the latest Brand Book. ",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "url": "/animals/branding"
+      },
+      {
+          "sys": {
+              "id": "32Axt5EAGYnosa6JZ8oALi"
+          },
+          "title": "Livestock Brand Commission",
+          "slug": "livestock-brand-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Livestock Brand Commission",
+          "metaDescription": "Investigates all agricultural crime in Louisiana including livestock, farm machinery, and equipment thefts. Maintain brand records and publishes a book of brands every 5 years. Enforcement personnel have full police powers. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/livestock-brand-commission"
+      },
+      {
+          "sys": {
+              "id": "44lq9KFxW0XxTK6Gf8zb0N"
+          },
+          "title": "Seed Testing Laboratory",
+          "slug": "sampling-testing",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Seed sampling and testing",
+          "metaDescription": "Get seed samples tested and inspected for germination, purity, and more through the State Seed Testing Laboratory.",
+          "parent": {
+              "sys": {
+                  "id": "4Op8L4UGuA0S9KX5q8B39"
+              }
+          },
+          "url": "/plants/seeds/sampling-testing"
+      },
+      {
+          "sys": {
+              "id": "6G0f5fuuy1towqspyAXwMO"
+          },
+          "title": "About this Website",
+          "slug": "website",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "About the LDAF website",
+          "metaDescription": "Information about the website launched in 2023. Includes LDAF's privacy policy and a website feedback form.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "children": [
+              "6ASUMIEq0yPQgAbviF8osK",
+              "7kmQton9FW3Aj5aa0Q6UBZ"
+          ],
+          "url": "/about/website"
+      },
+      {
+          "sys": {
+              "id": "6nGoNXZML4r5xVlFfNjg6w"
+          },
+          "title": "Soil and Water Conservation Commission",
+          "slug": "soil-and-water-conservation-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Soil and Water Conservation Commission",
+          "metaDescription": "Commission that develops the Louisiana conservation district program, establishes operational policy, and provides general regulatory oversight of the conservation district program. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/soil-and-water-conservation-commission"
+      },
+      {
+          "sys": {
+              "id": "2ltR2LG9aDA1oRyqrQJ0Yk"
+          },
+          "title": "Board of Animal Health",
+          "slug": "board-of-animal-health",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Board of Animal Health",
+          "metaDescription": "Board that prevents, controls, and eradicates diseases in livestock and poultry; is responsible for licensing and supervision of livestock dealers and the chartering and supervision of auction markets in Louisiana. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/board-of-animal-health"
+      },
+      {
+          "sys": {
+              "id": "6a0lZm5lyuyihsxzHWbWiU"
+          },
+          "title": "Advisory Commission on Pesticides ",
+          "slug": "advisory-commission-on-pesticides",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Advisory Commission on Pesticides ",
+          "metaDescription": "Serves to protect the interests, health, safety, and welfare of the Louisiana public through rules and regulations pertaining to the proper labeling, sale, distribution, transportation, storage, use and application, and disposal of pesticides.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/advisory-commission-on-pesticides"
+      },
+      {
+          "sys": {
+              "id": "760TUU9H5vxOIFx7UYp9Jd"
+          },
+          "title": "Animal Control Advisory Task Force ",
+          "slug": "animal-control-advisory-task-force",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Animal Control Advisory Task Force ",
+          "metaDescription": "Task force that assists community programs in ensuring and promoting the proper treatment and well-being of animals in Louisiana. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/animal-control-advisory-task-force"
+      },
+      {
+          "sys": {
+              "id": "JGUrx5RQ5MNZi6OaVDQMv"
+          },
+          "title": "Strawberry Marketing Board ",
+          "slug": "strawberry-marketing-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Strawberry Marketing Board ",
+          "metaDescription": "Board that promotes the Louisiana strawberry industry by increasing production and quality through marketing and research.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/strawberry-marketing-board"
+      },
+      {
+          "sys": {
+              "id": "FYWHMfJjgfleDMrizm6EE"
+          },
+          "title": "Dairy Industry Promotion Board ",
+          "slug": "dairy-industry-promotion-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Dairy Industry Promotion Board ",
+          "metaDescription": "Board that promotes Louisiana dairy to local consumers and may levy an assessment on all milk solids, milk fats, or fluid milk components sold.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/dairy-industry-promotion-board"
+      },
+      {
+          "sys": {
+              "id": "466MOBwxnMjjRkzAek4Sgf"
+          },
+          "title": "Dairy Stabilization Board",
+          "slug": "dairy-stabilization-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Dairy Stabilization Board",
+          "metaDescription": "Board that provides a regulatory program designed to stabilize the Louisiana dairy industry in order to assure an adequate supply of healthful and wholesome dairy products to Louisiana consumers at fair and reasonable prices.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/dairy-stabilization-board"
+      },
+      {
+          "sys": {
+              "id": "5tH6Itg17MAsD4PKq4M4DU"
+          },
+          "title": "Egg Commission",
+          "slug": "egg-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Egg Commission",
+          "metaDescription": "Commission that encourages increased production and quality in Louisiana eggs through marketing and research.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/egg-commission"
+      },
+      {
+          "sys": {
+              "id": "3pv8Jeza6LgX9xZdnUXkVz"
+          },
+          "title": "Sweet Potato Commission",
+          "slug": "sweet-potato-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Sweet Potato Commission",
+          "metaDescription": "Commission that expands the market and increases consumption of sweet potatoes in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/sweet-potato-commission"
+      },
+      {
+          "sys": {
+              "id": "3QQZzyQj4YNNJCUQ5CXpt"
+          },
+          "title": "Structural Pest Control Commission",
+          "slug": "structural-pest-control-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Structural Pest Control Commission",
+          "metaDescription": "Commission that protects the public through pest control rules and regulations in Louisiana. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/structural-pest-control-commission"
+      },
+      {
+          "sys": {
+              "id": "1XxRPsi7K8xZKSpPhSzKO4"
+          },
+          "title": "Soybean Grain Research and Promotion Board",
+          "slug": "soybean-grain-research-and-promotion",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Soybean Grain Research and Promotion Board",
+          "metaDescription": "Board that promotes the growth and development of the soybean, wheat, corn and grain sorghum industries in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/soybean-grain-research-and-promotion"
+      },
+      {
+          "sys": {
+              "id": "1POIuuO5TWMjufX6few4az"
+          },
+          "title": "Rice Research Board",
+          "slug": "rice-research-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Rice Research Board",
+          "metaDescription": "Board that conducts a program of research for the benefit of the Louisiana rice industry.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/rice-research-board"
+      },
+      {
+          "sys": {
+              "id": "38xhMCo3Wt6hqvrZOllHA9"
+          },
+          "title": "Rice Promotion Board",
+          "slug": "rice-promotion-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Rice Promotion Board",
+          "metaDescription": "Board that promotes rice in the state of Louisiana. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/rice-promotion-board"
+      },
+      {
+          "sys": {
+              "id": "5cJFOlC3F66g8Q7H93lK9R"
+          },
+          "title": "Louisiana Equine Promotion and Research Advisory Board",
+          "slug": "louisiana-equine-promotion-and-research-advisory-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Equine Promotion and Research Advisory Board",
+          "metaDescription": "Board that supports the growth and development of the equine industry in Louisiana by enhancing research, education, promotion, facilities, tourism, events, and equine-related activities throughout the state.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/louisiana-equine-promotion-and-research-advisory-board"
+      },
+      {
+          "sys": {
+              "id": "4d2kTEV2ZPRgHK34e2Qyei"
+          },
+          "title": "Horticulture Commission",
+          "slug": "horticulture-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Horticulture Commission",
+          "metaDescription": "The commission that licenses, permits, and regulates persons engaged in horticultural businesses in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/horticulture-commission"
+      },
+      {
+          "sys": {
+              "id": "5aTto3J4xGOzENcKFaj4k5"
+          },
+          "title": "Unsolicited Seeds",
+          "slug": "unsolicited-seeds",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Unsolicited seeds",
+          "metaDescription": "Disposal guidance for unsolicited seeds",
+          "parent": {
+              "sys": {
+                  "id": "4Op8L4UGuA0S9KX5q8B39"
+              }
+          },
+          "url": "/plants/seeds/unsolicited-seeds"
+      },
+      {
+          "sys": {
+              "id": "56a8Fg7nTPkjmY5Go3odx5"
+          },
+          "title": "Louisiana Metric Week",
+          "slug": "louisiana-metric-week",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Metric Week",
+          "metaDescription": "Each year, the week containing 10 October — the tenth day of the tenth month — is National Metric Week. Join us in celebrating the International System of Units. ",
+          "parent": {
+              "sys": {
+                  "id": "1Iz2C5yhXchSffVKlP3L0k"
+              }
+          },
+          "url": "/business/weights-measures/louisiana-metric-week"
+      },
+      {
+          "sys": {
+              "id": "LD5d437pCcWlbY91Xx3Ww"
+          },
+          "title": "Louisiana Agricultural Chemistry and Seed Commission",
+          "slug": "louisiana-agricultural-chemistry-and-seed-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Agricultural Chemistry and Seed Commission",
+          "metaDescription": "The commission that administers and enforces the laws and regulations relative to feed, fertilizer, agricultural liming materials and seed in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/louisiana-agricultural-chemistry-and-seed-commission"
+      },
+      {
+          "sys": {
+              "id": "14zhKHh64CkSosiaWAxnRJ"
+          },
+          "title": "Licensing and Permits",
+          "slug": "licensing-permits",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Licensing and permits",
+          "metaDescription": "Get authorized to do agricultural and forestry business in Louisiana, including licenses, permits, and registrations. Find forms you need, make online payments and renewals, request license reinstatement, and request for a change of information.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "url": "/licensing-permits"
+      },
+      {
+          "sys": {
+              "id": "1PxezWkh5f70knSbxlKEDc"
+          },
+          "title": "Forestry Commission",
+          "slug": "forestry-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forestry Commission",
+          "metaDescription": "Protects, conserves, and replenishes the natural resources of the state.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/forestry-commission"
+      },
+      {
+          "sys": {
+              "id": "2PFylYHaOdR2uAF63oC8PB"
+          },
+          "title": "Online Payments and Renewals",
+          "slug": "online-payments",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Online payments and renewals",
+          "metaDescription": "Pay fees and renewals online for some services including horticulture, seed programs, weights and measures, and the Market Bulletin.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/online-payments"
+      },
+      {
+          "sys": {
+              "id": "75a61IxmvoYjTbEmnXqpFf"
+          },
+          "title": "Jobs",
+          "slug": "jobs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Jobs at LDAF",
+          "metaDescription": "Learn about employment and careers and apply for a position with the Louisiana Department of Agriculture and Forestry. Get contact information for Human Resources.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "url": "/about/jobs"
+      },
+      {
+          "sys": {
+              "id": "64dubUyhTXG9OZAsgliGDv"
+          },
+          "title": "Fire Management",
+          "slug": "fire",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Fire management",
+          "metaDescription": "Learn about fire conditions, fire danger, wildfire prevention, certified burning, and debris management to keep our forests and our neighbors safe from risk.",
+          "parent": {
+              "sys": {
+                  "id": "14LGzQqHyi4UHgVVBa0Kup"
+              }
+          },
+          "children": [
+              "1uNZAirA6PTWS7nH9bVE5C",
+              "2BYzilFCgtHls3bi4IeUP6",
+              "1F4m6jq2lKnSRwvUs0dgLG",
+              "3vtf70eRcerw2lXFfrG8Wy"
+          ],
+          "url": "/land/fire"
+      },
+      {
+          "sys": {
+              "id": "2BYzilFCgtHls3bi4IeUP6"
+          },
+          "title": "Fire Conditions and Burn Bans",
+          "slug": "safety",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Fire conditions and burn bans",
+          "metaDescription": "Find out about current fire conditions and parish burn bans, access the burn ban map, and learn how to keep our forests and neighbors across Louisiana safe from risk.",
+          "parent": {
+              "sys": {
+                  "id": "64dubUyhTXG9OZAsgliGDv"
+              }
+          },
+          "url": "/land/fire/safety"
+      },
+      {
+          "sys": {
+              "id": "2ZH35bfBiUYbORCXonVQYz"
+          },
+          "title": "Forestry Enforcement",
+          "slug": "forestry-enforcement",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forestry enforcement",
+          "metaDescription": "The Forestry Enforcement Division is responsible for enforcing criminal laws pertaining to the protection of forest woodlands such as, but not limited to, arson and timber theft.",
+          "parent": {
+              "sys": {
+                  "id": "UsrsjMMc2FaF4rYMZYpdc"
+              }
+          },
+          "url": "/land/forestry/forestry-enforcement"
+      },
+      {
+          "sys": {
+              "id": "4LaLsnQELCXMoZEUm26hFs"
+          },
+          "title": "Agricultural Commodities Commission",
+          "slug": "agricultural-commodities-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Agricultural Commodities Commission",
+          "metaDescription": "The LACC regulates warehouses, cotton merchants, and grain dealers doing business in Louisiana. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/agricultural-commodities-commission"
+      },
+      {
+          "sys": {
+              "id": "5rFhJi1yvYLKhrAaoNVONI"
+          },
+          "title": "Fertilizer",
+          "slug": "fertilizer",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Fertilizer",
+          "metaDescription": "Ensure fertilizer safety and compliance through registration, labeling, and tonnage reporting.",
+          "parent": {
+              "sys": {
+                  "id": "3dbQnYQ6VaGZPXkNaUfWw9"
+              }
+          },
+          "url": "/plants/fertilizer-lime/fertilizer"
+      },
+      {
+          "sys": {
+              "id": "2Gxs9HK3De17rcdmudUmU9"
+          },
+          "title": "Buying Local",
+          "slug": "local",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Buying local food in Louisiana",
+          "metaDescription": "Shop your favorite grocery stores, roadside stands, and farmers markets, and look for locally grown Louisiana specialty foods such as crawfish, strawberries, and sweet potato yams. ",
+          "parent": {
+              "sys": {
+                  "id": "35Y981dIqqduwghyZSD3H8"
+              }
+          },
+          "url": "/food/local"
+      },
+      {
+          "sys": {
+              "id": "5Cf19W5ubdzYAHfewl3Xa4"
+          },
+          "title": "Food Benefits for Seniors",
+          "slug": "seniors",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Food benefits for seniors",
+          "metaDescription": "Information about the Senior Farmers Market Nutrition Program that allows senior citizens to buy locally grown fresh fruits, vegetables, cut herbs, and honey at farmers markets and roadside stands. ",
+          "parent": {
+              "sys": {
+                  "id": "790HZVWYuw8APlfhboXhR5"
+              }
+          },
+          "url": "/food/farmers-market-nutrition-programs/seniors"
+      },
+      {
+          "sys": {
+              "id": "790HZVWYuw8APlfhboXhR5"
+          },
+          "title": "Farmers Market Nutrition Programs",
+          "slug": "farmers-market-nutrition-programs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Farmers market nutrition programs",
+          "metaDescription": "Seniors and those with WIC benefits can apply for vouchers to buy local produce. Browse our farmers market directory and use your card at approved farmers markets and roadside stands.",
+          "parent": {
+              "sys": {
+                  "id": "35Y981dIqqduwghyZSD3H8"
+              }
+          },
+          "children": [
+              "5Cf19W5ubdzYAHfewl3Xa4",
+              "6FtUnEaQ2LZE8W7Pl1cYZS",
+              "5wOmOnLAe6bn946KHCPYtK"
+          ],
+          "url": "/food/farmers-market-nutrition-programs"
+      },
+      {
+          "sys": {
+              "id": "6FtUnEaQ2LZE8W7Pl1cYZS"
+          },
+          "title": "Vendor or Farmers Market Registration",
+          "slug": "fmnp-registration",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Vendor or farmers market registration",
+          "metaDescription": "Get certified as a farmers market or roadside stand to accept Farmers Market Nutrition Program payments.",
+          "parent": {
+              "sys": {
+                  "id": "790HZVWYuw8APlfhboXhR5"
+              }
+          },
+          "url": "/food/farmers-market-nutrition-programs/fmnp-registration"
+      },
+      {
+          "sys": {
+              "id": "3YOWUjElb2KEQsZh6NY4S7"
+          },
+          "title": "Beef Industry Council",
+          "slug": "beef-industry-council",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Beef Industry Council",
+          "metaDescription": "Louisiana Council that administers requirements of the Beef Promotion and Research Act and Order with the goal of improving producer profitability by expanding consumer demand for beef and strengthening beef's position in the marketplace.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/beef-industry-council"
+      },
+      {
+          "sys": {
+              "id": "1lpXWPNc59u8aI50gv8oZl"
+          },
+          "title": "Bees and Beekeeping",
+          "slug": "bees",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Bees and beekeeping",
+          "metaDescription": "Start and sustain a beekeeping business or hobby. Includes managing apiaries, colonies, and hives, cultivating and harvesting honey and bee pollen, apiary permits, and transporting bees. Also a beekeeping apprenticeship opportunity for schools.",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "url": "/animals/bees"
+      },
+      {
+          "sys": {
+              "id": "V0euSDw1Gt0tpTYtwsGWv"
+          },
+          "title": "Reports and Reporting",
+          "slug": "reports",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Reports and reporting",
+          "metaDescription": "Submit and access agriculture, forestry, and business reports.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/reports"
+      },
+      {
+          "sys": {
+              "id": "7lr43quMqQnpAb39ZIBfzT"
+          },
+          "title": "Animal health forms",
+          "slug": "animal-health-forms",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animal health forms ",
+          "metaDescription": "Forms for veterinarians to obtain animal health certificates. ",
+          "parent": {
+              "sys": {
+                  "id": "1xNIEb9zI7YHRsP2HAQC3r"
+              }
+          },
+          "url": "/animals/health/veterinarian-resources/animal-health-forms"
+      },
+      {
+          "sys": {
+              "id": "OHDePUTRZoWzor1v9SyaN"
+          },
+          "title": "Industrial Hemp Forms",
+          "slug": "industrial-hemp-forms",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Industrial hemp forms",
+          "metaDescription": "Find all forms related to industrial hemp, from license applications to required reporting documents.",
+          "parent": {
+              "sys": {
+                  "id": "34VdYT1mEYnbWITYMIwLMw"
+              }
+          },
+          "url": "/plants/industrial-hemp/industrial-hemp-forms"
+      },
+      {
+          "sys": {
+              "id": "4hCt7oAYp8zqMrw7ejFWnx"
+          },
+          "title": "Weighmaster and Technician Licensing",
+          "slug": "weighmaster-technician-licensing",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Weighmaster and technician licensing",
+          "metaDescription": "Take weighmaster exams and get authorized to weigh commodities or install scales, meters, or other devices in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "1Iz2C5yhXchSffVKlP3L0k"
+              }
+          },
+          "url": "/business/weights-measures/weighmaster-technician-licensing"
+      },
+      {
+          "sys": {
+              "id": "7xjl7Nkb1zIk2HSHyi1yXN"
+          },
+          "title": "Crawfish Promotion and Research Board",
+          "slug": "crawfish-promotion-and-research-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Crawfish Promotion and Research Board",
+          "metaDescription": "Louisiana Board that develops markets and funds research to further the Louisiana crawfish industry.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/crawfish-promotion-and-research-board"
+      },
+      {
+          "sys": {
+              "id": "5DdEkiHlclFLI7mnZIydHn"
+          },
+          "title": "Calibration and Metrology Services",
+          "slug": "metrology",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Calibration and metrology services",
+          "metaDescription": "Schedule calibration, standardization, and alignment of scale weights, check the flow rate of gasoline, diesel and heating oil pumps, and check scales and scanners in our metrology lab.",
+          "parent": {
+              "sys": {
+                  "id": "1Iz2C5yhXchSffVKlP3L0k"
+              }
+          },
+          "url": "/business/weights-measures/metrology"
+      },
+      {
+          "sys": {
+              "id": "1Iz2C5yhXchSffVKlP3L0k"
+          },
+          "title": "Weights and Measures",
+          "slug": "weights-measures",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Weights and measures",
+          "metaDescription": "Ensure the accuracy of scales, meters, scanners, fuel pumps, and weights and learn about our metrology lab services and how to become a weighmaster.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "children": [
+              "56a8Fg7nTPkjmY5Go3odx5",
+              "4hCt7oAYp8zqMrw7ejFWnx",
+              "5DdEkiHlclFLI7mnZIydHn",
+              "7aBQ7n1DLyR6zSFkcxfNkN",
+              "2PHxShUm6IhU2URzcazEQG",
+              "2ZEhrinyJrSpFwMbofrP8K"
+          ],
+          "url": "/business/weights-measures"
+      },
+      {
+          "sys": {
+              "id": "7ivk8AOJRR7KLi4ntY9nw8"
+          },
+          "title": "Commission of Weights and Measures ",
+          "slug": "commission-of-weights-and-measures",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Commission of Weights and Measures ",
+          "metaDescription": "Louisiana Commission that ensures that equity prevails in the marketplace for both buyers and sellers by inspecting all commercial weighing, measuring, metering and scanning devices. ",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/commission-of-weights-and-measures"
+      },
+      {
+          "sys": {
+              "id": "4Op8L4UGuA0S9KX5q8B39"
+          },
+          "title": "Seeds",
+          "slug": "seeds",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Seeds",
+          "metaDescription": "Promote agricultural production by getting seeds inspected, tested, or certified in the state of Louisiana. LDAF no longer organizes seedling sales. ",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "children": [
+              "5xqkFI1drrp2JzBExb2gfq",
+              "44lq9KFxW0XxTK6Gf8zb0N",
+              "5aTto3J4xGOzENcKFaj4k5",
+              "4judtmmyGyk0epVKgxLq2a",
+              "6GLJ35O5335P8mZTvDdzyh",
+              "PO19KMVSCWMETGGTvekxi"
+          ],
+          "url": "/plants/seeds"
+      },
+      {
+          "sys": {
+              "id": "2wfMTXN02GsvqFqQo3cSXD"
+          },
+          "title": "Nursery and Landscape Licensing",
+          "slug": "nurseries-landscaping",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Nursery and landscape licensing",
+          "metaDescription": "Get authorized to use plants in the state of Louisiana, includes irrigation contractors, landscape horticulturalists, landscape architects, nursery growers and stock dealers. Schedule exams and continuing education for recertification.",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "url": "/plants/nurseries-landscaping"
+      },
+      {
+          "sys": {
+              "id": "4eTjpmCpkLVl9VWiXVP7vb"
+          },
+          "title": "Industrial Hemp Licensing",
+          "slug": "hemp-licensing",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Industrial hemp licensing",
+          "metaDescription": "Get authorized to grow, produce, harvest, process, handle, transport, and sell industrial hemp and hemp seed in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "34VdYT1mEYnbWITYMIwLMw"
+              }
+          },
+          "url": "/plants/industrial-hemp/hemp-licensing"
+      },
+      {
+          "sys": {
+              "id": "5SAWmvr1rNPILl290JCvrc"
+          },
+          "title": "Arborist Licensing",
+          "slug": "arborists",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Arborist licensing",
+          "metaDescription": "Get authorized to make recommendations and execute tree surgery-type work in the state of Louisiana including trimming, fertilizing, and removing trees on private property and utility rights of way. Schedule exams and continuing education.",
+          "parent": {
+              "sys": {
+                  "id": "14LGzQqHyi4UHgVVBa0Kup"
+              }
+          },
+          "url": "/land/arborists"
+      },
+      {
+          "sys": {
+              "id": "5BFek7UZaEiUIbpwgSQOFK"
+          },
+          "title": "Louisiana Industrial Hemp Promotion and Research Advisory Board",
+          "slug": "louisiana-industrial-hemp-promotion-and-research-advisory-board",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Industrial Hemp Promotion and Research Advisory Board",
+          "metaDescription": "Board that supports the growth and development of the industrial hemp industry in Louisiana by enhancing research, education, promotion, facilities, and industrial hemp-related activities throughout the state.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/louisiana-industrial-hemp-promotion-and-research-advisory-board"
+      },
+      {
+          "sys": {
+              "id": "3v21DASM4AFfroWfomvRrt"
+          },
+          "title": "Pesticide Licensing",
+          "slug": "pesticide-licensing",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pesticide licensing",
+          "metaDescription": "Get licensed to apply pesticides on the ground or by aircraft, consult on pesticide applications, and sell pesticides in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "6mf53B2N7MbIZYueiTiYyk"
+              }
+          },
+          "url": "/plants/pesticides/pesticide-licensing"
+      },
+      {
+          "sys": {
+              "id": "1MLWmue319wEMBICRGTMyK"
+          },
+          "title": "Boll Weevil Eradication Commission ",
+          "slug": "boll-weevil-eradication-commission",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Boll Weevil Eradication Commission ",
+          "metaDescription": "Governs the practices and ensures producer compliance with existing law and regulation through investigations and adjudicatory hearings to facilitate eradication and maintain eradicated status.",
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/boll-weevil-eradication-commission"
+      },
+      {
+          "sys": {
+              "id": "bp7UuVNob35mioGpnv7lp"
+          },
+          "title": "Board of Veterinary Medicine",
+          "slug": "board-of-veterinary-medicine",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": null,
+          "metaDescription": null,
+          "parent": {
+              "sys": {
+                  "id": "7fqxQ2as7EBlgfyL8mewLQ"
+              }
+          },
+          "url": "/about/boards-commissions/board-of-veterinary-medicine"
+      },
+      {
+          "sys": {
+              "id": "3FC4tdn322D8eFV2Ul2GIR"
+          },
+          "title": "Indian Creek Recreation Area",
+          "slug": "indian-creek",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Indian Creek Recreation Area",
+          "metaDescription": "The Indian Creek Recreation Area is 2600 acres of facilities, forest, and lake for camping, swimming, fishing, boating, and outdoor recreation. It is managed by the Louisiana Department of Agriculture and Forestry.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "url": "/indian-creek"
+      },
+      {
+          "sys": {
+              "id": "6AG8EtY2t9yKt7JgEXo6cv"
+          },
+          "title": "Getting to Indian Creek",
+          "slug": "getting-to-indian-creek",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Getting there",
+          "metaDescription": "Directions and admission information for LDAF's Indian Creek Recreation Area & Campground",
+          "parent": {
+              "sys": {
+                  "id": "2SxqvPiinK3SFhKPSlIiNU"
+              }
+          },
+          "url": "/indian-creek-recreation-area/getting-to-indian-creek"
+      },
+      {
+          "sys": {
+              "id": "1IqbtOPhCbyk6AUiPc3bLE"
+          },
+          "title": "Indian Creek Maps",
+          "slug": "campground-maps",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Indian Creek maps",
+          "metaDescription": "Get maps of campsites, amenities, hiking trails, and more at Indian Creek Recreation Area",
+          "parent": {
+              "sys": {
+                  "id": "2SxqvPiinK3SFhKPSlIiNU"
+              }
+          },
+          "url": "/indian-creek-recreation-area/campground-maps"
+      },
+      {
+          "sys": {
+              "id": "6CgGyLKgaj6JVVbcgiyIb7"
+          },
+          "title": "Activities and Amenities",
+          "slug": "activities-amenities",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Activities and amenities",
+          "metaDescription": "Take a look at the activities and amenities at Indian Creek Recreation Area",
+          "parent": {
+              "sys": {
+                  "id": "2SxqvPiinK3SFhKPSlIiNU"
+              }
+          },
+          "url": "/indian-creek-recreation-area/activities-amenities"
+      },
+      {
+          "sys": {
+              "id": "2SxqvPiinK3SFhKPSlIiNU"
+          },
+          "title": "Indian Creek",
+          "slug": "indian-creek-recreation-area",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Indian Creek Recreation Area",
+          "metaDescription": "Enjoy 2,600 acres of facilities, forest, and lake for camping, swimming, fishing, boating, and outdoor recreation managed by the Louisiana Department of Agriculture and Forestry.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "4KOsBcTfpy3XwEtdocvZgO",
+              "6AG8EtY2t9yKt7JgEXo6cv",
+              "1IqbtOPhCbyk6AUiPc3bLE",
+              "6CgGyLKgaj6JVVbcgiyIb7",
+              "1yje6Io98nE94zhWsBRTSt"
+          ],
+          "url": "/indian-creek-recreation-area"
+      },
+      {
+          "sys": {
+              "id": "1yje6Io98nE94zhWsBRTSt"
+          },
+          "title": "Pavilion reservations ",
+          "slug": "pavilion-reservations",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pavilion reservations",
+          "metaDescription": "Information on pavilions available for use at Indian Creek Recreation Area",
+          "parent": {
+              "sys": {
+                  "id": "2SxqvPiinK3SFhKPSlIiNU"
+              }
+          },
+          "url": "/indian-creek-recreation-area/pavilion-reservations"
+      },
+      {
+          "sys": {
+              "id": "ngHRjVJHVCoNNjZBmALtC"
+          },
+          "title": "Resilient Food Systems Infrastructure",
+          "slug": "resilient-food-systems-infrastructure",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Resilient Food Systems Infrastructure ",
+          "metaDescription": "Information about the Resilient Food Safety Infrastructure (RFSI) grant",
+          "parent": {
+              "sys": {
+                  "id": "53nj3eX9UbAozp6nHuQVZX"
+              }
+          },
+          "url": "/business/grants-funding/resilient-food-systems-infrastructure"
+      },
+      {
+          "sys": {
+              "id": "1xNIEb9zI7YHRsP2HAQC3r"
+          },
+          "title": "Veterinarian Resources",
+          "slug": "veterinarian-resources",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Veterinarian Resources",
+          "metaDescription": "Forms, applications and other administrative documents to help Louisiana veterinarians do their job.",
+          "parent": {
+              "sys": {
+                  "id": "58xgwjGvncoI3GfVj1OqkM"
+              }
+          },
+          "children": [
+              "7lr43quMqQnpAb39ZIBfzT"
+          ],
+          "url": "/animals/health/veterinarian-resources"
+      },
+      {
+          "sys": {
+              "id": "5wOmOnLAe6bn946KHCPYtK"
+          },
+          "title": "Food Benefits for WIC Recipients",
+          "slug": "wic",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Food benefits for WIC recipients",
+          "metaDescription": "Information about the WIC Farmers Market Nutrition Program, which provides food benefits cards for low income residents of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "790HZVWYuw8APlfhboXhR5"
+              }
+          },
+          "url": "/food/farmers-market-nutrition-programs/wic"
+      },
+      {
+          "sys": {
+              "id": "1NVbI3IXhazlpe2TpMpFzy"
+          },
+          "title": "Specialty Crop Grant Programs",
+          "slug": "specialty-crops",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Specialty Crop Grant Programs",
+          "metaDescription": "Get funding through Louisiana's Specialty Crop Block Grant Program and the Specialty Crop Multi-State Grant Program to enhance competitiveness of specialty crops through promotion and research.",
+          "parent": {
+              "sys": {
+                  "id": "4Z1M1TixXmVDmQfYL1sGfL"
+              }
+          },
+          "children": [
+              "7jMuVV9j1nV9NPzOqiohUt",
+              "764GjQwGiV1JXm15u9cKGs"
+          ],
+          "url": "/food/selling/produce/specialty-crops"
+      },
+      {
+          "sys": {
+              "id": "7jMuVV9j1nV9NPzOqiohUt"
+          },
+          "title": "Specialty Crop Multi-State Grant Program",
+          "slug": "multi-state-program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Specialty Crop Multi-State Grant Program",
+          "metaDescription": "Crop producers, apply for funding for specialty crops through a federal grant program by the USDA Agricultural Marketing Service.",
+          "parent": {
+              "sys": {
+                  "id": "1NVbI3IXhazlpe2TpMpFzy"
+              }
+          },
+          "url": "/food/selling/produce/specialty-crops/multi-state-program"
+      },
+      {
+          "sys": {
+              "id": "764GjQwGiV1JXm15u9cKGs"
+          },
+          "title": "Specialty Crop Block Grant Program",
+          "slug": "program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Specialty Crop Block Grant Program",
+          "metaDescription": "Crop producers, apply for funding for marketing, promotion, research, and development of specialty crops in Louisiana. ",
+          "parent": {
+              "sys": {
+                  "id": "1NVbI3IXhazlpe2TpMpFzy"
+              }
+          },
+          "url": "/food/selling/produce/specialty-crops/program"
+      },
+      {
+          "sys": {
+              "id": "31qejt3vLh1SR1sQGacc9S"
+          },
+          "title": "Industrial Hemp Reporting",
+          "slug": "required-reporting",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Industrial hemp reporting",
+          "metaDescription": "Stay compliant with required reporting for industrial hemp production and acquisition in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "34VdYT1mEYnbWITYMIwLMw"
+              }
+          },
+          "url": "/plants/industrial-hemp/required-reporting"
+      },
+      {
+          "sys": {
+              "id": "3c9JVo76kKof58FIARzEoE"
+          },
+          "title": "Quarantine Information",
+          "slug": "quarantine",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Quarantine information",
+          "metaDescription": "Reduce the risk of transporting plant pests and diseases by following horticulture quarantines in effect in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "2tYyuA1owNw4TJGaboINAN"
+              }
+          },
+          "url": "/plants/pests/quarantine"
+      },
+      {
+          "sys": {
+              "id": "5qLnKfqBCGr5tPcL7lzPqc"
+          },
+          "title": "Structural Pest Control Licensing and Registration",
+          "slug": "pest-control-licensing",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Structural pest control licensing and registration",
+          "metaDescription": "Get authorized to apply pesticides and insecticides within and around homes and other building structures.",
+          "parent": {
+              "sys": {
+                  "id": "2Nf7dZpB5teZBt9npEZMft"
+              }
+          },
+          "url": "/business/pest-control/pest-control-licensing"
+      },
+      {
+          "sys": {
+              "id": "4judtmmyGyk0epVKgxLq2a"
+          },
+          "title": "Seed Dealer Licensing",
+          "slug": "seed-dealers",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Seed dealer licensing",
+          "metaDescription": "Get authorized to sell, distribute, or handle seed or other propagating stock in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "4Op8L4UGuA0S9KX5q8B39"
+              }
+          },
+          "url": "/plants/seeds/seed-dealers"
+      },
+      {
+          "sys": {
+              "id": "2P3K7cFlbx1lzImEY7O70A"
+          },
+          "title": "Commodity Warehousing and Distribution",
+          "slug": "warehousing-distribution",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Agricultural commodity warehousing and distribution",
+          "metaDescription": "Get authorized to store and deal cotton, grain, and other agricultural commodities in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/warehousing-distribution"
+      },
+      {
+          "sys": {
+              "id": "5lUbMcywnW2peai5v3vY9z"
+          },
+          "title": "Louisiana Agricultural Financial Authority ",
+          "slug": "lafa",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Agricultural Financial Authority ",
+          "metaDescription": "Louisiana Agricultural Financial Authority  (LAFA) Strengthens Louisiana's agriculture industry by offering businesses opportunities to get funding, low-interest loans and financial grants. ",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/lafa"
+      },
+      {
+          "sys": {
+              "id": "7uRzUfPjJoNjTXlVCcjOIi"
+          },
+          "title": "News",
+          "slug": "news",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "News",
+          "metaDescription": "Reporting, updates, alerts, articles, essays, interviews, stories, information about farming, food recalls, crime, pandemics, natural disasters, agriculture policy and agribusiness info.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "url": "/about/news"
+      },
+      {
+          "sys": {
+              "id": "3r1GzEupcX7d8tfJUwjxsr"
+          },
+          "title": "Agricultural Lime",
+          "slug": "agricultural-lime",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Agricultural lime",
+          "metaDescription": "Follow regulations for materials used to decrease soil acidity during agricultural production sold or offered for sale in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "3dbQnYQ6VaGZPXkNaUfWw9"
+              }
+          },
+          "url": "/plants/fertilizer-lime/agricultural-lime"
+      },
+      {
+          "sys": {
+              "id": "3dbQnYQ6VaGZPXkNaUfWw9"
+          },
+          "title": "Fertilizer and Agricultural Lime",
+          "slug": "fertilizer-lime",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Fertilizer and agricultural lime",
+          "metaDescription": "Ensure safe and effective fertilizer application through surveys, testing, and registration.",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "children": [
+              "5rFhJi1yvYLKhrAaoNVONI",
+              "3r1GzEupcX7d8tfJUwjxsr"
+          ],
+          "url": "/plants/fertilizer-lime"
+      },
+      {
+          "sys": {
+              "id": "3uNRdz8k4I7aKmUoom3VF4"
+          },
+          "title": "Our Organization",
+          "slug": "organization",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Our organization",
+          "metaDescription": "Explore LDAF's mission, vision, values, and offices.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "children": [
+              "5lUbMcywnW2peai5v3vY9z",
+              "2y4cQMXVcrDcGGvK5Afpwc",
+              "RubO0bJBsOriYrw65wvMS",
+              "29Cohlcj9u0agnqzHEJFkH",
+              "7GcVn6znFpAdunhUbO1VzF",
+              "6dQ7hi7DFdrQDGNmygAr0z",
+              "FdYl8HyaMuvXcxR9t4OjQ"
+          ],
+          "url": "/about/organization"
+      },
+      {
+          "sys": {
+              "id": "6GLJ35O5335P8mZTvDdzyh"
+          },
+          "title": "Seed Regulations and Compliance",
+          "slug": "seed-regulations",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Seed regulations and compliance",
+          "metaDescription": "Review requirements for seed labeling, seed sales, records, and reporting, including quarterly reports of sales in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "4Op8L4UGuA0S9KX5q8B39"
+              }
+          },
+          "url": "/plants/seeds/seed-regulations"
+      },
+      {
+          "sys": {
+              "id": "4l8tyg95hF7LKzsoqqmyfT"
+          },
+          "title": "Laws, Rules, and Regulations",
+          "slug": "laws-regulations",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Laws, rules, and regulations",
+          "metaDescription": "Laws, rules, and regulations governing agriculture and forestry in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "url": "/about/laws-regulations"
+      },
+      {
+          "sys": {
+              "id": "PO19KMVSCWMETGGTvekxi"
+          },
+          "title": "Seed Certification",
+          "slug": "certification",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Seed certification",
+          "metaDescription": "Get seeds certified and find local certified seeds in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "4Op8L4UGuA0S9KX5q8B39"
+              }
+          },
+          "url": "/plants/seeds/certification"
+      },
+      {
+          "sys": {
+              "id": "25QxUUpbDntC1SHAnnTT4F"
+          },
+          "title": "Licensed and Certified Professionals",
+          "slug": "professionals",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Licensed and certified professionals in Louisiana",
+          "metaDescription": "View lists of licensed and certified arborists, florists, burners, beekeepers, landscapers, pesticide companies, nurseries, agriculture consultants, and more.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/professionals"
+      },
+      {
+          "sys": {
+              "id": "12ufMWU3cgrf06w4hvSEVN"
+          },
+          "title": "Request Public Records",
+          "slug": "public-records",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Request public records",
+          "metaDescription": "Get access to documents in the public record from the Louisiana Department of Agriculture and Forestry.",
+          "parent": {
+              "sys": {
+                  "id": "76LJryp2U1a3c4gOodTPqC"
+              }
+          },
+          "url": "/about/contact/public-records"
+      },
+      {
+          "sys": {
+              "id": "35Y981dIqqduwghyZSD3H8"
+          },
+          "title": "Food",
+          "slug": "food",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Food",
+          "metaDescription": "Buy and sell local food in Louisiana and ensure nutritional quality and access.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "JU2cjVhLHMir0ihxDITfQ",
+              "2Gxs9HK3De17rcdmudUmU9",
+              "790HZVWYuw8APlfhboXhR5",
+              "4MPejhj8QzmO4qrp8HB7N"
+          ],
+          "url": "/food"
+      },
+      {
+          "sys": {
+              "id": "1LgD6ELovB7OKQ0KRRnCfO"
+          },
+          "title": "Animals",
+          "slug": "animals",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animals",
+          "metaDescription": "Help ensure Louisiana raises, transports, and processes animals in ways that are healthy, safe, and secure.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "I9JfjlmWnDGnVCpMCO5sI",
+              "BXAHzgfT3Xqht3hjkm6N6",
+              "7jrUBoFZjkSnEN12D9pH7E",
+              "1lpXWPNc59u8aI50gv8oZl",
+              "58xgwjGvncoI3GfVj1OqkM",
+              "3LEuIZIvfuylSvvd7wHuZ2",
+              "3bxu3DE9iIwzigd6bz5HfY"
+          ],
+          "url": "/animals"
+      },
+      {
+          "sys": {
+              "id": "UsrsjMMc2FaF4rYMZYpdc"
+          },
+          "title": "Forestry",
+          "slug": "forestry",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forestry",
+          "metaDescription": "Best practices and resources for sustainable forest management, timber cultivation, growth and management of timber stands, woodland and commercial tree farms. Also learn about forestry consultants.",
+          "parent": {
+              "sys": {
+                  "id": "14LGzQqHyi4UHgVVBa0Kup"
+              }
+          },
+          "children": [
+              "51y45pOGxw56iwTEqMujYC",
+              "2ZH35bfBiUYbORCXonVQYz",
+              "4abrHk3MHL5ub8UPd8aOhK",
+              "1SjNCxox68X87W7NIm02OZ",
+              "7hjXoNFDp65mNSe17EB42M"
+          ],
+          "url": "/land/forestry"
+      },
+      {
+          "sys": {
+              "id": "5FysBzO0NvtZejCX26RCna"
+          },
+          "title": "Louisiana Century Farm Program",
+          "slug": "louisiana-century-farm-program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana's Century Farm Program",
+          "metaDescription": null,
+          "parent": {
+              "sys": {
+                  "id": "1R85Lhtr29D6LM3EP5m0uW"
+              }
+          },
+          "url": "/about/community/louisiana-century-farm-program"
+      },
+      {
+          "sys": {
+              "id": "34VdYT1mEYnbWITYMIwLMw"
+          },
+          "title": "Industrial Hemp",
+          "slug": "industrial-hemp",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Industrial hemp",
+          "metaDescription": "Produce, process, sell, and transport non-consumable hemp in Louisiana. Medical marijuana is not industrial hemp and is administered by the Louisiana Department of Health. ",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "children": [
+              "OHDePUTRZoWzor1v9SyaN",
+              "4eTjpmCpkLVl9VWiXVP7vb",
+              "31qejt3vLh1SR1sQGacc9S",
+              "49axzKHipHcbHJYV1q7qyd",
+              "4p2MRiJGFOLeeQy6zxDTNE"
+          ],
+          "url": "/plants/industrial-hemp"
+      },
+      {
+          "sys": {
+              "id": "79XY2OqkO8MSxEngMKsWi8"
+          },
+          "title": "Market Bulletin",
+          "slug": "market-bulletin",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Market Bulletin",
+          "metaDescription": "Browse and subscribe to the latest news and events in Louisiana agriculture as well as classified ads for farm and garden-related items.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/market-bulletin"
+      },
+      {
+          "sys": {
+              "id": "4Z1M1TixXmVDmQfYL1sGfL"
+          },
+          "title": "Produce",
+          "slug": "produce",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Produce",
+          "metaDescription": "Learn how to safely distribute and sell fruits, vegetables, and other grown commodities",
+          "parent": {
+              "sys": {
+                  "id": "4MPejhj8QzmO4qrp8HB7N"
+              }
+          },
+          "children": [
+              "1NVbI3IXhazlpe2TpMpFzy",
+              "5DeloD10bWhwyC0hwYkVhQ",
+              "5INYz6V5zeO43Wf10gQdII"
+          ],
+          "url": "/food/selling/produce"
+      },
+      {
+          "sys": {
+              "id": "1L569xrvKtGUGBM7Jlwcah"
+          },
+          "title": "Eggs",
+          "slug": "eggs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Eggs",
+          "metaDescription": "Get authorized to sell eggs and learn about egg quality and inspections in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "4MPejhj8QzmO4qrp8HB7N"
+              }
+          },
+          "url": "/food/selling/eggs"
+      },
+      {
+          "sys": {
+              "id": "1R85Lhtr29D6LM3EP5m0uW"
+          },
+          "title": "In the Community",
+          "slug": "community",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Community",
+          "metaDescription": "Learn about our latest efforts to support agriculture, forestry, and the people of Louisiana",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "children": [
+              "5FysBzO0NvtZejCX26RCna",
+              "3w649UavsyaIXHbidIVSnk",
+              "3Khi0hsPoTbOBQXBpQHpvJ",
+              "5NFeKNgb8oMMlL167NvDej"
+          ],
+          "url": "/about/community"
+      },
+      {
+          "sys": {
+              "id": "6ASUMIEq0yPQgAbviF8osK"
+          },
+          "title": "Privacy Policy",
+          "slug": "privacy-policy",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Privacy policy",
+          "metaDescription": "LDAF rules and practices for maintaining data safety, PII protection, and safekeeping of personal information. ",
+          "parent": {
+              "sys": {
+                  "id": "6G0f5fuuy1towqspyAXwMO"
+              }
+          },
+          "url": "/about/website/privacy-policy"
+      },
+      {
+          "sys": {
+              "id": "7BYjCVCvRoNr1BqG1Nyi5v"
+          },
+          "title": "Events",
+          "slug": "events",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Events",
+          "metaDescription": "Happenings, meetings, festivals, public forums, educational presentations, video conferences, family and professional get-togethers related to farming, land use, trees, livestock and conservation",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "url": "/about/events"
+      },
+      {
+          "sys": {
+              "id": "2y4cQMXVcrDcGGvK5Afpwc"
+          },
+          "title": "Office of Animal Health and Food Safety (AHFS)",
+          "slug": "ahfs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Office of Animal Health and Food Safety",
+          "metaDescription": "Works with veterinarians and cultivators to guard herds and flocks from bird flu, contagious horse and cattle illnesses. Keeps meat and animal products safe. Helps during hurricanes, fires and more.",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/ahfs"
+      },
+      {
+          "sys": {
+              "id": "RubO0bJBsOriYrw65wvMS"
+          },
+          "title": "Office of Agricultural and Environmental Sciences (AES)",
+          "slug": "aes",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Office of Agricultural and Environmental Sciences",
+          "metaDescription": "Maintains health and safety standards for forage, grain, seed, agricultural lime, and insect control chemicals & domestic animal food. Oversees and licenses bug exterminators for buildings and farms.",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/aes"
+      },
+      {
+          "sys": {
+              "id": "47zEwP57LPQQxoKMZojYfQ"
+          },
+          "title": "Certified Louisiana",
+          "slug": "certified-louisiana",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Certified Louisiana",
+          "metaDescription": "Promoting Louisiana made, grown, and processed agricultural products",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/certified-louisiana"
+      },
+      {
+          "sys": {
+              "id": "7kmQton9FW3Aj5aa0Q6UBZ"
+          },
+          "title": "Website Feedback",
+          "slug": "feedback",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "LDAF website feedback",
+          "metaDescription": "Let us know what you think of this website and make suggestions for improvement. ",
+          "parent": {
+              "sys": {
+                  "id": "6G0f5fuuy1towqspyAXwMO"
+              }
+          },
+          "url": "/about/website/feedback"
+      },
+      {
+          "sys": {
+              "id": "5DeloD10bWhwyC0hwYkVhQ"
+          },
+          "title": "Produce Safety",
+          "slug": "produce-safety",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Produce safety",
+          "metaDescription": "Ensure your grown agricultural commodities are safe for consumption",
+          "parent": {
+              "sys": {
+                  "id": "4Z1M1TixXmVDmQfYL1sGfL"
+              }
+          },
+          "url": "/food/selling/produce/produce-safety"
+      },
+      {
+          "sys": {
+              "id": "3WGBfD6nO74wnfzTfVRUy3"
+          },
+          "title": "Animal Shelter Inspections",
+          "slug": "shelter-inspections",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animal shelter inspections",
+          "metaDescription": "Ensure animal shelters are safe from diseases",
+          "parent": {
+              "sys": {
+                  "id": "58xgwjGvncoI3GfVj1OqkM"
+              }
+          },
+          "url": "/animals/health/shelter-inspections"
+      },
+      {
+          "sys": {
+              "id": "5okGerYYKcOaQoaSAkXQyc"
+          },
+          "title": "Animal Diseases and Prevention",
+          "slug": "diseases-prevention",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animal diseases and prevention",
+          "metaDescription": "Learn how to report and respond to possible livestock diseases in the state of Louisiana including avian influenza equine botulism.",
+          "parent": {
+              "sys": {
+                  "id": "58xgwjGvncoI3GfVj1OqkM"
+              }
+          },
+          "url": "/animals/health/diseases-prevention"
+      },
+      {
+          "sys": {
+              "id": "7jaIP4uqFhz6DdXI5Vzzc5"
+          },
+          "title": "Equine Regulations",
+          "slug": "horses",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Equine regulations",
+          "metaDescription": "Comply with requirements for horses residing in Louisiana, such as infectious disease testing and identification.",
+          "parent": {
+              "sys": {
+                  "id": "58xgwjGvncoI3GfVj1OqkM"
+              }
+          },
+          "url": "/animals/health/horses"
+      },
+      {
+          "sys": {
+              "id": "58xgwjGvncoI3GfVj1OqkM"
+          },
+          "title": "Animal Health",
+          "slug": "health",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animal health",
+          "metaDescription": "Protect livestock from diseases and poisons and ensure safety and stability in the food chain in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "children": [
+              "1xNIEb9zI7YHRsP2HAQC3r",
+              "3WGBfD6nO74wnfzTfVRUy3",
+              "5okGerYYKcOaQoaSAkXQyc",
+              "7jaIP4uqFhz6DdXI5Vzzc5"
+          ],
+          "url": "/animals/health"
+      },
+      {
+          "sys": {
+              "id": "5M8s3AsrrKSvbeK4lE2fNo"
+          },
+          "title": "File a Complaint or Report a Violation",
+          "slug": "complaints",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "File a complaint or report a violation",
+          "metaDescription": "Report animal, agriculture, forestry, or consumer concerns to the LDAF, including motor fuel, stolen property, livestock neglect, plant and crop issues, and operating without a license.",
+          "parent": {
+              "sys": {
+                  "id": "76LJryp2U1a3c4gOodTPqC"
+              }
+          },
+          "url": "/about/contact/complaints"
+      },
+      {
+          "sys": {
+              "id": "3LEuIZIvfuylSvvd7wHuZ2"
+          },
+          "title": "Buying and Selling Livestock",
+          "slug": "buying-selling",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Buying and selling livestock",
+          "metaDescription": "Get authorized to sell livestock, learn about livestock auctions, and review livestock reports",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "url": "/animals/buying-selling"
+      },
+      {
+          "sys": {
+              "id": "3bxu3DE9iIwzigd6bz5HfY"
+          },
+          "title": "Animal Emergency Planning",
+          "slug": "emergencies",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Animal emergency planning",
+          "metaDescription": "Plan for livestock and pet sheltering and safety during disasters ",
+          "parent": {
+              "sys": {
+                  "id": "1LgD6ELovB7OKQ0KRRnCfO"
+              }
+          },
+          "url": "/animals/emergencies"
+      },
+      {
+          "sys": {
+              "id": "4MPejhj8QzmO4qrp8HB7N"
+          },
+          "title": "Selling Food",
+          "slug": "selling",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Selling food",
+          "metaDescription": "Get authorized to process and sell animal and agricultural food products in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "35Y981dIqqduwghyZSD3H8"
+              }
+          },
+          "children": [
+              "1RZENs1OPEdlRUPb8ACv4T",
+              "4fWrOorxeifZjssLSvtIyf",
+              "4Z1M1TixXmVDmQfYL1sGfL",
+              "1L569xrvKtGUGBM7Jlwcah"
+          ],
+          "url": "/food/selling"
+      },
+      {
+          "sys": {
+              "id": "53nj3eX9UbAozp6nHuQVZX"
+          },
+          "title": "Grants and Funding",
+          "slug": "grants-funding",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Grants and funding",
+          "metaDescription": "Get funding and other assistance for farming, firefighting, forestry, business recovery, and more in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "children": [
+              "7kq1BeHRi8D78rAg0YFM9i",
+              "ngHRjVJHVCoNNjZBmALtC"
+          ],
+          "url": "/business/grants-funding"
+      },
+      {
+          "sys": {
+              "id": "49axzKHipHcbHJYV1q7qyd"
+          },
+          "title": "Purchasing and Transporting Hemp Seeds and Stock",
+          "slug": "purchase-transport",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Purchasing and transporting hemp seeds and stock",
+          "metaDescription": "Follow our guidelines for the safe and legal movement of hemp",
+          "parent": {
+              "sys": {
+                  "id": "34VdYT1mEYnbWITYMIwLMw"
+              }
+          },
+          "url": "/plants/industrial-hemp/purchase-transport"
+      },
+      {
+          "sys": {
+              "id": "5uWR3H8GNFfv5MqmtNNonm"
+          },
+          "title": "Pest Control Complaints",
+          "slug": "pest-control-complaints",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pest control complaints",
+          "metaDescription": "File a pest control complaint with your local AES office.",
+          "parent": {
+              "sys": {
+                  "id": "2Nf7dZpB5teZBt9npEZMft"
+              }
+          },
+          "url": "/business/pest-control/pest-control-complaints"
+      },
+      {
+          "sys": {
+              "id": "3IhzehvgQXQetG4oaGvOjN"
+          },
+          "title": "Pest Control Reporting",
+          "slug": "reporting",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pest control reporting",
+          "metaDescription": "Protect the public by reporting termiticide application and other pest control work. ",
+          "parent": {
+              "sys": {
+                  "id": "2Nf7dZpB5teZBt9npEZMft"
+              }
+          },
+          "url": "/business/pest-control/reporting"
+      },
+      {
+          "sys": {
+              "id": "4p2MRiJGFOLeeQy6zxDTNE"
+          },
+          "title": "Industrial Hemp Laws and Regulations",
+          "slug": "regulations",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Industrial hemp laws and regulations",
+          "metaDescription": "Learn requirements around producing hemp in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "34VdYT1mEYnbWITYMIwLMw"
+              }
+          },
+          "url": "/plants/industrial-hemp/regulations"
+      },
+      {
+          "sys": {
+              "id": "6XVf7qAN0qPJ1cALnEy7Qf"
+          },
+          "title": "Pesticide Safety and Restrictions",
+          "slug": "pesticide-safety",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pesticide safety and restrictions",
+          "metaDescription": "Review restrictions, request waivers, and access the pesticide hypersensitivity registry",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "url": "/plants/pesticide-safety"
+      },
+      {
+          "sys": {
+              "id": "2Nf7dZpB5teZBt9npEZMft"
+          },
+          "title": "Structural Pest Control",
+          "slug": "pest-control",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Structural pest control ",
+          "metaDescription": "Get licensed or certified, submit reports, and file complaints related to pest control. ",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "children": [
+              "39A2sjWCSntNuAtV16eVZ9",
+              "5qLnKfqBCGr5tPcL7lzPqc",
+              "5uWR3H8GNFfv5MqmtNNonm",
+              "3IhzehvgQXQetG4oaGvOjN"
+          ],
+          "url": "/business/pest-control"
+      },
+      {
+          "sys": {
+              "id": "1F4m6jq2lKnSRwvUs0dgLG"
+          },
+          "title": "Debris Management",
+          "slug": "debris",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Debris management and disposal",
+          "metaDescription": "Prevent property destruction through debris management and disposal",
+          "parent": {
+              "sys": {
+                  "id": "64dubUyhTXG9OZAsgliGDv"
+              }
+          },
+          "url": "/land/fire/debris"
+      },
+      {
+          "sys": {
+              "id": "3RtLLbuGr20APhdT4f0SDU"
+          },
+          "title": "Pesticide Product Registration",
+          "slug": "registration",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pesticide product registration",
+          "metaDescription": "Register pesticides for sale in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "6mf53B2N7MbIZYueiTiYyk"
+              }
+          },
+          "url": "/plants/pesticides/registration"
+      },
+      {
+          "sys": {
+              "id": "6mf53B2N7MbIZYueiTiYyk"
+          },
+          "title": "Pesticide Licensing and Registration",
+          "slug": "pesticides",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Pesticide licensing and registration",
+          "metaDescription": "Get authorized to apply pesticides and register pesticides for sale in the state of Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "children": [
+              "2iFjOVHJryLWTFSfaoKeYv",
+              "3v21DASM4AFfroWfomvRrt",
+              "3RtLLbuGr20APhdT4f0SDU"
+          ],
+          "url": "/plants/pesticides"
+      },
+      {
+          "sys": {
+              "id": "42UEJn16E5PbWTzngUPmPl"
+          },
+          "title": "Plants and Crops",
+          "slug": "plants",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Plants and crops",
+          "metaDescription": "Get the support you need throughout the lifecycle of agriculture production, from seeds, fertilizer, and pesticides to distributing and selling to the marketplace.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "4FbBKFzPna1PlgAA5fAfn6",
+              "4Op8L4UGuA0S9KX5q8B39",
+              "2wfMTXN02GsvqFqQo3cSXD",
+              "3dbQnYQ6VaGZPXkNaUfWw9",
+              "34VdYT1mEYnbWITYMIwLMw",
+              "6XVf7qAN0qPJ1cALnEy7Qf",
+              "6mf53B2N7MbIZYueiTiYyk",
+              "2tYyuA1owNw4TJGaboINAN"
+          ],
+          "url": "/plants"
+      },
+      {
+          "sys": {
+              "id": "14LGzQqHyi4UHgVVBa0Kup"
+          },
+          "title": "Land and Forests",
+          "slug": "land",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Land and forests",
+          "metaDescription": "Connect with LDAF's forestry, arborist, conservation, and fire programs and help us ensure a sustainable future for Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "64dubUyhTXG9OZAsgliGDv",
+              "5SAWmvr1rNPILl290JCvrc",
+              "UsrsjMMc2FaF4rYMZYpdc",
+              "2R4jHM0fS6nebPK2XFB4JD"
+          ],
+          "url": "/land"
+      },
+      {
+          "sys": {
+              "id": "6QAYMMSd0lqJpDDKCbDGEk"
+          },
+          "title": "About LDAF",
+          "slug": "about",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "About LDAF",
+          "metaDescription": "Learn how LDAF contributes to farm and forest industries and touches the lives of everyone in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "6G0f5fuuy1towqspyAXwMO",
+              "75a61IxmvoYjTbEmnXqpFf",
+              "7uRzUfPjJoNjTXlVCcjOIi",
+              "3uNRdz8k4I7aKmUoom3VF4",
+              "4l8tyg95hF7LKzsoqqmyfT",
+              "1R85Lhtr29D6LM3EP5m0uW",
+              "7BYjCVCvRoNr1BqG1Nyi5v",
+              "7fqxQ2as7EBlgfyL8mewLQ",
+              "3UmqkHAhID2aFfidepOh0",
+              "76LJryp2U1a3c4gOodTPqC"
+          ],
+          "url": "/about"
+      },
+      {
+          "sys": {
+              "id": "4abrHk3MHL5ub8UPd8aOhK"
+          },
+          "title": "Forestry Reports",
+          "slug": "forestry-reports",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forestry reports",
+          "metaDescription": "Read reports on timber and forest product production in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "UsrsjMMc2FaF4rYMZYpdc"
+              }
+          },
+          "url": "/land/forestry/forestry-reports"
+      },
+      {
+          "sys": {
+              "id": "7fqxQ2as7EBlgfyL8mewLQ"
+          },
+          "title": "Boards and Commissions",
+          "slug": "boards-commissions",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Boards and Commissions",
+          "metaDescription": "The Boards, Commissions, Councils, and Task Forces of the Louisiana Department of Agriculture and Forestry. ",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "children": [
+              "32Axt5EAGYnosa6JZ8oALi",
+              "6nGoNXZML4r5xVlFfNjg6w",
+              "2ltR2LG9aDA1oRyqrQJ0Yk",
+              "6a0lZm5lyuyihsxzHWbWiU",
+              "760TUU9H5vxOIFx7UYp9Jd",
+              "JGUrx5RQ5MNZi6OaVDQMv",
+              "FYWHMfJjgfleDMrizm6EE",
+              "466MOBwxnMjjRkzAek4Sgf",
+              "5tH6Itg17MAsD4PKq4M4DU",
+              "3pv8Jeza6LgX9xZdnUXkVz",
+              "3QQZzyQj4YNNJCUQ5CXpt",
+              "1XxRPsi7K8xZKSpPhSzKO4",
+              "1POIuuO5TWMjufX6few4az",
+              "38xhMCo3Wt6hqvrZOllHA9",
+              "5cJFOlC3F66g8Q7H93lK9R",
+              "4d2kTEV2ZPRgHK34e2Qyei",
+              "LD5d437pCcWlbY91Xx3Ww",
+              "1PxezWkh5f70knSbxlKEDc",
+              "4LaLsnQELCXMoZEUm26hFs",
+              "3YOWUjElb2KEQsZh6NY4S7",
+              "7xjl7Nkb1zIk2HSHyi1yXN",
+              "7ivk8AOJRR7KLi4ntY9nw8",
+              "5BFek7UZaEiUIbpwgSQOFK",
+              "1MLWmue319wEMBICRGTMyK",
+              "bp7UuVNob35mioGpnv7lp"
+          ],
+          "url": "/about/boards-commissions"
+      },
+      {
+          "sys": {
+              "id": "2R4jHM0fS6nebPK2XFB4JD"
+          },
+          "title": "Conservation and Protection",
+          "slug": "conservation",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Conservation and protection",
+          "metaDescription": "Find local resources for managing soil and water, preventing erosion, and disposing agricultural debris",
+          "parent": {
+              "sys": {
+                  "id": "14LGzQqHyi4UHgVVBa0Kup"
+              }
+          },
+          "children": [
+              "5IVeQ7pyZQssJNmuB25gDh",
+              "6Dhh9Qtg1m2gd9LQIQEUZ0"
+          ],
+          "url": "/land/conservation"
+      },
+      {
+          "sys": {
+              "id": "2tYyuA1owNw4TJGaboINAN"
+          },
+          "title": "Plant Pests and Invasive Species",
+          "slug": "pests",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Plant pests and invasive species",
+          "metaDescription": "Prevent, control, and eradicate pests and diseases threatening the agriculture industry",
+          "parent": {
+              "sys": {
+                  "id": "42UEJn16E5PbWTzngUPmPl"
+              }
+          },
+          "children": [
+              "3c9JVo76kKof58FIARzEoE"
+          ],
+          "url": "/plants/pests"
+      },
+      {
+          "sys": {
+              "id": "7uBALB38a4YBXaD8D3v8iN"
+          },
+          "title": "Inspection and Lab Services",
+          "slug": "inspections-labs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Inspection and lab services",
+          "metaDescription": "Access required and voluntary inspections of agricultural commodities, meat, measurement devices and more.",
+          "parent": {
+              "sys": {
+                  "id": "5IAvRohYJN7TJkszUniJ63"
+              }
+          },
+          "url": "/business/inspections-labs"
+      },
+      {
+          "sys": {
+              "id": "5IAvRohYJN7TJkszUniJ63"
+          },
+          "title": "Business Resources",
+          "slug": "business",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Business resources",
+          "metaDescription": "Access licensing, reporting, inspections, compliance services, and lists of certified professionals.",
+          "parent": {
+              "sys": {
+                  "id": "3XWVKrpBrV0OOJD44i8eDN"
+              }
+          },
+          "children": [
+              "2PFylYHaOdR2uAF63oC8PB",
+              "V0euSDw1Gt0tpTYtwsGWv",
+              "1Iz2C5yhXchSffVKlP3L0k",
+              "2P3K7cFlbx1lzImEY7O70A",
+              "25QxUUpbDntC1SHAnnTT4F",
+              "79XY2OqkO8MSxEngMKsWi8",
+              "47zEwP57LPQQxoKMZojYfQ",
+              "53nj3eX9UbAozp6nHuQVZX",
+              "2Nf7dZpB5teZBt9npEZMft",
+              "7uBALB38a4YBXaD8D3v8iN"
+          ],
+          "url": "/business"
+      },
+      {
+          "sys": {
+              "id": "7aBQ7n1DLyR6zSFkcxfNkN"
+          },
+          "title": "Motor Fuels",
+          "slug": "motor-fuels",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Motor fuels",
+          "metaDescription": " Ensure gasoline quality through inspections and investigations",
+          "parent": {
+              "sys": {
+                  "id": "1Iz2C5yhXchSffVKlP3L0k"
+              }
+          },
+          "url": "/business/weights-measures/motor-fuels"
+      },
+      {
+          "sys": {
+              "id": "2PHxShUm6IhU2URzcazEQG"
+          },
+          "title": "Device Registration and Inspections",
+          "slug": "devices",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Device registration and inspections",
+          "metaDescription": "Get scale, meter, scanner, and packages weighed, inspected, and tested for accuracy",
+          "parent": {
+              "sys": {
+                  "id": "1Iz2C5yhXchSffVKlP3L0k"
+              }
+          },
+          "url": "/business/weights-measures/devices"
+      },
+      {
+          "sys": {
+              "id": "2ZEhrinyJrSpFwMbofrP8K"
+          },
+          "title": "Consumer Complaints",
+          "slug": "consumer-complaints",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Consumer complaints",
+          "metaDescription": "File complaints about inaccurate weighing or measuring practices",
+          "parent": {
+              "sys": {
+                  "id": "1Iz2C5yhXchSffVKlP3L0k"
+              }
+          },
+          "url": "/business/weights-measures/consumer-complaints"
+      },
+      {
+          "sys": {
+              "id": "29Cohlcj9u0agnqzHEJFkH"
+          },
+          "title": "Office of Soil and Water Conservation",
+          "slug": "oswc",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Office of Soil and Water Conservation",
+          "metaDescription": "Provides conservation assistance and education to landowners, business owners, educators, and the public.",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/oswc"
+      },
+      {
+          "sys": {
+              "id": "7GcVn6znFpAdunhUbO1VzF"
+          },
+          "title": "Office of Agro-Consumer Services",
+          "slug": "acs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Office of Agro-Consumer Services",
+          "metaDescription": "Louisiana's Office of Agro-Consumer Services ensures consumers get the right quality and quantity of products they’re paying for. It protects buyers and sellers and builds confidence and trust in the Louisiana marketplace.",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/acs"
+      },
+      {
+          "sys": {
+              "id": "5INYz6V5zeO43Wf10gQdII"
+          },
+          "title": "Louisiana Grown",
+          "slug": "louisiana-grown",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Grown",
+          "metaDescription": "Identifying and promoting Louisiana specialty crops and agricultural food products",
+          "parent": {
+              "sys": {
+                  "id": "4Z1M1TixXmVDmQfYL1sGfL"
+              }
+          },
+          "url": "/food/selling/produce/louisiana-grown"
+      },
+      {
+          "sys": {
+              "id": "3w649UavsyaIXHbidIVSnk"
+          },
+          "title": "Minority and Veteran Affairs",
+          "slug": "minority-and-veteran-affairs",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Minority and Veteran Affairs",
+          "metaDescription": "Linking minority and veteran farmers to assistance and resources in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "1R85Lhtr29D6LM3EP5m0uW"
+              }
+          },
+          "url": "/about/community/minority-and-veteran-affairs"
+      },
+      {
+          "sys": {
+              "id": "3Khi0hsPoTbOBQXBpQHpvJ"
+          },
+          "title": "Stay Rooted Louisiana",
+          "slug": "stay-rooted",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Stay Rooted Louisiana",
+          "metaDescription": "Reducing farm stress among our agriculture communities in Louisiana.",
+          "parent": {
+              "sys": {
+                  "id": "1R85Lhtr29D6LM3EP5m0uW"
+              }
+          },
+          "url": "/about/community/stay-rooted"
+      },
+      {
+          "sys": {
+              "id": "5NFeKNgb8oMMlL167NvDej"
+          },
+          "title": "Homegrown by Heroes",
+          "slug": "homegrown-by-heroes",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Homegrown by Heroes",
+          "metaDescription": "Bringing awareness to consumers of agricultural products that are produced by U.S. military veterans.",
+          "parent": {
+              "sys": {
+                  "id": "1R85Lhtr29D6LM3EP5m0uW"
+              }
+          },
+          "url": "/about/community/homegrown-by-heroes"
+      },
+      {
+          "sys": {
+              "id": "6dQ7hi7DFdrQDGNmygAr0z"
+          },
+          "title": "Office of Forestry",
+          "slug": "for",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Louisiana Office of Forestry",
+          "metaDescription": "Louisiana's Office of Forestry protects forestry resources while offering guidance on sustainable forestry practices.",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/for"
+      },
+      {
+          "sys": {
+              "id": "3vtf70eRcerw2lXFfrG8Wy"
+          },
+          "title": "Volunteer Fire Assistance Grants",
+          "slug": "volunteer-fire-assistance-grants",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Volunteer Fire Assistance Grants",
+          "metaDescription": "Funding to assist rural fire departments in Louisiana in building firefighting capacity.",
+          "parent": {
+              "sys": {
+                  "id": "64dubUyhTXG9OZAsgliGDv"
+              }
+          },
+          "url": "/land/fire/volunteer-fire-assistance-grants"
+      },
+      {
+          "sys": {
+              "id": "FdYl8HyaMuvXcxR9t4OjQ"
+          },
+          "title": "Office of Management and Finance",
+          "slug": "omf",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Office of Management and Finance",
+          "metaDescription": "LDAF's Office of Management and Finance oversees administrative and financial functions.",
+          "parent": {
+              "sys": {
+                  "id": "3uNRdz8k4I7aKmUoom3VF4"
+              }
+          },
+          "url": "/about/organization/omf"
+      },
+      {
+          "sys": {
+              "id": "1SjNCxox68X87W7NIm02OZ"
+          },
+          "title": "Forest Stewardship Program",
+          "slug": "forest-stewardship-program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forest Stewardship Program",
+          "metaDescription": "Learn about the stewardship program and become a certified forest stewardship landowner for total forest resource management.",
+          "parent": {
+              "sys": {
+                  "id": "UsrsjMMc2FaF4rYMZYpdc"
+              }
+          },
+          "url": "/land/forestry/forest-stewardship-program"
+      },
+      {
+          "sys": {
+              "id": "7hjXoNFDp65mNSe17EB42M"
+          },
+          "title": "Forest Productivity Program",
+          "slug": "forest-productivity-program",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Forest Productivity Program",
+          "metaDescription": "Landowners, get funding through the Forest Productivity Program to establish and improve tree productivity. ",
+          "parent": {
+              "sys": {
+                  "id": "UsrsjMMc2FaF4rYMZYpdc"
+              }
+          },
+          "url": "/land/forestry/forest-productivity-program"
+      },
+      {
+          "sys": {
+              "id": "3UmqkHAhID2aFfidepOh0"
+          },
+          "title": "Commissioner Mike Strain",
+          "slug": "commissioner",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Commissioner Mike Strain",
+          "metaDescription": "Meet Dr. Mike Strain, Commissioner of the Louisiana Department of Agriculture and Forestry since 2007.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "url": "/about/commissioner"
+      },
+      {
+          "sys": {
+              "id": "76LJryp2U1a3c4gOodTPqC"
+          },
+          "title": "Contact us",
+          "slug": "contact",
+          "isRoot": false,
+          "internalRedirect": null,
+          "externalRedirect": null,
+          "metaTitle": "Contact us",
+          "metaDescription": "Reach the Louisiana Department of Agriculture and Forestry (LDAF) by phone, email, or in person.",
+          "parent": {
+              "sys": {
+                  "id": "6QAYMMSd0lqJpDDKCbDGEk"
+              }
+          },
+          "children": [
+              "1ztgzJrkiSyG4kOWnxtaLk",
+              "12ufMWU3cgrf06w4hvSEVN",
+              "5M8s3AsrrKSvbeK4lE2fNo"
+          ],
+          "url": "/about/contact"
+      }
+  ],
+  "missing_in_contentful": [
+      {
+          "sys": {
+              "id": "nb1NN4TBMBsU2NAhhTu25"
+          },
+          "slug": "fall-fest-updated-url",
+          "shortTitle": null,
+          "eventDescription": null,
+          "eventDateAndTime": "2024-10-31T00:00:00.000-07:00",
+          "url": "2024-10-31-fall-fest-updated-url"
+      },
+      {
+          "sys": {
+              "id": "Vq0oOZFGxgjTVRN95UVAs"
+          },
+          "type": "News article",
+          "title": "USDA announces additional $250 million in financial assistance for Distressed Farm Loan Borrowers",
+          "subhead": null,
+          "publicationDate": "2024-10-10T00:00:00.000Z",
+          "slug": "usda-announces-additional-usd250-million-in-financial-assistance-for",
+          "byline": null,
+          "url": "about/news/article/usda-announces-additional-usd250-million-in-financial-assistance-for"
+      },
+      {
+          "sys": {
+              "id": "7snV5vznrA7fvOu7dXwGOY"
+          },
+          "type": "Press release",
+          "title": "Livestock Brand Commission to host saddle microchipping event at Washington State Fair",
+          "subhead": null,
+          "publicationDate": "2024-10-07T00:00:00.000Z",
+          "slug": "livestock-brand-commission-to-host-saddle-microchipping-event-at-washington",
+          "byline": null,
+          "url": "about/news/article/livestock-brand-commission-to-host-saddle-microchipping-event-at-washington"
+      },
+      {
+          "sys": {
+              "id": "6VJ1frWzhehLhwIEceUkEz"
+          },
+          "type": "News article",
+          "title": "USDA/NRCS Louisiana announces Regional Conservation Partnership Program (RCPP)",
+          "subhead": null,
+          "publicationDate": "2024-10-10T00:00:00.000Z",
+          "slug": "usda-nrcs-louisiana-announces-regional-conservation-partnership-program-rcpp",
+          "byline": null,
+          "url": "about/news/article/usda-nrcs-louisiana-announces-regional-conservation-partnership-program-rcpp"
+      },
+      {
+          "sys": {
+              "id": "3LFrZ4ZBYKrLV0r9fYsHRX"
+          },
+          "type": "News article",
+          "title": "Test News",
+          "subhead": null,
+          "publicationDate": "2024-10-16T00:00:00.000Z",
+          "slug": "test-event",
+          "byline": null,
+          "url": "about/news/article/test-event"
+      },
+      {
+          "sys": {
+              "id": "1qUh0gWHQMPCS3bid9CWbb"
+          },
+          "type": "News article",
+          "title": "Buy Local in Evangiline",
+          "subhead": null,
+          "publicationDate": "2024-10-16T00:00:00.000Z",
+          "slug": "fall-fest-in-evangiline",
+          "byline": null,
+          "url": "about/news/article/fall-fest-in-evangiline"
+      },
+      {
+          "sys": {
+              "id": "1eTTNnPanXH02rtuvayEnc"
+          },
+          "type": "Press release",
+          "title": "Volunteer fireman arrested in Union Parish ",
+          "subhead": null,
+          "publicationDate": "2024-10-09T00:00:00.000Z",
+          "slug": "volunteer-fireman-arrested-in-union-parish",
+          "byline": null,
+          "url": "about/news/article/volunteer-fireman-arrested-in-union-parish"
+      },
+      {
+          "sys": {
+              "id": "10ikeBceJaZKnUhawMDhGe"
+          },
+          "type": "News article",
+          "title": "Notice of a major disaster declaration for the State of Texas Amendment No. 5 and Four Louisiana Parishes for Hurricane Beryl",
+          "subhead": null,
+          "publicationDate": "2024-10-10T00:00:00.000Z",
+          "slug": "notice-of-a-major-disaster-declaration-for-the-state-of-texas-amendment-no-5",
+          "byline": null,
+          "url": "about/news/article/notice-of-a-major-disaster-declaration-for-the-state-of-texas-amendment-no-5"
+      }
+  ],
+  "mismatched_record_total": 0,
+  "nullURLs_in_contentful": [
+      "2r8oInZsraifrWELASimFI",
+      "1mfMAdnmaH09dlY1kgBgzv",
+      "7JSVDPyu1JiKRS3s9Yx5CH",
+      "1O77rGGd9dfCq3E4zeg2W5"
+  ],
+  "mismatches": []
+}

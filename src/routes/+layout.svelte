@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.scss";
 
-  import type { PageMetadataMap, PageMetadataMapItem } from "$lib/loadPageMetadataMap";
+  import type { PageMetadataMap, MetadataMapItem } from "$lib/loadPageMetadataMap";
 
   import { partytownSnippet } from "@builder.io/partytown/integration";
   import { setContext } from "svelte";
@@ -55,7 +55,7 @@
 
   $: ({ pageMetadata } = $page.data);
 
-  const getTitle = (pageMetadata: PageMetadataMapItem) => {
+  const getTitle = (pageMetadata: MetadataMapItem) => {
     let title = "";
     if (pageMetadata?.metaTitle) title = pageMetadata.metaTitle;
     else if (pageMetadata?.title) title = pageMetadata.title;
