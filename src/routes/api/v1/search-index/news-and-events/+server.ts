@@ -24,14 +24,9 @@ const CONTENTFUL_ACTIONS = {
 };
 
 const queryNewsAndEvents =  gql`
-  query newsCollection($newsOldestDate: DateTime!, $eventStartDate: DateTime!) {
+  query newsCollection {
     newsCollection(
-      where: { 
-        AND: [
-          { publicationDate_gte: $newsOldestDate }
-          { indexInSearch: true }
-        ]
-      }
+      where: { indexInSearch: true }
       order: [publicationDate_DESC]
     ) {
       items {
@@ -47,12 +42,7 @@ const queryNewsAndEvents =  gql`
       }
     }
     eventEntryCollection(
-      where: {
-        AND: [
-          { eventDateAndTime_gte: $eventStartDate }
-          { indexInSearch: true }
-        ]
-      }
+      where: { indexInSearch: true }
       order: [eventDateAndTime_ASC]
     ) {
       items {
@@ -104,7 +94,7 @@ type AlgoliaMetadataRecord = {
       linkType?: string;
       type?: string;
     };
-  };
+  } | null;
   // Unfortunately, we can't know what all of what will exist in the the `fields`
   // property from Contentful (especially once we're adding Service Entries),
   // so we have to allow for some dynamic flexibility here
@@ -137,22 +127,10 @@ const loadContentMap = async ({contentfulClient}: {contentfulClient?: Contentful
 
   const entryMap: Map<string, MetadataMapItem> = new Map();
 
-  const newsOldestDate = getStartOfDayForDateInTZ(
-    getDateTwelveMonthsAgoInTZ(eventIANATimezone),
-    eventIANATimezone,
-  );  
-  const eventStartDate = getStartOfDayForDateInTZ(
-    getDateSixMonthsAgoInTZ(eventIANATimezone),
-    eventIANATimezone,
-  );
-
   const data = await contentfulClient.fetch<NewsAndEventsCollectionQuery>(
     printQuery(
       queryNewsAndEvents,
-    ),
-    {
-      variables: { newsOldestDate, eventStartDate },
-    }
+    )
   );
 
   if (data?.newsCollection?.items && data?.newsCollection?.items.length > 0) {
@@ -167,7 +145,7 @@ const loadContentMap = async ({contentfulClient}: {contentfulClient?: Contentful
     const allEventMetadata = data.eventEntryCollection.items;
 
     allEventMetadata.forEach(item => {
-      if (!item) return;
+      if (!item || !item.eventDateAndTime || !item.slug) return;
       // if event date has changed, the URL should update as well
       const url = constructEventSlug(new Date(item.eventDateAndTime), item.slug);
       entryMap.set(item.sys.id, {...item, url})
@@ -226,7 +204,6 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   }
 }
 
-
 /**
  * Generic GET request for simple generation of values
  * TODO: add content type delimiters 
@@ -236,20 +213,18 @@ export const GET = async ({ locals: { contentfulClient } }) => {
   const entriesMap = await loadContentMap({contentfulClient})
   let data: AlgoliaMetadataRecord[] = [];
   
-
-
   const transformedFieldsMap: Map<string, AlgoliaMetadataRecord> = new Map();
   if (entriesMap) {
-    [...entriesMap].forEach(([_, page]) => {
-        const transformedFields:AlgoliaMetadataRecord = {
-          objectID: page.sys.id,
-          ...page
-        }
-        transformedFieldsMap.set(page.sys.id, transformedFields)
-      
+    [...entriesMap].forEach(([_, entry]) => {
+      const transformedFields: AlgoliaMetadataRecord = {
+        objectID: entry.sys.id,
+        ...entry,
+        parent: null,
+      }
+      transformedFieldsMap.set(entry.sys.id, transformedFields)
     });
   }
   data = Array.from(transformedFieldsMap.values());
 
-  return json(data)
+  return json(data);
 }
