@@ -7,9 +7,8 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 import { ContentfulClient } from "$lib/services/server/contentful";
 
-import {type PageMetadataMapItem} from "$lib/loadPageMetadataMap"
 import { eventIANATimezone } from "$lib/constants/date";
-import { getCurrentDateInTZ, getDateSixMonthsAgoInTZ, getDateTwelveMonthsAgoInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
+import { getDateSixMonthsAgoInTZ, getDateTwelveMonthsAgoInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 // import { NewsCollectionQuery } from "$lib/$queries.generated";
 // import { NewsCollectionQuery } from "./$queries.generated";
 // import { authenticateRequest } from "$lib/services/server";
@@ -128,12 +127,15 @@ export type MetadataMapItem = {
   } | null;
   [key: string]: string | null | undefined | object;
 }
+// TODO: remove
+const constructEventSlug = (date: Date, slug: string): string =>
+  `${date.toISOString().split("T")[0]}-${slug}`;
 
 const loadContentMap = async ({contentfulClient}: {contentfulClient?: ContentfulClient;}) => {
 
   if (!contentfulClient) return;
 
-  const entriesMap: Map<string, MetadataMapItem> = new Map();
+  const entryMap: Map<string, MetadataMapItem> = new Map();
 
   const newsOldestDate = getStartOfDayForDateInTZ(
     getDateTwelveMonthsAgoInTZ(eventIANATimezone),
@@ -155,38 +157,31 @@ const loadContentMap = async ({contentfulClient}: {contentfulClient?: Contentful
 
   if (data?.newsCollection?.items && data?.newsCollection?.items.length > 0) {
     const allNewsMetadata = data.newsCollection.items;
-
-    allNewsMetadata.forEach(item => item && entriesMap.set(item.sys.id, item));
-
-    [...entriesMap].forEach(([_, item]) => {
-      item.url = "/about/news/article/" + item.slug;
-
-      entriesMap.set(item.sys.id, item);
+    allNewsMetadata.forEach(item => {
+      if (!item) return;
+      const url = "about/news/article/" + item.slug;
+      entryMap.set(item.sys.id, {...item, url})
     });
   }
   if (data?.eventEntryCollection?.items && data?.eventEntryCollection?.items.length > 0) {
-    const allNewsMetadata = data.eventEntryCollection.items;
+    const allEventMetadata = data.eventEntryCollection.items;
 
-    allNewsMetadata.forEach(item => item && entriesMap.set(item.sys.id, item));
-
-    [...entriesMap].forEach(([_, item]) => {
-      item.url = "" + item.slug;
-
-      entriesMap.set(item.sys.id, item);
+    allEventMetadata.forEach(item => {
+      if (!item) return;
+      // if event date has changed, the URL should update as well
+      const url = constructEventSlug(new Date(item.eventDateAndTime), item.slug);
+      entryMap.set(item.sys.id, {...item, url})
     });
   }
 
-  return entriesMap;
+  return entryMap;
 }
 
 export const POST = async ({ request, locals: { contentfulClient } }) => {
 
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
-
-
   const entriesMap = await loadContentMap({contentfulClient})
-
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const contentTypes = ["news", "eventEntry"];
   
@@ -210,7 +205,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
           const englishValue = body.fields[field]["en-US"];
           transformedFields[field] = englishValue;
         }
-  
+
         /**
          * `partialUpdateObject` only creates or updates attributes included in the call. Any preexisting
          * properties on the record that are not in the call are unaffected.
@@ -231,16 +226,30 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   }
 }
 
+
+/**
+ * Generic GET request for simple generation of values
+ * TODO: add content type delimiters 
+ */
 export const GET = async ({ locals: { contentfulClient } }) => {
 
-  const newsEntriesMap = await loadContentMap({contentfulClient})
-  let data: MetadataMapItem[] = [];
+  const entriesMap = await loadContentMap({contentfulClient})
+  let data: AlgoliaMetadataRecord[] = [];
   
-  if (newsEntriesMap) {
-    data = Array.from((newsEntriesMap.values()));
+
+
+  const transformedFieldsMap: Map<string, AlgoliaMetadataRecord> = new Map();
+  if (entriesMap) {
+    [...entriesMap].forEach(([_, page]) => {
+        const transformedFields:AlgoliaMetadataRecord = {
+          objectID: page.sys.id,
+          ...page
+        }
+        transformedFieldsMap.set(page.sys.id, transformedFields)
+      
+    });
   }
+  data = Array.from(transformedFieldsMap.values());
+
   return json(data)
-
 }
-
-
