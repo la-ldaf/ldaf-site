@@ -19,8 +19,8 @@ const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 
 const CONTENTFUL_ACTIONS = {
   PUBLISH: "ContentManagement.Entry.publish",
-  // UNPUBLISH: "ContentManagement.Entry.unpublish",
-  // DELETE: "ContentManagement.Entry.delete",
+  UNPUBLISH: "ContentManagement.Entry.unpublish",
+  DELETE: "ContentManagement.Entry.delete",
 };
 
 const queryNewsAndEvents =  gql`
@@ -107,7 +107,7 @@ export type MetadataMapItem = {
   title?: string | null;
   slug?: string | null;
   children?: string[];
-  url?: string;
+  url?: string | null;
   parent?: {
     sys: {
       id: string;
@@ -121,11 +121,13 @@ export type MetadataMapItem = {
 const constructEventSlug = (date: Date, slug: string): string =>
   `${date.toISOString().split("T")[0]}-${slug}`;
 
-const loadContentMap = async ({contentfulClient}: {contentfulClient?: ContentfulClient;}) => {
+const loadContentMap = async (
+  {contentfulClient}: {contentfulClient?: ContentfulClient;}
+): Promise<Map<string, MetadataMapItem>> => {
 
-  if (!contentfulClient) return;
+  const entryMap: NonNullable<Map<string, MetadataMapItem>> = new Map();
 
-  const entryMap: Map<string, MetadataMapItem> = new Map();
+  if (!contentfulClient) return entryMap;
 
   const data = await contentfulClient.fetch<NewsAndEventsCollectionQuery>(
     printQuery(
@@ -147,7 +149,9 @@ const loadContentMap = async ({contentfulClient}: {contentfulClient?: Contentful
     allEventMetadata.forEach(item => {
       if (!item || !item.eventDateAndTime || !item.slug) return;
       // if event date has changed, the URL should update as well
-      const url = constructEventSlug(new Date(item.eventDateAndTime), item.slug);
+      const url = item.eventDateAndTime && item.slug 
+        ? `/about/events/event/${constructEventSlug(new Date(item.eventDateAndTime), item.slug)}`
+        : null;
       entryMap.set(item.sys.id, {...item, url})
     });
   }
@@ -164,7 +168,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   const contentTypes = ["news", "eventEntry"];
   
   try {
-    if (entriesMap) {
+    if (entriesMap?.size) {
       if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
         const contentfulValue = entriesMap.get(body.sys.id) || { url: "", children: [] };
         // The webhook body is missing `children` and `url`, since we
@@ -195,6 +199,11 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
         const response = await index.partialUpdateObject(transformedFields, {
           createIfNotExists: true,
         });
+        return json(response);
+      }
+      const deleteActions = [CONTENTFUL_ACTIONS.UNPUBLISH, CONTENTFUL_ACTIONS.DELETE];
+      if (deleteActions.includes(contentfulAction) && contentTypes.includes(contentType)) {
+        const response = await index.deleteObject(body.sys.id);
         return json(response);
       }
     }
