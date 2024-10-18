@@ -19,7 +19,6 @@ const queryNewsAndEvents =  gql`
         publicationDate
         slug
         byline
-        indexInSearch
       }
     }
     eventEntryCollection(
@@ -34,7 +33,6 @@ const queryNewsAndEvents =  gql`
         shortTitle
         eventDescription
         eventDateAndTime
-        indexInSearch
       }
     }
   }

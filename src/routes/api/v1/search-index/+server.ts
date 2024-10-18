@@ -23,10 +23,10 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
   const contentTypes = ["pageMetadata", "news", "eventEntry"];
-  const {pageMetadataMap} = await loadPageMetadataMap({contentfulClient});
-  const eventsAndNewsMap = await loadEventsAndNewsMap({contentfulClient});
+  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
+  const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
 
-  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap])
+  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
 
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
@@ -40,7 +40,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
         },
         url: contentfulValue?.url,
         // conditionally add page attributes
-        ...{...(contentfulValue?.children ? {children: contentfulValue?.children} : {})}
+        ...{ ...(contentfulValue?.children ? { children: contentfulValue?.children } : {}) },
       };
       for (const field in body.fields) {
         // The webhook body unfortunately prefaces each field with a sub-property equal to
@@ -90,16 +90,15 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
 
 // Return all suitable Page Metadata, News, and Events map items
 export const GET = async ({ locals: { contentfulClient } }) => {
-  const {pageMetadataMap} = await loadPageMetadataMap({contentfulClient});
-  const eventsAndNewsMap = await loadEventsAndNewsMap({contentfulClient});
+  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
+  const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
 
-  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap])
+  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
   let data: AlgoliaMetadataRecord[] = [];
 
   const algoliaRecordsMap: Map<string, AlgoliaMetadataRecord> = new Map();
   if (metadataMap.size) {
     [...metadataMap].forEach(([_, item]) => {
-
       const algoliaRecord: AlgoliaMetadataRecord = {
         slug: item.slug,
         objectID: item.sys.id,
@@ -107,11 +106,11 @@ export const GET = async ({ locals: { contentfulClient } }) => {
         metaDescription: item?.metaDescription ?? item.title,
         metaTitle: item?.metaTitle ?? item.title,
         title: item.title,
-        ...item
-      }
-      algoliaRecordsMap.set(item.sys.id, algoliaRecord)
+        ...item,
+      };
+      algoliaRecordsMap.set(item.sys.id, algoliaRecord);
     });
   }
   data = Array.from(algoliaRecordsMap.values());
-  return json(data)
-}
+  return json(data);
+};

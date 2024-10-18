@@ -18,25 +18,29 @@ export type MetadataMapItem = {
   metaTitle?: string | null;
   metaDescription?: string | null;
   parent?: {
-      __typename?: "PageMetadata";
-      sys: {
+    __typename?: "PageMetadata";
+    sys: {
+      __typename?: "Sys";
+      id: string;
+    };
+  } | null;
+  internalRedirect?:
+    | {
+        __typename: "EventEntry";
+        slug?: string | null;
+        eventDateAndTime?: any | null;
+      }
+    | {
+        __typename: "News";
+        slug?: string | null;
+      }
+    | {
+        __typename: "PageMetadata";
+        sys: {
           __typename?: "Sys";
           id: string;
-      };
-  } | null;
-  internalRedirect?: {
-      __typename: "EventEntry";
-      slug?: string | null;
-      eventDateAndTime?: any | null;
-  } | {
-      __typename: "News";
-      slug?: string | null;
-  } | {
-      __typename: "PageMetadata";
-      sys: {
-          __typename?: "Sys";
-          id: string;
-      };
-  } | null;
+        };
+      }
+    | null;
   [key: string]: string | null | undefined | object | boolean;
-}
+};
