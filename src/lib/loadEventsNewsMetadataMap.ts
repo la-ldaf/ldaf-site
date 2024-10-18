@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
-import { ContentfulClient } from "$lib/services/server/contentful";
-import { type MetadataMapItem } from "./types";
+import type { ContentfulClient } from "$lib/services/server/contentful";
+import type { MetadataMapItem } from "./types";
 
 const queryNewsAndEvents =  gql`
   query newsCollection {

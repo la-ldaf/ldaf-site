@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.scss";
-
-  import type { PageMetadataMap, MetadataMapItem } from "$lib/loadPageMetadataMap";
+  import type { MetadataMapItem } from "$lib/types";
+  import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 
   import { partytownSnippet } from "@builder.io/partytown/integration";
   import { setContext } from "svelte";

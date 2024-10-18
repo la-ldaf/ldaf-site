@@ -16,7 +16,7 @@ export type PageMetadataMapItemWithObjectID = MetadataMapItem & {
   objectID: string;
 };
 
-export type PageMetadataMap = Map<string, MetadataMapItem>;
+export type PageMetadataMap = Map<string, MetadataMapItem & {__typename?: "PageMetadata"}>;
 
 const pageMetadataItems = gql`
   fragment PageMetadataItems on PageMetadataCollection {
