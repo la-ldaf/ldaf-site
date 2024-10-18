@@ -12,8 +12,6 @@ import { purgeCss } from "vite-plugin-tailwind-purgecss";
 
 const plugins: PluginOption[] = [
   sveltekit(),
-  // https://github.com/AdrianGonz97/vite-plugin-tailwind-purgecss/blob/master/legacy-mode.md
-  purgeCss({ legacy: true }),
   // https://partytown.builder.io/sveltekit
   partytownVite({
     dest: join(process.cwd(), ".svelte-kit/output/client/~partytown"),
@@ -24,6 +22,11 @@ const plugins: PluginOption[] = [
   bundlestring(),
   ldafIcon(),
 ];
+
+// https://github.com/AdrianGonz97/vite-plugin-tailwind-purgecss/blob/master/legacy-mode.md
+if (process.env.NODE_ENV === "production") {
+  plugins.push(purgeCss({ legacy: true }));
+}
 
 export default defineConfig({
   plugins,
