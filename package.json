@@ -101,6 +101,7 @@
     "@observablehq/plot": "^0.6.16",
     "@poppanator/sveltekit-svg": "^4.1.0",
     "@uswds/uswds": "^3.8.2",
+    "@vercel/speed-insights": "^1.0.12",
     "algoliasearch": "^4.20.0",
     "csv-parse": "^5.5.6",
     "date-fns": "^2.30.0",
@@ -113,7 +114,6 @@
     "jpeg-js": "^0.4.4",
     "lodash": "^4.17.21",
     "redis": "^4.6.10",
-    "topojson-client": "^3.1.0",
-    "web-vitals": "^3.4.0"
+    "topojson-client": "^3.1.0"
   }
 }

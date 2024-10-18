@@ -14,8 +14,8 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import VideoCard from "$lib/components/VideoCard";
   import ResourceLinks from "$lib/components/ResourceLinks";
-  import NewsEntrySnippet from "./(infoPages)/about/news/NewsEntrySnippet.svelte";
-  import Event from "./(infoPages)/about/events/Event.svelte";
+  import NewsEntry from "$lib/components/NewsEntry";
+  import Event from "$lib/components/Event";
 
   export let data;
   $: ({
@@ -164,18 +164,14 @@
       <div class="grid-row grid-gap-lg">
         <div class="tablet:grid-col-6">
           {#if featuredEntry}
-            <NewsEntrySnippet
-              entry={featuredEntry}
-              headingLevel={3}
-              variation="homepage-featured"
-            />
+            <NewsEntry entry={featuredEntry} headingLevel={3} variation="homepage-featured" />
           {/if}
         </div>
         <div class="tablet:grid-col-6">
           {#if listedEntries.length > 0}
             {#each listedEntries as entry (entry?.sys.id)}
               {#if entry}
-                <NewsEntrySnippet {entry} headingLevel={3} variation="homepage-listed" />
+                <NewsEntry {entry} headingLevel={3} variation="homepage-listed" />
               {/if}
             {/each}
           {/if}
@@ -193,7 +189,9 @@
           <div class="tablet:grid-col-6">
             {#each column as event (event?.sys.id)}
               <div class="margin-bottom-7">
-                <Event {event} headingLevel={3} variation="small" />
+                {#if event}
+                  <Event {event} headingLevel={3} variation="small" />
+                {/if}
               </div>
             {/each}
           </div>

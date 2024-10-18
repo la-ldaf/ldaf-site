@@ -11,7 +11,7 @@ vite.config.ts.timestamp-*
 /coverage
 build-storybook.log
 /storybook-static
-/.vercel
+.vercel
 /e2e-tests/report
 /e2e-tests/results
 /bundle-visualizer

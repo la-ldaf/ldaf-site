@@ -11,7 +11,6 @@ import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 const eventsBasePath = "/about/events";
 const limit = 20;
 
-// TODO: filter to only future events. this will require thinking about timezones
 export const query = gql`
   query Events($startDate: DateTime!, $limit: Int = 20, $skip: Int = 0, $preview: Boolean = false) {
     eventEntryCollection(
