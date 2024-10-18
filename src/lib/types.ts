@@ -28,7 +28,7 @@ export type MetadataMapItem = {
     | {
         __typename: "EventEntry";
         slug?: string | null;
-        eventDateAndTime?: any | null;
+        eventDateAndTime?: string | null;
       }
     | {
         __typename: "News";

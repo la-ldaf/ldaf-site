@@ -4,7 +4,7 @@ import type { ContentfulClient } from "$lib/services/server/contentful";
 import type { MetadataMapItem } from "./types";
 
 const queryNewsAndEvents = gql`
-  query newsCollection {
+  query NewsCollection {
     newsCollection(where: { indexInSearch: true }, order: [publicationDate_DESC]) {
       items {
         sys {
