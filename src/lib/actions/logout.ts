@@ -27,7 +27,7 @@ if (browser) {
     if (!logoutResponse.ok) {
       const responseErrorMessage = getErrorMessageFromResponse(logoutResponse);
       const message = `Failed to log out: ${logoutResponse.status} ${logoutResponse.statusText}: ${responseErrorMessage}`;
-      throw error(500, { message });
+      error(500, { message });
     }
     const refreshURL = new URL(location.toString());
     refreshURL.searchParams.delete("preview");
