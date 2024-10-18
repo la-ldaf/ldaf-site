@@ -8,7 +8,7 @@ import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
 import blurhash from "./vite-plugin-blurhash";
 import bundlestring from "./vite-plugin-import-as-bundle-string";
-import { purgeCss } from 'vite-plugin-tailwind-purgecss';
+import { purgeCss } from "vite-plugin-tailwind-purgecss";
 
 const plugins: PluginOption[] = [
   sveltekit(),

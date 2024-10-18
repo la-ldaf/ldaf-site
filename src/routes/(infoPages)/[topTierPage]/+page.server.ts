@@ -278,13 +278,13 @@ export const load = async ({
         relatedNews: taggedData?.newsCollection?.items.length
           ? taggedData?.newsCollection
           : matchedTopTier.recentNewsCollection?.items.length
-          ? matchedTopTier.recentNewsCollection
-          : { items: [] },
+            ? matchedTopTier.recentNewsCollection
+            : { items: [] },
         relatedEvents: taggedData?.eventEntryCollection?.items.length
           ? taggedData?.eventEntryCollection
           : matchedTopTier.upcomingEventsCollection?.items.length
-          ? matchedTopTier.upcomingEventsCollection
-          : { items: [] },
+            ? matchedTopTier.upcomingEventsCollection
+            : { items: [] },
       },
       pageMetadata,
     };

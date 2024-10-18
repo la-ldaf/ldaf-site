@@ -56,10 +56,7 @@ export const load = async ({
           internalRedirect.eventDateAndTime
         ) {
           const date = new Date(internalRedirect.eventDateAndTime);
-          redirect(
-            301,
-            `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`,
-          );
+          redirect(301, `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`);
         }
       }
       if (externalRedirect) {
