@@ -40,13 +40,13 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
         },
         url: contentfulValue?.url,
         // meta title and meta description default values
-        metaTitle: contentfulValue?.metaTitle
-          ?? contentfulValue?.title
-          ?? contentfulValue?.shortTitle,
-        metaDescription: contentfulValue?.metaDescription
-          ?? contentfulValue?.eventSummary
-          ?? contentfulValue?.title
-          ?? contentfulValue?.shortTitle,
+        metaTitle:
+          contentfulValue?.metaTitle ?? contentfulValue?.title ?? contentfulValue?.shortTitle,
+        metaDescription:
+          contentfulValue?.metaDescription ??
+          contentfulValue?.eventSummary ??
+          contentfulValue?.title ??
+          contentfulValue?.shortTitle,
         // conditionally add page attributes
         ...{ ...(contentfulValue?.children ? { children: contentfulValue?.children } : {}) },
       };
@@ -111,13 +111,9 @@ export const GET = async ({ locals: { contentfulClient } }) => {
         slug: item.slug,
         objectID: item.sys.id,
         url: item?.url,
-        metaDescription: item?.metaDescription
-          ?? item?.eventSummary
-          ?? item?.title
-          ?? item?.shortTitle,
-        metaTitle: item?.metaTitle
-          ?? item?.title
-          ?? item?.shortTitle,
+        metaDescription:
+          item?.metaDescription ?? item?.eventSummary ?? item?.title ?? item?.shortTitle,
+        metaTitle: item?.metaTitle ?? item?.title ?? item?.shortTitle,
         ...item,
       };
       algoliaRecordsMap.set(item.sys.id, algoliaRecord);
