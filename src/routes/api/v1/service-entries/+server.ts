@@ -10,12 +10,15 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
     query CoreContentwCTAs {
       # We only want service entries that live on core content pages,
       # i.e., within service groups
-      serviceGroupCollection(limit: 175) {
+      serviceGroupCollection(limit: 175, preview: true) {
         total
         skip
         limit
 
         items {
+          sys {
+            id
+          }
           __typename
           title
           serviceEntriesCollection(limit: 50) {
@@ -47,13 +50,15 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
 
   processData: {
     if (!data) break processData;
-    console.log("number of core content collections", data.serviceGroupCollection.items.length);
+    console.log("number of core content collections", data?.serviceGroupCollection?.items.length);
 
     let serviceEntries = [];
     // let nestedServiceGroups = [];
     const serviceEntryDescriptions = [];
-    data.serviceGroupCollection.items.forEach((serviceGroup) => {
-      serviceEntries.push(serviceGroup?.serviceEntriesCollection.items);
+    // console.log(data);
+    data?.serviceGroupCollection?.items.forEach((serviceGroup) => {
+      // console.log(serviceGroup);
+      serviceEntries.push(serviceGroup?.serviceEntriesCollection?.items);
       // nestedServiceGroups.push(serviceGroup?.serv);
 
       serviceGroup?.serviceEntriesCollection.items.forEach((serviceEntry) => {
@@ -75,8 +80,9 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
     const duplicates = flattenedServiceEntries.filter((val, i) =>
       flattenedServiceEntries.includes(val, i + 1),
     );
-    console.log("duplicates", duplicates, duplicates.length);
+    // console.log("duplicates", duplicates, duplicates.length);
     console.log(serviceEntries.length, serviceEntriesSet.size);
+    return json(Array.from(serviceEntriesSet).sort());
   }
   return json(data);
 }) satisfies RequestHandler;

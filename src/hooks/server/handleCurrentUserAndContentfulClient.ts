@@ -47,7 +47,11 @@ export const getHandleCurrentUserAndContentfulClient = ({
       CONTENTFUL_SPACE_ID && CONTENTFUL_DELIVERY_API_TOKEN
         ? getContentfulClient({
             spaceID: CONTENTFUL_SPACE_ID,
-            token: CONTENTFUL_DELIVERY_API_TOKEN,
+            // token: CONTENTFUL_DELIVERY_API_TOKEN,
+            // TODO: create a way to enable preview for dev work without
+            // requiring a login from the UI
+            token: CONTENTFUL_PREVIEW_API_TOKEN,
+            preview: true,
             fetch,
           })
         : undefined;

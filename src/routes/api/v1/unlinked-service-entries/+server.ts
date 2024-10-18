@@ -6,10 +6,11 @@ import { print as printQuery } from "graphql";
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const queryServiceEntries = gql`
     query UnlinkedServiceEntriesWithPagination($limit: Int!, $skip: Int!) {
-      serviceEntryCollection(limit: $limit, skip: $skip) {
+      serviceEntryCollection(limit: $limit, skip: $skip, preview: false) {
         total
         skip
         limit
+
         items {
           sys {
             id
@@ -20,7 +21,7 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
             json
           }
           linkedFrom {
-            serviceGroupCollection {
+            serviceGroupCollection(preview: true) {
               total
             }
           }
@@ -32,12 +33,13 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
   const limit = 100;
   let skip = 0;
   let allUnlinkedEntries = [];
+  let allEntries = [];
   let totalProcessed = 0;
   let hasMore = true;
 
   while (hasMore) {
     const response = await contentfulClient.fetch(printQuery(queryServiceEntries), {
-      variables: { limit: 100, skip: 0 },
+      variables: { limit, skip },
     });
 
     const { total, items } = response.serviceEntryCollection;
@@ -45,14 +47,19 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
       (item) => item.linkedFrom.serviceGroupCollection.total === 0,
     );
 
+    allEntries = allEntries.concat(items);
     allUnlinkedEntries = allUnlinkedEntries.concat(unlinkedEntries);
     totalProcessed += items.length;
     skip += limit;
     hasMore = totalProcessed < total;
 
+    console.log(items.length);
     console.log(
       `Processed ${totalProcessed} of ${total} entries. Found ${allUnlinkedEntries.length} unlinked entries so far.`,
     );
   }
-  return json(allUnlinkedEntries);
+  // return json(allUnlinkedEntries);
+  const uniqueEntries = new Set(allEntries.map((entry) => entry.entryTitle));
+  return json(allEntries.map((entry) => entry.entryTitle));
+  // return json(Array.from(uniqueEntries));
 }) satisfies RequestHandler;
