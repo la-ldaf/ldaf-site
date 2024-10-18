@@ -8,9 +8,12 @@ import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
 import blurhash from "./vite-plugin-blurhash";
 import bundlestring from "./vite-plugin-import-as-bundle-string";
+import { purgeCss } from 'vite-plugin-tailwind-purgecss';
 
 const plugins: PluginOption[] = [
   sveltekit(),
+  // https://github.com/AdrianGonz97/vite-plugin-tailwind-purgecss/blob/master/legacy-mode.md
+  purgeCss({ legacy: true }),
   // https://partytown.builder.io/sveltekit
   partytownVite({
     dest: join(process.cwd(), ".svelte-kit/output/client/~partytown"),
