@@ -2,9 +2,9 @@ import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "@sveltejs/kit";
 import {
   loadPageMetadataMap,
-  type MetadataMapItem,
   type PageMetadataMapItemWithObjectID,
 } from "$lib/loadPageMetadataMap";
+import type { MetadataMapItem } from "$lib/types";
 import uniq from "lodash/uniq";
 import isEqual from "lodash/isEqual";
 import algoliasearch from "algoliasearch";

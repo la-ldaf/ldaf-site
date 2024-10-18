@@ -4,7 +4,7 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 import { authenticateRequest } from "$lib/services/server";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
-import { type AlgoliaMetadataRecord } from "./types.js";
+import type { AlgoliaMetadataRecord } from "./types.js";
 import { loadEventsAndNewsMap } from "$lib/loadEventsNewsMetadataMap";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);

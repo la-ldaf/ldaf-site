@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Node as NodeType, EntryHyperlink } from "@contentful/rich-text-types";
-  import type { MetadataMapItem } from "$lib/loadPageMetadataMap";
+  import type { MetadataMapItem } from "$lib/types";
   import Node from "./Node.svelte";
   import { getContext } from "svelte";
   import { linksKey, type LinksContext } from "../context";

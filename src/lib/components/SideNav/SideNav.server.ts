@@ -1,4 +1,5 @@
-import type { PageMetadataMap, MetadataMapItem } from "$lib/loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type { MetadataMapItem } from "$lib/types";
 import type { NavMenuType } from "$lib/components/Header/Nav/types";
 import type SideNavItem from "./types";
 
