@@ -1,4 +1,5 @@
-import type { PageMetadataMap, PageMetadataMapItem } from "$lib/loadPageMetadataMap";
+import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type { MetadataMapItem } from "$lib/types";
 import type { NavMenuType } from "$lib/components/Header/Nav/types";
 import type SideNavItem from "./types";
 
@@ -10,7 +11,7 @@ const sideNavMap: SideNavMap = new Map();
 const buildSideNavTree = (
   pageMetadataMap: PageMetadataMap,
   featuredPages: string[],
-  children: PageMetadataMapItem["children"],
+  children: MetadataMapItem["children"],
 ): SideNavItem[] => {
   const tree: SideNavItem[] = [];
   if (children) {
