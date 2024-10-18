@@ -13,6 +13,8 @@
   import Image from "$lib/components/Image";
   import Link from "$lib/components/Link";
   import { url as arrowIcon } from "$icons/arrow_forward";
+  import NewsEntry from "$lib/components/NewsEntry";
+  import Event from "$lib/components/Event";
 
   export let data;
   $: ({
@@ -26,6 +28,8 @@
       contactInfoCollection,
       additionalResources,
       video,
+      recentNewsCollection: news,
+      upcomingEventsCollection: events,
     },
     imageGallery,
     childServiceEntries,
@@ -250,4 +254,24 @@
     links={additionalResources.links}
     imageSizeType="col-9"
   />
+{/if}
+
+{#if news?.items && news.items.length > 0}
+  <h2>Recent news</h2>
+  {#each news.items as entry (entry?.sys.id)}
+    {#if entry}
+      <NewsEntry {entry} headingLevel={4} />
+    {/if}
+  {/each}
+{/if}
+
+{#if events?.items && events.items.length > 0}
+  <h2>Upcoming events</h2>
+  <div class="ldaf-events-list-container">
+    {#each events.items as event (event?.sys.id)}
+      {#if event}
+        <Event {event} headingLevel={4} />
+      {/if}
+    {/each}
+  </div>
 {/if}
