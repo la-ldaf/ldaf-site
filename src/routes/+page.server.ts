@@ -295,5 +295,5 @@ export const load = async ({
     };
   }
   // TODO: We really shouldn't 404 on the home page.
-  throw error(404);
+  error(404);
 };

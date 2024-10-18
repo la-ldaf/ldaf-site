@@ -1,4 +1,4 @@
-import type { MaybePromise, RequestEvent } from "@sveltejs/kit";
+import type { RequestEvent } from "@sveltejs/kit";
 
 // We don't use SvelteKit's built-in error catching to catch preview authentication errors, because
 // we want to control that UI and you can't throw errors from hooks or root layouts and still catch
@@ -10,7 +10,7 @@ import type { MaybePromise, RequestEvent } from "@sveltejs/kit";
 const resolveWithStatus = async <T extends RequestEvent>(
   status: number,
   statusText: string,
-  resolve: (event: T) => MaybePromise<Response>,
+  resolve: (event: T) => Response | Promise<Response>,
   event: T,
 ) => {
   const response = await resolve(event);

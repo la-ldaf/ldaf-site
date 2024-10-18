@@ -129,9 +129,9 @@ const defaultPressReleaseContactInfoQuery = gql`
 `;
 
 export const load = (async ({ params: { slug }, locals: { contentfulClient }, parent, fetch }) => {
-  if (!slug) throw error(404);
+  if (!slug) error(404);
   // TODO: example contents
-  if (!contentfulClient) throw error(404);
+  if (!contentfulClient) error(404);
   const baseBreadcrumbsPromise = loadBaseBreadcrumbs({ parent });
   const variables = {
     slug,
@@ -144,7 +144,7 @@ export const load = (async ({ params: { slug }, locals: { contentfulClient }, pa
     newsArticleDataPromise,
   ]);
   const [newsArticle] = newsArticleData?.newsCollection?.items ?? [];
-  if (!newsArticle) throw error(404);
+  if (!newsArticle) error(404);
 
   let defaultPressReleaseContactInfoPromise: Promise<
     DefaultPressReleaseContactInfoQuery | undefined

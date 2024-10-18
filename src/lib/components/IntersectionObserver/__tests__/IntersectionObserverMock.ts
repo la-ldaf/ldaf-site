@@ -23,12 +23,12 @@ const getInitialInstance = (
 
 let instances: Instance[] = [];
 
-const getObserve: (i: number) => Mock<[Element], void> = (i) =>
+const getObserve: (i: number) => Mock<(target: Element) => void> = (i) =>
   vi.fn((target) => {
     instances[i].targets.push(target);
   });
 
-const getUnobserve: (i: number) => Mock<[Element], void> = (i) =>
+const getUnobserve: (i: number) => Mock<(target: Element) => void> = (i) =>
   vi.fn((target) => {
     const targetI = instances[i].targets.indexOf(target);
     if (targetI < 0) return;
@@ -36,13 +36,13 @@ const getUnobserve: (i: number) => Mock<[Element], void> = (i) =>
     instances[i].formerTargets.push(target);
   });
 
-const getDisconnect: (i: number) => Mock<[], void> = (i) =>
+const getDisconnect: (i: number) => Mock<() => void> = (i) =>
   vi.fn(() => {
     instances[i].formerTargets.push(...instances[i].targets);
     instances[i].targets = [];
   });
 
-const getTakeRecords: (i: number) => Mock<[], IntersectionObserverEntry[]> = (i: number) =>
+const getTakeRecords: (i: number) => Mock<() => IntersectionObserverEntry[]> = (i) =>
   vi.fn(() =>
     instances[i].targets.map((target) =>
       createIntersectionObserverEntry({ target, isIntersecting: true }),
@@ -68,7 +68,7 @@ export const createIntersectionObserverEntry = ({
   };
 };
 
-const IntersectionObserverMock: Mock<[() => void, IntersectionObserverInit]> = vi.fn(
+const IntersectionObserverMock = vi.fn(
   (callback, { root = null, rootMargin, threshold = null }) => {
     const i = instances.length;
     const observer: IntersectionObserverType = {
