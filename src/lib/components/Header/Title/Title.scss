@@ -7,10 +7,12 @@
     margin-top: auto;
     align-items: center;
     column-gap: 10px;
-    img {
-      max-width: 100px;
-    }
     font-size: initial;
+  }
+
+  .ldaf-title__compact {
+    // Add space between text logo and mobile menu button.
+    margin-right: 1rem;
   }
 
   // Force title to render the same as other pages when we wrap in an <h1> on

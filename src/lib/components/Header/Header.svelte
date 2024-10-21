@@ -8,7 +8,6 @@
   import { page } from "$app/stores";
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
-  import HeaderBackgroundImage from "./HeaderBackgroundImage.svelte";
   import Logo from "./Logo";
   import User from "./User";
 
@@ -26,7 +25,6 @@
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="ldaf-header usa-header usa-header--extended">
-  <HeaderBackgroundImage class="ldaf-header-bg-img" />
   <div class="ldaf-nav usa-navbar">
     <Title {siteTitle} />
     <!--TODO: Replace with content from CMS. -->

@@ -95,18 +95,13 @@
         <div
           class="usa-footer__logo ldaf-footer__logo grid-row tablet:grid-col-6 desktop:grid-col-8 grid-gap-2"
         >
-          <div class="tablet:grid-col-auto">
-            <div class="usa-footer__logo-img">
-              <Logo />
-            </div>
+          <!-- Vertical, stacked logo for mobile. -->
+          <div class="display-block tablet:display-none">
+            <Logo variant="stacked" />
           </div>
-          <div class="tablet:grid-col-auto ldaf-footer__logo-heading-container">
-            <p class="usa-footer__logo-heading ldaf-footer__logo-heading">
-              {siteTitle.wideTitleRow1}
-            </p>
-            <p class="ldaf-footer__logo-subheading">
-              {siteTitle.wideTitleRow2}
-            </p>
+          <!-- Horizontal logo for tablet and desktop. -->
+          <div class="display-none tablet:display-block">
+            <Logo variant="horiz" />
           </div>
         </div>
         <div class="usa-footer__contact-links tablet:grid-col-6 desktop:grid-col-4">
