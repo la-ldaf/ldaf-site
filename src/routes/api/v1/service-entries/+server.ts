@@ -23,15 +23,16 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
       #  here vs the total number of entries that are published in Contentful.
       serviceGroupCollection(limit: 175, preview: false) {
         total
-        skip
-        limit
 
         items {
-          sys {
-            id
+          pageMetadata {
+            sys {
+              id
+            }
           }
           __typename
           title
+
           serviceEntriesCollection(limit: 50) {
             items {
               ... on ServiceEntry {
@@ -54,86 +55,51 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
   queryServiceEntries;
 
   const data = await contentfulClient?.fetch(printQuery(queryServiceEntries));
-  const entryCount = {};
+  const serviceEntries = [];
+  const duplicateEntries = {};
 
   processData: {
     if (!data) break processData;
-    // console.log("number of core content collections", data?.serviceGroupCollection?.items.length);
 
-    let serviceEntries = [];
-    const serviceEntryDescriptions = [];
+    const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
 
     data?.serviceGroupCollection?.items.forEach((serviceGroup) => {
-      // serviceEntries.push(serviceGroup?.serviceEntriesCollection?.items);
-
+      // if (serviceGroup.title === "Indian Creek Recreation Area") {
+      //   console.log("found it");
+      // }
       serviceGroup?.serviceEntriesCollection.items.forEach((serviceEntry) => {
-        // serviceEntryDescriptions.push(documentToPlainTextString(serviceEntry?.description?.json));
-        // serviceEntryDescriptions.push(serviceEntry.entryTitle);
-        // if (entryCount[serviceEntry.entryTitle]) {
-        //   entryCount[serviceEntry.entryTitle] += 1;
-        // } else {
-        //   entryCount[serviceEntry.entryTitle] = 1;
-        // }
+        if (duplicateEntries[serviceEntry.entryTitle]) {
+          duplicateEntries[serviceEntry.entryTitle].count += 1;
+          duplicateEntries[serviceEntry.entryTitle].parents.push(serviceGroup.title);
+        } else {
+          duplicateEntries[serviceEntry.entryTitle] = {
+            count: 1,
+            parents: [serviceGroup.title],
+          };
+        }
+
         if (serviceEntry?.description?.json) {
-          serviceEntryDescriptions.push({
+          const parentPage = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys?.id);
+          serviceEntries.push({
+            url: `${parentPage?.url}#${slugify(serviceEntry.entryTitle)}`,
             serviceGroupTitle: serviceGroup.title,
-            serviceEntryTitle: serviceEntry.entryTitle || "no title",
-            description: documentToPlainTextString(serviceEntry?.description?.json),
+            serviceEntryTitle: serviceEntry.entryTitle,
+            serviceEntryDescription: documentToPlainTextString(serviceEntry?.description?.json),
           });
         }
       });
     });
-
-    // const flattenedServiceEntries = serviceEntries
-    //   .flat()
-    //   .filter((item) => item.__typename === "ServiceEntry") //|| item.__typename == "ServiceGroup")
-    //   .map((item) => {
-    //     if (item.__typename === "ServiceEntry") return item.entryTitle;
-    //     //if (item.__typename === "ServiceGroup") return item.title;
-    //   })
-    //   .sort();
-
-    // const serviceEntriesSet = new Set(flattenedServiceEntries);
-    //
-    // break processData;
-    // return json(Array.from(new Set(serviceEntryDescriptions)).sort());
-    return json(
-      serviceEntryDescriptions
-        .map(
-          (serviceEntry) => `${serviceEntry.serviceGroupTitle} - ${serviceEntry.serviceEntryTitle}`,
-        )
-        .sort(),
-    );
-    console.log(serviceEntryDescriptions.length);
-    return json(
-      Array.from(
-        new Set(
-          serviceEntryDescriptions.map((item) => {
-            return item?.serviceEntryTitle;
-            // return {
-            //   title: item?.serviceEntryTitle,
-            // };
-          }),
-        ),
-      ),
-    );
-    return json(
-      Array.from(
-        new Set(
-          serviceEntryDescriptions.map((item) => {
-            // if (item.description) {
-            //   return console.log("null item ", item);
-            // }
-            return item.description || console.log("NO DESCRIPTION", item);
-          }),
-        ),
-      ),
-    );
   }
-  for (const [entry, count] of Object.entries(entryCount)) {
-    if (count === 1 || entry === "undefined") {
-      delete entryCount[entry];
+
+  for (const [entry, metadata] of Object.entries(duplicateEntries)) {
+    if (metadata.count == 1 || entry === "undefined") {
+      delete duplicateEntries[entry];
     }
+    metadata.parents.sort();
   }
-  return json(entryCount);
+
+  return json({
+    serviceEntries: serviceEntries,
+    duplicates: duplicateEntries,
+  });
 }) satisfies RequestHandler;
