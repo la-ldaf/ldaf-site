@@ -33,7 +33,6 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
   const limit = 100;
   let skip = 0;
   let allUnlinkedEntries = [];
-  let allEntries = [];
   let totalProcessed = 0;
   let hasMore = true;
 
@@ -47,19 +46,14 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
       (item) => item.linkedFrom.serviceGroupCollection.total === 0,
     );
 
-    allEntries = allEntries.concat(items);
     allUnlinkedEntries = allUnlinkedEntries.concat(unlinkedEntries);
     totalProcessed += items.length;
     skip += limit;
     hasMore = totalProcessed < total;
 
-    console.log(items.length);
     console.log(
       `Processed ${totalProcessed} of ${total} entries. Found ${allUnlinkedEntries.length} unlinked entries so far.`,
     );
   }
-  // return json(allUnlinkedEntries);
-  const uniqueEntries = new Set(allEntries.map((entry) => entry.entryTitle));
-  return json(allEntries.map((entry) => entry.entryTitle));
-  // return json(Array.from(uniqueEntries));
+  return json(allUnlinkedEntries.map((entry) => entry.entryTitle).sort());
 }) satisfies RequestHandler;
