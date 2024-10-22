@@ -39,12 +39,8 @@
       </button>
 
       <a class="ldaf-logo__compact" href="/">
-        <Logo />
+        <Logo variant="stacked-commissioner" />
       </a>
-      <div class="ldaf-commissioner__compact">
-        <span>{siteTitle.commissionerRow1}</span>
-        <span class="text-italic">{siteTitle.commissionerRow2}</span>
-      </div>
 
       <Nav items={primaryNavItems} />
 

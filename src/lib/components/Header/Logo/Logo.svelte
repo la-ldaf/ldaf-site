@@ -12,6 +12,17 @@
   import textLogoAvif from "$lib/assets/ldaf-logo-type-white-rgb-300px.png?format=avif&quality=85&imagetools";
   import textLogoAvif2x from "$lib/assets/ldaf-logo-type-white-rgb-600px.png?format=avif&quality=85&imagetools";
 
+  import stackedCommissionerLogo from "$lib/assets/ldaf-stacked-strain-full-color-rgb-176px.png?quality=85&imagetools";
+  import {
+    width as stackedCommissionerLogoWidth,
+    height as stackedCommissionerLogoHeight,
+  } from "$lib/assets/ldaf-stacked-strain-full-color-rgb-176px.png?blurhash";
+  import stackedCommissionerLogo2x from "$lib/assets/ldaf-stacked-strain-full-color-rgb-352px.png?quality=85&imagetools";
+  import stackedCommissionerLogoWebp from "$lib/assets/ldaf-stacked-strain-full-color-rgb-176px.png?format=webp&quality=85&imagetools";
+  import stackedCommissionerLogoWebp2x from "$lib/assets/ldaf-stacked-strain-full-color-rgb-352px.png?format=webp&quality=85&imagetools";
+  import stackedCommissionerLogoAvif from "$lib/assets/ldaf-stacked-strain-full-color-rgb-176px.png?format=avif&quality=85&imagetools";
+  import stackedCommissionerLogoAvif2x from "$lib/assets/ldaf-stacked-strain-full-color-rgb-352px.png?format=avif&quality=85&imagetools";
+
   import horizWideCommissionerLogo from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-600px.png?quality=85&imagetools";
   import {
     width as horizWideCommissionerLogoWidth,
@@ -55,6 +66,16 @@
       logoWebp2x: textLogoWebp2x,
       logoAvif: textLogoAvif,
       logoAvif2x: textLogoAvif2x,
+    },
+    "stacked-commissioner": {
+      logo: stackedCommissionerLogo,
+      logo2x: stackedCommissionerLogo2x,
+      width: stackedCommissionerLogoWidth,
+      height: stackedCommissionerLogoHeight,
+      logoWebp: stackedCommissionerLogoWebp,
+      logoWebp2x: stackedCommissionerLogoWebp2x,
+      logoAvif: stackedCommissionerLogoAvif,
+      logoAvif2x: stackedCommissionerLogoAvif2x,
     },
     "horiz-wide-commissioner": {
       logo: horizWideCommissionerLogo,
