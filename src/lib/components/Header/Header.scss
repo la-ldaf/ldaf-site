@@ -6,7 +6,7 @@ $header-height-without-navbar: 148px;
 
 .ldaf-header {
   position: relative;
-  background: linear-gradient(to right, transparent, $primary-darker 30%);
+  background-color: $primary-darker;
 }
 
 .ldaf-header .ldaf-header-bg-img {
@@ -67,7 +67,7 @@ $header-height-without-navbar: 148px;
 
 @include at-media("desktop") {
   .ldaf-header .usa-nav {
-    border-top: 4px solid $accent-light;
+    border-top: 4px solid $logo-accent;
     background: $white;
   }
 
@@ -104,7 +104,6 @@ $header-height-without-navbar: 148px;
     }
   }
 
-  .ldaf-commissioner__compact,
   .ldaf-logo__compact {
     display: none;
   }
@@ -118,7 +117,7 @@ $header-height-without-navbar: 148px;
 
   .ldaf-logo__compact {
     display: inline-block;
-    max-width: 68px;
+    max-width: 176px;
   }
 
   .usa-nav__inner .ldaf-agency-commissioner span {

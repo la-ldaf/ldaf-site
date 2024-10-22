@@ -100,3 +100,10 @@ $link-reverse-visited-color: $color-violet-50v;
 // Our default focus color only works on light backgrounds, so we need to
 //   provide a lighter focus color for dark backgrounds.
 $focus-reverse-outline-color: $primary-lightest;
+
+/* Custom Variables */
+// The accent color for the new logo; we may later use this in place of the
+//   current gold accent more widely. This will require generating various
+//   shades of green and performing contrast checks (i.e. we probably don't
+//   want green text on a dark blue background).
+$logo-accent: #17aa52;
