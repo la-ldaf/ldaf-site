@@ -1,3 +1,8 @@
+<!--
+ This component is currently not in-use on the site (only in Storybook).
+ If / when there is a desire to include it, the LDAF logo will need to be
+   replaced with either the updated "Icon" logo or the state seal.
+-->
 <script lang="ts">
   import "./DotGovBanner.scss";
   import ldafLogo from "$lib/assets/ldaf-flat-logo-transparent.png?w=16&imagetools";
