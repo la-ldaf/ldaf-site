@@ -23,16 +23,16 @@
   import stackedCommissionerLogoAvif from "$lib/assets/ldaf-stacked-strain-full-color-rgb-176px.png?format=avif&quality=85&imagetools";
   import stackedCommissionerLogoAvif2x from "$lib/assets/ldaf-stacked-strain-full-color-rgb-352px.png?format=avif&quality=85&imagetools";
 
-  import horizWideCommissionerLogo from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-600px.png?quality=85&imagetools";
+  import horizWideCommissionerLogo from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-600px.png?quality=85&imagetools";
   import {
     width as horizWideCommissionerLogoWidth,
     height as horizWideCommissionerLogoHeight,
-  } from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-600px.png?blurhash";
-  import horizWideCommissionerLogo2x from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-1200px.png?quality=85&imagetools";
-  import horizWideCommissionerLogoWebp from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-600px.png?format=webp&quality=85&imagetools";
-  import horizWideCommissionerLogoWebp2x from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-1200px.png?format=webp&quality=85&imagetools";
-  import horizWideCommissionerLogoAvif from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-600px.png?format=avif&quality=85&imagetools";
-  import horizWideCommissionerLogoAvif2x from "$lib/assets/ldaf-horiz-wide-strain-full-color-rgb-1200px.png?format=avif&quality=85&imagetools";
+  } from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-600px.png?blurhash";
+  import horizWideCommissionerLogo2x from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-1200px.png?quality=85&imagetools";
+  import horizWideCommissionerLogoWebp from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-600px.png?format=webp&quality=85&imagetools";
+  import horizWideCommissionerLogoWebp2x from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-1200px.png?format=webp&quality=85&imagetools";
+  import horizWideCommissionerLogoAvif from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-600px.png?format=avif&quality=85&imagetools";
+  import horizWideCommissionerLogoAvif2x from "$lib/assets/ldaf-horiz-wide-strain-white-rgb-1200px.png?format=avif&quality=85&imagetools";
 
   import stackedLogo from "$lib/assets/ldaf-stacked-white-rgb-600px.png?quality=85&imagetools";
   import {

@@ -67,7 +67,7 @@ $header-height-without-navbar: 148px;
 
 @include at-media("desktop") {
   .ldaf-header .usa-nav {
-    border-top: 4px solid $logo-accent;
+    border-top: 4px solid $accent-light;
     background: $white;
   }
 
