@@ -1,6 +1,4 @@
 <script lang="ts">
-  import Image from "$lib/components/Image";
-
   import textLogo from "$lib/assets/ldaf-logo-type-white-rgb-300px.png?quality=85&imagetools";
   import {
     width as textLogoWidth,
@@ -56,8 +54,23 @@
   import horizLogoAvif from "$lib/assets/ldaf-horiz-white-rgb-600px.png?format=avif&quality=85&imagetools";
   import horizLogoAvif2x from "$lib/assets/ldaf-horiz-white-rgb-1200px.png?format=avif&quality=85&imagetools";
 
-  const logoMap = {
-    text: {
+  import Image from "$lib/components/Image";
+  import type { Placement } from "./logoOptions";
+
+  const logoMap: Record<
+    Placement,
+    {
+      logo: string;
+      logo2x: string;
+      width: number;
+      height: number;
+      logoWebp: string;
+      logoWebp2x: string;
+      logoAvif: string;
+      logoAvif2x: string;
+    }
+  > = {
+    "mobile-header-main": {
       logo: textLogo,
       logo2x: textLogo2x,
       width: textLogoWidth,
@@ -67,7 +80,7 @@
       logoAvif: textLogoAvif,
       logoAvif2x: textLogoAvif2x,
     },
-    "stacked-commissioner": {
+    "mobile-header-menu": {
       logo: stackedCommissionerLogo,
       logo2x: stackedCommissionerLogo2x,
       width: stackedCommissionerLogoWidth,
@@ -77,7 +90,7 @@
       logoAvif: stackedCommissionerLogoAvif,
       logoAvif2x: stackedCommissionerLogoAvif2x,
     },
-    "horiz-wide-commissioner": {
+    "desktop-header": {
       logo: horizWideCommissionerLogo,
       logo2x: horizWideCommissionerLogo2x,
       width: horizWideCommissionerLogoWidth,
@@ -87,7 +100,7 @@
       logoAvif: horizWideCommissionerLogoAvif,
       logoAvif2x: horizWideCommissionerLogoAvif2x,
     },
-    stacked: {
+    "mobile-footer": {
       logo: stackedLogo,
       logo2x: stackedLogo2x,
       width: stackedLogoWidth,
@@ -97,7 +110,7 @@
       logoAvif: stackedLogoAvif,
       logoAvif2x: stackedLogoAvif2x,
     },
-    horiz: {
+    "desktop-footer": {
       logo: horizLogo,
       logo2x: horizLogo2x,
       width: horizLogoWidth,
@@ -108,12 +121,11 @@
       logoAvif2x: horizLogoAvif2x,
     },
   };
-  type LogoMap = typeof logoMap;
 
-  export let variant: keyof LogoMap = "text";
+  export let placement: Placement = "mobile-header-main";
 
   const { logo, logo2x, width, height, logoWebp, logoWebp2x, logoAvif, logoAvif2x } =
-    logoMap[variant];
+    logoMap[placement];
 </script>
 
 <!-- TODO: Replace alt value with content from CMS. -->

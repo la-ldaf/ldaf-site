@@ -97,11 +97,11 @@
         >
           <!-- Vertical, stacked logo for mobile. -->
           <div class="display-block tablet:display-none">
-            <Logo variant="stacked" />
+            <Logo placement="mobile-footer" />
           </div>
           <!-- Horizontal logo for tablet and desktop. -->
           <div class="display-none tablet:display-block">
-            <Logo variant="horiz" />
+            <Logo placement="desktop-footer" />
           </div>
         </div>
         <div class="usa-footer__contact-links tablet:grid-col-6 desktop:grid-col-4">

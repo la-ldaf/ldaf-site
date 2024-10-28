@@ -40,7 +40,7 @@
       </button>
 
       <a class="ldaf-logo__compact" href="/">
-        <Logo variant="stacked-commissioner" />
+        <Logo variant="mobile-header-menu" />
       </a>
 
       <Nav items={primaryNavItems} />

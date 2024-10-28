@@ -14,7 +14,7 @@
 <div class="usa-logo ldaf-logo__desktop-full display-none desktop:display-flex">
   <ConditionalWrapper tag="h1" condition={$page.url.pathname === "/"} class="margin-0">
     <a href="/">
-      <Logo variant="horiz-wide-commissioner" />
+      <Logo placement="desktop-header" />
       <span class="usa-sr-only">
         {siteTitle.wideTitleRow1}
         {siteTitle.wideTitleRow2}
@@ -28,7 +28,7 @@
 <div class="usa-logo ldaf-logo__mobile-title display-block desktop:display-none">
   <ConditionalWrapper tag="h1" condition={$page.url.pathname === "/"} class="margin-0">
     <a href="/">
-      <Logo variant="text" />
+      <Logo placement="mobile-header-main" />
       <span class="usa-sr-only">
         {siteTitle.compactTitleRow1}
         {siteTitle.compactTitleRow2}
