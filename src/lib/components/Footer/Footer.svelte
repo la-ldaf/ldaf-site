@@ -6,7 +6,7 @@
 
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
-  import Logo from "$lib/components/Header/Logo";
+  import Logo from "$lib/components/Logo";
 
   import type { AfterNavigate } from "@sveltejs/kit";
   import type { NavMenuType } from "$lib/components/Header/Nav";

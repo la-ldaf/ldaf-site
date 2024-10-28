@@ -3,8 +3,8 @@
 
   import { page } from "$app/stores";
 
-  import Logo from "../Logo";
   import ConditionalWrapper from "$lib/components/ConditionalWrapper";
+  import Logo from "$lib/components/Logo";
 
   import type { SiteTitleType } from "./types";
 

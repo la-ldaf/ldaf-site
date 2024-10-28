@@ -117,9 +117,12 @@
 </script>
 
 <!-- TODO: Replace alt value with content from CMS. -->
+<!-- The alt text for all logos should probably be the same; there probably
+     isn't much of a need to differentiate the variations of the logo to a
+     non-sighted user. -->
 <Image
   src={logo}
-  alt="Louisiana Department of Agriculture and Forestry Home"
+  alt="Louisiana Department of Agriculture and Forestry logo"
   {width}
   {height}
   loading="eager"

@@ -4,11 +4,12 @@
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
+  import Logo from "$lib/components/Logo";
   import Search from "$lib/components/Search";
   import { page } from "$app/stores";
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
-  import Logo from "./Logo";
+
   import User from "./User";
 
   export let primaryNavItems: NavItemType[] = [];
