@@ -3,7 +3,8 @@ import type { RequestHandler } from "@sveltejs/kit";
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
-import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
+import type { ExtractQueryType } from "$lib/util/types";
+import type { CoreContentwCtAsQuery } from "./$queries.generated";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import slugify from "$lib/util/slugify";
 
@@ -54,9 +55,22 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
 
   queryServiceEntries;
 
-  const data = await contentfulClient?.fetch(printQuery(queryServiceEntries));
-  const serviceEntries = [];
-  const duplicateEntries = {};
+  const data = await contentfulClient?.fetch<CoreContentwCtAsQuery>(
+    printQuery(queryServiceEntries),
+  );
+  type serviceEntries = ExtractQueryType<
+    CoreContentwCtAsQuery,
+    ["serviceGroupCollection", "items", "serviceEntryCollection", "items"]
+  >;
+  type searchIndexServiceEntry = {
+    url: string | null | undefined;
+    serviceGroupTitle: string | null | undefined;
+    serviceEntryTitle: string | null | undefined;
+    serviceEntryDescription: string | null | undefined;
+  };
+
+  const serviceEntries: searchIndexServiceEntry[] = [];
+  const duplicateEntries: Record<string, { count: number; parents: string[] }> = {};
 
   processData: {
     if (!data) break processData;
@@ -64,28 +78,33 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
     const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
 
     data?.serviceGroupCollection?.items.forEach((serviceGroup) => {
-      // if (serviceGroup.title === "Indian Creek Recreation Area") {
-      //   console.log("found it");
-      // }
-      serviceGroup?.serviceEntriesCollection.items.forEach((serviceEntry) => {
-        if (duplicateEntries[serviceEntry.entryTitle]) {
-          duplicateEntries[serviceEntry.entryTitle].count += 1;
-          duplicateEntries[serviceEntry.entryTitle].parents.push(serviceGroup.title);
-        } else {
-          duplicateEntries[serviceEntry.entryTitle] = {
-            count: 1,
-            parents: [serviceGroup.title],
-          };
-        }
+      serviceGroup?.serviceEntriesCollection?.items.forEach((serviceEntry) => {
+        if (
+          // appease TypeScript errors
+          serviceEntry &&
+          "entryTitle" in serviceEntry &&
+          serviceEntry.entryTitle &&
+          serviceGroup.title
+        ) {
+          if (duplicateEntries[serviceEntry?.entryTitle]) {
+            duplicateEntries[serviceEntry.entryTitle].count += 1;
+            duplicateEntries[serviceEntry.entryTitle].parents.push(serviceGroup.title);
+          } else {
+            duplicateEntries[serviceEntry.entryTitle] = {
+              count: 1,
+              parents: [serviceGroup.title],
+            };
+          }
 
-        if (serviceEntry?.description?.json) {
-          const parentPage = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys?.id);
-          serviceEntries.push({
-            url: `${parentPage?.url}#${slugify(serviceEntry.entryTitle)}`,
-            serviceGroupTitle: serviceGroup.title,
-            serviceEntryTitle: serviceEntry.entryTitle,
-            serviceEntryDescription: documentToPlainTextString(serviceEntry?.description?.json),
-          });
+          if (serviceEntry?.description?.json) {
+            const parentPage = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys?.id ?? "");
+            serviceEntries.push({
+              url: `${parentPage?.url}#${slugify(serviceEntry.entryTitle)}`,
+              serviceGroupTitle: serviceGroup.title,
+              serviceEntryTitle: serviceEntry.entryTitle,
+              serviceEntryDescription: documentToPlainTextString(serviceEntry?.description?.json),
+            });
+          }
         }
       });
     });
@@ -98,6 +117,11 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
     metadata.parents.sort();
   }
 
+  /**
+   * - `serviceEntries` are the properties needed for the search index
+   * - `duplicates` provides metadata on which service entries are linked
+   *    to across multiple pages
+   */
   return json({
     serviceEntries: serviceEntries,
     duplicates: duplicateEntries,
