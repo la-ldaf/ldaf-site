@@ -61,6 +61,20 @@
     .usa-link {
       color: $accent-warm;
     }
+    // never change color regardless of state
+    // extra specificity is needed to override USWDS
+    .ldaf-footer__address-phone .usa-link,
+    .ldaf-footer__copyright .usa-link {
+      &:visited {
+        color: $accent-warm;
+      }
+      &:hover {
+        color: $accent-warm;
+      }
+      &:active {
+        color: $accent-warm;
+      }
+    }
 
     .usa-footer__contact-links {
       @include at-media("mobile-lg") {
