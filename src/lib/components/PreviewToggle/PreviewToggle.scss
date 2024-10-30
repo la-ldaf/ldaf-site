@@ -3,13 +3,15 @@
   flex-direction: row;
   align-items: center;
   cursor: pointer;
-  color: $primary-lightest;
+  color: $link-reverse-color;
   font-size: inherit;
   filter: none;
   gap: 0.5rem;
-
   &:hover {
-    color: $primary-lighter;
+    color: $link-reverse-hover-color;
+  }
+  &:active {
+    color: $link-reverse-active-color;
   }
 }
 

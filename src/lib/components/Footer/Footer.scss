@@ -65,12 +65,8 @@
     // extra specificity is needed to override USWDS
     .ldaf-footer__address-phone .usa-link,
     .ldaf-footer__copyright .usa-link {
-      &:visited {
-        color: $accent-warm;
-      }
-      &:hover {
-        color: $accent-warm;
-      }
+      &:visited,
+      &:hover,
       &:active {
         color: $accent-warm;
       }
