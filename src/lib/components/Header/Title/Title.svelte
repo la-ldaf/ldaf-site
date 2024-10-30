@@ -6,33 +6,33 @@
   import ConditionalWrapper from "$lib/components/ConditionalWrapper";
   import Logo from "$lib/components/Logo";
 
-  import type { SiteTitleType } from "./types";
-
-  export let siteTitle: SiteTitleType;
+  // We want to provide the site title as the <h1> on the homepage only;
+  //   elsewhere we want to use existing <h1>s and provide accessible link text
+  //   for the logo.
+  $: isHomePage = $page.url.pathname === "/";
+  $: accessibleTitleText = isHomePage
+    ? "Louisiana Department of Agriculture and Forestry"
+    : "Go to home page.";
 </script>
 
 <div class="usa-logo ldaf-logo__desktop-full display-none desktop:display-flex">
-  <ConditionalWrapper tag="h1" condition={$page.url.pathname === "/"} class="margin-0">
+  <ConditionalWrapper tag="h1" condition={isHomePage} class="margin-0">
     <a href="/">
-      <Logo placement="desktop-header" />
       <span class="usa-sr-only">
-        {siteTitle.wideTitleRow1}
-        {siteTitle.wideTitleRow2}
-        {siteTitle.commissionerRow1}
-        {siteTitle.commissionerRow2}
+        {accessibleTitleText}
       </span>
+      <Logo placement="desktop-header" />
     </a>
   </ConditionalWrapper>
 </div>
 
 <div class="usa-logo ldaf-logo__mobile-title display-block desktop:display-none">
-  <ConditionalWrapper tag="h1" condition={$page.url.pathname === "/"} class="margin-0">
+  <ConditionalWrapper tag="h1" condition={isHomePage} class="margin-0">
     <a href="/">
-      <Logo placement="mobile-header-main" />
       <span class="usa-sr-only">
-        {siteTitle.compactTitleRow1}
-        {siteTitle.compactTitleRow2}
+        {accessibleTitleText}
       </span>
+      <Logo placement="mobile-header-main" />
     </a>
   </ConditionalWrapper>
 </div>

@@ -75,7 +75,7 @@ const mainNavTestContent = [
     id: "5",
     name: "About",
     children: [
-      { id: "5-0", name: "Commissioner Strain" },
+      { id: "5-0", name: "Commissioner" },
       { id: "5-1", name: "Boards and Commissions" },
       { id: "5-2", name: "Programs and Divisions" },
       { id: "5-3", name: "Our organization" },

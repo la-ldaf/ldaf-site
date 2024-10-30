@@ -3,7 +3,6 @@ import { VERCEL_ENV } from "$env/static/private";
 import type { User } from "$lib/types";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadErrorPageContent } from "$lib/loadErrorPageContent";
-import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
 import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.server";
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
@@ -97,7 +96,6 @@ export const load = async ({
     previewAuthenticationError,
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
-    siteTitle: loadSiteTitle(),
     headerPrimaryNavItems: headerPrimaryNavItems,
     headerSecondaryNavItems: loadSecondaryNav(),
     footerNavItems: footerNavItems,

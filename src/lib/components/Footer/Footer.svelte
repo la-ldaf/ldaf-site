@@ -10,10 +10,8 @@
 
   import type { AfterNavigate } from "@sveltejs/kit";
   import type { NavMenuType } from "$lib/components/Header/Nav";
-  import type { SiteTitleType } from "$lib/components/Header/Title";
 
   export let navItems: NavMenuType[] = [];
-  export let siteTitle: SiteTitleType;
   // we provide this from a parent component so that we can render the component in Storybook
   export let afterNavigate: undefined | ((callback: (navigation: AfterNavigate) => void) => void) =
     undefined;
@@ -96,18 +94,10 @@
           <!-- Vertical, stacked logo for mobile. -->
           <div class="display-block tablet:display-none">
             <Logo placement="mobile-footer" />
-            <span class="usa-sr-only">
-              {siteTitle.wideTitleRow1}
-              {siteTitle.wideTitleRow2}
-            </span>
           </div>
           <!-- Horizontal logo for tablet and desktop. -->
           <div class="display-none tablet:display-block">
             <Logo placement="desktop-footer" />
-            <span class="usa-sr-only">
-              {siteTitle.wideTitleRow1}
-              {siteTitle.wideTitleRow2}
-            </span>
           </div>
         </div>
         <div class="usa-footer__contact-links tablet:grid-col-6 desktop:grid-col-4">

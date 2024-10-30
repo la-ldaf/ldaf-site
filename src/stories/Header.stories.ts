@@ -70,15 +70,6 @@ const secondaryNavItems = [
   },
 ];
 
-const siteTitle = {
-  compactTitleRow1: "Louisiana Department of",
-  compactTitleRow2: "Agriculture and Forestry",
-  wideTitleRow1: "Department of Agriculture and Forestry",
-  wideTitleRow2: "State of Louisiana",
-  commissionerRow1: "Mike Strain, DVM",
-  commissionerRow2: "Commissioner",
-};
-
 export const Desktop: Story = {
   parameters: {
     design: {
@@ -90,7 +81,7 @@ export const Desktop: Story = {
       defaultViewport: "desktop",
     },
   },
-  args: { primaryNavItems, secondaryNavItems, siteTitle },
+  args: { primaryNavItems, secondaryNavItems },
 };
 
 export const Mobile: Story = {
@@ -104,5 +95,5 @@ export const Mobile: Story = {
       defaultViewport: "mobile2",
     },
   },
-  args: { primaryNavItems, secondaryNavItems, siteTitle },
+  args: { primaryNavItems, secondaryNavItems },
 };

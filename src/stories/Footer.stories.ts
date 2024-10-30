@@ -4,7 +4,6 @@ import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import Footer from "$lib/components/Footer";
 
 import { footerNavTestContent } from "$lib/components/Footer/__tests__/FooterTestContent";
-import titleTestContent from "$lib/components/Header/Title/__tests__/TitleTestContent";
 
 const meta = {
   title: "Components/Footer",
@@ -26,7 +25,7 @@ export const Desktop: Story = {
       defaultViewport: "desktop",
     },
   },
-  args: { navItems: footerNavTestContent, siteTitle: titleTestContent },
+  args: { navItems: footerNavTestContent },
 };
 
 export const Mobile: Story = {
@@ -40,5 +39,5 @@ export const Mobile: Story = {
       defaultViewport: "mobile2",
     },
   },
-  args: { navItems: footerNavTestContent, siteTitle: titleTestContent },
+  args: { navItems: footerNavTestContent },
 };
