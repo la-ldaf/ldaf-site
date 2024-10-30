@@ -9,14 +9,6 @@ $header-height-without-navbar: 148px;
   background-color: $primary-darker;
 }
 
-.ldaf-header .ldaf-header-bg-img {
-  position: absolute;
-  width: 30%;
-  height: 100%;
-  max-height: $header-height-without-navbar;
-  z-index: -1;
-}
-
 .ldaf-header .ldaf-nav__secondary {
   .usa-input {
     border-radius: 5px 0 0 5px;

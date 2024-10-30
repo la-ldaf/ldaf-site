@@ -12,7 +12,9 @@ describe("Footer", () => {
   it("renders", () => {
     render(Footer, { props: { navItems: footerNavTestContent, siteTitle: titleTestContent } });
     expect(screen.getByText("SubMenu 1")).toBeVisible();
-    expect(screen.getByText("Department of Agriculture and Forestry")).toBeVisible();
+    expect(
+      screen.getByText("©2023 Louisiana Department of Agriculture and Forestry."),
+    ).toBeVisible();
   });
   it("handles user events to toggle menus", async () => {
     window.innerWidth = 360;

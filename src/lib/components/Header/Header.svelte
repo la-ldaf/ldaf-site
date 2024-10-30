@@ -9,7 +9,6 @@
   import { page } from "$app/stores";
   import Title, { type SiteTitleType } from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
-
   import User from "./User";
 
   export let primaryNavItems: NavItemType[] = [];
@@ -40,7 +39,11 @@
       </button>
 
       <a class="ldaf-logo__compact" href="/">
-        <Logo variant="mobile-header-menu" />
+        <Logo placement="mobile-header-menu" />
+        <span class="usa-sr-only">
+          {siteTitle.commissionerRow1}
+          {siteTitle.commissionerRow2}
+        </span>
       </a>
 
       <Nav items={primaryNavItems} />

@@ -92,16 +92,22 @@
   <div class="usa-footer__secondary-section ldaf-footer__secondary-section">
     <div class="grid-container">
       <div class="grid-row grid-gap">
-        <div
-          class="usa-footer__logo ldaf-footer__logo grid-row tablet:grid-col-6 desktop:grid-col-8 grid-gap-2"
-        >
+        <div class="usa-footer__logo grid-row tablet:grid-col-6 desktop:grid-col-8 grid-gap-2">
           <!-- Vertical, stacked logo for mobile. -->
           <div class="display-block tablet:display-none">
             <Logo placement="mobile-footer" />
+            <span class="usa-sr-only">
+              {siteTitle.wideTitleRow1}
+              {siteTitle.wideTitleRow2}
+            </span>
           </div>
           <!-- Horizontal logo for tablet and desktop. -->
           <div class="display-none tablet:display-block">
             <Logo placement="desktop-footer" />
+            <span class="usa-sr-only">
+              {siteTitle.wideTitleRow1}
+              {siteTitle.wideTitleRow2}
+            </span>
           </div>
         </div>
         <div class="usa-footer__contact-links tablet:grid-col-6 desktop:grid-col-4">
