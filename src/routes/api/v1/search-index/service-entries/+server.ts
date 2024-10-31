@@ -30,6 +30,7 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
     url?: string | null | undefined;
     metaTitle?: string;
     metaDescription?: string;
+    entryType: string;
     // Unfortunately, we can't know what all of what will exist in the the `fields`
     // property from Contentful, so we have to allow for some dynamic flexibility here
     [key: string]: string | null | undefined | object;
@@ -55,6 +56,7 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
         //
         // This requires updates to the logic in src/routes/api/v1/search-index/+server.ts
         url: serviceEntry?.url,
+        entryType: "Service Entry",
       };
 
       for (const field in body.fields) {
