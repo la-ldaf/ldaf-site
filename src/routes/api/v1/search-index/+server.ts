@@ -4,8 +4,9 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 import { authenticateRequest } from "$lib/services/server";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
-import type { AlgoliaMetadataRecord } from "./types.js";
 import { loadEventsAndNewsMap } from "$lib/loadEventsNewsMetadataMap";
+import type { AlgoliaMetadataRecord } from "./types.js";
+import type { SearchIndexingMetadataMapItem } from "$lib/loadEventsNewsMetadataMap";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
@@ -14,6 +15,23 @@ const CONTENTFUL_ACTIONS = {
   PUBLISH: "ContentManagement.Entry.publish",
   UNPUBLISH: "ContentManagement.Entry.unpublish",
   DELETE: "ContentManagement.Entry.delete",
+};
+
+const getMetaTitleAndDescription = (
+  item?: SearchIndexingMetadataMapItem,
+): { metaTitle?: string | null; metaDescription?: string | null } => {
+  let metaTitle, metaDescription;
+  if (item?.__typename == "PageMetadata") {
+    metaTitle = item?.metaTitle ?? item?.title;
+    metaDescription = item?.metaDescription;
+  } else if (item?.__typename === "News") {
+    metaTitle = item?.metaTitle ?? item?.title;
+    metaDescription = item?.metaDescription ?? item?.subhead;
+  } else if (item?.__typename === "EventEntry") {
+    metaTitle = item?.metaTitle ?? item?.shortTitle;
+    metaDescription = item?.metaDescription ?? item?.eventSummary;
+  }
+  return { metaTitle, metaDescription };
 };
 
 export const POST = async ({ request, locals: { contentfulClient } }) => {
@@ -31,6 +49,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
       const contentfulValue = metadataMap.get(body.sys.id);
+      const metaTitleAndDescription = getMetaTitleAndDescription(contentfulValue);
       // The webhook body is missing `children` and `url`, since we
       // construct those in `loadPageMetadataMap`. Add those properties here.
       const transformedFields: AlgoliaMetadataRecord = {
@@ -39,14 +58,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
           id: body.sys.id,
         },
         url: contentfulValue?.url,
-        // meta title and meta description default values
-        metaTitle:
-          contentfulValue?.metaTitle ?? contentfulValue?.title ?? contentfulValue?.shortTitle,
-        metaDescription:
-          contentfulValue?.metaDescription ??
-          contentfulValue?.eventSummary ??
-          contentfulValue?.title ??
-          contentfulValue?.shortTitle,
+        ...metaTitleAndDescription,
         // conditionally add page attributes
         ...{ ...(contentfulValue?.children ? { children: contentfulValue?.children } : {}) },
       };
@@ -107,13 +119,12 @@ export const GET = async ({ locals: { contentfulClient } }) => {
   const algoliaRecordsMap: Map<string, AlgoliaMetadataRecord> = new Map();
   if (metadataMap.size) {
     [...metadataMap].forEach(([_, item]) => {
+      const metaTitleAndDescription = getMetaTitleAndDescription(item);
       const algoliaRecord: AlgoliaMetadataRecord = {
         slug: item.slug,
         objectID: item.sys.id,
         url: item?.url,
-        metaDescription:
-          item?.metaDescription ?? item?.eventSummary ?? item?.title ?? item?.shortTitle,
-        metaTitle: item?.metaTitle ?? item?.title ?? item?.shortTitle,
+        ...metaTitleAndDescription,
         ...item,
       };
       algoliaRecordsMap.set(item.sys.id, algoliaRecord);

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Node as NodeType, EntryHyperlink } from "@contentful/rich-text-types";
-  import type { MetadataMapItem } from "$lib/types";
+  import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
   import Node from "./Node.svelte";
   import { getContext } from "svelte";
   import { linksKey, type LinksContext } from "../context";
@@ -21,7 +21,7 @@
 
   const entry = linksContext.linksEntriesMaps.hyperlink.get(entryID);
 
-  let entryMetadata: MetadataMapItem;
+  let entryMetadata: PageMetadataMapItem;
   if (entry?.__typename === "PageMetadata") {
     linksContext.pageMetadataMap.get(entryID);
     const meta = linksContext.pageMetadataMap.get(entryID);

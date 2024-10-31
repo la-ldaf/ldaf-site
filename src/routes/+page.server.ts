@@ -11,7 +11,7 @@ import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 import assetProps from "$lib/fragments/assetProps";
 
 import type { HomePageQuery } from "./$queries.generated";
-import type { MetadataMapItem } from "$lib/types";
+import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
 import homePageTestContent from "./__tests__/homePageTestContent";
 import type { YoutubeVideoData } from "$lib/services/server/youtube/getYoutubeVideoData";
@@ -158,7 +158,7 @@ export type HomePage = {
     news: News;
     events: Events;
   };
-  pageMetadata: MetadataMapItem;
+  pageMetadata: PageMetadataMapItem;
 };
 
 // TODO: Maybe make this more reusable since we'll be doing something similar for all Image Wrapper entries.

@@ -4,7 +4,7 @@ import {
   loadPageMetadataMap,
   type PageMetadataMapItemWithObjectID,
 } from "$lib/loadPageMetadataMap";
-import type { MetadataMapItem } from "$lib/types";
+import type { SearchIndexingMetadataMapItem } from "$lib/loadEventsNewsMetadataMap";
 import uniq from "lodash/uniq";
 import isEqual from "lodash/isEqual";
 import algoliasearch from "algoliasearch";
@@ -17,7 +17,7 @@ const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
 
-  let hits: MetadataMapItem[] = [];
+  let hits: SearchIndexingMetadataMapItem[] = [];
 
   await index.browseObjects({
     query: "",
@@ -36,16 +36,19 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
   const algoliaMap = new Map();
   hits.forEach((hit) => algoliaMap.set(hit.sys.id, hit));
 
-  const getMismatchedKeys = (oldData: MetadataMapItem, newData: MetadataMapItem) => {
+  const getMismatchedKeys = (
+    oldData: SearchIndexingMetadataMapItem,
+    newData: SearchIndexingMetadataMapItem,
+  ) => {
     const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
     const keys = [];
-    for (const key of data as (keyof MetadataMapItem)[]) {
+    for (const key of data as (keyof SearchIndexingMetadataMapItem)[]) {
       if (!isEqual(oldData[key], newData[key])) {
         keys.push(key);
       }
     }
 
-    return keys as (keyof MetadataMapItem)[];
+    return keys as (keyof SearchIndexingMetadataMapItem)[];
   };
 
   const nullURLs = [];

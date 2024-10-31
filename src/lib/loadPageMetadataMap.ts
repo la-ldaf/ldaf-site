@@ -7,16 +7,24 @@ import type { ContentfulClient } from "$lib/services/server/contentful";
 
 import type { Breadcrumbs } from "$lib/components/Breadcrumbs";
 import type { PageMetadataCollectionQuery } from "./$queries.generated";
-import type { MetadataMapItem } from "./types";
 
 const isProd = VERCEL_ENV === "production";
 
+// extend the type of the items we get back from the query so we can add children and a full URL
+export type PageMetadataMapItem = NonNullable<
+  PageMetadataCollectionQuery["pageMetadataCollection"]
+>["items"][number] & {
+  children?: string[];
+  url?: string | null;
+  breadcrumbs?: Breadcrumbs;
+};
+
 // This type is used for search indexing in /api/v1/* endpoints
-export type PageMetadataMapItemWithObjectID = MetadataMapItem & {
+export type PageMetadataMapItemWithObjectID = PageMetadataMapItem & {
   objectID: string;
 };
 
-export type PageMetadataMap = Map<string, MetadataMapItem & { __typename?: "PageMetadata" }>;
+export type PageMetadataMap = Map<string, PageMetadataMapItem>;
 
 const pageMetadataItems = gql`
   fragment PageMetadataItems on PageMetadataCollection {
@@ -85,7 +93,7 @@ const queryWithoutRedirects = gql`
 // Walks up the "tree" by looking at pageMetadata, then its parent, then its grandparent, etc.
 const constructFullPathFromMap = (
   pageMetadataMap: PageMetadataMap,
-  pageMetadata: MetadataMapItem,
+  pageMetadata: PageMetadataMapItem,
   path = "",
 ): string | null => {
   if (pageMetadata.parent) {
@@ -114,7 +122,7 @@ const constructFullPathFromMap = (
 // Recursive function that puts together breadcrumbs for a page.
 const constructBreadcrumbs = (
   pageMetadataMap: PageMetadataMap,
-  metadata: MetadataMapItem,
+  metadata: PageMetadataMapItem,
   breadcrumbs: Breadcrumbs = [],
 ): Breadcrumbs => {
   breadcrumbs.unshift({
