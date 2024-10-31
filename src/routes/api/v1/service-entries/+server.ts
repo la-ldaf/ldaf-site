@@ -7,6 +7,7 @@ import type { ExtractQueryType } from "$lib/util/types";
 import type { CoreContentwCtAsQuery } from "./$queries.generated";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import slugify from "$lib/util/slugify";
+import type { SearchIndexServiceEntry } from "../types";
 
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const queryServiceEntries = gql`
@@ -22,7 +23,10 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
       #
       #  Be mindful of those details when monitoring the number of service entries returned
       #  here vs the total number of entries that are published in Contentful.
-      serviceGroupCollection(limit: 175, preview: false) {
+      #
+      #  The current number of service groups as of 10/31/2024 is 148. 200 gives us a
+      #  reasonable buffer while still staying under query complexity limits.
+      serviceGroupCollection(limit: 200, preview: false) {
         total
 
         items {
@@ -62,14 +66,8 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
     CoreContentwCtAsQuery,
     ["serviceGroupCollection", "items", "serviceEntryCollection", "items"]
   >;
-  type searchIndexServiceEntry = {
-    url: string | null | undefined;
-    serviceGroupTitle: string | null | undefined;
-    serviceEntryTitle: string | null | undefined;
-    serviceEntryDescription: string | null | undefined;
-  };
 
-  const serviceEntries: searchIndexServiceEntry[] = [];
+  const serviceEntries: SearchIndexServiceEntry[] = [];
   const duplicateEntries: Record<string, { count: number; parents: string[] }> = {};
 
   processData: {
@@ -99,10 +97,10 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
           if (serviceEntry?.description?.json) {
             const parentPage = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys?.id ?? "");
             serviceEntries.push({
+              id: serviceEntry.sys?.id,
               url: `${parentPage?.url}#${slugify(serviceEntry.entryTitle)}`,
-              serviceGroupTitle: serviceGroup.title,
-              serviceEntryTitle: serviceEntry.entryTitle,
-              serviceEntryDescription: documentToPlainTextString(serviceEntry?.description?.json),
+              metaTitle: `${serviceGroup.title} | ${serviceEntry.entryTitle}`,
+              metaDescription: documentToPlainTextString(serviceEntry?.description?.json),
             });
           }
         }

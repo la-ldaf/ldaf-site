@@ -2,8 +2,10 @@ import { json, error } from "@sveltejs/kit";
 import algoliasearch from "algoliasearch";
 import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
 import { ALGOLIA_API_KEY } from "$env/static/private";
-import { authenticateRequest } from "$lib/services/server";
-import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
+import type { SearchIndexServiceEntry } from "../../types";
+// TODO: uncomment this
+// import { authenticateRequest } from "$lib/services/server";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
@@ -14,28 +16,22 @@ const CONTENTFUL_ACTIONS = {
   DELETE: "ContentManagement.Entry.delete",
 };
 
-export const POST = async ({ request, locals: { contentfulClient } }) => {
-  authenticateRequest(request);
+export const POST = async ({ request, fetch, locals: { contentfulClient } }) => {
+  // TODO: uncomment this
+  // authenticateRequest(request);
 
-  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
 
-  const contentTypes = ["pageMetadata"];
+  const contentTypes = ["serviceEntry"];
 
   type AlgoliaMetadataRecord = {
     objectID: string;
     sys: { id: string };
     url?: string | null | undefined;
-    children?: string[];
-    parent?: {
-      sys: {
-        id: string;
-        linkType?: string;
-        type?: string;
-      };
-    };
+    metaTitle?: string;
+    metaDescription?: string;
     // Unfortunately, we can't know what all of what will exist in the the `fields`
     // property from Contentful, so we have to allow for some dynamic flexibility here
     [key: string]: string | null | undefined | object;
@@ -43,35 +39,42 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
 
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
-      const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
-      // The webhook body is missing `children` and `url`, since we
-      // construct those in `loadPageMetadataMap`. Add those properties here.
-      const transformedFields: AlgoliaMetadataRecord = {
+      const { serviceEntries } = await fetch("/api/v1/service-entries").then((res) => res.json());
+      // Find the matching service entry via the metadata map to allow us to set the accordion URL
+      const serviceEntry = serviceEntries.find(
+        (serviceEntry: SearchIndexServiceEntry) => serviceEntry.id === body?.sys?.id,
+      );
+
+      const algoliaIndexObject: AlgoliaMetadataRecord = {
         objectID: body.sys.id,
         sys: {
           id: body.sys.id,
         },
-        url: contentfulValue?.url,
-        children: contentfulValue?.children,
+        // TODO: add logic that updates this value for any page details updates in
+        // src/routes/api/v1/search-index/+server.ts
+        url: serviceEntry?.url,
       };
+
       for (const field in body.fields) {
         // The webhook body unfortunately prefaces each field with a sub-property equal to
         // the locale value, so we need to flatten that first.
         const englishValue = body.fields[field]["en-US"];
-        transformedFields[field] = englishValue;
+
+        switch (field) {
+          case "entryTitle":
+            algoliaIndexObject.metaTitle = englishValue;
+            break;
+          case "description":
+            algoliaIndexObject.metaDescription = documentToPlainTextString(englishValue);
+            break;
+          default:
+            // We only care about a few possible fields to send to Algolia.
+            // Ignore the rest.
+            break;
+        }
       }
 
-      if (transformedFields?.parent?.sys) {
-        /**
-         * The webhook value for `parent.sys` has `type`, `linkType`, and `id` properties,
-         * whereas the metadata map just has `sys.id`. By doing a partial update and specifying
-         * the value for `parent`, we ensure equality with the metadataMap, since according to the docs:
-         * > You can’t individually update nested attributes.
-         * > Specifying a nested attribute treats it as a replacement of its first-level ancestor
-         */
-        delete transformedFields.parent.sys.type;
-        delete transformedFields.parent.sys.linkType;
-      }
+      return json(algoliaIndexObject);
 
       /**
        * `partialUpdateObject` only creates or updates attributes included in the call. Any preexisting
@@ -81,7 +84,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
        * - If the objectID is specified but doesn’t exist, Algolia creates a new record
        * - If the objectID isn’t specified, the method returns an error
        */
-      const response = await index.partialUpdateObject(transformedFields, {
+      const response = await index.partialUpdateObject(serviceEntry, {
         createIfNotExists: true,
       });
       return json(response);
