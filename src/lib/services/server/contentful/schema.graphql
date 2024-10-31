@@ -429,8 +429,12 @@ enum ContactLinkingCollectionsEventEntryCollectionOrder {
   eventDescription_DESC
   eventSummary_ASC
   eventSummary_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   internalName_ASC
   internalName_DESC
+  metaTitle_ASC
+  metaTitle_DESC
   shortTitle_ASC
   shortTitle_DESC
   slug_ASC
@@ -448,6 +452,8 @@ enum ContactLinkingCollectionsEventEntryCollectionOrder {
 enum ContactLinkingCollectionsNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -691,10 +697,26 @@ enum ContentTypeLocationOrder {
 }
 
 type ContentfulMetadata {
+  concepts: [TaxonomyConcept]!
   tags: [ContentfulTag]!
 }
 
+input ContentfulMetadataConceptsDescendantsFilter {
+  id_contains_all: [String]
+  id_contains_none: [String]
+  id_contains_some: [String]
+}
+
+input ContentfulMetadataConceptsFilter {
+  descendants: ContentfulMetadataConceptsDescendantsFilter
+  id_contains_all: [String]
+  id_contains_none: [String]
+  id_contains_some: [String]
+}
+
 input ContentfulMetadataFilter {
+  concepts: ContentfulMetadataConceptsFilter
+  concepts_exists: Boolean
   tags: ContentfulMetadataTagsFilter
   tags_exists: Boolean
 }
@@ -781,8 +803,12 @@ enum DocumentWrapperLinkingCollectionsEventEntryCollectionOrder {
   eventDescription_DESC
   eventSummary_ASC
   eventSummary_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   internalName_ASC
   internalName_DESC
+  metaTitle_ASC
+  metaTitle_DESC
   shortTitle_ASC
   shortTitle_DESC
   slug_ASC
@@ -1154,8 +1180,11 @@ type EventEntry implements Entry & _Node {
   eventDocumentsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: EventEntryEventDocumentsFilter): EventEntryEventDocumentsCollection
   eventRichTextDescription(locale: String): EventEntryEventRichTextDescription
   eventSummary(locale: String): String
+  indexInSearch(locale: String): Boolean
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): EventEntryLinkingCollections
+  metaDescription(locale: String): String
+  metaTitle(locale: String): String
   shortTitle(locale: String): String
   slug(locale: String): String
   sys: Sys!
@@ -1256,6 +1285,9 @@ input EventEntryFilter {
   eventSummary_not: String
   eventSummary_not_contains: String
   eventSummary_not_in: [String]
+  indexInSearch: Boolean
+  indexInSearch_exists: Boolean
+  indexInSearch_not: Boolean
   internalName: String
   internalName_contains: String
   internalName_exists: Boolean
@@ -1263,6 +1295,20 @@ input EventEntryFilter {
   internalName_not: String
   internalName_not_contains: String
   internalName_not_in: [String]
+  metaDescription: String
+  metaDescription_contains: String
+  metaDescription_exists: Boolean
+  metaDescription_in: [String]
+  metaDescription_not: String
+  metaDescription_not_contains: String
+  metaDescription_not_in: [String]
+  metaTitle: String
+  metaTitle_contains: String
+  metaTitle_exists: Boolean
+  metaTitle_in: [String]
+  metaTitle_not: String
+  metaTitle_not_contains: String
+  metaTitle_not_in: [String]
   shortTitle: String
   shortTitle_contains: String
   shortTitle_exists: Boolean
@@ -1292,6 +1338,8 @@ type EventEntryLinkingCollections {
 enum EventEntryLinkingCollectionsNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -1395,12 +1443,102 @@ enum EventEntryOrder {
   eventDescription_DESC
   eventSummary_ASC
   eventSummary_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   internalName_ASC
   internalName_DESC
+  metaTitle_ASC
+  metaTitle_DESC
   shortTitle_ASC
   shortTitle_DESC
   slug_ASC
   slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap)
+"""
+type FireDangerMap implements Entry & _Node {
+  _id: ID!
+  contentfulMetadata: ContentfulMetadata!
+  description(locale: String): FireDangerMapDescription
+  linkedFrom(allowedLocales: [String]): FireDangerMapLinkingCollections
+  pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
+  sys: Sys!
+}
+
+type FireDangerMapCollection {
+  items: [FireDangerMap]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type FireDangerMapDescription {
+  json: JSON!
+  links: FireDangerMapDescriptionLinks!
+}
+
+type FireDangerMapDescriptionAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type FireDangerMapDescriptionEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type FireDangerMapDescriptionLinks {
+  assets: FireDangerMapDescriptionAssets!
+  entries: FireDangerMapDescriptionEntries!
+  resources: FireDangerMapDescriptionResources!
+}
+
+type FireDangerMapDescriptionResources {
+  block: [FireDangerMapDescriptionResourcesBlock!]!
+  hyperlink: [FireDangerMapDescriptionResourcesHyperlink!]!
+  inline: [FireDangerMapDescriptionResourcesInline!]!
+}
+
+type FireDangerMapDescriptionResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type FireDangerMapDescriptionResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type FireDangerMapDescriptionResourcesInline implements ResourceLink {
+  sys: ResourceSys!
+}
+
+input FireDangerMapFilter {
+  AND: [FireDangerMapFilter]
+  OR: [FireDangerMapFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  pageMetadata: cfPageMetadataNestedFilter
+  pageMetadata_exists: Boolean
+  sys: SysFilter
+}
+
+type FireDangerMapLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum FireDangerMapOrder {
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -1489,6 +1627,8 @@ enum HeroImageLinkingCollectionsNewsArticleCollectionOrder {
 enum HeroImageLinkingCollectionsNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -2174,6 +2314,7 @@ type News implements Entry & _Node {
   contactInformationCollection(limit: Int = 100, locale: String, order: [NewsContactInformationCollectionOrder], preview: Boolean, skip: Int = 0, where: ContactFilter): NewsContactInformationCollection
   contentfulMetadata: ContentfulMetadata!
   heroImage(locale: String, preview: Boolean, where: HeroImageFilter): HeroImage
+  indexInSearch(locale: String): Boolean
   linkedFrom(allowedLocales: [String]): NewsLinkingCollections
   metaDescription(locale: String): String
   metaTitle(locale: String): String
@@ -2356,6 +2497,9 @@ input NewsFilter {
   contentfulMetadata: ContentfulMetadataFilter
   heroImage: cfHeroImageNestedFilter
   heroImage_exists: Boolean
+  indexInSearch: Boolean
+  indexInSearch_exists: Boolean
+  indexInSearch_not: Boolean
   metaDescription: String
   metaDescription_contains: String
   metaDescription_exists: Boolean
@@ -2569,6 +2713,8 @@ type NewsLinkingCollections {
 enum NewsLinkingCollectionsNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -2649,6 +2795,8 @@ enum NewsLinkingCollectionsTopTierCollectionOrder {
 enum NewsOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -2685,8 +2833,12 @@ enum NewsRelatedEventsCollectionOrder {
   eventDescription_DESC
   eventSummary_ASC
   eventSummary_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   internalName_ASC
   internalName_DESC
+  metaTitle_ASC
+  metaTitle_DESC
   shortTitle_ASC
   shortTitle_DESC
   slug_ASC
@@ -2751,6 +2903,8 @@ type NewsRelatedNewsCollection {
 enum NewsRelatedNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -2968,7 +3122,6 @@ type PageMetadata implements Entry & _Node {
   metaDescription(locale: String): String
   metaTitle(locale: String): String
   parent(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
-  recentNewsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageMetadataRecentNewsCollection
   slug(locale: String): String
   sys: Sys!
   title(locale: String): String
@@ -3012,7 +3165,6 @@ input PageMetadataFilter {
   metaTitle_not_in: [String]
   parent: cfPageMetadataNestedFilter
   parent_exists: Boolean
-  recentNewsCollection_exists: Boolean
   slug: String
   slug_contains: String
   slug_exists: Boolean
@@ -3035,6 +3187,7 @@ union PageMetadataInternalRedirect = EventEntry | News | PageMetadata
 type PageMetadataLinkingCollections {
   aggregationCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsAggregationCollectionOrder], preview: Boolean, skip: Int = 0): AggregationCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  fireDangerMapCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsFireDangerMapCollectionOrder], preview: Boolean, skip: Int = 0): FireDangerMapCollection
   homeCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
   menuItemCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsMenuItemCollectionOrder], preview: Boolean, skip: Int = 0): MenuItemCollection
   officePageCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsOfficePageCollectionOrder], preview: Boolean, skip: Int = 0): OfficePageCollection
@@ -3057,6 +3210,17 @@ enum PageMetadataLinkingCollectionsAggregationCollectionOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
+}
+
+enum PageMetadataLinkingCollectionsFireDangerMapCollectionOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum PageMetadataLinkingCollectionsHomeCollectionOrder {
@@ -3197,13 +3361,6 @@ enum PageMetadataOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
-}
-
-type PageMetadataRecentNewsCollection {
-  items: [Entry]!
-  limit: Int!
-  skip: Int!
-  total: Int!
 }
 
 """
@@ -3466,6 +3623,8 @@ type Query {
   errorCollection(limit: Int = 100, locale: String, order: [ErrorOrder], preview: Boolean, skip: Int = 0, where: ErrorFilter): ErrorCollection
   eventEntry(id: String!, locale: String, preview: Boolean): EventEntry
   eventEntryCollection(limit: Int = 100, locale: String, order: [EventEntryOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): EventEntryCollection
+  fireDangerMap(id: String!, locale: String, preview: Boolean): FireDangerMap
+  fireDangerMapCollection(limit: Int = 100, locale: String, order: [FireDangerMapOrder], preview: Boolean, skip: Int = 0, where: FireDangerMapFilter): FireDangerMapCollection
   heroImage(id: String!, locale: String, preview: Boolean): HeroImage
   heroImageCollection(limit: Int = 100, locale: String, order: [HeroImageOrder], preview: Boolean, skip: Int = 0, where: HeroImageFilter): HeroImageCollection
   home(id: String!, locale: String, preview: Boolean): Home
@@ -3954,6 +4113,8 @@ type ServiceGroupRecentNewsCollection {
 enum ServiceGroupRecentNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -4009,8 +4170,12 @@ enum ServiceGroupUpcomingEventsCollectionOrder {
   eventDescription_DESC
   eventSummary_ASC
   eventSummary_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   internalName_ASC
   internalName_DESC
+  metaTitle_ASC
+  metaTitle_DESC
   shortTitle_ASC
   shortTitle_DESC
   slug_ASC
@@ -4072,6 +4237,14 @@ input SysFilter {
   publishedVersion_lte: Float
   publishedVersion_not: Float
   publishedVersion_not_in: [Float]
+}
+
+"""
+Represents a tag entity for finding and organizing content easily.
+        Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-concepts
+"""
+type TaxonomyConcept {
+  id: String
 }
 
 """
@@ -4342,6 +4515,8 @@ type TopTierRecentNewsCollection {
 enum TopTierRecentNewsCollectionOrder {
   byline_ASC
   byline_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   metaTitle_ASC
   metaTitle_DESC
   publicationDate_ASC
@@ -4378,8 +4553,12 @@ enum TopTierUpcomingEventsCollectionOrder {
   eventDescription_DESC
   eventSummary_ASC
   eventSummary_DESC
+  indexInSearch_ASC
+  indexInSearch_DESC
   internalName_ASC
   internalName_DESC
+  metaTitle_ASC
+  metaTitle_DESC
   shortTitle_ASC
   shortTitle_DESC
   slug_ASC
@@ -4716,6 +4895,9 @@ input cfEventEntryNestedFilter {
   eventSummary_not: String
   eventSummary_not_contains: String
   eventSummary_not_in: [String]
+  indexInSearch: Boolean
+  indexInSearch_exists: Boolean
+  indexInSearch_not: Boolean
   internalName: String
   internalName_contains: String
   internalName_exists: Boolean
@@ -4723,6 +4905,20 @@ input cfEventEntryNestedFilter {
   internalName_not: String
   internalName_not_contains: String
   internalName_not_in: [String]
+  metaDescription: String
+  metaDescription_contains: String
+  metaDescription_exists: Boolean
+  metaDescription_in: [String]
+  metaDescription_not: String
+  metaDescription_not_contains: String
+  metaDescription_not_in: [String]
+  metaTitle: String
+  metaTitle_contains: String
+  metaTitle_exists: Boolean
+  metaTitle_in: [String]
+  metaTitle_not: String
+  metaTitle_not_contains: String
+  metaTitle_not_in: [String]
   shortTitle: String
   shortTitle_contains: String
   shortTitle_exists: Boolean
@@ -4831,6 +5027,9 @@ input cfNewsNestedFilter {
   contactInformationCollection_exists: Boolean
   contentfulMetadata: ContentfulMetadataFilter
   heroImage_exists: Boolean
+  indexInSearch: Boolean
+  indexInSearch_exists: Boolean
+  indexInSearch_not: Boolean
   metaDescription: String
   metaDescription_contains: String
   metaDescription_exists: Boolean
@@ -4920,7 +5119,6 @@ input cfPageMetadataNestedFilter {
   metaTitle_not_contains: String
   metaTitle_not_in: [String]
   parent_exists: Boolean
-  recentNewsCollection_exists: Boolean
   slug: String
   slug_contains: String
   slug_exists: Boolean
