@@ -41,7 +41,7 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
       const { serviceEntries } = await fetch("/api/v1/service-entries").then((res) => res.json());
       // Find the matching service entry via the metadata map to allow us to set the accordion URL
       const serviceEntry = serviceEntries.find(
-        (serviceEntry: SearchIndexServiceEntry) => serviceEntry.id === body?.sys?.id,
+        (serviceEntry: SearchIndexServiceEntry) => serviceEntry.objectID === body?.sys?.id,
       );
 
       const algoliaIndexObject: AlgoliaMetadataRecord = {
@@ -64,9 +64,12 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
         // the locale value, so we need to flatten that first.
         const englishValue = body.fields[field]["en-US"];
 
+        let oldTitle, parent;
         switch (field) {
           case "entryTitle":
-            algoliaIndexObject.metaTitle = englishValue;
+            oldTitle = serviceEntry?.metaTitle;
+            parent = oldTitle?.split("|")[0];
+            algoliaIndexObject.metaTitle = `${parent} | ${englishValue}`;
             break;
           case "description":
             algoliaIndexObject.metaDescription = documentToPlainTextString(englishValue);
