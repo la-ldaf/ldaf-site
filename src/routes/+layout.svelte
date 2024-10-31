@@ -28,7 +28,6 @@
     headerPrimaryNavItems,
     headerSecondaryNavItems,
     footerNavItems,
-    siteTitle,
     pageMetadataMap,
     previewAuthenticationError,
   } = data);
@@ -180,7 +179,6 @@
   <Header
     primaryNavItems={headerPrimaryNavItems}
     secondaryNavItems={headerSecondaryNavItems}
-    {siteTitle}
     bind:navMenuExpanded
   />
   {#if previewAuthenticationError}
@@ -195,7 +193,7 @@
   {:else}
     <slot />
   {/if}
-  <Footer navItems={footerNavItems} {siteTitle} {afterNavigate} />
+  <Footer navItems={footerNavItems} {afterNavigate} />
 </RootIntersectionObserver>
 
 <BlurhashRenderer />

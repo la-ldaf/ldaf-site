@@ -61,24 +61,15 @@
     .usa-link {
       color: $accent-warm;
     }
-
-    .ldaf-footer__logo {
-      @include at-media("tablet") {
-        flex-wrap: nowrap;
-        .ldaf-footer__logo-heading-container {
-          flex: 1 1 0%;
-        }
+    // never change color regardless of state
+    // extra specificity is needed to override USWDS
+    .ldaf-footer__address-phone .usa-link,
+    .ldaf-footer__copyright .usa-link {
+      &:visited,
+      &:hover,
+      &:active {
+        color: $accent-warm;
       }
-    }
-
-    .ldaf-footer__logo-heading {
-      line-height: 1;
-      margin-bottom: 0rem;
-      margin-top: 1rem;
-    }
-    .ldaf-footer__logo-subheading {
-      margin-bottom: 0.5rem;
-      margin-top: 0rem;
     }
 
     .usa-footer__contact-links {

@@ -3,10 +3,10 @@ import { VERCEL_ENV } from "$env/static/private";
 import type { User } from "$lib/types";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import { loadErrorPageContent } from "$lib/loadErrorPageContent";
-import { loadSiteTitle } from "$lib/components/Header/Title/Title.server";
 import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.server";
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
+import constructEventSlug from "$lib/util/constructEventSlug";
 
 export const load = async ({
   fetch,
@@ -57,7 +57,7 @@ export const load = async ({
           const date = new Date(internalRedirect.eventDateAndTime);
           throw redirect(
             301,
-            `/about/events/event/${date.toISOString().split("T")[0]}-${internalRedirect.slug}`,
+            `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`,
           );
         }
       }
@@ -96,7 +96,6 @@ export const load = async ({
     previewAuthenticationError,
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
-    siteTitle: loadSiteTitle(),
     headerPrimaryNavItems: headerPrimaryNavItems,
     headerSecondaryNavItems: loadSecondaryNav(),
     footerNavItems: footerNavItems,

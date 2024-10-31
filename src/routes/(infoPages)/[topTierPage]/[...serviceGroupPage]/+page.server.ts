@@ -16,7 +16,7 @@ import type {
 import serviceGroupPageTestContent from "./__tests__/serviceGroupPageTestContent";
 import type { ExtractQueryType } from "$lib/util/types";
 import chunks from "$lib/util/chunks";
-import assetPropsFragment from "$lib/fragments/assetProps";
+// assetProps are included with entry props
 import entryPropsFragment from "$lib/fragments/entryProps";
 import type { PageMetadataMap } from "$lib/loadPageMetadataMap";
 import getYoutubeVideoIDFromURL from "$lib/util/getYoutubeVideoIDFromURL";
@@ -24,13 +24,23 @@ import {
   getYoutubeVideoDataWithBlurhash,
   type YoutubeVideoData,
 } from "$lib/services/server/youtube";
+import {
+  getDateSixMonthsAgoInTZ,
+  getStartOfDayForDateInTZ,
+  getCurrentDateInTZ,
+} from "$lib/util/dates";
+import { eventIANATimezone } from "$lib/constants/date";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${assetPropsFragment}
   ${entryPropsFragment}
 
-  query ServiceGroup($metadataID: String!, $preview: Boolean = false) {
+  query ServiceGroup(
+    $metadataID: String!
+    $newsOldestDate: DateTime!
+    $eventStartDate: DateTime!
+    $preview: Boolean = false
+  ) {
     serviceGroupCollection(
       where: { pageMetadata: { sys: { id: $metadataID } } }
       limit: 1
@@ -151,6 +161,16 @@ const baseQuery = gql`
             metaDescription
           }
         }
+        recentNewsCollection(where: { publicationDate_gte: $newsOldestDate }) {
+          items {
+            ...EntryProps
+          }
+        }
+        upcomingEventsCollection(where: { eventDateAndTime_gte: $eventStartDate }) {
+          items {
+            ...EntryProps
+          }
+        }
       }
     }
   }
@@ -159,7 +179,6 @@ const baseQuery = gql`
 
 const childServiceEntriesQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
-  ${assetPropsFragment}
   ${entryPropsFragment}
 
   query ServiceGroupChildEntries($ids: [String]!, $preview: Boolean = false) {
@@ -363,8 +382,17 @@ export const load = async ({
     const pageMetadata = pageMetadataMap.get(metadataID);
     if (!pageMetadata) break fetchData;
 
+    const newsOldestDate = getStartOfDayForDateInTZ(
+      getDateSixMonthsAgoInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
+    const eventStartDate = getStartOfDayForDateInTZ(
+      getCurrentDateInTZ(eventIANATimezone),
+      eventIANATimezone,
+    );
+
     const baseData = await contentfulClient.fetch<ServiceGroupQuery>(printQuery(baseQuery), {
-      variables: { metadataID },
+      variables: { metadataID, newsOldestDate, eventStartDate },
     });
     if (!baseData) break fetchData;
     const [serviceGroup] = baseData?.serviceGroupCollection?.items ?? [];

@@ -6,16 +6,7 @@ import Header from "./Header.svelte";
 
 describe("Header", () => {
   it("renders", () => {
-    render(Header, {
-      siteTitle: {
-        wideTitleRow1: "test",
-        wideTitleRow2: "test",
-        commissionerRow1: "test",
-        commissionerRow2: "test",
-        compactTitleRow1: "test",
-        compactTitleRow2: "test",
-      },
-    });
+    render(Header);
     // Implicit ARIA role for the HTML <header> element
     expect(screen.getByRole("banner")).toBeVisible();
   });
@@ -24,14 +15,6 @@ describe("Header", () => {
       props: {
         primaryNavItems: [{ id: "1", link: "/", name: "test" }],
         secondaryNavItems: [{ id: "1", link: "/", name: "test" }],
-        siteTitle: {
-          wideTitleRow1: "test",
-          wideTitleRow2: "test",
-          commissionerRow1: "test",
-          commissionerRow2: "test",
-          compactTitleRow1: "test",
-          compactTitleRow2: "test",
-        },
       },
     });
     const navContainer = screen.getByLabelText("Primary navigation");

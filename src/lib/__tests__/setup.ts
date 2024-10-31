@@ -30,6 +30,4 @@ vi.mock("$app/stores", (): typeof stores => {
   };
 });
 
-vi.mock("$lib/components/Header/HeaderBackgroundImage.svelte");
-
 vi.mock("$lib/services/server/kv");

@@ -6,18 +6,19 @@ import { describe, it, expect } from "vitest";
 import Footer from "./Footer.svelte";
 
 import { footerNavTestContent } from "./__tests__/FooterTestContent";
-import titleTestContent from "$lib/components/Header/Title/__tests__/TitleTestContent";
 
 describe("Footer", () => {
   it("renders", () => {
-    render(Footer, { props: { navItems: footerNavTestContent, siteTitle: titleTestContent } });
+    render(Footer, { props: { navItems: footerNavTestContent } });
     expect(screen.getByText("SubMenu 1")).toBeVisible();
-    expect(screen.getByText("Department of Agriculture and Forestry")).toBeVisible();
+    expect(
+      screen.getByText("©2023 Louisiana Department of Agriculture and Forestry."),
+    ).toBeVisible();
   });
   it("handles user events to toggle menus", async () => {
     window.innerWidth = 360;
     const user = userEvent.setup();
-    render(Footer, { props: { navItems: footerNavTestContent, siteTitle: titleTestContent } });
+    render(Footer, { props: { navItems: footerNavTestContent } });
     const button = screen.getByRole("button", { name: "SubMenu 1" });
     expect(button.getAttribute("aria-expanded")).toBe("false");
     // open with user click.

@@ -3,48 +3,36 @@
 
   import { page } from "$app/stores";
 
-  import Logo from "../Logo";
   import ConditionalWrapper from "$lib/components/ConditionalWrapper";
+  import Logo from "$lib/components/Logo";
 
-  import type { SiteTitleType } from "./types";
-
-  export let siteTitle: SiteTitleType;
+  // We want to provide the site title as the <h1> on the homepage only;
+  //   elsewhere we want to use existing <h1>s and provide accessible link text
+  //   for the logo.
+  $: isHomePage = $page.url.pathname === "/";
+  $: accessibleTitleText = isHomePage
+    ? "Louisiana Department of Agriculture and Forestry"
+    : "Go to home page.";
 </script>
 
-<div class="usa-logo ldaf-logo__wide" id="basic-logo">
-  <a href="/">
-    <Logo />
-  </a>
-  <div class="ldaf-agency-info">
-    <ConditionalWrapper
-      tag="h1"
-      condition={$page.url.pathname === "/"}
-      class="ldaf-header-homepage-heading"
-    >
-      <div class="ldaf-name__wide">
-        <span class="text-bold">{siteTitle.wideTitleRow1}</span>
-        <span class="text-normal">{siteTitle.wideTitleRow2}</span>
-      </div>
-    </ConditionalWrapper>
-    <div class="separator" />
-    <div class="ldaf-commissioner__wide">
-      <span class="text-normal">{siteTitle.commissionerRow1}</span>
-      <span class="text-italic">{siteTitle.commissionerRow2}</span>
-    </div>
-  </div>
+<div class="usa-logo ldaf-logo__desktop-full display-none desktop:display-flex">
+  <ConditionalWrapper tag="h1" condition={isHomePage} class="margin-0">
+    <a href="/">
+      <span class="usa-sr-only">
+        {accessibleTitleText}
+      </span>
+      <Logo placement="desktop-header" />
+    </a>
+  </ConditionalWrapper>
 </div>
 
-<div class="usa-logo ldaf-title__compact">
-  <a href="/">
-    <ConditionalWrapper
-      tag="h1"
-      condition={$page.url.pathname === "/"}
-      class="ldaf-header-homepage-heading"
-    >
-      <div class="ldaf-name__compact">
-        <span class="text-bold">{siteTitle.compactTitleRow1}</span>
-        <span class="text-bold">{siteTitle.compactTitleRow2}</span>
-      </div>
-    </ConditionalWrapper>
-  </a>
+<div class="usa-logo ldaf-logo__mobile-title display-block desktop:display-none">
+  <ConditionalWrapper tag="h1" condition={isHomePage} class="margin-0">
+    <a href="/">
+      <span class="usa-sr-only">
+        {accessibleTitleText}
+      </span>
+      <Logo placement="mobile-header-main" />
+    </a>
+  </ConditionalWrapper>
 </div>
