@@ -13,6 +13,7 @@ const queryNewsAndEvents = gql`
         sys {
           id
         }
+        __typename
         type
         title
         subhead
@@ -28,6 +29,7 @@ const queryNewsAndEvents = gql`
         sys {
           id
         }
+        __typename
         slug
         shortTitle
         eventSummary

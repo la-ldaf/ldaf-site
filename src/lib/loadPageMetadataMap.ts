@@ -27,6 +27,7 @@ const pageMetadataItems = gql`
       sys {
         id
       }
+      __typename
       title
       slug
       isRoot
