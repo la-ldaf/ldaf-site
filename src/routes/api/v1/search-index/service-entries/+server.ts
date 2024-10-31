@@ -76,8 +76,6 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
         }
       }
 
-      // return json(algoliaIndexObject);
-
       /**
        * `partialUpdateObject` only creates or updates attributes included in the call. Any preexisting
        * properties on the record that are not in the call are unaffected.
