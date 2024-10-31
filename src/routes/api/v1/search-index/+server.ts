@@ -35,7 +35,7 @@ const getMetaTitleAndDescription = (
 };
 
 export const POST = async ({ request, locals: { contentfulClient } }) => {
-  // authenticateRequest(request);
+  authenticateRequest(request);
 
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
