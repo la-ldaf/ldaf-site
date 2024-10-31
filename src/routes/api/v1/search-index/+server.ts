@@ -31,7 +31,7 @@ const getMetaTitleAndDescription = (
     metaTitle = item?.metaTitle ?? item?.shortTitle;
     metaDescription = item?.metaDescription ?? item?.eventSummary;
   }
-  return { metaTitle, ...(metaDescription ? {metaDescription} : {}) };
+  return { metaTitle, ...(metaDescription ? { metaDescription } : {}) };
 };
 
 export const POST = async ({ request, locals: { contentfulClient } }) => {
