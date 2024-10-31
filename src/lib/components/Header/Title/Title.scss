@@ -3,61 +3,13 @@
 );
 
 .usa-header--extended {
-  .ldaf-logo__wide {
-    margin-top: auto;
+  .ldaf-logo__desktop-full {
     align-items: center;
     column-gap: 10px;
-    img {
-      max-width: 100px;
-    }
     font-size: initial;
   }
-
-  // Force title to render the same as other pages when we wrap in an <h1> on
-  //   the homepage.
-  .ldaf-header-homepage-heading {
-    display: inherit;
-    font-size: inherit;
-    margin: inherit;
-  }
-
-  .ldaf-name__compact,
-  .ldaf-name__wide,
-  .ldaf-commissioner__wide {
-    color: $accent-light;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    row-gap: 5px;
-  }
-
-  .usa-logo .separator {
-    height: 65px;
-    border-left: 1px solid $accent-light;
-  }
-}
-
-.ldaf-agency-info {
-  display: flex;
-  column-gap: 10px;
-}
-
-@include at-media("desktop") {
-  .ldaf-logo__wide {
-    display: flex;
-  }
-
-  .ldaf-title__compact {
-    display: none;
-  }
-}
-
-@include at-media-max("desktop") {
-  .ldaf-logo__wide {
-    display: none;
-  }
-
-  .ldaf-title__compact a {
-    display: inline-block;
+  .ldaf-logo__mobile-title {
+    // Add space between text logo and mobile menu button.
+    margin-right: 1rem;
   }
 }

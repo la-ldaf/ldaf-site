@@ -36,7 +36,7 @@ test("nav items can be expanded and collapsed", async ({ page }) => {
   // expect focus loss with mouse to collapse menu
   await navMenuButton.click();
   await page
-    .getByRole("heading", { name: "Department of Agriculture and Forestry\nState of Louisiana" })
+    .getByRole("heading", { name: "Louisiana Department of Agriculture and Forestry" })
     // Without forcing the click, PlayWright will return "subtree intercepts pointer events" error,
     //   which is rather amusing because that error means that this is working as intended.
     .click({ force: true });
@@ -55,7 +55,7 @@ test("mobile menu is closed on route change", async ({ page }) => {
   await mobileMenuButton.click();
   await expect(mobileMenuItem).toBeVisible();
   // perform navigation by clicking site title
-  await page.locator(".ldaf-title__compact a").first().click();
+  await page.locator(".ldaf-logo__mobile-title a").first().click();
   await expect(page).toHaveURL("/");
   await expect(mobileMenuItem).toBeHidden();
 });

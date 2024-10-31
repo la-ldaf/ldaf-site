@@ -6,15 +6,7 @@ $header-height-without-navbar: 148px;
 
 .ldaf-header {
   position: relative;
-  background: linear-gradient(to right, transparent, $primary-darker 30%);
-}
-
-.ldaf-header .ldaf-header-bg-img {
-  position: absolute;
-  width: 30%;
-  height: 100%;
-  max-height: $header-height-without-navbar;
-  z-index: -1;
+  background-color: $primary-darker;
 }
 
 .ldaf-header .ldaf-nav__secondary {
@@ -104,7 +96,6 @@ $header-height-without-navbar: 148px;
     }
   }
 
-  .ldaf-commissioner__compact,
   .ldaf-logo__compact {
     display: none;
   }
@@ -118,7 +109,7 @@ $header-height-without-navbar: 148px;
 
   .ldaf-logo__compact {
     display: inline-block;
-    max-width: 68px;
+    max-width: 176px;
   }
 
   .usa-nav__inner .ldaf-agency-commissioner span {

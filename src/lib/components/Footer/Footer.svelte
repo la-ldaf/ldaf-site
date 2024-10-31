@@ -6,14 +6,12 @@
 
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
-  import Logo from "$lib/components/Header/Logo";
+  import Logo from "$lib/components/Logo";
 
   import type { AfterNavigate } from "@sveltejs/kit";
   import type { NavMenuType } from "$lib/components/Header/Nav";
-  import type { SiteTitleType } from "$lib/components/Header/Title";
 
   export let navItems: NavMenuType[] = [];
-  export let siteTitle: SiteTitleType;
   // we provide this from a parent component so that we can render the component in Storybook
   export let afterNavigate: undefined | ((callback: (navigation: AfterNavigate) => void) => void) =
     undefined;
@@ -92,21 +90,14 @@
   <div class="usa-footer__secondary-section ldaf-footer__secondary-section">
     <div class="grid-container">
       <div class="grid-row grid-gap">
-        <div
-          class="usa-footer__logo ldaf-footer__logo grid-row tablet:grid-col-6 desktop:grid-col-8 grid-gap-2"
-        >
-          <div class="tablet:grid-col-auto">
-            <div class="usa-footer__logo-img">
-              <Logo />
-            </div>
+        <div class="usa-footer__logo grid-row tablet:grid-col-6 desktop:grid-col-8 grid-gap-2">
+          <!-- Vertical, stacked logo for mobile. -->
+          <div class="display-block tablet:display-none">
+            <Logo placement="mobile-footer" />
           </div>
-          <div class="tablet:grid-col-auto ldaf-footer__logo-heading-container">
-            <p class="usa-footer__logo-heading ldaf-footer__logo-heading">
-              {siteTitle.wideTitleRow1}
-            </p>
-            <p class="ldaf-footer__logo-subheading">
-              {siteTitle.wideTitleRow2}
-            </p>
+          <!-- Horizontal logo for tablet and desktop. -->
+          <div class="display-none tablet:display-block">
+            <Logo placement="desktop-footer" />
           </div>
         </div>
         <div class="usa-footer__contact-links tablet:grid-col-6 desktop:grid-col-4">

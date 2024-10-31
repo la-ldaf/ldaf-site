@@ -4,16 +4,14 @@
   import classNames from "$lib/util/classNames";
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
+  import Logo from "$lib/components/Logo";
   import Search from "$lib/components/Search";
   import { page } from "$app/stores";
-  import Title, { type SiteTitleType } from "./Title";
+  import Title from "./Title";
   import Nav, { type NavItemType, type NavLinkType } from "./Nav";
-  import HeaderBackgroundImage from "./HeaderBackgroundImage.svelte";
-  import Logo from "./Logo";
   import User from "./User";
 
   export let primaryNavItems: NavItemType[] = [];
-  export let siteTitle: SiteTitleType;
   export let secondaryNavItems: NavLinkType[] = [];
 
   // Need to export this as a prop so we can reset it on route change.
@@ -26,9 +24,8 @@
 <!-- TODO: Continue replacing parts of this file with components and content from the CMS. -->
 <!-- TODO: Possibly add support for other header variations, e.g. usa-header--basic -->
 <header class="ldaf-header usa-header usa-header--extended">
-  <HeaderBackgroundImage class="ldaf-header-bg-img" />
   <div class="ldaf-nav usa-navbar">
-    <Title {siteTitle} />
+    <Title />
     <!--TODO: Replace with content from CMS. -->
     <button type="button" class="usa-menu-btn" on:click={() => toggleNavMenu(true)}> Menu </button>
   </div>
@@ -41,12 +38,9 @@
       </button>
 
       <a class="ldaf-logo__compact" href="/">
-        <Logo />
+        <span class="usa-sr-only">Go to home page.</span>
+        <Logo placement="mobile-header-menu" />
       </a>
-      <div class="ldaf-commissioner__compact">
-        <span>{siteTitle.commissionerRow1}</span>
-        <span class="text-italic">{siteTitle.commissionerRow2}</span>
-      </div>
 
       <Nav items={primaryNavItems} />
 
