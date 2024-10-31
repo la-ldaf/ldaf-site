@@ -46,16 +46,12 @@ type EventSearchIndexingMetadataMapItem = NonNullable<
   NewsAndEventsCollectionQuery["eventEntryCollection"]
 >["items"][number];
 
+type AdditionalMetadataFields = { url?: string | null; children?: string[] };
+
 export type SearchIndexingMetadataMapItem =
   | PageMetadataMapItem
-  | (NewsSearchIndexingMetadataMapItem & { url?: string | null; children?: string[] })
-  | (EventSearchIndexingMetadataMapItem & { url?: string | null; children?: string[] });
-// type SearchIndexingMetadataMapItem = Omit<
-//   PageMetadataMapItem & NewsSearchIndexingMetadataMapItem & EventSearchIndexingMetadataMapItem,
-//   "__typename"
-// > & {
-//   __typename?: "PageMetadata" | "News" | "EventEntry" | undefined;
-// };
+  | (NewsSearchIndexingMetadataMapItem & AdditionalMetadataFields)
+  | (EventSearchIndexingMetadataMapItem & AdditionalMetadataFields);
 
 export const loadEventsAndNewsMap = async ({
   contentfulClient,
