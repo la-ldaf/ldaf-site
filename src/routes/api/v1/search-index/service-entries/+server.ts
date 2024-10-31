@@ -4,8 +4,7 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 import type { SearchIndexServiceEntry } from "../../types";
-// TODO: uncomment this
-// import { authenticateRequest } from "$lib/services/server";
+import { authenticateRequest } from "$lib/services/server";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
@@ -17,8 +16,7 @@ const CONTENTFUL_ACTIONS = {
 };
 
 export const POST = async ({ request, fetch, locals: { contentfulClient } }) => {
-  // TODO: uncomment this
-  // authenticateRequest(request);
+  authenticateRequest(request);
 
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
@@ -50,8 +48,12 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
         sys: {
           id: body.sys.id,
         },
-        // TODO: add logic that updates this value for any page details updates in
-        // src/routes/api/v1/search-index/+server.ts
+        // TODO: add logic that updates this value for any page details updates.
+        // I.e., if page metadata is updated in a way that changes the URL for the page
+        // a service entry lives on, we need to add logic to make that update
+        // E.g. update /my-page-details#my-service-entry -> /my-NEW-page-details#my-service-entry
+        //
+        // This requires updates to the logic in src/routes/api/v1/search-index/+server.ts
         url: serviceEntry?.url,
       };
 
@@ -74,7 +76,7 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
         }
       }
 
-      return json(algoliaIndexObject);
+      // return json(algoliaIndexObject);
 
       /**
        * `partialUpdateObject` only creates or updates attributes included in the call. Any preexisting
@@ -84,7 +86,7 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
        * - If the objectID is specified but doesn’t exist, Algolia creates a new record
        * - If the objectID isn’t specified, the method returns an error
        */
-      const response = await index.partialUpdateObject(serviceEntry, {
+      const response = await index.partialUpdateObject(algoliaIndexObject, {
         createIfNotExists: true,
       });
       return json(response);

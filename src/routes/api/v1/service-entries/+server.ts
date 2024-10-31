@@ -97,10 +97,12 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
           if (serviceEntry?.description?.json) {
             const parentPage = pageMetadataMap.get(serviceGroup?.pageMetadata?.sys?.id ?? "");
             serviceEntries.push({
-              id: serviceEntry.sys?.id,
+              // objectID is the property needed to index content in Algolia,
+              objectID: serviceEntry.sys?.id,
               url: `${parentPage?.url}#${slugify(serviceEntry.entryTitle)}`,
               metaTitle: `${serviceGroup.title} | ${serviceEntry.entryTitle}`,
               metaDescription: documentToPlainTextString(serviceEntry?.description?.json),
+              entryType: "Service Entry",
             });
           }
         }
