@@ -4,7 +4,7 @@ import documentWithParagraphData from "$lib/components/ContentfulRichText/__test
 export default {
   _id: "0",
   sys: { id: "0", environmentId: "", spaceId: "" },
-  contentfulMetadata: { tags: [] },
+  contentfulMetadata: { tags: [], concepts: [] },
   pageTitle: "Sample Office Page",
   subheading:
     "This page is loaded with test data since a connection with Contentful could not be established.",
@@ -31,7 +31,7 @@ export default {
       environmentId: "",
       spaceId: "",
     },
-    contentfulMetadata: { tags: [] },
+    contentfulMetadata: { tags: [], concepts: [] },
     name: "Sample Office",
     streetAddress1: "123 Main Street",
     streetAddress2: "Suite 456",
@@ -47,7 +47,7 @@ export default {
       {
         _id: "2",
         sys: { id: "2", environmentId: "", spaceId: "" },
-        contentfulMetadata: { tags: [] },
+        contentfulMetadata: { tags: [], concepts: [] },
         entityName: "Contact Person 1",
         phone: "(123) 456-7890",
         phoneExt: "123",
@@ -56,7 +56,7 @@ export default {
       {
         _id: "3",
         sys: { id: "3", environmentId: "", spaceId: "" },
-        contentfulMetadata: { tags: [] },
+        contentfulMetadata: { tags: [], concepts: [] },
         entityName: "Contact Person 2",
         phone: "(789) 012-3456",
         email: "contact2@example.com",
