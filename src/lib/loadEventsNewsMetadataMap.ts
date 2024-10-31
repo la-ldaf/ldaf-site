@@ -1,10 +1,13 @@
 import gql from "graphql-tag";
 import { print as printQuery } from "graphql";
+import constructEventSlug from "./util/constructEventSlug";
 import type { ContentfulClient } from "$lib/services/server/contentful";
-import type { MetadataMapItem } from "./types";
+import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
+
+import type { NewsAndEventsCollectionQuery } from "./$queries.generated";
 
 const queryNewsAndEvents = gql`
-  query NewsCollection {
+  query NewsAndEventsCollection {
     newsCollection(where: { indexInSearch: true }, order: [publicationDate_DESC]) {
       items {
         sys {
@@ -16,6 +19,8 @@ const queryNewsAndEvents = gql`
         publicationDate
         slug
         byline
+        metaTitle
+        metaDescription
       }
     }
     eventEntryCollection(where: { indexInSearch: true }, order: [eventDateAndTime_ASC]) {
@@ -25,48 +30,35 @@ const queryNewsAndEvents = gql`
         }
         slug
         shortTitle
-        eventDescription
+        eventSummary
         eventDateAndTime
+        metaTitle
+        metaDescription
       }
     }
   }
 `;
 
-// generated query types are not returning
-type NewsAndEventsCollectionQuery = {
-  newsCollection: {
-    items: {
-      sys: { id: string };
-      __typename?: "News";
-      title?: string | null;
-      publicationDate?: string | null;
-      slug?: string | null;
-    }[];
-  };
-  eventEntryCollection: {
-    items: {
-      sys: {
-        id: string;
-      };
-      __typename?: "News";
-      title?: string | null;
-      slug?: string | null;
-      eventDateAndTime?: string | null;
-      eventDescription?: string | null;
-    }[];
-  };
-};
+type NewsSearchIndexingMetadataMapItem = NonNullable<
+  NewsAndEventsCollectionQuery["newsCollection"]
+>["items"][number];
+type EventSearchIndexingMetadataMapItem = NonNullable<
+  NewsAndEventsCollectionQuery["eventEntryCollection"]
+>["items"][number];
 
-// TODO: remove
-const constructEventSlug = (date: Date, slug: string): string =>
-  `${date.toISOString().split("T")[0]}-${slug}`;
+type AdditionalMetadataFields = { url?: string | null; children?: string[] };
+
+export type SearchIndexingMetadataMapItem =
+  | PageMetadataMapItem
+  | (NewsSearchIndexingMetadataMapItem & AdditionalMetadataFields)
+  | (EventSearchIndexingMetadataMapItem & AdditionalMetadataFields);
 
 export const loadEventsAndNewsMap = async ({
   contentfulClient,
 }: {
   contentfulClient?: ContentfulClient;
-}): Promise<Map<string, MetadataMapItem>> => {
-  const entryMap: NonNullable<Map<string, MetadataMapItem>> = new Map();
+}): Promise<Map<string, SearchIndexingMetadataMapItem>> => {
+  const entryMap: NonNullable<Map<string, SearchIndexingMetadataMapItem>> = new Map();
 
   if (!contentfulClient) return entryMap;
 

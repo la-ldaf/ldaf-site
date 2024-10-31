@@ -10,12 +10,6 @@ export const getCurrentDateInTZ = (tz: string): string => {
   return formatISO(zoned, { format: "extended", representation: "date" });
 };
 
-export const getDateTwelveMonthsAgoInTZ = (tz: string): string => {
-  const date = sub(new Date(), { months: 12 });
-  const zoned = utcToZonedTime(date, tz);
-  return formatISO(zoned, { format: "extended", representation: "date" });
-};
-
 export const getDateSixMonthsAgoInTZ = (tz: string): string => {
   const date = sub(new Date(), { months: 6 });
   const zoned = utcToZonedTime(date, tz);
