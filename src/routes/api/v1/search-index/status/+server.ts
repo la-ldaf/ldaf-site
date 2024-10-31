@@ -1,15 +1,16 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "@sveltejs/kit";
-import {
-  loadPageMetadataMap,
-  type PageMetadataMapItemWithObjectID,
-} from "$lib/loadPageMetadataMap";
+import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
 import type { SearchIndexingMetadataMapItem } from "$lib/loadEventsNewsMetadataMap";
 import uniq from "lodash/uniq";
 import isEqual from "lodash/isEqual";
 import algoliasearch from "algoliasearch";
 import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
 import { ALGOLIA_API_KEY } from "$env/static/private";
+
+type SearchIndexingMetadataMapItemWithObjectID = SearchIndexingMetadataMapItem & {
+  objectID: string;
+};
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
@@ -26,7 +27,7 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
       // from Algolia records so we can properly compare for mismatches
       const transformedHits = batch.map((hit) => {
         const { objectID: _objectID, ...hitWithoutObjectID } =
-          hit as PageMetadataMapItemWithObjectID;
+          hit as SearchIndexingMetadataMapItemWithObjectID;
         return hitWithoutObjectID;
       });
       hits = hits.concat(transformedHits);
