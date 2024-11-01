@@ -77,6 +77,7 @@
     div?.firstChild?.remove(); // remove old chart, if any
     div?.append(
       Plot.plot({
+        className: "fire-level-plot",
         title: "Fire Danger Levels",
         color: {
           domain: fireRiskLevels,
@@ -111,7 +112,7 @@
                       );
 
                       return `Parish: ${parishName}\nFire Risk: ${
-                        fireRiskLevels[Number(fireRisk)]
+                        fireRiskLevels[Number(fireRisk) - 1]
                       }\nLast observed: ${formattedDate}`;
                     } catch (e) {
                       // Silently fail if the date is invalid, although given the hardcoded nature of the parish data,
@@ -126,6 +127,14 @@
         ],
       }),
     );
+
+    // Observable Plot's title defaults to being an h2 element (https://observablehq.com/plot/features/plots#other-options).
+    // Their suggestion of using a template literal doesn't play nice with svelte,
+    // so we're just using DOM APIs to manipulate them here instead.
+    const title = div?.querySelector(".fire-level-plot-figure h2");
+    if (title) {
+      title.outerHTML = title.outerHTML.replace(/h2/g, "h1");
+    }
 
     // The timestamp will render prematurely, i.e. before the map is rendered,
     // if we don't wrap all of this in onMount
