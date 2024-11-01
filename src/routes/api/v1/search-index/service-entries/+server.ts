@@ -16,17 +16,20 @@ const CONTENTFUL_ACTIONS = {
   DELETE: "ContentManagement.Entry.delete",
 };
 
-export const POST = async ({ request, fetch, locals: { contentfulClient } }) => {
+export const POST = async ({ request, fetch }) => {
   authenticateRequest(request);
 
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
 
-  const contentTypes = ["serviceEntry"];
+  const serviceEntryContentType = "serviceEntry";
 
   try {
-    if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
+    if (
+      contentfulAction === CONTENTFUL_ACTIONS.PUBLISH &&
+      contentType === serviceEntryContentType
+    ) {
       const { serviceEntries } = await fetch("/api/v1/service-entries").then((res) => res.json());
       // Find the matching service entry via the metadata map to allow us to set the accordion URL
       const serviceEntry = serviceEntries.find(
@@ -85,7 +88,7 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
     }
 
     const deleteActions = [CONTENTFUL_ACTIONS.UNPUBLISH, CONTENTFUL_ACTIONS.DELETE];
-    if (deleteActions.includes(contentfulAction) && contentTypes.includes(contentType)) {
+    if (deleteActions.includes(contentfulAction) && contentType === serviceEntryContentType) {
       const response = await index.deleteObject(body.sys.id);
       return json(response);
     }

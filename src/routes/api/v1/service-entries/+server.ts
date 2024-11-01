@@ -68,7 +68,7 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
   >;
 
   const serviceEntries: SearchIndexServiceEntry[] = [];
-  const duplicateEntries: Record<string, { count: number; parents: string[] }> = {};
+  const duplicateEntries: Record<string, { title: string; count: number; parents: string[] }> = {};
 
   processData: {
     if (!data) break processData;
@@ -84,11 +84,12 @@ export const GET = (async ({ locals: { contentfulClient } }) => {
           serviceEntry.entryTitle &&
           serviceGroup.title
         ) {
-          if (duplicateEntries[serviceEntry?.entryTitle]) {
-            duplicateEntries[serviceEntry.entryTitle].count += 1;
-            duplicateEntries[serviceEntry.entryTitle].parents.push(serviceGroup.title);
+          if (duplicateEntries[serviceEntry?.sys?.id]) {
+            duplicateEntries[serviceEntry.sys.id].count += 1;
+            duplicateEntries[serviceEntry.sys.id].parents.push(serviceGroup.title);
           } else {
-            duplicateEntries[serviceEntry.entryTitle] = {
+            duplicateEntries[serviceEntry.sys.id] = {
+              title: serviceEntry.entryTitle,
               count: 1,
               parents: [serviceGroup.title],
             };
