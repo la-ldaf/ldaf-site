@@ -8,7 +8,6 @@
 
   export let data;
   $: ({ fireWeatherData, pageData, error = null } = data);
-  $: description = pageData?.description;
   $: parishGeodata = fireWeatherData?.topoJSON ?? [];
   $: fireData = fireWeatherData?.parishes ?? [];
   $: parishes =
@@ -78,7 +77,7 @@
     div?.append(
       Plot.plot({
         className: "fire-level-plot",
-        title: "Fire Danger Levels",
+        title: pageData?.title ?? "Fire danger levels",
         color: {
           domain: fireRiskLevels,
           range: Object.values(colors).slice(1), // remove 'missing' color from the displayed range,
@@ -153,8 +152,8 @@
   <p>{error}</p>
 {:else}
   <div bind:this={div}></div>
-  {#if mapReady && description}
+  {#if mapReady && pageData?.description}
     <hr style="margin: 25px 0" />
-    <ContentfulRichText document={description?.json} />
+    <ContentfulRichText document={pageData.description?.json} />
   {/if}
 {/if}
