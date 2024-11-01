@@ -2,10 +2,9 @@ import { json, error } from "@sveltejs/kit";
 import algoliasearch from "algoliasearch";
 import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public";
 import { ALGOLIA_API_KEY } from "$env/static/private";
-import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
-import type { SearchIndexServiceEntry } from "../../types";
-import type { AlgoliaMetadataRecord } from "../types";
 import { authenticateRequest } from "$lib/services/server";
+import type { AlgoliaMetadataRecord } from "../types";
+import { format, parseISO } from "date-fns";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
@@ -16,41 +15,57 @@ const CONTENTFUL_ACTIONS = {
   DELETE: "ContentManagement.Entry.delete",
 };
 
-export const POST = async ({ request, fetch }) => {
+const addNewsMetadata = (algoliaIndexObject: AlgoliaMetadataRecord) => {
+  // Add some sensible defaults in if metaTitle and metaDescription are undefined.
+  // `title` is required for news content in Contentful, so that's an easy fallback here
+  if (algoliaIndexObject.metaTitle === undefined) {
+    algoliaIndexObject.metaTitle = algoliaIndexObject.title;
+  }
+
+  if (algoliaIndexObject.metaDescription === undefined) {
+    const { subhead, type, publicationDate } = algoliaIndexObject;
+
+    if (subhead) {
+      algoliaIndexObject.metaDescription = subhead;
+    } else if (publicationDate) {
+      const date = parseISO(publicationDate);
+      algoliaIndexObject.metaDescription = `${type} published on ${format(date, "MMMM d, yyyy")}`;
+    }
+  }
+};
+
+const addEventMetadata = (algoliaIndexObject: AlgoliaMetadataRecord) => {
+  if (algoliaIndexObject.metaTitle === undefined) {
+    algoliaIndexObject.metaTitle = algoliaIndexObject.shortTitle;
+  }
+
+  if (algoliaIndexObject.metaDescription === undefined) {
+    const { eventSummary, eventDateAndTime } = algoliaIndexObject;
+    if (eventSummary) {
+      algoliaIndexObject.metaDescription = eventSummary;
+    } else if (eventDateAndTime) {
+      const date = parseISO(eventDateAndTime);
+      algoliaIndexObject.metaDescription = `Event on ${format(date, "MMMM d, yyyy")}`;
+    }
+  }
+};
+
+export const POST = async ({ request }) => {
   authenticateRequest(request);
 
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
-
-  const serviceEntryContentType = "serviceEntry";
+  const contentTypes = ["news", "eventEntry"];
 
   try {
-    if (
-      contentfulAction === CONTENTFUL_ACTIONS.PUBLISH &&
-      contentType === serviceEntryContentType
-    ) {
-      // TODO: refactor this fetch call to a loadServiceEntries function similar to how
-      // loadPageMetadataMap works in src/routes/api/v1/search-index/+server.ts
-      const { serviceEntries } = await fetch("/api/v1/service-entries").then((res) => res.json());
-      // Find the matching service entry via the metadata map to allow us to set the accordion URL
-      const serviceEntry = serviceEntries.find(
-        (serviceEntry: SearchIndexServiceEntry) => serviceEntry.objectID === body?.sys?.id,
-      );
-
+    if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
       const algoliaIndexObject: AlgoliaMetadataRecord = {
         objectID: body.sys.id,
         sys: {
           id: body.sys.id,
         },
-        // TODO: add logic that updates this value for any page details updates.
-        // I.e., if page metadata is updated in a way that changes the URL for the page
-        // a service entry lives on, we need to add logic to make that update
-        // E.g. update /my-page-details#my-service-entry -> /my-NEW-page-details#my-service-entry
-        //
-        // This requires updates to the logic in src/routes/api/v1/search-index/+server.ts
-        url: serviceEntry?.url,
-        entryType: "Service Entry",
+        entryType: contentType === "news" ? "News" : "Event",
       };
 
       for (const field in body.fields) {
@@ -58,21 +73,18 @@ export const POST = async ({ request, fetch }) => {
         // the locale value, so we need to flatten that first.
         const englishValue = body.fields[field]["en-US"];
 
-        let oldTitle, parent;
-        switch (field) {
-          case "entryTitle":
-            oldTitle = serviceEntry?.metaTitle;
-            parent = oldTitle?.split("|")[0];
-            algoliaIndexObject.metaTitle = `${parent} | ${englishValue}`;
-            break;
-          case "description":
-            algoliaIndexObject.metaDescription = documentToPlainTextString(englishValue);
-            break;
-          default:
-            // We only care about a few possible fields to send to Algolia.
-            // Ignore the rest.
-            break;
-        }
+        // The `body` property is bunch of rich text noise, so omit it
+        if (field === "body") continue;
+
+        algoliaIndexObject[field] = englishValue;
+      }
+
+      if (contentType === "news") {
+        addNewsMetadata(algoliaIndexObject);
+      }
+
+      if (contentType === "eventEntry") {
+        addEventMetadata(algoliaIndexObject);
       }
 
       /**
@@ -90,7 +102,7 @@ export const POST = async ({ request, fetch }) => {
     }
 
     const deleteActions = [CONTENTFUL_ACTIONS.UNPUBLISH, CONTENTFUL_ACTIONS.DELETE];
-    if (deleteActions.includes(contentfulAction) && contentType === serviceEntryContentType) {
+    if (deleteActions.includes(contentfulAction) && contentTypes.includes(contentType)) {
       const response = await index.deleteObject(body.sys.id);
       return json(response);
     }

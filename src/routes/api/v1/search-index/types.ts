@@ -11,6 +11,8 @@ export type AlgoliaMetadataRecord = {
       type?: string;
     };
   } | null;
+  publicationDate?: string;
+  eventDateAndTime?: string;
   // Unfortunately, we can't know what all of what will exist in the the `fields`
   // property from Contentful (especially once we're adding Service Entries),
   // so we have to allow for some dynamic flexibility here
