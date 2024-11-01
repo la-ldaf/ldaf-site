@@ -109,11 +109,21 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
 };
 
 // Return all suitable Page Metadata, News, and Events map items
-export const GET = async ({ locals: { contentfulClient } }) => {
+export const GET = async ({ url, locals: { contentfulClient } }) => {
+  const filter = url.searchParams.get("filter");
   const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
   const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
 
-  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
+  let metadataMap;
+
+  if (filter === "pages") {
+    metadataMap = pageMetadataMap;
+  } else if (filter === "news-and-events") {
+    metadataMap = eventsAndNewsMap;
+  } else {
+    metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
+  }
+
   let data: AlgoliaMetadataRecord[] = [];
 
   const algoliaRecordsMap: Map<string, AlgoliaMetadataRecord> = new Map();
