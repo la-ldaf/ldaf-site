@@ -4,6 +4,7 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 import type { SearchIndexServiceEntry } from "../../types";
+import type { AlgoliaMetadataRecord } from "../types";
 import { authenticateRequest } from "$lib/services/server";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
@@ -23,18 +24,6 @@ export const POST = async ({ request, fetch, locals: { contentfulClient } }) => 
   const contentType = body?.sys?.contentType?.sys?.id;
 
   const contentTypes = ["serviceEntry"];
-
-  type AlgoliaMetadataRecord = {
-    objectID: string;
-    sys: { id: string };
-    url?: string | null | undefined;
-    metaTitle?: string;
-    metaDescription?: string;
-    entryType: string;
-    // Unfortunately, we can't know what all of what will exist in the the `fields`
-    // property from Contentful, so we have to allow for some dynamic flexibility here
-    [key: string]: string | null | undefined | object;
-  };
 
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {

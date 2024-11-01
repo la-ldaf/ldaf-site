@@ -3,6 +3,7 @@ export type AlgoliaMetadataRecord = {
   sys: { id: string };
   url?: string | null | undefined;
   children?: string[] | undefined | null;
+  entryType?: string;
   parent?: {
     sys: {
       id: string;
