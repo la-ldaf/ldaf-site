@@ -3,10 +3,12 @@
   import * as topojson from "topojson-client";
   import * as Plot from "@observablehq/plot";
   import { format } from "date-fns";
+  import ContentfulRichText from "$lib/components/ContentfulRichText";
   import "./page.scss";
 
   export let data;
-  $: ({ fireWeatherData, error = null } = data);
+  $: ({ fireWeatherData, pageData, error = null } = data);
+  $: description = pageData?.description;
   $: parishGeodata = fireWeatherData?.topoJSON ?? [];
   $: fireData = fireWeatherData?.parishes ?? [];
   $: parishes =
@@ -15,6 +17,8 @@
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     topojson.feature(parishGeodata, parishGeodata.objects["parishes-fullsize"]).features;
+  $: if (parishes) console.log(parishes);
+
   // TODO: parishGeodata is valid TopoJSON from this public data source:
   // https://github.com/TheLens/geographic-data/blob/master/exports/topojson/parishes/parishes-simplified.json
   // but topojson.feature is not recognizing it as such. Revisit this in the future, but acceptable to ignore
@@ -29,6 +33,7 @@
       parishcode: string;
       parishname: string;
       fireRisk: string;
+      ObservationDate: string;
     };
     type: "Feature";
   };
@@ -42,10 +47,12 @@
       const name = parish.properties.parishname.replaceAll(".", "");
       const match = fireData.find((parish) => parish.ParishName === name);
       parish.properties.fireRisk = match?.DangerClassDay || "0";
+      parish.properties.ObservationDate = match?.ObservationDate || "";
     });
   }
 
   let div: HTMLElement;
+  let mapReady = false;
 
   const fireRiskLevels = ["Low", "Medium", "High", "Very High", "Extreme"];
   // TODO: convert map colors to match site color palette?
@@ -92,7 +99,26 @@
             parishes,
             Plot.pointer(
               Plot.geoCentroid({
-                title: (d) => d.properties.parishname,
+                title: (d) => {
+                  const { parishname: parishName, fireRisk, ObservationDate } = d.properties;
+                  if (fireRisk === "0" || ObservationDate === "") {
+                    return `Parish: ${parishName}\nNo fire danger data available`;
+                  } else {
+                    let formattedDate;
+                    try {
+                      formattedDate = format(
+                        new Date(d.properties.ObservationDate),
+                        "MMMM d, yyyy",
+                      );
+
+                      return `Parish: ${parishName}\nFire Risk: ${
+                        fireRiskLevels[Number(fireRisk)]
+                      }\nLast observed: ${formattedDate}`;
+                    } catch (e) {
+                      console.log(e, d);
+                    }
+                  }
+                },
                 fontSize: 12,
               }),
             ),
@@ -106,6 +132,9 @@
     const timestamp = document.createElement("p");
     timestamp.innerHTML = `<b>Data last updated:</b> ${formattedTime}`;
     div?.append(timestamp);
+
+    // Make sure we don't display the description rich text until the map is ready to render
+    mapReady = true;
   });
 </script>
 
@@ -115,4 +144,8 @@
   <p>{error}</p>
 {:else}
   <div bind:this={div}></div>
+  {#if mapReady && description}
+    <hr style="margin: 25px 0" />
+    <ContentfulRichText document={description?.json} />
+  {/if}
 {/if}

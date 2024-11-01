@@ -1,6 +1,22 @@
+import gql from "graphql-tag";
+import { print as printQuery } from "graphql";
 import parishTopoJSON from "./parishes.json";
 
-export const load = async ({ locals: { getKVClient } }) => {
+import type { FireWeatherMapQuery } from "./$queries.generated";
+
+const query = gql`
+  query FireWeatherMap {
+    fireDangerMapCollection(limit: 1) {
+      items {
+        description {
+          json
+        }
+      }
+    }
+  }
+`;
+
+export const load = async ({ locals: { getKVClient }, locals: { contentfulClient } }) => {
   try {
     const kvClient = await getKVClient();
     const fireWeatherData = await kvClient.getFireWeatherData();
@@ -9,10 +25,17 @@ export const load = async ({ locals: { getKVClient } }) => {
       throw new Error("Error fetching fire weather data.");
     }
 
+    const pageData = await contentfulClient?.fetch<FireWeatherMapQuery>(printQuery(query));
+
+    const mapDescription = pageData?.fireDangerMapCollection?.items[0]?.description;
+
     return {
       fireWeatherData: {
         ...fireWeatherData,
         topoJSON: parishTopoJSON,
+      },
+      pageData: {
+        description: mapDescription,
       },
     };
   } catch (error) {
