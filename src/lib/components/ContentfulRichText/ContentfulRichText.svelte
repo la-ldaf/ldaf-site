@@ -32,7 +32,7 @@
   $: setContext<string>(imageSizeTypeKey, imageSizeType);
 
   $: if (!isDocument(document)) {
-    throw error(500, {
+    error(500, {
       title: "We could not render this page.",
       message: "Contentful connection failed and fallback document does not match expected format.",
     });
