@@ -17,7 +17,6 @@
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     topojson.feature(parishGeodata, parishGeodata.objects["parishes-fullsize"]).features;
-  $: if (parishes) console.log(parishes);
 
   // TODO: parishGeodata is valid TopoJSON from this public data source:
   // https://github.com/TheLens/geographic-data/blob/master/exports/topojson/parishes/parishes-simplified.json
@@ -115,7 +114,8 @@
                         fireRiskLevels[Number(fireRisk)]
                       }\nLast observed: ${formattedDate}`;
                     } catch (e) {
-                      console.log(e, d);
+                      // Silently fail if the date is invalid, although given the hardcoded nature of the parish data,
+                      // this is highly unlikely and just an extreme safeguard.
                     }
                   }
                 },
