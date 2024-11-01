@@ -17,7 +17,7 @@ const CONTENTFUL_ACTIONS = {
 
 const addNewsMetadata = (algoliaIndexObject: AlgoliaMetadataRecord) => {
   // Add some sensible defaults in if metaTitle and metaDescription are undefined.
-  // `title` is required in Contentful, so that's an easy
+  // `title` is required for news content in Contentful, so that's an easy fallback here
   if (algoliaIndexObject.metaTitle === undefined) {
     algoliaIndexObject.metaTitle = algoliaIndexObject.title;
   }
@@ -86,8 +86,6 @@ export const POST = async ({ request }) => {
       if (contentType === "eventEntry") {
         addEventMetadata(algoliaIndexObject);
       }
-
-      return json(algoliaIndexObject);
 
       /**
        * `partialUpdateObject` only creates or updates attributes included in the call. Any preexisting
