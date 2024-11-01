@@ -5,6 +5,7 @@ import { print as printQuery } from "graphql";
 import type { ExtractQueryType } from "$lib/util/types";
 import type { UnlinkedServiceEntriesWithPaginationQuery } from "./$queries.generated";
 
+// This is current a utility endpoint is not a dependency for anything else
 export const GET = (async ({ locals: { contentfulClient } }) => {
   const queryServiceEntries = gql`
     query UnlinkedServiceEntriesWithPagination($limit: Int!, $skip: Int!) {

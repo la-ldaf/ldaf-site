@@ -108,6 +108,7 @@ const getMetaTitleAndDescription = (
 };
 
 // Return all suitable Page Metadata, News, and Events map items
+// This is current a utility endpoint is not a dependency for anything else
 export const GET = async ({ url, locals: { contentfulClient } }) => {
   const filter = url.searchParams.get("filter");
   const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
