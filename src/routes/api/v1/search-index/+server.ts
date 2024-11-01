@@ -4,6 +4,9 @@ import { PUBLIC_ALGOLIA_APP_ID, PUBLIC_ALGOLIA_INDEX } from "$env/static/public"
 import { ALGOLIA_API_KEY } from "$env/static/private";
 import { authenticateRequest } from "$lib/services/server";
 import { loadPageMetadataMap } from "$lib/loadPageMetadataMap";
+import { loadEventsAndNewsMap } from "$lib/loadEventsNewsMetadataMap";
+import type { AlgoliaMetadataRecord } from "./types.js";
+import type { SearchIndexingMetadataMapItem } from "$lib/loadEventsNewsMetadataMap";
 
 const algoliaClient = algoliasearch(PUBLIC_ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = algoliaClient.initIndex(PUBLIC_ALGOLIA_INDEX);
@@ -14,36 +17,39 @@ const CONTENTFUL_ACTIONS = {
   DELETE: "ContentManagement.Entry.delete",
 };
 
+const getMetaTitleAndDescription = (
+  item?: SearchIndexingMetadataMapItem,
+): { metaTitle?: string | null; metaDescription?: string | null } => {
+  let metaTitle, metaDescription;
+  if (item?.__typename == "PageMetadata") {
+    metaTitle = item?.metaTitle ?? item?.title;
+    metaDescription = item?.metaDescription;
+  } else if (item?.__typename === "News") {
+    metaTitle = item?.metaTitle ?? item?.title;
+    metaDescription = item?.metaDescription ?? item?.subhead;
+  } else if (item?.__typename === "EventEntry") {
+    metaTitle = item?.metaTitle ?? item?.shortTitle;
+    metaDescription = item?.metaDescription ?? item?.eventSummary;
+  }
+  return { metaTitle, ...(metaDescription ? { metaDescription } : {}) };
+};
+
 export const POST = async ({ request, locals: { contentfulClient } }) => {
   authenticateRequest(request);
 
-  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
+  const contentTypes = ["pageMetadata", "news", "eventEntry"];
+  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
+  const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
 
-  const contentTypes = ["pageMetadata"];
-
-  type AlgoliaMetadataRecord = {
-    objectID: string;
-    sys: { id: string };
-    url?: string | null | undefined;
-    children?: string[];
-    parent?: {
-      sys: {
-        id: string;
-        linkType?: string;
-        type?: string;
-      };
-    };
-    // Unfortunately, we can't know what all of what will exist in the the `fields`
-    // property from Contentful, so we have to allow for some dynamic flexibility here
-    [key: string]: string | null | undefined | object;
-  };
+  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
 
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
-      const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
+      const contentfulValue = metadataMap.get(body.sys.id);
+      const metaTitleAndDescription = getMetaTitleAndDescription(contentfulValue);
       // The webhook body is missing `children` and `url`, since we
       // construct those in `loadPageMetadataMap`. Add those properties here.
       const transformedFields: AlgoliaMetadataRecord = {
@@ -52,7 +58,9 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
           id: body.sys.id,
         },
         url: contentfulValue?.url,
-        children: contentfulValue?.children,
+        ...metaTitleAndDescription,
+        // conditionally add page attributes
+        ...{ ...(contentfulValue?.children ? { children: contentfulValue?.children } : {}) },
       };
       for (const field in body.fields) {
         // The webhook body unfortunately prefaces each field with a sub-property equal to
@@ -98,4 +106,30 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   } catch (message) {
     throw error(400, message as string);
   }
+};
+
+// Return all suitable Page Metadata, News, and Events map items
+export const GET = async ({ locals: { contentfulClient } }) => {
+  const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
+  const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
+
+  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
+  let data: AlgoliaMetadataRecord[] = [];
+
+  const algoliaRecordsMap: Map<string, AlgoliaMetadataRecord> = new Map();
+  if (metadataMap.size) {
+    [...metadataMap].forEach(([_, item]) => {
+      const metaTitleAndDescription = getMetaTitleAndDescription(item);
+      const algoliaRecord: AlgoliaMetadataRecord = {
+        slug: item.slug,
+        objectID: item.sys.id,
+        url: item?.url,
+        ...metaTitleAndDescription,
+        ...item,
+      };
+      algoliaRecordsMap.set(item.sys.id, algoliaRecord);
+    });
+  }
+  data = Array.from(algoliaRecordsMap.values());
+  return json(data);
 };

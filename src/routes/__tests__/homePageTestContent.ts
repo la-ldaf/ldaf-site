@@ -94,6 +94,7 @@ export default {
     events: [],
   },
   pageMetadata: {
+    __typename: "PageMetadata",
     sys: { id: "0" },
     url: "/",
     metaTitle: "Home",
