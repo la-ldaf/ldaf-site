@@ -22,7 +22,9 @@ const getHighlightOrSnippetResultValue = (
   return getHighlightOrSnippetResultValue(result, depth + 1);
 };
 
-export const searchHitsTemplate: TemplateWithBindEvent<Hit<{ url?: string }>> = (hit) => {
+export const searchHitsTemplate: TemplateWithBindEvent<
+  Hit<{ url?: string; entryType?: string }>
+> = (hit) => {
   // hit._highlightResult is will only ever contain searchableAttributes that we designate
   // Docs: https://www.algolia.com/doc/api-reference/api-parameters/searchableAttributes/
   return `
@@ -35,7 +37,11 @@ export const searchHitsTemplate: TemplateWithBindEvent<Hit<{ url?: string }>> = 
             </a>
           </h2>
           <div class="post-excerpt">
-            ${getHighlightOrSnippetResultValue(hit._highlightResult?.metaDescription)}
+            ${getHighlightOrSnippetResultValue(
+              hit?.entryType === "Service Entry"
+                ? hit._snippetResult?.metaDescription
+                : hit._highlightResult?.metaDescription,
+            )}
           </div>
         </div>
       </article>

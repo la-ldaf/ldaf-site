@@ -17,39 +17,23 @@ const CONTENTFUL_ACTIONS = {
   DELETE: "ContentManagement.Entry.delete",
 };
 
-const getMetaTitleAndDescription = (
-  item?: SearchIndexingMetadataMapItem,
-): { metaTitle?: string | null; metaDescription?: string | null } => {
-  let metaTitle, metaDescription;
-  if (item?.__typename == "PageMetadata") {
-    metaTitle = item?.metaTitle ?? item?.title;
-    metaDescription = item?.metaDescription;
-  } else if (item?.__typename === "News") {
-    metaTitle = item?.metaTitle ?? item?.title;
-    metaDescription = item?.metaDescription ?? item?.subhead;
-  } else if (item?.__typename === "EventEntry") {
-    metaTitle = item?.metaTitle ?? item?.shortTitle;
-    metaDescription = item?.metaDescription ?? item?.eventSummary;
-  }
-  return { metaTitle, ...(metaDescription ? { metaDescription } : {}) };
-};
-
 export const POST = async ({ request, locals: { contentfulClient } }) => {
   authenticateRequest(request);
 
   const contentfulAction = request.headers.get("x-contentful-topic") || "";
   const body = await request.json();
   const contentType = body?.sys?.contentType?.sys?.id;
-  const contentTypes = ["pageMetadata", "news", "eventEntry"];
+  // TODO: in the future, we might want to consolidate these search index endpoints
+  // to handle a wider range of contentTypes in a single POST endpoint. As it stands,
+  // the transform logic is varied enough that it's easier to have some duplicative scaffolding
+  // for calling algolia in a similar way but with different transformation logic in the
+  // "Contentful webhook -> SvelteKit API route -> Algolia index" pipeline
+  const contentTypes = ["pageMetadata"];
   const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
-  const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
-
-  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
 
   try {
     if (contentfulAction === CONTENTFUL_ACTIONS.PUBLISH && contentTypes.includes(contentType)) {
-      const contentfulValue = metadataMap.get(body.sys.id);
-      const metaTitleAndDescription = getMetaTitleAndDescription(contentfulValue);
+      const contentfulValue = pageMetadataMap.get(body.sys.id) || { url: "", children: [] };
       // The webhook body is missing `children` and `url`, since we
       // construct those in `loadPageMetadataMap`. Add those properties here.
       const transformedFields: AlgoliaMetadataRecord = {
@@ -58,9 +42,7 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
           id: body.sys.id,
         },
         url: contentfulValue?.url,
-        ...metaTitleAndDescription,
-        // conditionally add page attributes
-        ...{ ...(contentfulValue?.children ? { children: contentfulValue?.children } : {}) },
+        children: contentfulValue?.children,
       };
       for (const field in body.fields) {
         // The webhook body unfortunately prefaces each field with a sub-property equal to
@@ -108,12 +90,40 @@ export const POST = async ({ request, locals: { contentfulClient } }) => {
   }
 };
 
+const getMetaTitleAndDescription = (
+  item?: SearchIndexingMetadataMapItem,
+): { metaTitle?: string | null; metaDescription?: string | null } => {
+  let metaTitle, metaDescription;
+  if (item?.__typename == "PageMetadata") {
+    metaTitle = item?.metaTitle ?? item?.title;
+    metaDescription = item?.metaDescription;
+  } else if (item?.__typename === "News") {
+    metaTitle = item?.metaTitle ?? item?.title;
+    metaDescription = item?.metaDescription ?? item?.subhead;
+  } else if (item?.__typename === "EventEntry") {
+    metaTitle = item?.metaTitle ?? item?.shortTitle;
+    metaDescription = item?.metaDescription ?? item?.eventSummary;
+  }
+  return { metaTitle, ...(metaDescription ? { metaDescription } : {}) };
+};
+
 // Return all suitable Page Metadata, News, and Events map items
-export const GET = async ({ locals: { contentfulClient } }) => {
+// This is current a utility endpoint is not a dependency for anything else
+export const GET = async ({ url, locals: { contentfulClient } }) => {
+  const filter = url.searchParams.get("filter");
   const { pageMetadataMap } = await loadPageMetadataMap({ contentfulClient });
   const eventsAndNewsMap = await loadEventsAndNewsMap({ contentfulClient });
 
-  const metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
+  let metadataMap;
+
+  if (filter === "pages") {
+    metadataMap = pageMetadataMap;
+  } else if (filter === "news-and-events") {
+    metadataMap = eventsAndNewsMap;
+  } else {
+    metadataMap = new Map([...eventsAndNewsMap, ...pageMetadataMap]);
+  }
+
   let data: AlgoliaMetadataRecord[] = [];
 
   const algoliaRecordsMap: Map<string, AlgoliaMetadataRecord> = new Map();
