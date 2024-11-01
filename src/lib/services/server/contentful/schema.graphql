@@ -1464,6 +1464,102 @@ enum EventEntryOrder {
 }
 
 """
+One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap)
+"""
+type FireDangerMap implements Entry & _Node {
+  _id: ID!
+  contentfulMetadata: ContentfulMetadata!
+  description(locale: String): FireDangerMapDescription
+  linkedFrom(allowedLocales: [String]): FireDangerMapLinkingCollections
+  pageMetadata(locale: String, preview: Boolean, where: PageMetadataFilter): PageMetadata
+  sys: Sys!
+  title(locale: String): String
+}
+
+type FireDangerMapCollection {
+  items: [FireDangerMap]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type FireDangerMapDescription {
+  json: JSON!
+  links: FireDangerMapDescriptionLinks!
+}
+
+type FireDangerMapDescriptionAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type FireDangerMapDescriptionEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type FireDangerMapDescriptionLinks {
+  assets: FireDangerMapDescriptionAssets!
+  entries: FireDangerMapDescriptionEntries!
+  resources: FireDangerMapDescriptionResources!
+}
+
+type FireDangerMapDescriptionResources {
+  block: [FireDangerMapDescriptionResourcesBlock!]!
+  hyperlink: [FireDangerMapDescriptionResourcesHyperlink!]!
+  inline: [FireDangerMapDescriptionResourcesInline!]!
+}
+
+type FireDangerMapDescriptionResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type FireDangerMapDescriptionResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type FireDangerMapDescriptionResourcesInline implements ResourceLink {
+  sys: ResourceSys!
+}
+
+input FireDangerMapFilter {
+  AND: [FireDangerMapFilter]
+  OR: [FireDangerMapFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  description_contains: String
+  description_exists: Boolean
+  description_not_contains: String
+  pageMetadata: cfPageMetadataNestedFilter
+  pageMetadata_exists: Boolean
+  sys: SysFilter
+  title: String
+  title_contains: String
+  title_exists: Boolean
+  title_in: [String]
+  title_not: String
+  title_not_contains: String
+  title_not_in: [String]
+}
+
+type FireDangerMapLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum FireDangerMapOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+}
+
+"""
 Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage)
 """
 type HeroImage implements Entry & _Node {
@@ -3101,6 +3197,7 @@ union PageMetadataInternalRedirect = EventEntry | News | PageMetadata
 type PageMetadataLinkingCollections {
   aggregationCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsAggregationCollectionOrder], preview: Boolean, skip: Int = 0): AggregationCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  fireDangerMapCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsFireDangerMapCollectionOrder], preview: Boolean, skip: Int = 0): FireDangerMapCollection
   homeCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsHomeCollectionOrder], preview: Boolean, skip: Int = 0): HomeCollection
   menuItemCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsMenuItemCollectionOrder], preview: Boolean, skip: Int = 0): MenuItemCollection
   officePageCollection(limit: Int = 100, locale: String, order: [PageMetadataLinkingCollectionsOfficePageCollectionOrder], preview: Boolean, skip: Int = 0): OfficePageCollection
@@ -3113,6 +3210,19 @@ type PageMetadataLinkingCollections {
 enum PageMetadataLinkingCollectionsAggregationCollectionOrder {
   subhead_ASC
   subhead_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+}
+
+enum PageMetadataLinkingCollectionsFireDangerMapCollectionOrder {
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -3525,6 +3635,8 @@ type Query {
   errorCollection(limit: Int = 100, locale: String, order: [ErrorOrder], preview: Boolean, skip: Int = 0, where: ErrorFilter): ErrorCollection
   eventEntry(id: String!, locale: String, preview: Boolean): EventEntry
   eventEntryCollection(limit: Int = 100, locale: String, order: [EventEntryOrder], preview: Boolean, skip: Int = 0, where: EventEntryFilter): EventEntryCollection
+  fireDangerMap(id: String!, locale: String, preview: Boolean): FireDangerMap
+  fireDangerMapCollection(limit: Int = 100, locale: String, order: [FireDangerMapOrder], preview: Boolean, skip: Int = 0, where: FireDangerMapFilter): FireDangerMapCollection
   heroImage(id: String!, locale: String, preview: Boolean): HeroImage
   heroImageCollection(limit: Int = 100, locale: String, order: [HeroImageOrder], preview: Boolean, skip: Int = 0, where: HeroImageFilter): HeroImageCollection
   home(id: String!, locale: String, preview: Boolean): Home

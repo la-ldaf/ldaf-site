@@ -2205,6 +2205,145 @@ export enum EventEntryOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+export type FireDangerMap = Entry & _Node & {
+  __typename?: 'FireDangerMap';
+  _id: Scalars['ID']['output'];
+  contentfulMetadata: ContentfulMetadata;
+  description?: Maybe<FireDangerMapDescription>;
+  linkedFrom?: Maybe<FireDangerMapLinkingCollections>;
+  pageMetadata?: Maybe<PageMetadata>;
+  sys: Sys;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+export type FireDangerMapDescriptionArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+export type FireDangerMapLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+export type FireDangerMapPageMetadataArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<PageMetadataFilter>;
+};
+
+
+/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+export type FireDangerMapTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type FireDangerMapCollection = {
+  __typename?: 'FireDangerMapCollection';
+  items: Array<Maybe<FireDangerMap>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type FireDangerMapDescription = {
+  __typename?: 'FireDangerMapDescription';
+  json: Scalars['JSON']['output'];
+  links: FireDangerMapDescriptionLinks;
+};
+
+export type FireDangerMapDescriptionAssets = {
+  __typename?: 'FireDangerMapDescriptionAssets';
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type FireDangerMapDescriptionEntries = {
+  __typename?: 'FireDangerMapDescriptionEntries';
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type FireDangerMapDescriptionLinks = {
+  __typename?: 'FireDangerMapDescriptionLinks';
+  assets: FireDangerMapDescriptionAssets;
+  entries: FireDangerMapDescriptionEntries;
+  resources: FireDangerMapDescriptionResources;
+};
+
+export type FireDangerMapDescriptionResources = {
+  __typename?: 'FireDangerMapDescriptionResources';
+  block: Array<FireDangerMapDescriptionResourcesBlock>;
+  hyperlink: Array<FireDangerMapDescriptionResourcesHyperlink>;
+  inline: Array<FireDangerMapDescriptionResourcesInline>;
+};
+
+export type FireDangerMapDescriptionResourcesBlock = ResourceLink & {
+  __typename?: 'FireDangerMapDescriptionResourcesBlock';
+  sys: ResourceSys;
+};
+
+export type FireDangerMapDescriptionResourcesHyperlink = ResourceLink & {
+  __typename?: 'FireDangerMapDescriptionResourcesHyperlink';
+  sys: ResourceSys;
+};
+
+export type FireDangerMapDescriptionResourcesInline = ResourceLink & {
+  __typename?: 'FireDangerMapDescriptionResourcesInline';
+  sys: ResourceSys;
+};
+
+export type FireDangerMapFilter = {
+  AND?: InputMaybe<Array<InputMaybe<FireDangerMapFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<FireDangerMapFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  description_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  pageMetadata?: InputMaybe<CfPageMetadataNestedFilter>;
+  pageMetadata_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  sys?: InputMaybe<SysFilter>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  title_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type FireDangerMapLinkingCollections = {
+  __typename?: 'FireDangerMapLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type FireDangerMapLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum FireDangerMapOrder {
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
+}
+
 /** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImage = Entry & _Node & {
   __typename?: 'HeroImage';
@@ -4563,6 +4702,7 @@ export type PageMetadataLinkingCollections = {
   __typename?: 'PageMetadataLinkingCollections';
   aggregationCollection?: Maybe<AggregationCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  fireDangerMapCollection?: Maybe<FireDangerMapCollection>;
   homeCollection?: Maybe<HomeCollection>;
   menuItemCollection?: Maybe<MenuItemCollection>;
   officePageCollection?: Maybe<OfficePageCollection>;
@@ -4585,6 +4725,15 @@ export type PageMetadataLinkingCollectionsAggregationCollectionArgs = {
 export type PageMetadataLinkingCollectionsEntryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type PageMetadataLinkingCollectionsFireDangerMapCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<PageMetadataLinkingCollectionsFireDangerMapCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -4655,6 +4804,19 @@ export type PageMetadataLinkingCollectionsTopTierCollectionArgs = {
 export enum PageMetadataLinkingCollectionsAggregationCollectionOrder {
   SubheadAsc = 'subhead_ASC',
   SubheadDesc = 'subhead_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC'
+}
+
+export enum PageMetadataLinkingCollectionsFireDangerMapCollectionOrder {
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -5189,6 +5351,8 @@ export type Query = {
   errorCollection?: Maybe<ErrorCollection>;
   eventEntry?: Maybe<EventEntry>;
   eventEntryCollection?: Maybe<EventEntryCollection>;
+  fireDangerMap?: Maybe<FireDangerMap>;
+  fireDangerMapCollection?: Maybe<FireDangerMapCollection>;
   heroImage?: Maybe<HeroImage>;
   heroImageCollection?: Maybe<HeroImageCollection>;
   home?: Maybe<Home>;
@@ -5410,6 +5574,23 @@ export type QueryEventEntryCollectionArgs = {
   preview?: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventEntryFilter>;
+};
+
+
+export type QueryFireDangerMapArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryFireDangerMapCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<FireDangerMapOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FireDangerMapFilter>;
 };
 
 
