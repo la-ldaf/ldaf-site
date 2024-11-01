@@ -30,6 +30,8 @@ export const POST = async ({ request, fetch }) => {
       contentfulAction === CONTENTFUL_ACTIONS.PUBLISH &&
       contentType === serviceEntryContentType
     ) {
+      // TODO: refactor this fetch call to a loadServiceEntries function similar to how
+      // loadPageMetadataMap works in src/routes/api/v1/search-index/+server.ts
       const { serviceEntries } = await fetch("/api/v1/service-entries").then((res) => res.json());
       // Find the matching service entry via the metadata map to allow us to set the accordion URL
       const serviceEntry = serviceEntries.find(
