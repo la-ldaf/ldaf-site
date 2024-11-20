@@ -89,7 +89,7 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vite-bundle-visualizer": "^0.10.0",
-    "vite-imagetools": "^5.0.5",
+    "vite-imagetools": "^6.2.9",
     "vite-plugin-svelte-purgecss": "^0.0.3",
     "vitest": "^0.34.4"
   },
