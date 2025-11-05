@@ -6,7 +6,7 @@
   import Icon from "$lib/components/Icon";
   import Link from "$lib/components/Link";
 
-  import type SideNavItem from "./types";
+  import type { SideNavItem } from "./types";
 
   export let currentPath: string | null,
     title: string,

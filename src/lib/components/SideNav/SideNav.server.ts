@@ -1,6 +1,6 @@
 import type { PageMetadataMap, PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { NavMenuType } from "$lib/components/Header/Nav/types";
-import type SideNavItem from "./types";
+import type { SideNavItem } from "./types";
 
 type SideNavMap = Map<string, SideNavItem>;
 

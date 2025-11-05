@@ -2,7 +2,7 @@
 <!-- TODO: https://ldaf.atlassian.net/browse/LDAF-219 -->
 <script lang="ts">
   import SideNavItem from "./SideNavItem.svelte";
-  import type SideNavItemType from "./types";
+  import type { SideNavItem as SideNavItemType } from "./types";
   export let tree: SideNavItemType[];
   export let currentPath: string | null;
 </script>
