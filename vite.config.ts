@@ -3,7 +3,7 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { partytownVite } from "@builder.io/partytown/utils";
 import svg from "@poppanator/sveltekit-svg";
 import type { PluginOption } from "vite";
-import { purgeCss } from "vite-plugin-svelte-purgecss";
+import { purgeCss } from "vite-plugin-tailwind-purgecss";
 import ldafIcon from "./vite-plugin-ldaf-icon";
 import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
@@ -24,7 +24,11 @@ const plugins: PluginOption[] = [
 ];
 
 if (process.env.NODE_ENV === "production") {
-  plugins.push(purgeCss());
+  // purgecss was previously a Svelte-specific plugin that was migrated
+  // Original plugin: https://github.com/AdrianGonz97/vite-plugin-svelte-purgecss
+  // To restore similar functionality, we now run it with the `legacy` option enabled.
+  // https://github.com/AdrianGonz97/vite-plugin-tailwind-purgecss/blob/master/legacy-mode.md
+  plugins.push(purgeCss({ legacy: true }));
 }
 
 export default defineConfig({
