@@ -110,6 +110,6 @@ export const POST = async ({ request }) => {
     // Fall-through response if the request body doesn't result in any Algolia updates.
     return json("No action taken on the supplied request body.");
   } catch (message) {
-    throw error(400, message as string);
+    error(400, message as string);
   }
 };

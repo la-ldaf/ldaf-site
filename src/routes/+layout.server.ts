@@ -45,24 +45,21 @@ export const load = async ({
         if (internalRedirect.__typename === "PageMetadata") {
           const internalRedirectPageMetadata = pageMetadataMap.get(internalRedirect.sys.id);
           if (internalRedirectPageMetadata?.url) {
-            throw redirect(301, internalRedirectPageMetadata.url);
+            redirect(301, internalRedirectPageMetadata.url);
           }
         } else if (internalRedirect.__typename === "News" && internalRedirect.slug) {
-          throw redirect(301, `/about/news/article/${internalRedirect.slug}`);
+          redirect(301, `/about/news/article/${internalRedirect.slug}`);
         } else if (
           internalRedirect.__typename === "EventEntry" &&
           internalRedirect.slug &&
           internalRedirect.eventDateAndTime
         ) {
           const date = new Date(internalRedirect.eventDateAndTime);
-          throw redirect(
-            301,
-            `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`,
-          );
+          redirect(301, `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`);
         }
       }
       if (externalRedirect) {
-        throw redirect(301, externalRedirect);
+        redirect(301, externalRedirect);
       }
     }
   }

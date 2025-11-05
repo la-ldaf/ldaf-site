@@ -49,8 +49,9 @@
     "@storybook/sveltekit": "^7.4.2",
     "@storybook/testing-library": "^0.2.1",
     "@storybook/theming": "^7.4.2",
-    "@sveltejs/adapter-vercel": "^3.0.3",
-    "@sveltejs/kit": "^1.25.0",
+    "@sveltejs/adapter-vercel": "^4.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/svelte": "^4.0.3",
     "@testing-library/user-event": "^14.4.3",
@@ -87,11 +88,11 @@
     "tslib": "^2.6.2",
     "tsx": "^4.11.0",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9",
+    "vite": "^5.0.0",
     "vite-bundle-visualizer": "^0.10.0",
     "vite-imagetools": "^5.0.5",
     "vite-plugin-svelte-purgecss": "^0.0.3",
-    "vitest": "^0.34.4"
+    "vitest": "^1.0.0"
   },
   "type": "module",
   "dependencies": {

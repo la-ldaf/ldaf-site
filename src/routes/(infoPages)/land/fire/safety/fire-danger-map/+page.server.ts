@@ -65,5 +65,5 @@ export const load = async ({ parent, locals: { getKVClient, contentfulClient } }
       };
     }
   }
-  throw error(404);
+  error(404);
 };
