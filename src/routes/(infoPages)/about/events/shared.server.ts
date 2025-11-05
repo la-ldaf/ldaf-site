@@ -88,10 +88,12 @@ export const loadEventsPage = async ({
     ]);
     if (!contentfulClient) {
       return {
+        pageMetadata: {
+          breadcrumbs: await breadcrumbsPromise,
+        },
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testEvents.length / limit),
         events: testEventPages[pageNumber - 1].items,
-        breadcrumbs: breadcrumbsPromise,
       };
     }
     const { pageMetadataMap, pathsToIDs } = await parent();

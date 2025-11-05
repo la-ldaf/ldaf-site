@@ -58,10 +58,12 @@ export const loadNewsPage = async ({
     ]);
     if (!contentfulClient) {
       return {
+        pageMetadata: {
+          breadcrumbs: await breadcrumbsPromise,
+        },
         currentPageNumber: pageNumber,
         totalPages: Math.ceil(testNewsEntries.length / limit),
         newsEntries: testNewsEntryPages[pageNumber - 1].items,
-        breadcrumbs: breadcrumbsPromise,
       };
     }
     const { pageMetadataMap, pathsToIDs } = await parent();

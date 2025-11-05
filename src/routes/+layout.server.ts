@@ -76,11 +76,14 @@ export const load = async ({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
-  const footerNavItems = loadFooterNav({
+  const footerNavItems = await loadFooterNav({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
+  // No fetching, so no need to await.
   const sideNavMap = loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
+  // Static data, so no need to await.
+  const headerSecondaryNavItems = loadSecondaryNav();
 
   // Since any route can error, we always need to have the error page content
   //   available on every request.
@@ -94,7 +97,7 @@ export const load = async ({
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
     headerPrimaryNavItems: headerPrimaryNavItems,
-    headerSecondaryNavItems: loadSecondaryNav(),
+    headerSecondaryNavItems: headerSecondaryNavItems,
     footerNavItems: footerNavItems,
     sideNavMap: sideNavMap,
     errorPageContentMap,
