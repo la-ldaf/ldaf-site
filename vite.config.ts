@@ -3,7 +3,6 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { partytownVite } from "@builder.io/partytown/utils";
 import svg from "@poppanator/sveltekit-svg";
 import type { PluginOption } from "vite";
-import { purgeCss } from "vite-plugin-tailwind-purgecss";
 import ldafIcon from "./vite-plugin-ldaf-icon";
 import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
@@ -23,13 +22,13 @@ const plugins: PluginOption[] = [
   ldafIcon(),
 ];
 
-if (process.env.NODE_ENV === "production") {
-  // Our PurgeCSS plugin was previously a Svelte-specific plugin that was migrated.
-  // Original plugin: https://github.com/AdrianGonz97/vite-plugin-svelte-purgecss
-  // To restore similar functionality, we now run it with the `legacy` option enabled.
-  // https://github.com/AdrianGonz97/vite-plugin-tailwind-purgecss/blob/master/legacy-mode.md
-  plugins.push(purgeCss({ legacy: true }));
-}
+// TODO: Investigate how we might re-enable PurgeCSS for production builds.
+//       Previously we used `vite-plugin-svelte-purgecss`, but that plugin has
+//       been deprecated in favor of `vite-plugin-tailwind-purgecss`, which we
+//       could not get working properly (it effectively purged all CSS).
+// if (process.env.NODE_ENV === "production") {
+//   plugins.push(purgeCss());
+// }
 
 export default defineConfig({
   plugins,
