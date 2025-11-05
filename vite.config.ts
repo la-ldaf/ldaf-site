@@ -24,7 +24,7 @@ const plugins: PluginOption[] = [
 ];
 
 if (process.env.NODE_ENV === "production") {
-  // purgecss was previously a Svelte-specific plugin that was migrated
+  // Our PurgeCSS plugin was previously a Svelte-specific plugin that was migrated.
   // Original plugin: https://github.com/AdrianGonz97/vite-plugin-svelte-purgecss
   // To restore similar functionality, we now run it with the `legacy` option enabled.
   // https://github.com/AdrianGonz97/vite-plugin-tailwind-purgecss/blob/master/legacy-mode.md
