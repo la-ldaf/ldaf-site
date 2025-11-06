@@ -10,6 +10,7 @@ import { getCurrentDateInTZ, getStartOfDayForDateInTZ } from "$lib/util/dates";
 
 import assetProps from "$lib/fragments/assetProps";
 
+import type { PageServerLoad } from "./$types";
 import type { HomePageQuery } from "./$queries.generated";
 import type { PageMetadataMapItem } from "$lib/loadPageMetadataMap";
 import type { ExtractQueryType } from "$lib/util/types";
@@ -181,7 +182,7 @@ const addBlurhashToImageWrapper = (
     : undefined;
 };
 
-export const load = async ({
+export const load = (async ({
   parent,
   fetch,
   locals: { getKVClient, contentfulClient },
@@ -296,4 +297,4 @@ export const load = async ({
   }
   // TODO: We really shouldn't 404 on the home page.
   error(404);
-};
+}) satisfies PageServerLoad;

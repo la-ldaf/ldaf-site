@@ -3,6 +3,7 @@ import tokenDuration from "$lib/constants/tokenDuration.js";
 import getContentfulManagementClient from "$lib/services/server/contentfulManagement";
 import getErrorMessage from "$lib/util/getErrorMessage.js";
 import { error, fail } from "@sveltejs/kit";
+import type { Actions } from "./$types";
 
 export const actions = {
   default: async ({ request, locals, cookies, fetch }) => {
@@ -54,4 +55,4 @@ export const actions = {
       error(status, { message, status });
     }
   },
-};
+} satisfies Actions;

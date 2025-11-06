@@ -7,8 +7,9 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 import constructEventSlug from "$lib/util/constructEventSlug";
+import type { LayoutServerLoad } from "./$types";
 
-export const load = async ({
+export const load = (async ({
   fetch,
   depends,
   locals: { contentfulClient, currentUser, previewAuthenticationError },
@@ -103,4 +104,4 @@ export const load = async ({
     errorPageContentMap,
     currentUser: clientCurrentUser,
   };
-};
+}) satisfies LayoutServerLoad;

@@ -30,6 +30,7 @@ import {
   getCurrentDateInTZ,
 } from "$lib/util/dates";
 import { eventIANATimezone } from "$lib/constants/date";
+import type { PageServerLoad } from "./$types";
 
 const baseQuery = gql`
   # eslint-disable @graphql-eslint/selection-set-depth
@@ -366,7 +367,7 @@ const inOrder = <T>(items: T[], fn: (item: T) => string, order: string[]) => {
   return order.map((id) => record[id]);
 };
 
-export const load = async ({
+export const load = (async ({
   parent,
   params: { topTierPage, serviceGroupPage },
   locals: { getKVClient, contentfulClient },
@@ -571,4 +572,4 @@ export const load = async ({
     };
   }
   error(404);
-};
+}) satisfies PageServerLoad;

@@ -11,6 +11,7 @@ import {
   getStartOfDayForDateInTZ,
 } from "$lib/util/dates";
 
+import type { PageServerLoad } from "./$types";
 import type { TaggedNewsAndEventsQuery, TopTierCollectionQuery } from "./$queries.generated";
 // assetProps are included with entryProps
 import entryPropsFragment from "$lib/fragments/entryProps";
@@ -170,7 +171,7 @@ const taggedNewsAndEventsQuery = gql`
   }
 `;
 
-export const load = async ({
+export const load = (async ({
   parent,
   params: { topTierPage: slug },
   fetch,
@@ -290,4 +291,4 @@ export const load = async ({
     };
   }
   error(404);
-};
+}) satisfies PageServerLoad;
