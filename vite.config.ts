@@ -37,6 +37,10 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     coverage: {
+      // Components and utilities are currently the only widely tested parts of the application,
+      //   due to issues with testing many of SvelteKit's features during initial development.
+      include: ["src/lib/{components,util}/**/*.{js,ts,svelte}"],
+      exclude: ["src/lib/**/*generated.d.ts", "src/lib/**/__mocks__/**", "src/lib/**/__tests__/**"],
       reporter: ["text", "json", "html", "lcov"],
     },
     setupFiles: ["src/lib/__tests__/setup.ts"],
