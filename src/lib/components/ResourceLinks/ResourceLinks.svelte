@@ -1,11 +1,5 @@
 <script lang="ts" context="module">
-  export type ResourceLink = {
-    title: string;
-    href: string;
-    description?: string;
-  };
-
-  export type ResourceLinks = ResourceLink[];
+  import type { ResourceLinks } from "./types";
 </script>
 
 <script lang="ts">
