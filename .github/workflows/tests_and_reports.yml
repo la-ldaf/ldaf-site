@@ -64,7 +64,7 @@ jobs:
 
       - name: Create artifact with report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
           path: coverage
@@ -96,7 +96,7 @@ jobs:
 
       - name: Create artifact with report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
           path: e2e-tests/report
@@ -124,7 +124,7 @@ jobs:
 
       - name: Create artifact with bundle visualizer
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
           path: bundle-visualizer
@@ -182,7 +182,7 @@ jobs:
 
       - name: Create artifact with Lighthouse reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
           path: lighthouse-reports
