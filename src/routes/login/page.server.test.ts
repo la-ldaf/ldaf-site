@@ -46,6 +46,8 @@ vi.stubGlobal("crypto", { randomUUID: () => randomUUID });
 
 const fetch: MockedFunction<typeof globalThis.fetch> = vi.fn((..._) => {
   throw new Error("unexpected fetch!");
+  // Following line is never executed but satisfies return type requirement.
+  return Promise.resolve(new Response("500 Internal Error", { status: 500 }));
 });
 const _fetch = fetch;
 

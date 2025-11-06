@@ -13,22 +13,26 @@ export const createClient: Mock<
   const youtubeVideoDatas: Record<string, YoutubeVideoData> = {};
   let fireWeatherData: FireWeatherData = { parishes: [], lastUpdated: "" };
   return {
-    getUserInfoByToken: vi.fn(async (token) => userInfos[token] ?? null),
+    getUserInfoByToken: vi.fn(
+      async (token): Promise<ServerUser | null> => userInfos[token] ?? null,
+    ),
     setUserInfoByToken: vi.fn(async (token, userInfo) => (userInfos[token] = userInfo)),
     deleteUserInfoByToken: vi.fn(async (token) => {
       delete userInfos[token];
     }),
-    getBlurhashByURL: vi.fn(async (url: string) => blurhashes[url] ?? null),
+    getBlurhashByURL: vi.fn(async (url: string): Promise<string | null> => blurhashes[url] ?? null),
     setBlurhashByURL: vi.fn(async (url: string, blurhash: string) => {
       blurhashes[url] = blurhash;
     }),
-    getYoutubeVideoDataByID: vi.fn(async (id: string) => youtubeVideoDatas[id] ?? null),
+    getYoutubeVideoDataByID: vi.fn(
+      async (id: string): Promise<YoutubeVideoData | null> => youtubeVideoDatas[id] ?? null,
+    ),
     setYoutubeVideoDataByID: vi.fn(async (id: string, data: YoutubeVideoData) => {
       youtubeVideoDatas[id] = data;
     }),
     setFireWeatherData: vi.fn(async (fireData: FireWeatherData) => {
       fireWeatherData = fireData;
     }),
-    getFireWeatherData: vi.fn(async () => fireWeatherData),
+    getFireWeatherData: vi.fn(async (): Promise<FireWeatherData | null> => fireWeatherData),
   };
 });
