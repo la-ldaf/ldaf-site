@@ -217,25 +217,25 @@ jobs:
         run: vercel pull --yes --cwd .meta --environment=${{ fromJSON(env.IS_MAIN) && 'production' || 'preview' }} --token=${{env.VERCEL_TOKEN}}
 
       - name: Download unit test report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
           path: .meta/${{ env.UNIT_PATH }}
 
       - name: Download end-to-end test report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
           path: .meta/${{ env.E2E_PATH }}
 
       - name: Download bundle visualizer artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
           path: .meta/${{ env.BUNDLE_VISUALIZER_PATH }}
 
       - name: Download Lighthouse report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
           path: .meta/${{ env.LIGHTHOUSE_PATH }}
