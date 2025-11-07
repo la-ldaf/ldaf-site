@@ -6,6 +6,14 @@
   import ContentfulRichText from "$lib/components/ContentfulRichText";
   import "./page.scss";
 
+  // The names in the TopoJSON match the official display names that can be found here:
+  //   https://www.louisiana.gov/local-louisiana/
+  // The names from the fire weather data omit periods and have inconsistent spacing and
+  //   capitalization (e.g. La Salle vs LaSalle and Desoto vs DeSoto).
+  // This function normalizes parish names from both datasets for matching purposes.
+  // TODO: Match by a unique identifier instead of by name in the future.
+  const normalizeParishName = (name: string) => name.replace(/[.\s]/g, "").toLowerCase();
+
   export let data;
   $: ({ fireWeatherData, pageData, error = null } = data);
   $: parishGeodata = fireWeatherData?.topoJSON ?? [];
@@ -42,8 +50,8 @@
 
   $: if (parishes) {
     parishes.forEach((parish: Parish) => {
-      const name = parish.properties.parishname.replaceAll(".", "");
-      const match = fireData.find((parish) => parish.ParishName === name);
+      const name = normalizeParishName(parish.properties.parishname);
+      const match = fireData.find((parish) => normalizeParishName(parish.ParishName) === name);
       parish.properties.fireRisk = match?.DangerClassDay || "0";
       parish.properties.ObservationDate = match?.ObservationDate || "";
     });
