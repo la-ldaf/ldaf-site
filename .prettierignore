@@ -15,7 +15,6 @@ node_modules
 /lighthouse-reports
 /src/lib/services/server/contentful/schema.ts
 /src/lib/services/server/contentful/schema.graphql
-src/routes/(infoPages)/land/fire/safety/fire-danger-map/parishes.json
 
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
