@@ -7,6 +7,7 @@ import entryPropsFragment from "$lib/fragments/entryProps";
 import { getBlurhashMapFromRichText } from "$lib/services/blurhashes";
 import officePageTestContent from "./__tests__/OfficePageTestContent";
 
+import type { PageServerLoad } from "./$types";
 import type { OfficePageQuery } from "./$queries.generated";
 
 const query = gql`
@@ -102,7 +103,7 @@ const query = gql`
   }
 `;
 
-export const load = async ({
+export const load = (async ({
   parent,
   params: { officePage },
   locals: { contentfulClient },
@@ -152,5 +153,5 @@ export const load = async ({
       pageMetadata,
     };
   }
-  throw error(404);
-};
+  error(404);
+}) satisfies PageServerLoad;

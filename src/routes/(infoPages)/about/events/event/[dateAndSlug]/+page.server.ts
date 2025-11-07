@@ -96,11 +96,11 @@ export const load = (async ({ params: { dateAndSlug }, locals: { contentfulClien
   // dateAndSlug should be constructed like 2023-08-10-some-slug
   // TODO: write route matcher that enforces this
   const [_, dateString, slug] = dateAndSlug.match(/^(\d{4}-\d{2}-\d{2})-([a-z1-9-]+)$/) ?? [];
-  if (!dateString || !slug) throw error(404);
+  if (!dateString || !slug) error(404);
   const dateStart = getStartOfDayForDateInTZ(dateString, eventIANATimezone);
   const dateEnd = getEndOfDayForDateInTZ(dateString, eventIANATimezone);
   // TODO: example contents
-  if (!contentfulClient) throw error(404);
+  if (!contentfulClient) error(404);
   const baseBreadcrumbsPromise = loadBaseBreadcrumbs({ parent });
   const variables = {
     dateStart,
@@ -115,7 +115,7 @@ export const load = (async ({ params: { dateAndSlug }, locals: { contentfulClien
     eventDataPromise,
   ]);
   const [event] = eventData?.eventEntryCollection?.items ?? [];
-  if (!event) throw error(404);
+  if (!event) error(404);
   const url = `/about/events/event/${dateAndSlug}`;
   return {
     event,

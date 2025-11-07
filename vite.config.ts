@@ -3,7 +3,6 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { partytownVite } from "@builder.io/partytown/utils";
 import svg from "@poppanator/sveltekit-svg";
 import type { PluginOption } from "vite";
-import { purgeCss } from "vite-plugin-svelte-purgecss";
 import ldafIcon from "./vite-plugin-ldaf-icon";
 import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vitest/config";
@@ -23,9 +22,13 @@ const plugins: PluginOption[] = [
   ldafIcon(),
 ];
 
-if (process.env.NODE_ENV === "production") {
-  plugins.push(purgeCss());
-}
+// TODO: Investigate how we might re-enable PurgeCSS for production builds.
+//       Previously we used `vite-plugin-svelte-purgecss`, but that plugin has
+//       been deprecated in favor of `vite-plugin-tailwind-purgecss`, which we
+//       could not get working properly (it effectively purged all CSS).
+// if (process.env.NODE_ENV === "production") {
+//   plugins.push(purgeCss());
+// }
 
 export default defineConfig({
   plugins,
@@ -34,6 +37,10 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     coverage: {
+      // Components and utilities are currently the only widely tested parts of the application,
+      //   due to issues with testing many of SvelteKit's features during initial development.
+      include: ["src/lib/{components,util}/**/*.{js,ts,svelte}"],
+      exclude: ["src/lib/**/*generated.d.ts", "src/lib/**/__mocks__/**", "src/lib/**/__tests__/**"],
       reporter: ["text", "json", "html", "lcov"],
     },
     setupFiles: ["src/lib/__tests__/setup.ts"],

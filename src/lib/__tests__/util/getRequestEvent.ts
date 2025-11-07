@@ -3,7 +3,7 @@ import type { Cookies, RequestEvent } from "@sveltejs/kit";
 import { createClient as createKVClient, type Client as KVClient } from "$lib/services/server/kv";
 
 const mockedCookiesGet: MockedFunction<Cookies["get"]> = vi.fn(
-  (..._: Parameters<Cookies["get"]>) => undefined,
+  (..._: Parameters<Cookies["get"]>) => undefined as string | undefined,
 );
 
 const getCookiesDefaults: () => MockedObject<Cookies> = () => ({

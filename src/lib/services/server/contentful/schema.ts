@@ -19,11 +19,7 @@ export type Scalars = {
   Quality: { input: any; output: any; }
 };
 
-/**
- * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
- * Currently we only support the Licensing and Permits aggregation page.
- * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
- */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation) */
 export type Aggregation = Entry & _Node & {
   __typename?: 'Aggregation';
   _id: Scalars['ID']['output'];
@@ -37,31 +33,19 @@ export type Aggregation = Entry & _Node & {
 };
 
 
-/**
- * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
- * Currently we only support the Licensing and Permits aggregation page.
- * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
- */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation) */
 export type AggregationBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/**
- * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
- * Currently we only support the Licensing and Permits aggregation page.
- * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
- */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation) */
 export type AggregationLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/**
- * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
- * Currently we only support the Licensing and Permits aggregation page.
- * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
- */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation) */
 export type AggregationPageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -69,21 +53,13 @@ export type AggregationPageMetadataArgs = {
 };
 
 
-/**
- * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
- * Currently we only support the Licensing and Permits aggregation page.
- * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
- */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation) */
 export type AggregationSubheadArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/**
- * A unique page that aggregates links to other content on the site using tags. Whichever tags are being used to aggregate content should also be applied to an Aggregation entry.
- * Currently we only support the Licensing and Permits aggregation page.
- * Aggregation pages are "hard-coded" in the codebase, so the URL cannot be changed. Licensing and Permits lives directly under the root at /licensing-permits, so please do not change the "Parent" field on the "Page Details" entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation)
- */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/aggregation) */
 export type AggregationTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -436,7 +412,7 @@ export enum AssetOrder {
   WidthDesc = 'width_DESC'
 }
 
-/** Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
 export type CallToAction = Entry & _Node & {
   __typename?: 'CallToAction';
   _id: Scalars['ID']['output'];
@@ -448,19 +424,19 @@ export type CallToAction = Entry & _Node & {
 };
 
 
-/** Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
 export type CallToActionCallToActionDestinationArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
 export type CallToActionCtaInternalNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Button that takes users to the action they want to do next to complete their task, such as going to another web page or downloading a PDF. Includes a URL and link label. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/callToAction) */
 export type CallToActionLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
@@ -610,7 +586,7 @@ export enum CallToActionOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type Contact = Entry & _Node & {
   __typename?: 'Contact';
   _id: Scalars['ID']['output'];
@@ -625,25 +601,25 @@ export type Contact = Entry & _Node & {
 };
 
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactEmailArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactEntityNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactLocationArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -651,13 +627,13 @@ export type ContactLocationArgs = {
 };
 
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactPhoneArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** The name, phone number, and/or email of any person, office, or program at LDAF. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/contact) */
 export type ContactPhoneExtArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -919,7 +895,7 @@ export enum ContactOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocation = Entry & _Node & {
   __typename?: 'ContentTypeLocation';
   _id: Scalars['ID']['output'];
@@ -935,43 +911,43 @@ export type ContentTypeLocation = Entry & _Node & {
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationCityArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationStateArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationStreetAddress1Args = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationStreetAddress2Args = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A physical address, such as a mailing address or an event location. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/location) */
 export type ContentTypeLocationZipArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1165,7 +1141,7 @@ export type ContentfulTag = {
   name?: Maybe<Scalars['String']['output']>;
 };
 
-/** "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
 export type DocumentWrapper = Entry & _Node & {
   __typename?: 'DocumentWrapper';
   _id: Scalars['ID']['output'];
@@ -1178,25 +1154,25 @@ export type DocumentWrapper = Entry & _Node & {
 };
 
 
-/** "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
 export type DocumentWrapperDocWrapperNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
 export type DocumentWrapperDocumentDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
 export type DocumentWrapperLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** "Wrapper" for embedding PDFs, MS Word Docs, spreadsheets and other non-visual, non-web document types. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/documentWrapper) */
 export type DocumentWrapperWrappedDocumentNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1295,7 +1271,7 @@ export enum DocumentWrapperOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** A draft of how we will structure individual navigation links that can appear either in the main menu in the header, in a submenu under the main menu in the header, or in a section sidebar. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
 export type DraftNavigationLink = Entry & _Node & {
   __typename?: 'DraftNavigationLink';
   _id: Scalars['ID']['output'];
@@ -1307,19 +1283,19 @@ export type DraftNavigationLink = Entry & _Node & {
 };
 
 
-/** A draft of how we will structure individual navigation links that can appear either in the main menu in the header, in a submenu under the main menu in the header, or in a section sidebar. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
 export type DraftNavigationLinkLinkArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A draft of how we will structure individual navigation links that can appear either in the main menu in the header, in a submenu under the main menu in the header, or in a section sidebar. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
 export type DraftNavigationLinkLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** A draft of how we will structure individual navigation links that can appear either in the main menu in the header, in a submenu under the main menu in the header, or in a section sidebar. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationLink) */
 export type DraftNavigationLinkTextArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1406,7 +1382,7 @@ export enum DraftNavigationLinkOrder {
   TextDesc = 'text_DESC'
 }
 
-/** A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
 export type DraftNavigationMenu = Entry & _Node & {
   __typename?: 'DraftNavigationMenu';
   _id: Scalars['ID']['output'];
@@ -1419,7 +1395,7 @@ export type DraftNavigationMenu = Entry & _Node & {
 };
 
 
-/** A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
 export type DraftNavigationMenuChildrenCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -1429,19 +1405,19 @@ export type DraftNavigationMenuChildrenCollectionArgs = {
 };
 
 
-/** A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
 export type DraftNavigationMenuLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
 export type DraftNavigationMenuTextArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A draft of how we will structure navigation menus that can appear either as the main menu in the header, a submenu under the main menu in the header, or a section sidebar. Should accept a list of references to either navigation links or child navigation menus. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/draftNavigationMenu) */
 export type DraftNavigationMenuTypeArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1585,7 +1561,7 @@ export enum EntryOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type Error = Entry & _Node & {
   __typename?: 'Error';
   _id: Scalars['ID']['output'];
@@ -1601,44 +1577,44 @@ export type Error = Entry & _Node & {
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorErrorCodeArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorHeadingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorMetaTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content for error pages, such as 404 Not Found and 500 Internal Server Error. In order to ensure a faster user experience, content changes to these entries are _not_ reflected immediately and may take up to a few days to appear. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/error) */
 export type ErrorSubheadArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1772,7 +1748,7 @@ export enum ErrorOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntry = Entry & _Node & {
   __typename?: 'EventEntry';
   _id: Scalars['ID']['output'];
@@ -1793,19 +1769,19 @@ export type EventEntry = Entry & _Node & {
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryEventDateAndTimeArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryEventDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryEventDocumentsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -1815,55 +1791,55 @@ export type EventEntryEventDocumentsCollectionArgs = {
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryEventRichTextDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryEventSummaryArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryIndexInSearchArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryInternalNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryMetaDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryMetaTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntryShortTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** LDAF events such as board meetings, saddle microchipping events, etc. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/eventEntry) */
 export type EventEntrySlugArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2205,7 +2181,7 @@ export enum EventEntryOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
 export type FireDangerMap = Entry & _Node & {
   __typename?: 'FireDangerMap';
   _id: Scalars['ID']['output'];
@@ -2218,19 +2194,19 @@ export type FireDangerMap = Entry & _Node & {
 };
 
 
-/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
 export type FireDangerMapDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
 export type FireDangerMapLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
 export type FireDangerMapPageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2238,7 +2214,7 @@ export type FireDangerMapPageMetadataArgs = {
 };
 
 
-/** One-off content type for managing the description text on the fire danger page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/fireDangerMap) */
 export type FireDangerMapTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2344,7 +2320,7 @@ export enum FireDangerMapOrder {
   TitleDesc = 'title_DESC'
 }
 
-/** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImage = Entry & _Node & {
   __typename?: 'HeroImage';
   _id: Scalars['ID']['output'];
@@ -2358,32 +2334,32 @@ export type HeroImage = Entry & _Node & {
 };
 
 
-/** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImageAltFieldArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImageFotogCreditArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImageImageSourceArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImageImageTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Big wide image intended for the top of a page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/heroImage) */
 export type HeroImageLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
@@ -2573,7 +2549,7 @@ export enum HeroImageOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type Home = Entry & _Node & {
   __typename?: 'Home';
   _id: Scalars['ID']['output'];
@@ -2593,7 +2569,7 @@ export type Home = Entry & _Node & {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeCommissionerBackgroundArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2601,19 +2577,19 @@ export type HomeCommissionerBackgroundArgs = {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeCommissionerBylineArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeCommissionerGreetingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeCommissionerHeadshotArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2621,7 +2597,7 @@ export type HomeCommissionerHeadshotArgs = {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeFeaturedServiceCardsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -2632,7 +2608,7 @@ export type HomeFeaturedServiceCardsCollectionArgs = {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeHeroVideoArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2640,19 +2616,19 @@ export type HomeHeroVideoArgs = {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeInternalTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomeLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomePageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2660,7 +2636,7 @@ export type HomePageMetadataArgs = {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomePopularResourcesListCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -2671,7 +2647,7 @@ export type HomePopularResourcesListCollectionArgs = {
 };
 
 
-/** The home page for the ldaf.la.gov website [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/home) */
 export type HomePromotionalCardsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -2879,6 +2855,7 @@ export enum HomePromotionalCardsCollectionOrder {
 }
 
 export enum ImageFormat {
+  /** AVIF image format. */
   Avif = 'AVIF',
   /** JPG image format. */
   Jpg = 'JPG',
@@ -2973,7 +2950,7 @@ export type ImageTransformOptions = {
   width?: InputMaybe<Scalars['Dimension']['input']>;
 };
 
-/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
 export type ImageWrapper = Entry & _Node & {
   __typename?: 'ImageWrapper';
   _id: Scalars['ID']['output'];
@@ -2986,25 +2963,25 @@ export type ImageWrapper = Entry & _Node & {
 };
 
 
-/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
 export type ImageWrapperAltTextArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
 export type ImageWrapperInternalTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
 export type ImageWrapperLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** "wrapper" for image files to add categorization, credit and alt text metadata [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/imageWrapper) */
 export type ImageWrapperLinkedImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3116,7 +3093,7 @@ export enum ImageWrapperOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
 export type Menu = Entry & _Node & {
   __typename?: 'Menu';
   _id: Scalars['ID']['output'];
@@ -3129,7 +3106,7 @@ export type Menu = Entry & _Node & {
 };
 
 
-/** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
 export type MenuChildrenCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -3139,19 +3116,19 @@ export type MenuChildrenCollectionArgs = {
 };
 
 
-/** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
 export type MenuLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
 export type MenuMenuTypeArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Used to provide some structure to menus in the header and footer. The items in the menus in the header will be auto-generated (so this will only allow you to order the top menus, e.g. Animals, then Plants and crops, etc.), while the items in menus in the footer should be written out as Menu Item entries. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menu) */
 export type MenuTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -3211,7 +3188,7 @@ export type MenuFilter = {
   title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-/** A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
 export type MenuItem = Entry & _Node & {
   __typename?: 'MenuItem';
   _id: Scalars['ID']['output'];
@@ -3224,13 +3201,13 @@ export type MenuItem = Entry & _Node & {
 };
 
 
-/** A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
 export type MenuItemExternalLinkArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
 export type MenuItemInternalLinkArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3238,13 +3215,13 @@ export type MenuItemInternalLinkArgs = {
 };
 
 
-/** A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
 export type MenuItemLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** A single internal or external link to be included in a Menu. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/menuItem) */
 export type MenuItemTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -3386,7 +3363,7 @@ export enum MenuOrder {
   TitleDesc = 'title_DESC'
 }
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type News = Entry & _Node & {
   __typename?: 'News';
   _id: Scalars['ID']['output'];
@@ -3411,19 +3388,19 @@ export type News = Entry & _Node & {
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsBylineArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsContactInformationCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -3434,7 +3411,7 @@ export type NewsContactInformationCollectionArgs = {
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3442,37 +3419,37 @@ export type NewsHeroImageArgs = {
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsIndexInSearchArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsMetaDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsMetaTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsPublicationDateArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsRelatedEventsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -3483,13 +3460,13 @@ export type NewsRelatedEventsCollectionArgs = {
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsRelatedLinksArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsRelatedNewsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -3500,30 +3477,30 @@ export type NewsRelatedNewsCollectionArgs = {
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsSlugArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsSubheadArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** A press release or news article. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/news) */
 export type NewsTypeArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticle = Entry & _Node & {
   __typename?: 'NewsArticle';
   _id: Scalars['ID']['output'];
@@ -3539,38 +3516,38 @@ export type NewsArticle = Entry & _Node & {
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleAuthorNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleLinkedNewsContentArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleNewsArticleSubheadArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleNewsArticleTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleNewsHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3578,7 +3555,7 @@ export type NewsArticleNewsHeroImageArgs = {
 };
 
 
-/** Site-based news content. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsArticle) */
 export type NewsArticleNewsItemBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3821,7 +3798,7 @@ export type NewsFilter = {
   type_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-/** Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
 export type NewsItemContent = Entry & _Node & {
   __typename?: 'NewsItemContent';
   _id: Scalars['ID']['output'];
@@ -3834,25 +3811,25 @@ export type NewsItemContent = Entry & _Node & {
 };
 
 
-/** Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
 export type NewsItemContentBylineArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
 export type NewsItemContentLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
 export type NewsItemContentNewsInternalNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Main content of a news article or press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/newsItemContent) */
 export type NewsItemContentNewsItemBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4301,7 +4278,7 @@ export enum NewsRelatedNewsCollectionOrder {
   TypeDesc = 'type_DESC'
 }
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePage = Entry & _Node & {
   __typename?: 'OfficePage';
   _id: Scalars['ID']['output'];
@@ -4318,7 +4295,7 @@ export type OfficePage = Entry & _Node & {
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePageContactsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -4329,19 +4306,19 @@ export type OfficePageContactsCollectionArgs = {
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePageDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePageLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePageMailingAddressArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4349,7 +4326,7 @@ export type OfficePageMailingAddressArgs = {
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePagePageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4357,19 +4334,19 @@ export type OfficePagePageMetadataArgs = {
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePagePageTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePageServicesAndProgramsArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Overview pages for LDAF offices. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/officePage) */
 export type OfficePageSubheadingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4566,7 +4543,7 @@ export type OfficePageServicesAndProgramsResourcesInline = ResourceLink & {
   sys: ResourceSys;
 };
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadata = Entry & _Node & {
   __typename?: 'PageMetadata';
   _id: Scalars['ID']['output'];
@@ -4584,44 +4561,44 @@ export type PageMetadata = Entry & _Node & {
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataExternalRedirectArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataInternalRedirectArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataIsRootArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataMetaDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataMetaTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataParentArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4629,13 +4606,13 @@ export type PageMetadataParentArgs = {
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataSlugArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Options to control what the page does, where it lives, and how people can find it. Includes URL, menu linking, description that shows up in search engines, and redirects. A page will not appear on the site unless it has a corresponding Page details entry. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pageMetadata) */
 export type PageMetadataTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4969,7 +4946,7 @@ export enum PageMetadataOrder {
   TitleDesc = 'title_DESC'
 }
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressRelease = Entry & _Node & {
   __typename?: 'PressRelease';
   _id: Scalars['ID']['output'];
@@ -4987,26 +4964,26 @@ export type PressRelease = Entry & _Node & {
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleaseContactsHedArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleaseEventOrArticleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleaseLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleasePrContactsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -5017,7 +4994,7 @@ export type PressReleasePrContactsCollectionArgs = {
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleasePrMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5025,25 +5002,25 @@ export type PressReleasePrMetadataArgs = {
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleasePrTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleasePressReleaseBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleaseReleaseDateArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Includes standard fields for a press release [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/pressRelease) */
 export type PressReleaseStandardTextArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5210,7 +5187,7 @@ export type PressReleasePressReleaseBodyResourcesInline = ResourceLink & {
   sys: ResourceSys;
 };
 
-/** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
 export type PromoBannerWithCta = Entry & _Node & {
   __typename?: 'PromoBannerWithCta';
   _id: Scalars['ID']['output'];
@@ -5223,13 +5200,13 @@ export type PromoBannerWithCta = Entry & _Node & {
 };
 
 
-/** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
 export type PromoBannerWithCtaLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
 export type PromoBannerWithCtaPromoCtaArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5237,7 +5214,7 @@ export type PromoBannerWithCtaPromoCtaArgs = {
 };
 
 
-/** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
 export type PromoBannerWithCtaPromoHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5245,7 +5222,7 @@ export type PromoBannerWithCtaPromoHeroImageArgs = {
 };
 
 
-/** Mostly for the front page. Designed for large clickable images. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/promoBannerWithCta) */
 export type PromoBannerWithCtaPromoInternalNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5330,6 +5307,7 @@ export enum PromoBannerWithCtaOrder {
 export type Query = {
   __typename?: 'Query';
   _node?: Maybe<_Node>;
+  _nodes: Array<Maybe<_Node>>;
   aggregation?: Maybe<Aggregation>;
   aggregationCollection?: Maybe<AggregationCollection>;
   asset?: Maybe<Asset>;
@@ -5392,6 +5370,13 @@ export type Query = {
 
 export type Query_NodeArgs = {
   id: Scalars['ID']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type Query_NodesArgs = {
+  ids: Array<Scalars['ID']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -5892,7 +5877,7 @@ export type ResourceSys = {
   urn: Scalars['String']['output'];
 };
 
-/** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntry = Entry & _Node & {
   __typename?: 'ServiceEntry';
   _id: Scalars['ID']['output'];
@@ -5906,7 +5891,7 @@ export type ServiceEntry = Entry & _Node & {
 };
 
 
-/** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntryContactInformationCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -5917,25 +5902,25 @@ export type ServiceEntryContactInformationCollectionArgs = {
 };
 
 
-/** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntryDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntryEntryTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntryLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Content that will show up as an accordion on a Core content page. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceEntry) */
 export type ServiceEntryServiceCtaCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6125,7 +6110,7 @@ export enum ServiceEntryServiceCtaCollectionOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroup = Entry & _Node & {
   __typename?: 'ServiceGroup';
   _id: Scalars['ID']['output'];
@@ -6149,13 +6134,13 @@ export type ServiceGroup = Entry & _Node & {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupAdditionalResourcesArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupContactInfoCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6166,13 +6151,13 @@ export type ServiceGroupContactInfoCollectionArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6180,7 +6165,7 @@ export type ServiceGroupHeroImageArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupImageGalleryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6189,19 +6174,19 @@ export type ServiceGroupImageGalleryCollectionArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupImageGalleryTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupPageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6209,7 +6194,7 @@ export type ServiceGroupPageMetadataArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupRecentNewsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6220,7 +6205,7 @@ export type ServiceGroupRecentNewsCollectionArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupServiceEntriesCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6230,25 +6215,25 @@ export type ServiceGroupServiceEntriesCollectionArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupServiceListNameArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupSubheadingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupUpcomingEventsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6259,7 +6244,7 @@ export type ServiceGroupUpcomingEventsCollectionArgs = {
 };
 
 
-/** Web page that usually contains a group of service entries, but doesn't have to. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/serviceGroup) */
 export type ServiceGroupVideoArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6704,7 +6689,7 @@ export type SysFilter = {
 };
 
 /**
- * Represents a tag entity for finding and organizing content easily.
+ * Represents a taxonomy concept entity for finding and organizing content easily.
  *         Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-concepts
  */
 export type TaxonomyConcept = {
@@ -6712,7 +6697,7 @@ export type TaxonomyConcept = {
   id?: Maybe<Scalars['String']['output']>;
 };
 
-/** Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
 export type TestRichText = Entry & _Node & {
   __typename?: 'TestRichText';
   _id: Scalars['ID']['output'];
@@ -6725,26 +6710,26 @@ export type TestRichText = Entry & _Node & {
 };
 
 
-/** Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
 export type TestRichTextBodyArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
 export type TestRichTextLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
 export type TestRichTextMainImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-/** Example content type with some rich text. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/testRichText) */
 export type TestRichTextTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -6849,7 +6834,14 @@ export enum TestRichTextOrder {
   TitleDesc = 'title_DESC'
 }
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+export type TimelineFilterInput = {
+  /** Preview content starting from a given release date */
+  release_lte?: InputMaybe<Scalars['String']['input']>;
+  /** Preview content starting from a given timestamp */
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTier = Entry & _Node & {
   __typename?: 'TopTier';
   _id: Scalars['ID']['output'];
@@ -6868,13 +6860,13 @@ export type TopTier = Entry & _Node & {
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierDescriptionArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierFeaturedServiceListCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6885,7 +6877,7 @@ export type TopTierFeaturedServiceListCollectionArgs = {
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierHeroImageArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6893,13 +6885,13 @@ export type TopTierHeroImageArgs = {
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierPageMetadataArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6907,7 +6899,7 @@ export type TopTierPageMetadataArgs = {
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierRecentNewsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6918,19 +6910,19 @@ export type TopTierRecentNewsCollectionArgs = {
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierSubheadingArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierUpcomingEventsCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -6941,7 +6933,7 @@ export type TopTierUpcomingEventsCollectionArgs = {
 };
 
 
-/** Landing pages for the main sections of the site. They highlight the most important services or tasks (Core content). They also populate the navigation bar on the site. [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/topTier) */
 export type TopTierVideoArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7190,7 +7182,7 @@ export enum TopTierUpcomingEventsCollectionOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapper = Entry & _Node & {
   __typename?: 'VideoWrapper';
   _id: Scalars['ID']['output'];
@@ -7206,43 +7198,43 @@ export type VideoWrapper = Entry & _Node & {
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperInternalTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperVideoLongerStoryArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperVideoSlugArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperVideoSubheadArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperVideoTitleArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Control for embedding video content in a page [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
+/** [See type definition](https://app.contentful.com/spaces/pc5e1rlgfrov/content_types/videoWrapper) */
 export type VideoWrapperVideoUrlArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };

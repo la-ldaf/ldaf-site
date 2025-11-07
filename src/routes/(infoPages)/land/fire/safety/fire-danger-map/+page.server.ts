@@ -3,6 +3,7 @@ import { print as printQuery } from "graphql";
 import { error } from "@sveltejs/kit";
 import parishTopoJSON from "./parishes.json";
 
+import type { PageServerLoad } from "./$types";
 import type { FireWeatherMapPageQuery } from "./$queries.generated";
 
 const query = gql`
@@ -27,7 +28,7 @@ const query = gql`
   }
 `;
 
-export const load = async ({ parent, locals: { getKVClient, contentfulClient } }) => {
+export const load = (async ({ parent, locals: { getKVClient, contentfulClient } }) => {
   fetchData: {
     if (!contentfulClient) break fetchData;
     const { pageMetadataMap, pathsToIDs } = await parent();
@@ -65,5 +66,5 @@ export const load = async ({ parent, locals: { getKVClient, contentfulClient } }
       };
     }
   }
-  throw error(404);
-};
+  error(404);
+}) satisfies PageServerLoad;

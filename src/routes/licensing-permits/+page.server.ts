@@ -6,6 +6,7 @@ import slugify from "$lib/util/slugify";
 import assetProps from "$lib/fragments/assetProps";
 import entryProps from "$lib/fragments/entryProps";
 
+import type { PageServerLoad } from "./$types";
 import type { AggregationPageQuery, TaggedServicesQuery } from "./$queries.generated";
 
 type TaggedService =
@@ -88,7 +89,7 @@ const taggedServicesQuery = gql`
   }
 `;
 
-export const load = async ({ parent, locals: { contentfulClient } }) => {
+export const load = (async ({ parent, locals: { contentfulClient } }) => {
   fetchData: {
     if (!contentfulClient) break fetchData;
     const { pageMetadataMap, pathsToIDs } = await parent();
@@ -174,5 +175,5 @@ export const load = async ({ parent, locals: { contentfulClient } }) => {
       serviceGroups,
     };
   }
-  throw error(404);
-};
+  error(404);
+}) satisfies PageServerLoad;

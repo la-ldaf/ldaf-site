@@ -32,10 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           cache: npm
@@ -64,7 +64,7 @@ jobs:
 
       - name: Create artifact with report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
           path: coverage
@@ -77,10 +77,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           cache: npm
@@ -96,7 +96,7 @@ jobs:
 
       - name: Create artifact with report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
           path: e2e-tests/report
@@ -108,10 +108,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           cache: npm
@@ -124,7 +124,7 @@ jobs:
 
       - name: Create artifact with bundle visualizer
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
           path: bundle-visualizer
@@ -146,13 +146,13 @@ jobs:
           max_timeout: 2700
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@latest
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           cache: npm
@@ -182,7 +182,7 @@ jobs:
 
       - name: Create artifact with Lighthouse reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
           path: lighthouse-reports
@@ -202,10 +202,10 @@ jobs:
       VERCEL_TOKEN: ${{secrets.VERCEL_META_SITE_DEPLOY_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           cache: npm
@@ -217,25 +217,25 @@ jobs:
         run: vercel pull --yes --cwd .meta --environment=${{ fromJSON(env.IS_MAIN) && 'production' || 'preview' }} --token=${{env.VERCEL_TOKEN}}
 
       - name: Download unit test report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.UNIT_PATH }}
           path: .meta/${{ env.UNIT_PATH }}
 
       - name: Download end-to-end test report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.E2E_PATH }}
           path: .meta/${{ env.E2E_PATH }}
 
       - name: Download bundle visualizer artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.BUNDLE_VISUALIZER_PATH }}
           path: .meta/${{ env.BUNDLE_VISUALIZER_PATH }}
 
       - name: Download Lighthouse report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: ${{ github.event.after }}-${{ env.LIGHTHOUSE_PATH }}
           path: .meta/${{ env.LIGHTHOUSE_PATH }}
@@ -277,10 +277,10 @@ jobs:
       VERCEL_TOKEN: ${{secrets.VERCEL_STORYBOOK_DEPLOY_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           cache: npm

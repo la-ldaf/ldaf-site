@@ -3,6 +3,7 @@ import tokenDuration from "$lib/constants/tokenDuration.js";
 import getContentfulManagementClient from "$lib/services/server/contentfulManagement";
 import getErrorMessage from "$lib/util/getErrorMessage.js";
 import { error, fail } from "@sveltejs/kit";
+import type { Actions } from "./$types";
 
 export const actions = {
   default: async ({ request, locals, cookies, fetch }) => {
@@ -31,7 +32,7 @@ export const actions = {
       ]);
       if (!kvClient) {
         const message = "Could not log in: Redis client failed to initialize";
-        throw error(500, { message, status: 500 });
+        error(500, { message, status: 500 });
       }
       locals.currentUser = currentUser;
       const ldafUserToken = crypto.randomUUID();
@@ -51,7 +52,7 @@ export const actions = {
         err && typeof err === "object" && "status" in err && typeof err.status === "number"
           ? err.status
           : 500;
-      throw error(status, { message, status });
+      error(status, { message, status });
     }
   },
-};
+} satisfies Actions;

@@ -7,8 +7,9 @@ import { loadMainNav, loadSecondaryNav } from "$lib/components/Header/Nav/Nav.se
 import { loadFooterNav } from "$lib/components/Footer/Footer.server";
 import { loadSideNavMap } from "$lib/components/SideNav/SideNav.server";
 import constructEventSlug from "$lib/util/constructEventSlug";
+import type { LayoutServerLoad } from "./$types";
 
-export const load = async ({
+export const load = (async ({
   fetch,
   depends,
   locals: { contentfulClient, currentUser, previewAuthenticationError },
@@ -45,24 +46,21 @@ export const load = async ({
         if (internalRedirect.__typename === "PageMetadata") {
           const internalRedirectPageMetadata = pageMetadataMap.get(internalRedirect.sys.id);
           if (internalRedirectPageMetadata?.url) {
-            throw redirect(301, internalRedirectPageMetadata.url);
+            redirect(301, internalRedirectPageMetadata.url);
           }
         } else if (internalRedirect.__typename === "News" && internalRedirect.slug) {
-          throw redirect(301, `/about/news/article/${internalRedirect.slug}`);
+          redirect(301, `/about/news/article/${internalRedirect.slug}`);
         } else if (
           internalRedirect.__typename === "EventEntry" &&
           internalRedirect.slug &&
           internalRedirect.eventDateAndTime
         ) {
           const date = new Date(internalRedirect.eventDateAndTime);
-          throw redirect(
-            301,
-            `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`,
-          );
+          redirect(301, `/about/events/event/${constructEventSlug(date, internalRedirect.slug)}`);
         }
       }
       if (externalRedirect) {
-        throw redirect(301, externalRedirect);
+        redirect(301, externalRedirect);
       }
     }
   }
@@ -79,11 +77,14 @@ export const load = async ({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
-  const footerNavItems = loadFooterNav({
+  const footerNavItems = await loadFooterNav({
     pageMetadataMap: pageMetadataMapSansRedirects,
     contentfulClient,
   });
+  // No fetching, so no need to await.
   const sideNavMap = loadSideNavMap(pageMetadataMapSansRedirects, headerPrimaryNavItems);
+  // Static data, so no need to await.
+  const headerSecondaryNavItems = loadSecondaryNav();
 
   // Since any route can error, we always need to have the error page content
   //   available on every request.
@@ -97,10 +98,10 @@ export const load = async ({
     pageMetadataMap: pageMetadataMap,
     pathsToIDs: pathsToIDs,
     headerPrimaryNavItems: headerPrimaryNavItems,
-    headerSecondaryNavItems: loadSecondaryNav(),
+    headerSecondaryNavItems: headerSecondaryNavItems,
     footerNavItems: footerNavItems,
     sideNavMap: sideNavMap,
     errorPageContentMap,
     currentUser: clientCurrentUser,
   };
-};
+}) satisfies LayoutServerLoad;

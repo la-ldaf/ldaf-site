@@ -15,6 +15,7 @@ vi.mock("$app/stores", (): typeof stores => {
       route: { id: null },
       form: null,
       data: {},
+      state: {},
     }),
     updated: {
       subscribe: readable<boolean>(false).subscribe,
